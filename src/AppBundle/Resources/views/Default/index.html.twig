@@ -1,0 +1,80 @@
+{% extends 'AppBundle:Default:base.html.twig' %}
+{% block contenttop %}
+{% embed 'AppBundle:Default:contenttop_skeleton.html.twig' %}
+{% block carousel %}
+   <div class="row">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+          <!-- Indicators -->
+          <ol class="carousel-indicators">
+            <li data-target="#carousel-example-generic" data-slide-to="0" class="active hidden-xs"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="1" class="hidden-xs"></li>
+          </ol>
+
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner" role="listbox">
+            <div class="item active">
+              <img src="{{ app.request.basepath }}/img/carousel/schaechten.jpg" alt="Neue Quelle" style="width: 100%; height: auto; min-height: 90px;">
+              <div class="carousel-caption">
+                <h4><a href="#" style="color: white; text-shadow: 0 1px 3px rgba(0, 0, 0, 1);">Neue Quelle: Schreiben an Schlachthof- und Viehmarktverwaltung</a></h4>
+              </div>
+            </div>
+            <div class="item">
+              <img src="{{ app.request.basepath }}/img/carousel/filmclub.jpg" alt="Filmclub" style="width: 100%; height: auto; min-height: 90px;">
+              <div class="carousel-caption">
+                <h4 style="background-color: black; opacity:0.9;">Filmclub: Donnerstag, 18.02.2016 19.00 Uhr
+    GOD’S NEIGHBORS - HA-MASHGIHIM</h4>
+              </div>
+            </div>
+          </div><!-- .carousel-inner -->
+
+          <!-- Controls -->
+          <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div><!-- .carousel -->
+    </div>
+{% endblock %}
+{#% block breadcrumb %}{% endblock %#}
+{% endembed %}
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-8">
+            <h2>{% trans %}Welcome{% endtrans %}</h2>
+            <div class="two-columns">
+                <p>Die vom Institut für die Geschichte der deutschen Juden (IGdJ) realisierte Online-Quellenedition wird am Beispiel von rund 150 Schlüsseldokumenten thematische Schlaglichter auf zentrale Aspekte der jüdischen Geschichte Hamburgs von der frühen Neuzeit bis in die Gegenwart werfen. Hamburg wird als Brennglas für größere Entwicklungen und Fragestellungen der deutsch-jüdischen Geschichte verstanden. Zugleich möchte die Quellenedition dazu beitragen, das aufgrund von Migration und Verfolgung in alle Welt verstreute jüdische Erbe der Stadt digital wieder zusammenzuführen, zugänglich zu machen und für zukünftige Generationen zu bewahren.</p>
+
+<p>Die Konzentration auf Hamburg versteht sich nicht als lokalgeschichtliche Beschränkung, Hamburg dient vielmehr als Brennglas für größere Themen und allgemeine Tendenzen der deutsch-jüdischen Geschichte. Hamburg bietet sich dafür in besonderem Maße an: Zum einen gibt es einen umfangreichen Quellenbestand, der mehrere Jahrhunderte jüdischer Geschichte abdeckt. Zum anderen zeichnet sich die Stadt als einstmals bedeutendes Zentrum jüdischer Geschichte durch einige Alleinstellungsmerkmale wie etwa die Ansiedlung sefardischer Juden im 16. Jahrhundert, die Existenz von vier, sich in unmittelbarer Nähe und dennoch in unterschiedlichen Herrschaftsgebieten befindlichen Gemeinden oder die zentrale Rolle für die jüdische Migration im 19. und 20. Jahrhundert aus.</p>
+
+<p>Neben der Bereitstellung der Materialien als Transkript und digitales Faksimile werden die Quellen durch Interpretations- und Hintergrundtexte in ihre historischen Kontexte eingebettet sowie durch Informationen zur Überlieferung, zur Rezeptionsgeschichte und zu wissenschaftlichen Kontroversen angereichert. Alle Materialien werden auf Deutsch und Englisch angeboten. Auf der Website wird es umfangreiche Recherche- und Filtermöglichkeiten geben.</p>
+
+<p>Die Quellenedition richtet sich an Studierende, Forschende und Lehrende ebenso wie an interessierte Laien. Je nach Informationsbedürfnis werden dem Nutzer unterschiedliche Zugänge und Vertiefungsebenen angeboten. So soll ein Spektrum von eher allgemeinen überblicksartigen, über eng an der Quelle argumentierenden bis hin zu fachspezifischen Texten abgedeckt werden. Inhaltlich wird das Projekt durch einen Beirat unterstützt, dem renommierte Wissenschaftler der deutsch-jüdischen Geschichte sowie Experten aus dem Bereich Digitalisierung angehören.</p>
+
+<p>Die Online-Edition wird seit Juli 2015 für zwei Jahre von der Deutschen Forschungsgemeinschaft gefördert. Sie ergänzt die bisherigen Veranstaltungen und Publikationen des IGdJ und stärkt seine Rolle als Verbindungsglied zwischen Wissenschaft und interessierter Öffentlichkeit. Die Website wird im Jahr 2016 anlässlich des 50-jährigen Instituts-Jubiläums präsentiert werden.</p>
+            </div>
+        </div>
+
+        <div class="col-sm-4 sidebar">
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>{{ 'Featured Document'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse">
+                    <div class="col-xs-4">
+                        <a href="#"><img src="{{ app.request.basepath }}/img/mockup/schaechten_thumbnail.jpg" style="width: 100%; height: auto" /></a>
+                    </div>
+                    <div class="col-xs-8"><a href="{{ path('source', { 'uid' : 'jgo:source-15' }) }}"><b>Schreiben an Schlachthof- und Viehmarktverwaltung</b>, Hamburg, 9.10.1930</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

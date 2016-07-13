@@ -1,0 +1,371 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400italic,700,700italic&subset=latin,latin-ext);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic);
+
+$font-stack-sans: 'Roboto Condensed', Arial, sans-serif;
+$font-stack-serif: 'Droid Serif', serif;
+
+$color-color-dark: #070E44;
+$color-color-medium: #99A0B4;
+
+$color-color-topic: #970376;
+$color-color-map: #F4AE11;
+$color-color-chronology: #3B97D7;
+$color-color-lookup: #99A0B4;
+
+$color-gray-dark: #9B9B9B;
+$color-gray-medium: #C0C0C0;
+$color-gray-light: #E0DFE0;
+
+/* see https://github.com/twbs/bootstrap-sass/blob/master/assets/stylesheets/bootstrap/_variables.scss */
+$screen-sm-size: 768px;
+
+body {
+    font-family: $font-stack-sans;
+}
+
+header {
+	h1 {
+		margin-top: 3rem;
+		font-size: 18px;
+		font-weight: bold;
+	}
+	color: white;
+	background-color: $color-color-dark;
+	a, a:visited {
+		color: white;
+		&:hover, &:active {
+			color: $color-gray-light;
+			text-decoration: none;
+		}
+	}
+
+	#menu-top, #menu-lang {
+		font-size: 12px;
+	}
+
+	#menu-top {
+		color: $color-color-medium;
+		a {
+			color: $color-color-medium;
+		}
+		float: left;
+		padding-right: 2rem;
+	}
+
+	#menu-lang {
+		color: $color-color-medium;
+		a {
+			color: $color-color-medium;
+		}
+		li.current a {
+			color: white;
+		}
+		float: left;
+		text-transform: uppercase;
+		border-left: 1px solid $color-color-medium;
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+
+	/* css drop-down, see also https://gist.github.com/nateevans/9958390 */
+	#menu-top, #menu-main {
+		li {
+			position: relative;
+		}
+		li .menu_level_1 {
+			min-width: 100%;
+			display: none;
+			position: absolute;
+			z-index: 999;
+			left: 0;
+			list-style: none;
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+		li:hover .menu_level_1 {
+			display: block;
+		}
+	}
+
+	#menu-top {
+		li:hover .menu_level_1 {
+			background-color: white;
+			white-space: nowrap;
+		}
+	}
+
+	#menu-main {
+		margin-left: 0;
+		margin-bottom: -5px;
+
+		& > li {
+			margin-right: 2px;
+			border-bottom: 6px solid transparent;
+			padding: 0;
+			padding-bottom: 5px;
+			a {
+				padding: 5px;
+				padding-right: 15px;
+			}
+		}
+
+		li:hover .menu_level_1 {
+			margin-left: 0px;
+			background-color: $color-color-lookup;
+		}
+
+		#menu-item-topic {
+			a {
+				display: inline-block;
+				background-color: $color-color-topic;
+			}
+			&:hover /*, &.current */ {
+				border-bottom: 6px solid $color-color-topic;
+			}
+		}
+		#menu-item-map {
+			a {
+				display: inline-block;
+				background-color: $color-color-map;
+			}
+			&:hover, &.current {
+				border-bottom: 6px solid $color-color-map;
+			}
+		}
+		#menu-item-chronology {
+			a {
+				display: inline-block;
+				background-color: $color-color-chronology;
+			}
+			&:hover, &.current {
+				border-bottom: 6px solid $color-color-chronology;
+			}
+		}
+		#menu-item-lookup {
+			a {
+				display: inline-block;
+				background-color: $color-color-lookup;
+			}
+			&:hover {
+				border-bottom: 6px solid $color-color-lookup;
+			}
+		}
+	}
+}
+
+#top {
+	margin-bottom: 20px;
+}
+
+.carousel-inner .item {
+	z-index: -5;
+}
+
+#breadcrumb {
+	background-color: $color-gray-light;
+	margin-bottom: 20px;
+	.list-inline {
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+
+	color: $color-color-dark;
+	/*
+	a:link, a:visited {
+		color: $color-color-medium;
+	}
+	*/
+}
+
+@mixin article-text {
+	font-size: 16px;
+	line-height: 1.6;
+	 /* font-family: $font-stack-serif; */
+}
+
+.source-description, .source-link {
+	@include article-text;
+	margin-bottom: 1em;
+}
+
+.article {
+	.dta-p, div.dta-bibl {
+		@include article-text;
+	}
+}
+
+.article > div {
+	margin-top: 2em;
+	&:first-child {
+		margin-top: 0;
+	}
+}
+
+.author {
+	color: $color-gray-dark;
+	margin-bottom: 2em;
+}
+
+a, a:visited, .hoverable {
+	color: $color-gray-dark;
+}
+.hoverable:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.h1, h1 {
+	font-size: 30px;
+}
+
+h2 {
+	font-size: 24px;
+	/* color: $color-gray-dark; */
+	/* padding-bottom: 1rem;
+	margin-bottom: 1rem;
+	border-bottom: 2px solid $color-gray-medium;
+	font-weight: bold; */
+
+	&:first-child {
+		margin-top: 0;
+	}
+}
+
+h2 + br, h3 + br {
+	display: none;
+}
+
+h3#citation {
+	color: $color-gray-dark;
+	font-weight: bold;
+}
+
+/* see https://gist.github.com/JayHoltslander/9998612 */
+div.two-columns {
+	-webkit-column-count: 2; /* Chrome, Safari, Opera */
+	-moz-column-count:    2; /* Firefox */
+	column-count:         2;
+  	-webkit-column-gap:   20px; /* Chrome, Safari, Opera */
+	-moz-column-gap:      20px; /* Firefox */
+	column-gap:           20px;
+	/* column-rule-color: #ccc; */ /* Optional */
+	/* ccolumn-rule-style:solid; */ /* Optional */
+	/* ccolumn-rule-width: 1px; */ /* Optional */
+}
+
+.sidebar {
+	.box {
+		&.top-buffer { margin-top:20px; }
+
+		.seealso-ul, .beacon-ul	{
+			ul {
+				padding-left: 10px;
+				list-style-type: square;
+			}
+		}
+
+		.row {
+			border-left: 2px solid $color-gray-medium;
+			border-right: 2px solid $color-gray-medium;
+			&:last-of-type {
+				border-bottom: 2px solid $color-gray-medium;
+			}
+			padding-top: 10px;
+			padding-bottom: 10px;
+			font-size: 90%;
+
+			&.box-color-title {
+				border: none;
+				background-color: $color-color-dark;
+
+				h4 {
+					margin: 0;
+					color: white;
+					text-transform: uppercase;
+				}
+			}
+
+			&.box-color-content-inverse {
+				background-color: $color-color-medium;
+				a, a:visited {
+					color: white;
+				}
+			}
+
+			a, a:visited {
+				color: $color-gray-dark;
+			}
+
+			&.menu {
+				ul {
+					padding-left: 0;
+					list-style-type: none;
+					li.current {
+						a, a:visited {
+							color: $color-color-dark;
+						}
+					}
+				}
+			}
+
+		}
+	}
+}
+
+footer {
+	background-color: $color-gray-dark;
+	a, a:visited {
+		color: white;
+		&:hover {
+			color: $color-color-dark;
+		}
+	}
+	margin-top: 1rem;
+	margin-bottom: 2rem;
+
+	#footer-navigation {
+		padding-top: 2rem;
+		padding-bottom: 1rem;
+	}
+
+	ul {
+		list-style-type: none;
+		padding-left: 0;
+
+		&#menu-main-footer {
+			text-transform: uppercase;
+		}
+	}
+
+	ul ul {
+		padding-left: 20px;
+	}
+}
+
+/* size-specific styles */
+@media (min-width: $screen-sm-size) {
+	#footer-dfg {
+		text-align: right;
+	}
+}
+
+/* route-specific styles */
+.route-topic-index {
+	.topic {
+		margin-bottom: 20px;
+	}
+
+	h4 {
+		border-top: 1px solid $color-gray-medium;
+		padding-top: 5px;
+		color: $color-gray-dark;
+		min-height: 46px;
+	}
+}
+
+/* don't show tei-license on about-pages */
+body[class^="route-about"] {
+    #license {
+		display: none;
+	}
+}

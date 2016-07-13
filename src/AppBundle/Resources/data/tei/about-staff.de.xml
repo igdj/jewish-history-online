@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
+type="application/xml"
+schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="main">Mitarbeiterinnen und Mitarbeiter</title>
+            </titleStmt>
+            <publicationStmt>
+                <publisher>
+                    <orgName>Institut für die Geschichte der deutschen Juden</orgName>
+                    <email>redaktion@juedische-geschichte-online.net</email>
+                    <address><addrLine>Beim Schlump 83, 20144 Hamburg</addrLine></address>
+                </publisher>
+                <pubPlace>Hamburg</pubPlace>
+                <date type="publication">2016-09-01</date>
+                <availability>
+                    <licence target="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+                        <p>Dieser Text unterliegt den Bedingungen der Creative Commons Namensnennung - Nicht kommerziell - Keine Bearbeitungen 4.0 International Lizenz. Unter Namensnenung gemäß dem Zitationshinweis darf er in unveränderter Form für nicht-kommerzielle Zwecke nachgenutzt werden.</p>
+                    </licence>
+                </availability>
+            </publicationStmt>
+            <sourceDesc>
+                <p></p>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <langUsage><language ident="deu">Deutsch</language></langUsage>
+        </profileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <div n="3">
+                <head>Projektleitung<lb/></head>
+                <p><hi rendition="#b">Dr. Miriam Rürup</hi><lb/></p>
+                <p>Sie ist Direktorin des Instituts für die Geschichte der deutschen Juden. Zuvor
+                    war sie u.a. wissenschaftliche Mitarbeiterin am DHI in Washington, USA, und
+                    wissenschaftliche Assistentin am Seminar für Mittlere und Neuere Geschichte der
+                    Universität Göttingen. Sie hat Geschichte, Soziologie und Europäische Ethnologie
+                    an den Universitäten Göttingen, Tel Aviv und Berlin studiert und wurde an der TU
+                    Berlin zu jüdischen Studentenverbindungen promoviert. Ihre Forschungsinteressen
+                    umfassen die deutsch-jüdische Geschichte, Zeitgeschichte, Geschichte des
+                    Nationalsozialismus sowie der Gedenkpolitik, Geschlechtergeschichte sowie aus
+                    dem Umfeld ihrer Habilitation vor allem die Geschichte von Migration,
+                    Staatsbürgerschaft und Staatenlosigkeit.<lb/></p>
+            </div>
+            <div n="3">
+                <head>Projektkoordination<lb/></head>
+                <p><hi rendition="#b">Dr. Anna Menny</hi><lb/></p>
+                <p>Sie ist wissenschaftliche Mitarbeiterin am Institut für die Geschichte der
+                    deutschen Juden. Sie hat an der Universität Hamburg Geschichte, Politik und
+                    Medienkultur studiert und wurde an der LMU München zu spanisch-jüdischer
+                    Zeitgeschichte promoviert. Sie ist Sprecherin des Netzwerks Jüdische Geschichte
+                    digital innerhalb der AG digitale Geschichtswissenschaft des
+                    Historikerverbandes.<lb/></p>
+            </div>
+            <div n="3">
+                <head>Projektmitarbeiter/innen<lb/></head>
+                <p>TODO: Ergänzen</p>
+            </div>
+        </body>
+    </text>
+</TEI>

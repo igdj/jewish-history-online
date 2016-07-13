@@ -1,0 +1,219 @@
+{% extends 'AppBundle:Default:base.html.twig' %}
+{% block head %}
+    {# TODO: move to some shared style-sheet #}
+    <style>
+        #authors, #license {
+            display: none;
+        }
+    </style>
+
+    <script>
+    var entityLookup = {{ entity_lookup|json_encode|raw }};
+
+    var glossaryLookup = {{ glossary_lookup|json_encode|raw }};
+
+    function buildGlossaryInfo($el) {
+        var url = {{ path('glossary-index')|json_encode|raw }};
+        var term = $el.data('title');
+        if (term in glossaryLookup) {
+            var url_detail = url + '#' + glossaryLookup[term].slug;
+            return { "url" :  url_detail,
+                     "title" : glossaryLookup[term].headline };
+        }
+        return null;
+    }
+
+    $(function () {
+        $( '.glossary' ).each (function ( index ) {
+            var $el = $( this );
+            var info = buildGlossaryInfo($el);
+            if (null != info) {
+                $el.addClass('hoverable');
+                $el.click(function() {
+                    window.location = info.url;
+                    return false;
+                });
+                $el.tooltip({
+                    title: info.title,
+                    html: false /*,
+                    delay: { hide: 350 } */
+                });
+            }
+        });
+
+        // link entities
+        $( '.entity-ref' ).each(function( index ) {
+            var $el = $( this );
+            var type = $el.data('type');
+            var uri = $el.data('uri');
+            var info = entityLookup[type][uri];
+            if (info != null && info.url != null) {
+                $el.addClass('hoverable');
+                $el.click(function() {
+                  window.location = info.url;
+                  return false;
+                });
+                $el.tooltip({
+                    title: 'TODO: Info zu ' + $el.text() + '<a href="' + info.url + '">...mehr</a>',
+                    html: true,
+                    delay: { hide: 350 }
+                });
+
+                console.log( index + ": " + $el.text() + JSON.stringify(info));
+            }
+        });
+    })
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h1>{{ name }}</h1>
+    {% if authors is not empty %}
+        <div class="author">
+            <a href="#author">
+            {% for author in authors %}
+                {{ author.text }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+            </a>
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-8">
+        {% if source_description is not empty %}
+        <h2>{{ 'Source Description'|trans }}</h2>
+        {{ source_description|raw }}
+        {% endif %}
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+            {{ 'Content'|trans }}
+            </div>
+            <div class="panel-body">
+            {% if section_headers is not empty %}
+                {% for header in section_headers %}
+                    <p><a href="#{{ header['id'] }}">{{ header['text'] }}</a></p>
+                {% endfor %}
+                <hr />
+            {% endif %}
+            {% if authors is not empty %}
+                <p><a href="#author">{{ 'author.oneormany'|transchoice(authors|length) }}</a></p>
+            {% endif %}
+            <p><a href="#citation">{{ 'Citation and License Statement'|trans }}</a></p>
+            </div>
+            {% if related is not empty %}
+            {% set source = related[0] %}
+            <div class="panel-heading">
+                <a href="{{ path('source', { 'uid' : source.uid }) }}">Quelle</a>
+            </div>
+            {% endif %}
+        </div>
+
+
+        {{ html|raw }}
+
+        {% if authors is not empty %}
+        <h2 id="author">{{ 'author.oneormany'|transchoice(authors|length) }}</h2>
+            {% for author in authors %}
+        <p>{% if author.description is defined %}{{ author.description }}{% else %}{{ author.text }}{% endif %}</p>
+            {% endfor %}
+        {% endif %}
+
+        {% if related is not empty %}
+        {% set source = related[0] %}
+        <h3 id="source-link">
+            <a href="{{ path('source', { 'uid' : source.uid }) }}">Quelle anzeigen &gt;</a>
+        </h3>
+        {% endif %}
+
+        <h3 id="citation">{{ 'Citation and License Statement'|trans }}</h3>
+        <p>{% if authors is not empty %}
+            {% for author in authors %}{{ author.text }}, {% endfor %}
+        {% endif %}
+        {{ name }}, in: {{ 'Hamburg Key-Documents of German-Jewish History'|trans }},
+        &lt;{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}&gt;</p>
+
+        {% if license is not null %}
+        <div>
+            {% if license.url is defined %}
+                {% if license.url == "http://creativecommons.org/licenses/by-nc-nd/4.0/" %}
+                <a href="{{ license.url }}" target="_blank"><img src="{{ app.request.basepath }}/img/license/by-nc-nd.eu.svg" height="30" style="float: left; padding-right: 6px;" /></a>
+                {% endif %}
+            {% endif %}
+            {{ license.text }}
+        </div>
+        {% endif %}
+        </div><!-- .col -->
+
+        <div class="col-xs-12 col-sm-4 sidebar">
+            {% if related is not empty %}
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                    <h4>{{ 'source.oneormany'|transchoice(related|length) }}</h4>
+                    </div>
+                </div>
+
+                <div class="row box-color-content-inverse">
+                    <div class="col-sm-12">
+                    {% for source in related %}
+                        <p><a href="{{ path('source', { 'uid' : source.uid }) }}">{{ source.name }}</a></p>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if article.keywords is not empty %}
+            <div class="container-fluid box top-buffer">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>{{ 'topic.oneormany'|transchoice(article.keywords|length) }}</h4>
+                    </div>
+                </div>
+
+                <div class="row box-color-content-inverse">
+                {% for topic in article.keywords %}
+                    {% set slug = slugify.slugify(topic) %}
+                    {% if loop.first %}
+                    <div class="col-sm-6">
+                        <a href="{{ path('topic-background', { 'slug' : slug }) }}"><img src="{{ asset('img/topic/' ~ slug ~ '.jpg') }}" style="width: 100%; height: auto" /></a>
+                    </div>
+                    <div class="col-sm-6">
+                    {% endif %}
+                            <p><a href="{{ path('topic-background', { 'slug' : slug }) }}">{{ topic }}</a></p>
+                    {% if loop.last %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {#
+            <div class="container-fluid box top-buffer">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>{{ 'Content'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row box-color-content">
+                    <div class="col-sm-12">
+                    {% if section_headers is not empty %}
+                        {% for header in section_headers %}
+                            <p><a href="#{{ header['id'] }}">{{ header['text'] }}</a></p>
+                        {% endfor %}
+                        <hr />
+                    {% endif %}
+                    {% if authors is not empty %}
+                        <p><a href="#author">{{ 'author.oneormany'|transchoice(authors|length) }}</a></p>
+                    {% endif %}
+                        <p><a href="#citation">{{ 'Citation and License Statement'|trans }}</a></p>
+                    </div>
+                </div>
+            </div>
+            #}
+        </div>
+
+    </div>
+{% endblock %}

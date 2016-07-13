@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
+type="application/xml"
+schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="main">Über uns</title>
+            </titleStmt>
+            <publicationStmt>
+                <publisher>
+                    <orgName>Institut für die Geschichte der deutschen Juden</orgName>
+                    <email>redaktion@juedische-geschichte-online.net</email>
+                    <address><addrLine>Beim Schlump 83, 20144 Hamburg</addrLine></address>
+                </publisher>
+                <pubPlace>Hamburg</pubPlace>
+                <date type="publication">2016-09-01</date>
+                <availability>
+                    <licence target="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+                        <p>Dieser Text unterliegt den Bedingungen der Creative Commons Namensnennung - Nicht kommerziell - Keine Bearbeitungen 4.0 International Lizenz. Unter Namensnenung gemäß dem Zitationshinweis darf er in unveränderter Form für nicht-kommerzielle Zwecke nachgenutzt werden.</p>
+                    </licence>
+                </availability>
+            </publicationStmt>
+            <sourceDesc>
+                <p></p>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <langUsage><language ident="deu">Deutsch</language></langUsage>
+        </profileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <div n="2">
+                <!--<head>Zusammenfassung</head>-->
+                <p>Die vom Institut für die Geschichte der deutschen Juden (IGdJ) realisierte
+                    Online-Quellenedition wird am Beispiel von rund 150 Schlüsseldokumenten
+                    thematische Schlaglichter auf zentrale Aspekte der jüdischen Geschichte Hamburgs
+                    von der frühen Neuzeit bis in die Gegenwart werfen. Hamburg wird als Brennglas
+                    für größere Entwicklungen und Fragestellungen der deutsch-jüdischen Geschichte
+                    verstanden. Zugleich möchte die Quellenedition dazu beitragen, das aufgrund von
+                    Migration und Verfolgung in alle Welt verstreute jüdische Erbe der Stadt digital
+                    wieder zusammenzuführen, zugänglich zu machen und für zukünftige Generationen zu
+                    bewahren.<lb/></p>
+                <p>Die Konzentration auf Hamburg versteht sich nicht als lokalgeschichtliche
+                    Beschränkung, Hamburg dient vielmehr als Brennglas für größere Themen und
+                    allgemeine Tendenzen der deutsch-jüdischen Geschichte. Hamburg bietet sich dafür
+                    in besonderem Maße an: Zum einen gibt es einen umfangreichen Quellenbestand, der
+                    mehrere Jahrhunderte jüdischer Geschichte abdeckt. Zum anderen zeichnet sich die
+                    Stadt als einstmals bedeutendes Zentrum jüdischer Geschichte durch einige
+                    Alleinstellungsmerkmale wie etwa die Ansiedlung sefardischer Juden im 16.
+                    Jahrhundert, die Existenz von vier, sich in unmittelbarer Nähe und dennoch in
+                    unterschiedlichen Herrschaftsgebieten befindlichen Gemeinden oder die zentrale
+                    Rolle für die jüdische Migration im 19. und 20. Jahrhundert aus.<lb/></p>
+                
+                <p>Neben der Bereitstellung der Materialien als Transkript und digitales Faksimile
+                    werden die Quellen durch Interpretations- und Hintergrundtexte in ihre
+                    historischen Kontexte eingebettet sowie durch Informationen zur Überlieferung,
+                    zur Rezeptionsgeschichte und zu wissenschaftlichen Kontroversen angereichert.
+                    Alle Materialien werden auf Deutsch und Englisch angeboten. Auf der Website wird
+                    es umfangreiche Recherche- und Filtermöglichkeiten geben.<lb/></p>
+                
+                <p>Die Quellenedition richtet sich an Studierende, Forschende und Lehrende ebenso
+                    wie an interessierte Laien. Je nach Informationsbedürfnis werden dem Nutzer
+                    unterschiedliche Zugänge und Vertiefungsebenen angeboten. So soll ein Spektrum
+                    von eher allgemeinen überblicksartigen, über eng an der Quelle argumentierenden
+                    bis hin zu fachspezifischen Texten abgedeckt werden. Inhaltlich wird das Projekt
+                    durch einen Beirat unterstützt, dem renommierte Wissenschaftler der
+                    deutsch-jüdischen Geschichte sowie Experten aus dem Bereich Digitalisierung
+                    angehören.<lb/></p>
+                <p>Die Online-Edition wird seit Juli 2015 für zwei Jahre von der Deutschen
+                    Forschungsgemeinschaft gefördert. Sie ergänzt die bisherigen Veranstaltungen und
+                    Publikationen des IGdJ und stärkt seine Rolle als Verbindungsglied zwischen
+                    Wissenschaft und interessierter Öffentlichkeit. Die Website wird im Jahr 2016
+                    anlässlich des 50-jährigen Instituts-Jubiläums im Rahmen des 51. Deutschen
+                    Historikertages in Hamburg der Öffentlichkeit präsentiert werden.</p>
+            </div>
+        </body>
+    </text>
+</TEI>

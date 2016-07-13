@@ -1,0 +1,53 @@
+{
+    "config": {
+        "platform": {
+            "php": "5.4.45"
+        }
+    },
+
+    "require": {
+        "symfony/framework-bundle": "*@stable",
+        "symfony/yaml": "*@stable",
+        "symfony/console": "*@stable",
+
+        "sensio/framework-extra-bundle": "*@stable",
+        "symfony/twig-bundle": "*@stable",
+
+        "symfony/monolog-bundle": "*@stable",
+        "symfony/validator": "*@stable",
+
+        "doctrine/doctrine-bundle": "*@stable",
+        "doctrine/orm": "*@stable",
+        "stof/doctrine-extensions-bundle": "*@stable",
+
+        "jms/i18n-routing-bundle": "*@stable",
+        "jms/translation-bundle": "*@stable",
+
+        "cocur/slugify": "*@stable",
+
+        "symfony/dom-crawler": "*@stable",
+        "symfony/css-selector": "*@stable",
+
+        "symfony/assetic-bundle": "*@stable",
+        "leafo/scssphp": "*@stable",
+        "knplabs/knp-menu-bundle": "*@stable",
+
+        "symfony/web-profiler-bundle": "*@stable",
+        "symfony/debug-bundle": "*@stable",
+
+        "sabre/xml": "@stable",
+
+        "semsol/arc2": "@stable",
+        "easyrdf/easyrdf": "~0.9",
+        "ml/json-ld": "~1.0",
+
+        "ddeboer/data-import": "*@stable",
+        "phpoffice/phpexcel": "*@stable"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "AppBundle\\": "src/AppBundle/"
+        }
+    }
+}

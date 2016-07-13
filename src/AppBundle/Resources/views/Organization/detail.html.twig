@@ -1,0 +1,79 @@
+{% extends 'AppBundle:Default:base.html.twig' %}
+
+{% block head %}
+    <script src="{{ app.request.basepath }}/js/seealso.js"></script>
+    <script>
+        var service = new SeeAlsoCollection();
+        service.services = {
+            'gkdaks' : new SeeAlsoService('http://beacon.findbuch.de/seemore/gkd-aks')
+        };
+        service.views = {
+            'seealso-ul' : new SeeAlsoUL({
+                                linkTarget: '_blank',
+                                maxItems: 100 })
+        };
+        service.replaceTagsOnLoad();
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h1>
+        {{ organization.name }}
+    </h1>
+    <div class="row">
+        <div class="col-sm-8">
+            <dl>
+            {% if organization.foundingPlace is not empty or organization.foundingDate is not empty %}
+                <dt>{{ 'Founded'|trans }}:</dt>
+                <dd>
+                    {{ organization.foundingPlace }}
+                    {{ organization.foundingDate|dateincomplete }}
+                </dd>
+            {% endif %}
+            {% if organization.dissolutionPlace is not empty or organization.dissolutionDate is not empty %}
+                <dt>{{ 'Dissolved'|trans }}:</dt>
+                <dd>
+                    {{ organization.dissolutionPlace }}
+                    {{ organization.dissolutionDate|dateincomplete }}
+                </dd>
+            {% endif %}
+            </dl>
+
+            <p>{{ organization.description['de'] }}</p>
+
+            <h3>TODO: Erw&auml;hnt in</h3>
+
+        </div>
+
+        <div class="col-sm-4 sidebar">
+            {% set entityfacts = organization.__get('entityfacts') %}
+            {% if entityfacts is not empty %}
+                {% if entityfacts.organization.depiction is defined %}
+                        <a href="{{ entityfacts.organization.depiction.url }}" target="_blank">
+                            <img src="{{ entityfacts.organization.depiction.image }}" itemprop="image" style="max-width: 100%; margin-bottom: 5px;" />
+                        </a><br />
+                        Quelle:  <a href="{{ entityfacts.organization.depiction.url }}" target="_blank">Wikimedia</a><br />
+                        Informationen zum Lizenzstatus dieser Abbildung können durch Anklicken der Abbildung abgerufen werden.
+                {% endif %}
+            {% endif %}
+            {% if organization.gnd is not empty %}
+            <!--<h3>{{ 'Externe Angebote'|trans }}</h3>-->
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>Gemeinsame Normdatei
+                        <br /><a href="http://d-nb.info/gnd/{{ organization.gnd }}" target="_blank">{{ organization.gnd }}</a>
+                        </h4>
+                    </div>
+                </div>
+
+                <div class="row box-color-content-inverse">
+                    <div class="col-sm-12">
+                        <div title="{{ organization.gnd }}" class="gkdaks seealso-ul"></div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div><!-- .row -->
+{% endblock %}

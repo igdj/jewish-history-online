@@ -1,0 +1,26 @@
+<div class="container-fluid">
+{% block carousel %}{% endblock %}
+</div>
+<div class="container-fluid" id="breadcrumb">
+{% block breadcrumb %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 small">
+                {% set item = knp_menu_get('AppBundle:Builder:breadcrumbMenu') %}
+                {% set breadcrumbs_array = knp_menu_get_breadcrumbs_array(item) %}
+                <ul class="list-inline">
+                {% for item in breadcrumbs_array %}
+                    {%- if loop.last == false -%}
+                        <li>{%- if item.uri -%}<a
+                            href="{{ item.uri }}">{{ item.label|trans({}, 'messages') }}</a>{%- else -%}{{ item.label|trans({}, 'menu') }}{%- endif -%}
+                            &nbsp; &nbsp;<span class="divider">/</span></li>
+                    {% else %}
+                        <li class="active">{{ item.label|trans({}, 'messages') }}</li>
+                    {%- endif -%}
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+</div><!-- .container-fluid -->

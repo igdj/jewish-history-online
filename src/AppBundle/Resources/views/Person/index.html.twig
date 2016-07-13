@@ -1,0 +1,35 @@
+{% extends 'AppBundle:Default:base.html.twig' %}
+{% block body %}
+    <h1>{{ 'Persons' | trans }}</h1>
+    <div class="row">
+        <div class="col-sm-12">
+        {% if persons is not empty %}
+        {% set last_initial = '' %}
+        {% for person in persons %}
+            {% set initial = person.familyName|first|upper %}
+            {% if initial != last_initial %}
+                {% if last_initial != '' %}
+            </ul>
+                {% endif %}
+            <h2>{{ initial }} </h2>
+            {% set last_initial = initial %}
+            <ul class="list-unstyled">
+            {% endif %}
+            <li>
+                <a href="{% if person.gnd is not empty %}{{ path('person-by-gnd', { 'gnd' : person.gnd }) }}{% else %}{{ path('person', { 'id' : person.id }) }}{% endif %}">
+                {{ person.fullname }}
+                </a>
+
+				{% if person.birthDate is not empty or person.deathDate is not empty %}
+					({{ person.birthDate|dateincomplete }} - {{  person.deathDate|dateincomplete  }})
+				{% endif %}
+
+            </li>
+        {% endfor %}
+        </ul>
+        {% else %}
+            Es wurden keine Personen gefunden
+        {% endif %}
+        </div>
+    </div><!-- .row -->
+{% endblock %}

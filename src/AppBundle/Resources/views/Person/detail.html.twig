@@ -1,0 +1,175 @@
+{% extends 'AppBundle:Default:base.html.twig' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet-0.7.7/leaflet.css" />
+    <script src="{{ app.request.basepath }}/vendor/leaflet-0.7.7/leaflet.js"></script>
+
+    <link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet.label/leaflet.label.css" />
+    <script src="{{ app.request.basepath }}/vendor/leaflet.label/leaflet.label.js"></script>
+
+    <script src="{{ app.request.basepath }}/js/seealso.js"></script>
+    <script>
+        var service = new SeeAlsoCollection();
+        service.services = {
+            'pndaks' : new SeeAlsoService('http://beacon.findbuch.de/seealso/pnd-aks/')
+        };
+        service.views = {
+            'seealso-ul' : new SeeAlsoUL({
+                                linkTarget: '_blank',
+                                maxItems: 100 })
+        };
+        service.replaceTagsOnLoad();
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h1>
+        {{ person.fullname(true) }}
+    </h1>
+    <div class="row">
+        <div class="col-sm-8">
+            <dl>
+            {% set birthPlace = person.birthPlaceInfo('de') %}
+            {% if birthPlace is not empty or person.birthDate is not empty %}
+                <dt>{{ 'Born'|trans }}:</dt>
+                <dd>
+                    {{ person.birthDate|dateincomplete -}}
+                    {% if birthPlace is not empty %}{% if person.birthDate is not empty %}{{- ',' }}{% endif %}
+                        {% if birthPlace.id is not empty %}
+                            <a href="{% if birthPlace.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : birthPlace.tgn }) }}{% else %}{{ path('place', { 'id' : birthPlace.id }) }}{% endif %}">
+                            {{ birthPlace['name'] }}
+                            </a>
+                        {% else %}
+                            {{ birthPlace['name'] }}
+                        {% endif %}
+                    {% endif %}
+                </dd>
+            {% endif %}
+            {% set deathPlace = person.deathPlaceInfo('de') %}
+            {% if deathPlace is not empty or person.deathDate is not empty %}
+                <dt>{{ 'Died'|trans }}:</dt>
+                <dd>
+                    {{ person.deathDate|dateincomplete -}}
+                    {% if deathPlace is not empty %}{% if person.deathDate is not empty %}{{- ',' }}{% endif %}
+                        {% if deathPlace.id is not empty %}
+                            <a href="{% if deathPlace.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : deathPlace.tgn }) }}{% else %}{{ path('place', { 'id' : deathPlace.id }) }}{% endif %}">
+                            {{ deathPlace['name'] }}
+                            </a>
+                        {% else %}
+                            {{ deathPlace['name'] }}
+                        {% endif %}
+                    {% endif %}
+                </dd>
+            {% endif %}
+            </dl>
+
+            <p>{{ person.description['de'] }}</p>
+
+
+            {% if person.articles|length > 0%}
+            <h3>{{ 'interpretations.oneormany'|transchoice(person.articles|length) }}</h3>
+            <ul>
+            {% for article in person.articles %}
+                <li>
+                    <a href="{{ path('article', { 'slug' : article.slug }) }}">{{ article.name }}</a>
+                    {% if article.author|length > 0%}
+                    ({% for author in article.author %}{{ author.givenName }} {{ author.familyName }}{% endfor %})
+                    {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+
+            <h3>TODO: Erw&auml;hnt in</h3>
+
+        </div>
+
+        <div class="col-sm-4 sidebar">
+            {% set entityfacts = person.entityfacts %}
+            {% if entityfacts is not empty %}
+                {% if entityfacts.person.depiction is defined %}
+                        <a href="{{ entityfacts.person.depiction.url }}" target="_blank">
+                            <img src="{{ entityfacts.person.depiction.image }}" itemprop="image" style="max-width: 100%; margin-bottom: 5px;" />
+                        </a><br />
+                        Quelle:  <a href="{{ entityfacts.person.depiction.url }}" target="_blank">Wikimedia</a><br />
+                        Informationen zum Lizenzstatus dieser Abbildung können durch Anklicken der Abbildung abgerufen werden.
+                {% endif %}
+            {% endif %}
+
+            {% if birthPlace.geo is not empty or deathPlace.geo is not empty %}
+            <div id="map" class="col-sm-12" style="width: 100%; min-height: 360px; border-bottom: 20px solid white;"></div>
+
+            <script>
+            function adjustMapSize() {
+                /*
+                $('#map').height(function(index, height) {
+                    return window.innerHeight - $(this).offset().top;
+                });
+                */
+            }
+
+            $( window ).resize(adjustMapSize);
+            adjustMapSize();
+
+            var map = L.map('map');
+
+            {% if birthPlace.geo is not empty and deathPlace.geo is not empty and birthPlace.geo != deathPlace.geo %}
+            map.fitBounds([ [ {{ birthPlace.geo }} ],
+                            [ {{ deathPlace.geo }} ] ]);
+            L.marker([ {{ birthPlace.geo }} ]).addTo(map);
+            L.marker([ {{ deathPlace.geo }} ]).addTo(map);
+            {% else %}
+            map.setView([{% if birthPlace.geo is not empty %}{{ birthPlace.geo }}{% else %}{{ deathPlace.geo }}{% endif %}], 10);
+            L.marker([ {% if birthPlace.geo is not empty %}{{ birthPlace.geo }}{% else %}{{ deathPlace.geo }}{% endif %} ]).addTo(map)
+            {% endif %}
+
+            if (true) {
+                L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
+                    maxZoom: 16,
+                    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                        '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                        'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                    id: 'mapbox.streets'
+                }).addTo(map);
+            }
+            else {
+                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 18,
+                    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                        '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+                    id: 'mapbox.streets'
+                }).addTo(map);
+            }
+            </script>
+            {% endif %}
+
+            {% if person.gnd is not empty %}
+            <!--<h3>{{ 'Externe Angebote'|trans }}</h3>-->
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>Gemeinsame Normdatei
+                        <br /><a href="http://d-nb.info/gnd/{{ person.gnd }}" target="_blank">{{ person.gnd }}</a>
+                        </h4>
+                    </div>
+                </div>
+
+                <div class="row box-color-content-inverse">
+                    {% if person.additional.beacon is not empty %}
+                    <div class="col-sm-12 beacon-ul">
+                        <ul>
+                            {% for info in person.additional.beacon %}
+                            <li><a href="{{ info.url }}" target="_blank">{{ info.description }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    <div class="col-sm-12">
+                        <div title="{{ person.gnd }}" class="pndaks seealso-ul"></div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div><!-- .row -->
+{% endblock %}

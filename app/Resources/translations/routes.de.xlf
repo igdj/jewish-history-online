@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
+  <file date="2016-07-13T09:47:12Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+    <header>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
+    </header>
+    <body>
+      <trans-unit id="5780daf6db0b013dbf82807c9f85abba683b0820" resname="about">
+        <source>/about</source>
+        <target>/ueber</target>
+      </trans-unit>
+      <trans-unit id="6a9fe8402faeb1f85ebb59a46eff09ba385a128d" resname="about-board">
+        <source>/about/board</source>
+        <target>/ueber/beirat</target>
+      </trans-unit>
+      <trans-unit id="1d2f96887a3692c00043fc7c72c292ad11cb8c01" resname="about-editors">
+        <source>/about/editors</source>
+        <target>/ueber/herausgeberinnen</target>
+      </trans-unit>
+      <trans-unit id="4325ad54eb5c30738fd299324a9ed374ea5d84c1" resname="about-sponsors">
+        <source>/about/sponsors</source>
+        <target>/about/sponsors</target>
+      </trans-unit>
+      <trans-unit id="dbcd2f2bbc4ebdb5a5e398d36be151bb9d9c8823" resname="about-staff">
+        <source>/about/staff</source>
+        <target>/ueber/mitarbeiterinnen</target>
+      </trans-unit>
+      <trans-unit id="565cecd7e8f5c6063935b41db41797aa37d53b04" resname="article">
+        <source>/article/{slug}</source>
+        <target>/artikel/{slug}</target>
+      </trans-unit>
+      <trans-unit id="1a73af9e7ae00182733b2292511b814be66f065f" resname="contact">
+        <source>/contact</source>
+        <target>/kontakt</target>
+      </trans-unit>
+      <trans-unit id="d10c4394700e387e0f4ff014700444ed47ebe7a3" resname="date-chronology">
+        <source>/chronology</source>
+        <target>/zeitstrahl</target>
+      </trans-unit>
+      <trans-unit id="407257a6d1b1f9dfb984e333e221a56c184f2e5a" resname="glossary">
+        <source>/glossary/{slug}</source>
+        <target>/glossar/{slug}</target>
+      </trans-unit>
+      <trans-unit id="31febeb1bd09a280b286995d78260c42559c6d5a" resname="glossary-index">
+        <source>/glossary</source>
+        <target>/glossar</target>
+      </trans-unit>
+      <trans-unit id="e83249bd3ba79932e16fb1fb5100dafade9954c2" resname="home">
+        <source>/</source>
+        <target>/</target>
+      </trans-unit>
+      <trans-unit id="25d793dbb8b816a2f81fdd7ee262951bf6cf0b17" resname="imginfo">
+        <source>/source/imginfo/{path}</source>
+        <target>/source/imginfo/{path}</target>
+      </trans-unit>
+      <trans-unit id="7cb06027e87e7d848d8576d8fef5f76256f41cee" resname="organization">
+        <source>/organization/{id}</source>
+        <target>/organisation/{id}</target>
+      </trans-unit>
+      <trans-unit id="3940f4b492a68edf7249d4a0235450fa4b91a63b" resname="organization-by-gnd">
+        <source>/organization/gnd/{gnd}</source>
+        <target>/organisation/gnd/{gnd}</target>
+      </trans-unit>
+      <trans-unit id="962e9b7257293397ca2d65e822d153e49758bf09" resname="organization-index">
+        <source>/organization</source>
+        <target>/organisation</target>
+      </trans-unit>
+      <trans-unit id="d39a47507bbe27c2a7948861847f3607eda8e1be" resname="person">
+        <source>/person/{id}</source>
+        <target>/person/{id}</target>
+      </trans-unit>
+      <trans-unit id="84d06288bde5af1c4dba24a1e5150f6b0ec557d9" resname="person-by-gnd">
+        <source>/person/gnd/{gnd}</source>
+        <target>/person/gnd/{gnd}</target>
+      </trans-unit>
+      <trans-unit id="3cc9ceefcb5a007d97352c78bde75d274ff13a90" resname="person-index">
+        <source>/person</source>
+        <target>/person</target>
+      </trans-unit>
+      <trans-unit id="9da8f1fa7d3a9fd015ae3c831a765e25ae03e4d7" resname="place">
+        <source>/place/{id}</source>
+        <target>/ort/{id}</target>
+      </trans-unit>
+      <trans-unit id="8a2cfb1cd549187a3c92452f1dce23d3350f19ac" resname="place-by-tgn">
+        <source>/place/tgn/{tgn}</source>
+        <target>/ort/tgn/{tgn}</target>
+      </trans-unit>
+      <trans-unit id="2c068a9a93fa4aca584b7f7457966fd6184dfb1e" resname="place-index">
+        <source>/place</source>
+        <target>/ort</target>
+      </trans-unit>
+      <trans-unit id="e1d22397063d584d3caac2c99abb7812695b9167" resname="place-map">
+        <source>/map</source>
+        <target>/karte</target>
+      </trans-unit>
+      <trans-unit id="828d338a9b04221c9cbe286f50cd389f68de4ecf" resname="source">
+        <source>/source/{uid}</source>
+        <target>/quelle/{uid}</target>
+      </trans-unit>
+      <trans-unit id="c4c8265499d6596f625b30e8229623b3febb7370" resname="source-viewer">
+        <source>/source/{uid}/viewer</source>
+        <target>/quelle/{uid}/viewer</target>
+      </trans-unit>
+      <trans-unit id="e05e7bf953c24ee7391d7bc744869c9f769e23d4" resname="tei2html">
+        <source>/source/tei2html/{path}</source>
+        <target>/quelle/tei2html/{path}</target>
+      </trans-unit>
+      <trans-unit id="ce620d6749880d79c700eb0ae2a56646f3a59bc5" resname="terms">
+        <source>/terms</source>
+        <target>/nutzungsbedingungen</target>
+      </trans-unit>
+      <trans-unit id="11382b2dc45c0a18f2c1b76687a989ba9c1d1002" resname="topic-background">
+        <source>/topic/{slug}</source>
+        <target>/thema/{slug}</target>
+      </trans-unit>
+      <trans-unit id="bf59c6f5385a2d06f22101ce213218d6364ee82b" resname="topic-index">
+        <source>/topic</source>
+        <target>/thema</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

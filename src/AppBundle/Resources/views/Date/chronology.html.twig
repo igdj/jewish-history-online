@@ -1,0 +1,28 @@
+{% extends 'AppBundle:Default:base.html.twig' %}
+{% block body %}
+    <h1>{{ 'Chronology'|trans }}</h1>
+    <div class="row">
+        <div class="col-sm-12">
+        {% if articles is not empty %}
+        {% set last_epoch = '' %}
+        {% for source in articles %}
+            {% set epoch = article.dateCreated.year %}
+            {% if epoch != last_epoch %}
+                {% if last_epoch != '' %}
+            </ul>
+                {% endif %}
+            <h2>{{ epoch }} </h2>
+            {% set last_epoch = epoch %}
+            <ul class="list-unstyled">
+            {% endif %}
+            <li>
+                <a href="{{ path('source', { 'uid' : source.uid }) }}">{{ source.name }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+        {% else %}
+            Es wurden keine Quellen gefunden
+        {% endif %}
+        </div>
+    </div><!-- .row -->
+{% endblock %}

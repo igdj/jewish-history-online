@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
+type="application/xml"
+schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="main">Religion und Identität</title>
+                <author>
+                    <persName corresp="braemer-andreas">Andreas Brämer</persName>
+                    <!--
+                    <persName>Noch Jemand</persName>
+                    -->
+                </author>
+            </titleStmt>
+            <publicationStmt>
+                <publisher>
+                    <orgName>Institut für die Geschichte der deutschen Juden</orgName>
+                    <email>redaktion@juedische-geschichte-online.net</email>
+                    <address><addrLine>Beim Schlump 83, 20144 Hamburg</addrLine></address>
+                </publisher>
+                <pubPlace>Hamburg</pubPlace>
+                <date type="publication">2016-09-01</date>
+                <availability>
+                    <licence target="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+                        <p>Dieser Text unterliegt den Bedingungen der Creative Commons Namensnennung - Nicht kommerziell - Keine Bearbeitungen 4.0 International Lizenz. Unter Namensnenung gemäß dem Zitationshinweis darf er in unveränderter Form für nicht-kommerzielle Zwecke nachgenutzt werden.</p>
+                    </licence>
+                </availability>
+                <idno>
+                    <!--<idno type="URLWeb">[TODO: Permalink]</idno>-->
+                    <idno type="DTAID">religioeses-leben-und-identitaetsfragen</idno>
+                </idno>
+            </publicationStmt>
+            <sourceDesc>
+                <p></p>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <langUsage><language ident="deu">Deutsch</language></langUsage>
+            <textClass>
+                <classCode scheme="http://juedische-geschichte-online.net/doku/#genre">Hintergrundtext</classCode>
+                <classCode scheme="http://juedische-geschichte-online.net/doku/#topic">Religiöses Leben und Identitätsfragen</classCode>
+            </textClass>
+        </profileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <div n="2">
+                <head>Zusammenfassung</head>
+                <p>In der neuzeitlichen Religionsgeschichte der deutschen Juden nimmt
+                    die Metropolregion Hamburg in mehrfacher Hinsicht einen besonderen
+                    Platz ein: zum einen, weil sich die aschkenasischen Juden Hamburgs,
+                    Altonas und Wandsbeks bis 1812 in der sogenannten Dreigemeinde AHW
+                    organisierten, zum anderen jedoch auch, weil sich seit der Wende vom
+                    16. zum 17. Jahrhundert sowohl Aschkenasen als auch Sefarden in
+                    Hamburg und Altona niederließen, beide Gruppen aber dauerhaft ihren
+                    Glauben in getrennten Institutionen ausübten. Von Bedeutung ist die
+                    Hansestadt außerdem als der erste Ort im deutschsprachigen Raum, an
+                    dem sich im Zeitalter der Verbürgerlichung und Emanzipation das
+                    religiöse Reformjudentum dauerhaft etablieren konnte. Gegen den
+                    Widerstand einer traditionellen Gemeindemehrheit strebte der 1817
+                    gegründete Neue Israelitische Tempelverein vor allem eine
+                    Modernisierung des Gottesdienstes an. Mehrere Auflagen seines
+                    Gebetbuches dienten auch anderen jüdischen Kultusgemeinden in
+                    Deutschland, Europa und Amerika als Vorbild für eine Erneuerung der
+                    liturgischen Praxis.</p>
+                <p>Das religiöse Spektrum der Hamburger Juden bereicherte seit 1894
+                    auch die gemäßigt konservativ ausgerichtete Neue Dammtor-Synagoge. Das
+                    19. Jahrhundert war aber gleichzeitig eine Epoche, in dem die Religion
+                    und gelebte Frömmigkeit insgesamt an Bedeutung einbüßten. Nur eine
+                    kleine Zahl der Hamburger Juden trat allerdings aus der Gemeinde aus
+                    oder konvertierte zum Christentum. Viele Gemeindemitglieder, die noch
+                    an ihrem Judentum festhielten, wollten diesem Judentum im Alltag
+                    jedoch nicht mehr viel Platz einräumen. Die nationalsozialistische
+                    Herrschaft sorgte zwar teilweise für eine Rückbesinnung der Juden auf
+                    ihre religiöse Kultur, mit der Vertreibung und Ermordung der jüdischen
+                    Menschen einher ging aber die komplette Zerstörung ihrer
+                    Kultuseinrichtungen. Nach der Schoa konnten die neugegründeten
+                    Kultusgemeinden zunächst nicht an die Vielfalt der Glaubenstraditionen
+                    vor 1933 anknüpfen. Erst in der jüngeren Vergangenheit entstehen
+                    einzelne neue jüdische Einrichtungen unterschiedlicher Couleur, die
+                    der Pluralität religiöser und nichtreligiöser Identitäten wieder eine
+                    Stimme verleihen.</p>
+            </div>
+            <div n="2">
+                <head>Religion in der traditionellen jüdischen Gesellschaft</head>
+                <p>An einer Definition des Begriffs „Judentum“ haben sich bereits
+                    zahlreiche Autoren unterschiedlicher wissenschaftlicher Disziplinen
+                    versucht. Das simple Kriterium, dass es sich bei Jüdinnen und Juden um
+                    Personen handelt, die sich zur jüdischen Religion bekennen und diese
+                    praktizieren, trifft nicht in jedem Fall zu. Vor allem seit der
+                    Neuzeit wandten sich viele jüdische Menschen vom Glauben ab, ohne
+                    deshalb jedoch ihre jüdische Identität zu verleugnen, die sie eher aus
+                    einer ethnischen, nationalen, historischen oder kulturellen
+                    Zugehörigkeit herleiteten. Noch in der traditionellen jüdischen
+                    Gesellschaft diente die Religion aber als wichtige gemeinsame Klammer,
+                    die für die Sinnstiftung und den sozialen Zusammenhalt der Gruppe
+                    unerlässlich war.</p>
+                <p>Allerdings haben sich entgegen weit verbreiteten Vorstellungen
+                    bereits in der Vormoderne in Fragen der religiösen Weltdeutung
+                    unterschiedliche Standpunkte Gehör verschafft. Auch die Juden in der
+                    Region Hamburg-Altona bildeten in Glaubensfragen zu keinem Zeitpunkt
+                    eine monolithische Einheit. Die ursprünglich von der Iberischen
+                    Halbinsel stammenden Conversos, auch als Marranen bezeichnet, die sich
+                    um 1600 erstmals in Hamburg und Altona niederließen, lebten zunächst
+                    als Katholiken, rejudaisierten dann aber mit Unterstützung von
+                    Rabbinern, Kantoren und Lehrern aus Nordafrika und Italien. Sie
+                    organisierten sich in eigenen Gemeinden, in denen sie den liturgischen
+                    Überlieferungen des sefardischen Judentums folgten. Die
+                    aschkenasischen Juden wiederum gründeten ebenfalls eigene
+                    Zusammenschlüsse, wo sie beim gemeinsamen Gebet den mitteleuropäischen
+                    Ritus pflegten. 1671 schlossen sich die Aschkenasen Altonas, Hamburgs
+                    und Wandsbeks zur sogenannten Dreigemeinde AHW zusammen. Bis zu ihrer
+                    politisch erzwungenen Auflösung 1812 stand sie unter der Aufsicht
+                    eines gemeinsamen Rabbiners, der in Altona residierte und als oberste
+                    religiöse Instanz auch in Fragen des Familien- und Zivilrechts
+                    richtete.</p>
+                <p>Sowohl die Sefarden als auch die aschkenasischen Juden pflegten
+                    Varianten eines normativen Judentums, das durch die
+                    Auseinandersetzungen über den selbsternannten Messias Sabbatai Zwi
+                    (gest. 1676) nachhaltig erschüttert wurde. Die prinzipielle
+                    Verbindlichkeit jüdischer Religion als alltagsprägendes System von
+                    Normen und Werten stand fürs erste noch nicht zur Erörterung, doch
+                    begann das Niveau religiöser Bildung im 18. Jahrhundert allmählich
+                    nachzulassen. Zugleich nahm die persönliche religiöse Gesetzestreue
+                    hier und dort bereits weniger rigorose Formen an. Der sogenannte
+                    Hamburger Amulettenstreit um 1750, in dem Jakob Emden, ein Gelehrter
+                    und Buchdrucker aus Altona, den Oberrabbiner der Dreigemeinde Jonathan
+                    Eibeschütz als Ketzer und heimlichen Anhänger Sabbatai Zwis anklagte,
+                    schlug zudem in ganz Europa hohe Wellen. Die Kontroverse gilt in der
+                    jüdischen Geschichtsschreibung als wichtige Zäsur, weil die daraus
+                    resultierende Schwächung der rabbinischen Autorität das Eindringen
+                    neuer Ideen in die jüdische Gesellschaft erleichterte.</p>
+            </div>
+            <div n="2">
+                <head>Religiöse Pluralisierung im langen 19. Jahrhundert</head>
+                <p>Seit die allgemeine deutsche Aufklärung in der zweiten Hälfte des
+                    18. Jahrhunderts auch eine kleine intellektuelle Elite der Juden für
+                    ihre Ideen gewann, entstand eine säkulare jüdische Sphäre, deren
+                    Grenzen sich ständig erweiterten. Die jüdische Aufklärung Haskala
+                    bezeichnete ein Erziehungsprojekt, in dem auch Traditionskritik
+                    grundsätzlicher Art zur Sprache kam. Eine Modernisierung des Kultus
+                    nahm jedoch erst im 19. Jahrhundert ihren Verlauf, als die deutschen
+                    Juden begannen, nach bürgerlichen Ausdrucksformen ihrer Religiosität
+                    zu suchen. Hamburg schritt bei dieser Suche voran: Hier gelang es, die
+                    Reform institutionell erstmals dauerhaft zu verankern. 1817
+                    unterzeichneten jüdische Angehörige der gehobenen Mittelschicht die
+                    Gründungsurkunde des Neuen Israelitischen Tempelvereins , der sich als
+                    private Assoziation neben der Gemeinde konstituierte. Der
+                    Gottesdienst, den der Tempel wenige Monate nach der Gründung
+                    einrichtete, nahm wichtige Neuerungen auf, die sowohl zeitgenössischen
+                    ästhetischen Standards Rechnung trugen als auch ein Bekenntnis zur
+                    deutschen Kultur und Nation abgaben, ohne freilich jüdische Eigenheit
+                    zu verleugnen: Traditionelle hebräische Gebete waren gekürzt und im
+                    Wortlaut verändert worden, andere fehlten ganz, waren durch deutsche
+                    Hymnen ersetzt worden oder tauchten nur in deutscher Übersetzung bzw.
+                    Paraphrase auf. Zukunftshoffnungen, die sich an das Heilige Land
+                    knüpften und inzwischen fragwürdig erschienen – die Erwartung des
+                    Messias, die Erlösung der Juden durch ihre Rückkehr nach Eretz Israel,
+                    die Wiederauferstehung der Toten sowie die Wiedererrichtung des
+                    Opferdienstes – waren abgeschwächt oder entfernt worden. Große
+                    Aufmerksamkeit widmete der Tempel seinen neuen musikalischen
+                    Traditionen: Während der traditionelle jüdische Gottesdienst weder das
+                    Absingen von Liedern noch die Installierung von Chören kannte,
+                    betrachtete der Tempel deutschen Gesang als wesentliche Grundbedingung
+                    eines verbesserten Kultus. Auch sefardische Melodien und die
+                    sefardische Aussprache, die in den aschkenasischen Synagogen bislang
+                    unbekannt waren, galten als wichtige Verbesserungen. Weitere
+                    Einrichtungen geschahen ebenfalls mit Bedacht. Ein Knabenchor
+                    begleitete das Spiel der Orgel – ein Instrument, das in orthodoxen
+                    Synagogen unbekannt war und blieb. Die Leitung des Gottesdienstes
+                    übertrug der Tempel zwei Predigern, die am Sabbat deutsche Kanzelreden
+                    vortrugen. Am Tempel entwickelte sich die moderne erbauliche Predigt
+                    erstmals zu einer dauerhaften jüdischen Institution. Durch diese
+                    Veränderungen wie auch durch seinen Namen ging der Tempel auf Distanz
+                    zu den anderen Synagogen in und außerhalb Hamburgs.</p>
+                <p>Die Entwicklungen in Hamburg veranschaulichen zugleich, dass auch
+                    die jüdische Orthodoxie durchaus nicht starr und unflexibel auf die
+                    Herausforderungen der modernen bürgerlichen Gesellschaft reagierte,
+                    sondern sich als bürgerliche Konfession ebenfalls neu erfand. Isaak
+                    Bernays, der 1821 in das Amt des Oberrabbiners (Chacham) der jüdischen
+                    Gemeinde Hamburg gewählt wurde, war kein traditioneller Gelehrter
+                    mehr, sondern er verfügte neben gründlichen Kenntnissen seiner
+                    Religion auch über eine vielseitige allgemeine Bildung, die er unter
+                    anderem in deutschen Kanzelreden unter Beweis stellte. Zugleich blieb
+                    Bernays zeitlebens aber ein erbitterter Gegner des Tempels.</p>
+                <p>Vor allem seit den 1830er Jahren begann sich die religiöse Reform
+                    auch in anderen deutschen Synagogengemeinden einen Weg zu bahnen. Um
+                    1850 setzte sich das religiöse Spektrum aus unterschiedlichen
+                    orthodoxen und reformerischen Orientierungen zusammen: Neben einer
+                    „Alt-Orthodoxie“, die wegen ihrer Emanzipations- und
+                    Assimilationsskepsis schnell an Bedeutung verlor, formierte sich
+                    „Neo-Orthodoxie“, die ihre Treue zum Religionsgesetz mit einem
+                    Bekenntnis zur europäischen Kultur verband. Andererseits existierten
+                    mehr oder weniger radikale Spielarten des Reformjudentums. Zwischen
+                    Reform und Orthodoxie positionierte sich zudem eine gemäßigt
+                    konservative Strömung, bei der sich der Glaube an einen
+                    Offenbarungskern des Judentums mit einem Bekenntnis zur historischen
+                    Entwicklung der Tradition verband.</p>
+                <p>Trotz dieser Vielfalt moderner religiöser Weltdeutungen kann davon
+                    ausgegangen werden, dass bis zur Mitte des 19. Jahrhunderts eine
+                    Mehrheit der jüdischen Bevölkerung zwar nicht unberührt vom Wandel
+                    blieb, gleichwohl aber noch verhältnismäßig streng an den
+                    Glaubenstraditionen und -praktiken früherer Jahrhunderte festhielt.
+                    Der Rhythmus jüdischen Lebens unterschied sich weiterhin wesentlich
+                    von der nicht-jüdischen Umwelt, indem etwa die jüdischen Speisegesetze
+                    und der jüdische Kalender, die Feier- und Ruhetage, als religiöse,
+                    kulturelle und soziale Barrieren wirkten. Das Arbeitsverbot am Sabbat
+                    wurde weiterhin genau eingehalten, und vor allem abseits der Städte
+                    war der Konformitätsdruck innerhalb der Synagogengemeinde so hoch,
+                    dass sich eine vitale Milieufrömmigkeit erhielt.</p>
+                <p>Während des Kaiserreichs präsentierte sich die Reform, jetzt unter
+                    der Bezeichnung ‚Liberales Judentum‘, als weithin anerkanntes Phänomen
+                    jüdischer Lebenswirklichkeit. Vielerorts geriet die Orthodoxie
+                    zunehmend ins Hintertreffen, weil sie vor Ort die Kontrolle über die
+                    religiösen Einrichtungen verlor. In Preußen, wo die meisten deutschen
+                    Juden lebten, bereitete erst das „Austrittsgesetz“ dem sogenannten
+                    Parochialzwang ein Ende. Seit 1876 war es hier „jedem Juden gestattet,
+                    ohne Austritt aus der jüdischen Religionsgemeinschaft wegen religiöser
+                    Bedenken aus derjenigen jüdischen Synagogengemeinde auszutreten,
+                    welcher er auf Grund eines Gesetzes, eines Gewohnheitsrechts oder
+                    einer Verwaltungsvorschrift angehört[e]“. In Frankfurt a.M., Berlin
+                    und anderen Städten gründeten sich orthodoxe Trennungsgemeinden
+                    jeweils separat von der Großgemeinde. Altona und Hamburg blieben von
+                    solchen Spaltungen verschont. In der Hochdeutschen Israelitengemeinde
+                    im preußischen Altona gelang es der Reform zu keinem Zeitpunkt Fuß zu
+                    fassen. Der Zuzug osteuropäischer Juden seit den 1880er Jahren stärkte
+                    vermutlich zusätzlich das konservative Profil der Gemeinde. In der
+                    Freien und Hansestadt Hamburg hingegen, nach Aufhebung der
+                    Zwangsmitgliedschaft in den jüdischen Gemeinden, etablierte sich mit
+                    dem von der Deutsch-Israelitischen Gemeinde (DIG) 1867 verabschiedeten
+                    Statut das sogenannte Hamburger System. Unter dem Dach der DIG war den
+                    beiden Kultusverbänden fortan die Verantwortung für die religiösen
+                    Dienstleistungen übertragen. Neben dem orthodoxen Synagogenverband,
+                    der die Interessen der gesetzestreuen Hamburger Juden vertrat, genoss
+                    der liberale Tempelverband weitgehend gleiche Rechte. Die 1894
+                    gegründete Neue Dammtorsynagoge, die sich mit einem gemäßigt
+                    konservativen Ritus zwischen Orthodoxie und Tempel positionierte,
+                    wurde 1923 als dritter Kultusverband anerkannt.</p>
+            </div>
+            <div n="2">
+                <head>Innere Krise und äußere Zerstörung – Religiöses Leben 1918 bis
+                    1945 </head>
+                <p>Dass die Religion insgesamt an Bedeutung verlor und ihren Sitz im
+                    Alltagsleben zunehmend einbüßte, suchten die jüdischen Gemeinden, die
+                    sich ursprünglich als Zusammenschluss von Angehörigen einer
+                    Glaubensgemeinschaft verstanden, durch vermehrte kulturelle Angebote
+                    zu kompensieren. Umstritten bleibt, ob von einer wirklichen
+                    Renaissance der jüdischen Kultur während der Weimarer Republik
+                    gesprochen werden kann. In der Zeit des Nationalsozialismus boten die
+                    Kultusverbände auch religiöse Rückzugsräume für ihre Mitglieder, die
+                    als Nichtarier unter einer sich immer mehr verschärfenden
+                    Diskriminierung und Ausgrenzung litten. Aber auch das religiöse Leben
+                    geriet in das Visier von Partei und Behörden. Schon im April 1933
+                    hatte ein neues „Gesetz über das Schlachten von Tieren“ die Tötung von
+                    Großvieh ohne vorherige Betäubung unter Strafe gestellt. Da das
+                    jüdische Religionsgesetz keine Betäubung von Schlachtvieh kennt,
+                    sondern vorsieht, dass lediglich das Fleisch von geschächteten, also
+                    durch einen schnellen Halsschnitt getöteten Tieren als koscher
+                    verzehrt werden darf, befanden sich die orthodoxen Gläubigen in einem
+                    Dilemma, das auch durch teure Fleischeinfuhren aus dem Ausland nicht
+                    zufriedenstellend gelöst werden konnte. Auch bei der Aufhebung des
+                    jüdischen Grindelfriedhofs 1937, in dessen Verlauf die Gebeine
+                    ausgehoben und auf den jüdischen Teil des Ohlsdorfer Friedhofs
+                    umgebettet werden mussten, handelte es sich um eine
+                    Verfolgungsmaßnahme, die nicht zuletzt einen Angriff auf die jüdische
+                    Religion darstellte.</p>
+                <p>In der Folge des „Gesetzes über Groß-Hamburg“ von 1937, das die
+                    Eingemeindung umliegender preußischer Städte und Landgemeinden vorsah,
+                    wurden die bis dato unabhängigen Synagogengemeinden von Wandsbek und
+                    Harburg-Wilhelmsburg komplett aufgelöst, während die Hochdeutsche
+                    Israelitengemeinde Altona als vierter Kultusverband unter dem Dach der
+                    Deutsch-Israelitischen Gemeinde Hamburg eine gewisse Eigenständigkeit
+                    bewahrte. Nach dem Novemberpogrom standen die meisten Synagogen in
+                    Hamburg und Altona den Gläubigen nicht länger für das gemeinsame Gebet
+                    zur Verfügung, sei es, dass sie demoliert, in Brand gesetzt oder
+                    geschlossen worden waren. Bis zu seiner Deportation im Dezember 1941
+                    leitete Oberrabbiner Joseph Carlebach das Gebet in der Neuen Dammtor
+                    Synagoge in der Beneckestraße; im ehemaligen Logenheim in der
+                    Hartungstraße organisierte der liberale jüdische Geistliche Joseph
+                    Norden ebenfalls Gottesdienste, bis auch er im Juli 1942 deportiert
+                    wurde. Spätestens 1943 fanden keine Gottesdienste mehr im Hamburger
+                    Raum statt. Jüdische Religion konnte allenfalls noch im privaten
+                    Rahmen ausgeübt werden,</p>
+            </div>
+            <div n="2">
+                <head>Die Nachkriegszeit</head>
+                <p>1945, nach dem Ende des Zweiten Weltkriegs, wurde die jüdische
+                    Gemeinde von einer kleinen Zahl Hamburger Juden neugegründet. Die
+                    meisten von ihnen hatten die Jahre der NS-Herrschaft deshalb überlebt,
+                    weil ihnen die Ehe mit einem nichtjüdischen Partner einen gewissen
+                    Schutz bot. Die jüdische Gemeinde Hamburg konstituierte sich als
+                    Einheitsgemeinde, die auf Kultusverbände verzichtete und sich
+                    stattdessen für eine gemäßigt orthodoxe Gestaltung des Gottesdienstes
+                    und der religiösen Institutionen entschied. Höhepunkt des Neuaufbaus
+                    war die Eröffnung der neuen Synagoge 1960 in der Hohen Weide. Eine
+                    echte Wiederbelebung liberaler und konservativer Traditionen konnte
+                    aber lange Jahrzehnte nicht stattfinden. Erst in der jüngeren
+                    Vergangenheit, nicht zuletzt unter dem Eindruck der Zuwanderung aus
+                    den Staaten der ehemaligen Sowjetunion, entwickeln sich wieder Ansätze
+                    für eine pluralistische Anschauung von gelebter Frömmigkeit. Die
+                    Entstehung eines egalitären Gebetskreises, die 2005 gegründete
+                    Liberale Jüdische Gemeinde, die Masorti Gemeinde Kehilat Beit Shira,
+                    die seit 2009 besteht, aber auch das Zentrum der ultraorthodoxen
+                    internationalen Gruppierung Chabad Lubawitsch zeugen von dem Wunsch,
+                    unterschiedliche religiöse Positionen wieder dauerhaft in Hamburg zu
+                    etablieren.</p>
+            </div>
+            <div n="2">
+                <head>Auswahlbibliographie</head>
+                <p>Andreas Brämer, Judentum und religiöse Reform. Der Hamburger
+                    Israelitische Tempel 1817-1938, Hamburg 2000.</p>
+                <p>Andreas Brämer, Joseph Carlebach, Hamburg 2007.</p>
+                <p>Mordechai Breuer, Jüdische Orthodoxie im Deutschen Reich. Die
+                    Sozialgeschichte einer religiösen Minderheit, Frankfurt a.M. 1986.</p>
+                <p>Michael A. Meyer, Antwort auf die Moderne, Geschichte der
+                    Reformbewegung im Judentum, Wien/ Köln/ Weimar 2000.</p>
+            </div>
+        </body>
+    </text>
+</TEI>

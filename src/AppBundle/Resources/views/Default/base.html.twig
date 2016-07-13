@@ -1,0 +1,112 @@
+<!doctype html>
+<html class="no-js" lang="{{ app.request.getLocale() }}"
+      prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+        {% if pageTitle is defined %}
+            {{ pageTitle }} |
+        {% endif %}
+        {{ 'Hamburg Key-Documents of German-Jewish History'|trans }}
+        </title>
+
+        <!--<link rel="stylesheet" href="{{ app.request.basepath }}/css/normalize.css" />
+
+        <script src="{{ app.request.basepath }}/js/modernizr.js"></script>
+        -->
+        <script src="{{ app.request.basepath }}/js/jquery-2.2.3.min.js"></script>
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+        <!-- Optional theme -->
+        <!--
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+        -->
+
+        {% stylesheets filter="scssphp" output="css/app.css"
+            "assets/scss/base.scss"
+        %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+        <style>
+        @media print {
+            /* http://drupal.stackexchange.com/a/59908*/
+            a[href]:after {
+                content: none;
+            }
+        }
+        </style>
+        {% block head %}{% endblock %}
+    </head>
+
+    <body role="document" class="route-{{ app.request.get('_route') | replace({'_' : '-'}) }}">
+        <header>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12" style="position: relative">
+                        <div style="position: absolute; right: 0; z-index: 100">
+                            {{ knp_menu_render('AppBundle:Builder:topMenu') }}
+                            {% if app.request.attributes.get("_route") is not null %}
+                            <ul id="menu-lang" class="list-inline">
+                            {% for locale in [ 'de', 'en' ] %}
+                                <li{% if locale == app.request.locale %} class="current"{% endif %}>
+                                    <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all|merge({"_locale": locale}))) }}">{{ locale }}</a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                            {% endif %}
+                            <a class="hidden-xs" href="http://www.igdj-hh.de/" target="_blank">
+                                <img src="{{ app.request.basepath }}/img/igdj.png" style="margin-left: 60px; width: 80px; height: auto" alt="Institut f&uuml;r die Geschichte der deutschen Juden" />
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+
+                        <h1>
+                            <a href="{{ path('home') }}">{{ 'Hamburg Key-Documents of German-Jewish History'|trans }}</a><br />
+                            <a href="{{ path('home') }}" style="font-size: 14px; font-weight: normal">{{ 'A Digital Source Edition'|trans }}</a></smaller>
+                        </h1>
+
+                        {{ knp_menu_render('AppBundle:Builder:mainMenu') }}
+                    </div>
+
+                </div>
+            </div>
+        </header>
+
+        {% block contenttop %}
+        {% embed 'AppBundle:Default:contenttop_skeleton.html.twig' %}{% endembed %}
+        {% endblock %}
+
+        <div class="container">
+        {% block body %}{% endblock %}
+        </div>
+
+        <footer>
+            <div id="footer-navigation" class="container">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-4">
+                        {% set menu = knp_menu_get('AppBundle:Builder:mainMenu', [], {'position': 'footer'}) %}
+                        {{ knp_menu_render(menu) }}
+                    </div>
+                    <div class="col-xs-6 col-sm-4">
+                        {% set menu = knp_menu_get('AppBundle:Builder:topMenu', [], {'position': 'footer'}) %}
+                        {{ knp_menu_render(menu) }}
+                    </div>
+                    <div id="footer-dfg" class="col-sm-4">
+                        <a href="http://gepris.dfg.de/gepris/projekt/268470421" target="_blank">
+                            <img src="{{ app.request.basepath }}/img/dfg.png" style="width: 165px; height: auto" alt="Institut f&uuml;r die Geschichte der deutschen Juden" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

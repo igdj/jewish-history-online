@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
+type="application/xml"
+schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="main">Herausgeberinnen und Herausgeber</title>
+            </titleStmt>
+            <publicationStmt>
+                <publisher>
+                    <orgName>Institut für die Geschichte der deutschen Juden</orgName>
+                    <email>redaktion@juedische-geschichte-online.net</email>
+                    <address><addrLine>Beim Schlump 83, 20144 Hamburg</addrLine></address>
+                </publisher>
+                <pubPlace>Hamburg</pubPlace>
+                <date type="publication">2016-09-01</date>
+                <availability>
+                    <licence target="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+                        <p>Dieser Text unterliegt den Bedingungen der Creative Commons Namensnennung - Nicht kommerziell - Keine Bearbeitungen 4.0 International Lizenz. Unter Namensnenung gemäß dem Zitationshinweis darf er in unveränderter Form für nicht-kommerzielle Zwecke nachgenutzt werden.</p>
+                    </licence>
+                </availability>
+            </publicationStmt>
+            <sourceDesc>
+                <p></p>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <langUsage><language ident="deu">Deutsch</language></langUsage>
+        </profileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <p>Prof. Dr. Werner Bergmann, Zentrum für Antisemitismusforschung, Berlin (Judenfeindschaft und Verfolgung)</p>
+            <p>PD Dr. Andreas Brämer, Institut für die Geschichte der deutschen Juden, Hamburg (Religiöses Leben und Identitätsfragen)</p>
+            <p>Prof. Dr. Tobias Brinkmann, PennState University, USA (Migration)</p>
+            <p>Dr. Stefanie Fischer, Zentrum für Jüdische Studien Berlin-Brandenburg (Alltag und Familie)</p>
+            <p>PD Dr. Kirsten Heinsohn, Forschungsstelle für Zeitgeschichte, Hamburg (Freizeit und Sport)</p>
+            <p>Dr. Uffa Jensen, Max-Planck-Institut für Bildungsforschung, Berlin (Rechtslage, Politik und Wirtschaft)</p>
+            <p>Dr. Anthony Kauders, Keele University, UK (Kunst und Kultur)</p>
+            <p>Prof. Dr. Rainer Liedtke, Universität Regensburg (Organisationen und Institutionen)</p>
+            <p>Prof. Dr. Ingrid Lohmann, Universität Hamburg (Erziehung und Bildung)</p>
+            <p>Dr. Beate Meyer, Institut für die Geschichte der deutschen Juden (Gedenken und Erinnerung)</p>
+            <p>Dr. Miriam Rürup, Institut für die Geschichte der deutschen Juden (Demographie und soziale Strukturen)</p>
+            <p>Prof. Dr. Stefanie Schüler-Springorum, Zentrum für Antisemitismusforschung, Berlin (Soziale Fragen und Wohlfahrt)</p>
+            <p>Dr. Lilian Türk, Universität Hamburg (Wissenschaft)</p>
+        </body>
+    </text>
+</TEI>

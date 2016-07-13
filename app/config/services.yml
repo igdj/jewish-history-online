@@ -1,0 +1,15 @@
+# app/config/services.yml
+services:
+    app.twig_extension:
+        class: AppBundle\Twig\AppExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+    app.xslt_adapter:
+        class:        "%app.xslt.adapter.class%"
+        arguments:    [ "%app.xslt.adapter.arguments%" ]
+        
+    app.xslt:
+        class:        AppBundle\Utils\Xsl\XsltProcessor
+        calls:        
+            - [setAdapter, ['@app.xslt_adapter']] 

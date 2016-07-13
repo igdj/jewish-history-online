@@ -1,0 +1,13 @@
+{% extends 'AppBundle:Default:base.html.twig' %}
+{% block body %}
+    <div class="row">
+    {% for slug,topic in topics %}
+        <div class="col-sm-4 col-xs-6 topic">
+            <a href="{{ path('topic-background', { 'slug' : slugify.slugify(topic) }) }}">
+                <h4>{{ topic }}</h4>
+                <img src="{{ asset('img/topic/' ~ slug ~ '.jpg') }}" style="width: 100%; height: auto" />
+            </a>
+        </div>
+    {% endfor %}
+    </div><!-- .row -->
+{% endblock %}
