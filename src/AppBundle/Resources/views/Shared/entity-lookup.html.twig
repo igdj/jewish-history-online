@@ -1,0 +1,127 @@
+{% macro head(entity_lookup, glossary_lookup) %}
+    {#
+    <link rel="stylesheet" type="text/css" href="{{ app.request.basepath }}/vendor/tooltipster-master/css/tooltipster.css" />
+    <script type="text/javascript" src="{{ app.request.basepath }}/vendor/tooltipster-master/js/jquery.tooltipster.min.js"></script>
+    #}
+    <script>
+    var entityLookup = {{ entity_lookup|json_encode|raw }};
+
+    var glossaryLookup = {{ glossary_lookup|json_encode|raw }};
+
+    function buildGlossaryInfo($el) {
+        var url = {{ path('glossary-index')|json_encode|raw }};
+        var term = $el.data('title');
+        if (term in glossaryLookup) {
+            var url_detail = url + '#' + glossaryLookup[term].slug;
+            return { "url" :  url_detail,
+                     "title" : glossaryLookup[term].headline };
+        }
+        return null;
+    }
+
+    function initGlossary(selector) {
+        var selector_full = '.glossary';
+        if ('' !== selector) {
+            selector_full = selector + ' ' + selector_full;
+        }
+
+        $( '.glossary' ).each (function ( index ) {
+            var $el = $( this );
+            var info = buildGlossaryInfo($el);
+            if (null != info) {
+                $el.addClass('hoverable');
+                $el.click(function() {
+                    window.location = info.url;
+                    return false;
+                });
+                $el.tooltip({
+                    title: info.title,
+                    html: false /*,
+                    delay: { hide: 350 } */
+                });
+            }
+            else {
+                // remove <a href=""></a> but keep content
+                // see http://stackoverflow.com/a/4232971 also for a better performing solution
+                $el.contents().unwrap();
+                /*
+                var el = $el.get(0);
+                var parent = el.parentNode;
+                while( el.firstChild ) {
+                    parent.insertBefore(  el.firstChild, el );
+                }
+                parent.removeChild(el);
+                */
+            }
+        });
+    }
+
+    function initNote(element) {
+        var id_sel = $( element ).attr('href');
+            {#
+            $(this).tooltipster({
+              content: $('<span>' + $(id_sel).html() + '</span>'),
+              interactive: true
+            });
+            #}
+            $( element ).tooltip({
+                title: $( id_sel ).html(),
+                html: false /*,
+                delay: { hide: 350 } */
+            });
+    }
+
+    function initNotes(selector) {
+        var selector_full = '.editorial-marker';
+        if ('' !== selector) {
+            selector_full = selector + ' ' + selector_full;
+        }
+
+        $(selector_full).each(function( index ) {
+            var sibling = this.previousSibling;
+            if (sibling.nodeType == 3) {
+                // text-node
+                sibling.nodeValue = sibling.nodeValue.replace(/\s+$/g, '');
+            }
+            initNote(this)
+        });
+    }
+
+    function initEntityRef(selector) {
+        // link entities
+        var selector_full = '.entity-ref';
+        if ('' !== selector) {
+            selector_full = selector + ' ' + selector_full;
+        }
+
+        $( selector_full ).each(function( index ) {
+            var $el = $( this );
+            var type = $el.data('type');
+            var uri = $el.data('uri');
+            var info = entityLookup[type][uri];
+            if (info != null && info.url != null) {
+                $el.addClass('hoverable');
+                $el.click(function() {
+                  window.location = info.url;
+                  return false;
+                });
+                console.log( index + ": " + $el.text() + JSON.stringify(info));
+                if (info.blurb != null) {
+                    $el.tooltip({
+                        title: info.blurb + ' <a href="' + info.url + '">{{ '...read on'|trans }}</a>',
+                        html: true,
+                        delay: { hide: 350 }
+                    });
+                }
+            }
+        });
+    }
+
+    function initEntityGlossaryNote(selector) {
+        initNotes(selector);
+        initGlossary(selector);
+        initEntityRef(selector);
+    }
+
+    </script>
+{% endmacro %}

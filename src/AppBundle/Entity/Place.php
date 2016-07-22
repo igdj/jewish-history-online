@@ -104,6 +104,13 @@ class Place implements \JsonSerializable
      */
     protected $articles;
 
+    use ArticleReferencesTrait;
+
+   /**
+     * @ORM\OneToMany(targetEntity="ArticlePlace", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+     */
+    protected $articleReferences;
+
     /**
      * @var \DateTime
      *

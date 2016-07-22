@@ -8,13 +8,16 @@
     "require": {
         "symfony/framework-bundle": "*@stable",
         "symfony/yaml": "*@stable",
-        "symfony/console": "*@stable",
-
         "sensio/framework-extra-bundle": "*@stable",
         "symfony/twig-bundle": "*@stable",
+        "symfony/validator": "*@stable",
+
+        "symfony/serializer": "*@stable",
+        "symfony/property-access": "*@stable",
+
+        "symfony/console": "*@stable",
 
         "symfony/monolog-bundle": "*@stable",
-        "symfony/validator": "*@stable",
 
         "doctrine/doctrine-bundle": "*@stable",
         "doctrine/orm": "*@stable",
@@ -42,7 +45,9 @@
         "ml/json-ld": "~1.0",
 
         "ddeboer/data-import": "*@stable",
-        "phpoffice/phpexcel": "*@stable"
+        "phpoffice/phpexcel": "*@stable",
+
+        "gmo/iso-639": "*@stable"
     },
 
     "autoload": {

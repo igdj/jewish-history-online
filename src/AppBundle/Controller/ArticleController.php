@@ -22,37 +22,12 @@ class ArticleController extends RenderTeiController
             $uid = $article->getUid();
             if (preg_match('/(article|source)\-(\d+)/', $uid, $matches)) {
                 $fname = sprintf('%s-%05d.%s',
-                                 $matches[1], $matches[2], $article->getLanguage());
+                                 $matches[1], $matches[2],
+                                 \AppBundle\Utils\Iso639::code3to1($article->getLanguage()));
             }
         }
         $fname .= $extension;
         return $fname;
-    }
-
-    protected function renderSource($sourceArticle)
-    {
-        $html = $this->renderTei($this->buildArticleFname($sourceArticle));
-
-        list($authors, $section_headers, $license, $entities, $glossaryTerms) = $this->extractPartsFromHtml($html);
-
-        $interpretation = $sourceArticle->getIsPartOf();
-        if (isset($interpretation)) {
-            $related = $this->getDoctrine()
-                ->getRepository('AppBundle:Article')
-                ->findBy([ 'isPartOf' => $interpretation ],
-                         [ 'name' => 'ASC']);
-        }
-
-        return $this->render('AppBundle:Article:source.html.twig',
-                             [
-                                'article' => $sourceArticle,
-                                'name' => $sourceArticle->getName(),
-                                'html' => $html,
-                                'interpretation' => $interpretation,
-                                'related' => $related,
-                                // 'section_headers' => $section_headers,
-                                'license' => $license,
-                              ]);
     }
 
     protected function renderSourceDescription($interpretation)
@@ -61,59 +36,12 @@ class ArticleController extends RenderTeiController
         return $html;
     }
 
-    protected function renderSourceViewer($uid, $sourceArticle)
+    protected function renderArticle($article)
     {
-        $fname = $this->buildArticleFname($sourceArticle);
+        $fname = $this->buildArticleFname($article);
 
         $teiHelper = new \AppBundle\Utils\TeiHelper();
         $meta = $teiHelper->analyzeHeader($this->locateTeiResource($fname));
-
-        $html = $this->renderTei($fname);
-
-        list($authors, $section_headers, $license, $entities, $glossaryTerms) = $this->extractPartsFromHtml($html);
-
-        $sourceDescription = null;
-        $interpretation = $sourceArticle->getIsPartOf();
-        if (isset($interpretation)) {
-            $sourceDescription = [ 'article' => $interpretation,
-                                   'html' => $this->renderSourceDescription($interpretation) ];
-
-            $related = $this->getDoctrine()
-                ->getRepository('AppBundle:Article')
-                ->findBy([ 'isPartOf' => $interpretation ],
-                         [ 'name' => 'ASC']);
-        }
-
-        $fnameMets = $this->buildArticleFname($sourceArticle, '.mets.xml');
-        $parts = explode('.', $fnameMets);
-        $path = $parts[0];
-
-        return $this->render('AppBundle:Article:viewer.html.twig',
-                             [
-                                'article' => $sourceArticle,
-                                'meta' => $meta,
-                                'description' => $sourceDescription,
-                                'name' => $sourceArticle->getName(),
-                                'interpretations' => [ $interpretation ],
-                                'related' => $related,
-                                'uid' => $uid,
-                                'path' => $path,
-                                'mets' => $fnameMets,
-                                'license' => $license,
-                              ]);
-    }
-
-    protected function renderArticle($article)
-    {
-        $fname = $article->getSlug();
-        if (empty($fname)) {
-            $uid = $article->getUid();
-            if (preg_match('/(article|source)\-(\d+)/', $uid, $matches)) {
-                $fname = sprintf('%s-%05d.%s',
-                                 $matches[1], $matches[2], $article->getLanguage());
-            }
-        }
-        $fname .= '.xml';
 
         $html = $this->renderTei($fname);
 
@@ -127,11 +55,24 @@ class ArticleController extends RenderTeiController
             ->findBy([ 'isPartOf' => $article ],
                      [ 'name' => 'ASC']);
 
+
+        $localeSwitch = [];
+        $translations = $this->getDoctrine()
+            ->getRepository('AppBundle:Article')
+            ->findBy([ 'uid' => $article->getUid() ]);
+        foreach ($translations as $translation) {
+            if ($article->getLanguage() != $translation->getLanguage()) {
+                $localeSwitch[\AppBundle\Utils\Iso639::code3to1($translation->getLanguage())]
+                    = [ 'slug' => $translation->getSlug(true) ];
+            }
+        }
+
         $sourceDescription = $this->renderSourceDescription($article);
 
         return $this->render('AppBundle:Article:article.html.twig',
                              [
                                 'article' => $article,
+                                'meta' => $meta,
                                 'source_description' => $sourceDescription,
                                 'related' => $related,
                                 'name' => $article->getName(),
@@ -141,6 +82,7 @@ class ArticleController extends RenderTeiController
                                 'license' => $license,
                                 'entity_lookup' => $entityLookup,
                                 'glossary_lookup' => $glossaryLookup,
+                                'route_params_locale_switch' => $localeSwitch,
                               ]);
     }
 
@@ -149,11 +91,19 @@ class ArticleController extends RenderTeiController
         $parts = explode('/', $path, 2);
         $lang = 'de';
 
-        $page = preg_replace('/[^0-9a-zA-Z\.\-]/', '', $parts[1]);
+        if (preg_match('/^tei\/(translation|transcription)\.(de|en)\/(page\-(\d+)(\.xml))$/', $parts[1], $matches)) {
+            $lang = $matches[2];
+            $page = $matches[3];
+        }
+        else {
+            $page = preg_replace('/[^0-9a-zA-Z\.\-]/', '', $parts[1]);
+        }
+        /*
         if (preg_match('/(.+)\.(de|en)(\.xml)$/', $page, $matches)) {
             $page = $matches[1] . $matches[3];
             $lang = $matches[2];
         }
+        */
 
         // source
         $uid = preg_replace('/[^0-9a-zA-Z_\-\:]/', '', $parts[0]);
@@ -231,18 +181,31 @@ class ArticleController extends RenderTeiController
 EOX
         );
         $response->headers->set('Content-Type', 'text/xml');
-        return $response;
 
+        return $response;
     }
 
     /**
      * @Route("/article/{slug}")
      */
-    public function articleBySlugAction($slug)
+    public function articleAction($slug)
     {
+        $criteria = [];
+        $locale = $this->get('request')->getLocale();
+        if (!empty($locale)) {
+            $criteria['language'] = \AppBundle\Utils\Iso639::code1to3($locale);
+        }
+
+        if (preg_match('/article-\d+/', $slug)) {
+            $criteria['uid'] = $slug;
+        }
+        else {
+            $criteria['slug'] = $slug;
+        }
+
         $article = $this->getDoctrine()
                 ->getRepository('AppBundle:Article')
-                ->findOneBySlug($slug);
+                ->findOneBy($criteria);
 
         if (!$article) {
             throw $this->createNotFoundException('This article does not exist');
@@ -250,37 +213,4 @@ EOX
 
         return $this->renderArticle($article);
     }
-
-    /**
-     * @Route("/source/{uid}/viewer")
-     */
-    public function sourceViewerByUidAction($uid)
-    {
-        $article = $this->getDoctrine()
-                ->getRepository('AppBundle:Article')
-                ->findOneByUid($uid);
-
-        if (!$article) {
-            throw $this->createNotFoundException('This source does not exist');
-        }
-
-        return $this->renderSourceViewer($uid, $article);
-    }
-
-    /**
-     * @Route("/source/{uid}")
-     */
-    public function sourceByUidAction($uid)
-    {
-        $article = $this->getDoctrine()
-                ->getRepository('AppBundle:Article')
-                ->findOneByUid($uid);
-
-        if (!$article) {
-            throw $this->createNotFoundException('This source does not exist');
-        }
-
-        return $this->renderSource($article);
-    }
-
 }

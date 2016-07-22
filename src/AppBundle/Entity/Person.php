@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="person")
  */
-class Person
+class Person implements \JsonSerializable
 {
     static function formatDateIncomplete($dateStr)
     {
@@ -171,6 +171,13 @@ class Person
      * @ORM\ManyToMany(targetEntity="Article", mappedBy="author")
      */
     protected $articles;
+
+    use ArticleReferencesTrait;
+
+   /**
+     * @ORM\OneToMany(targetEntity="ArticlePerson", mappedBy="person", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+     */
+    protected $articleReferences;
 
     /**
      * @var \DateTime
@@ -796,9 +803,31 @@ class Person
             : implode(', ', $parts);
     }
 
-    public function getArticles()
+    public function getArticles($lang = null)
     {
-        return $this->articles;
+        if (is_null($lang) || is_null($this->articles)) {
+            return $this->articles;
+        }
+
+        $langCode3 = \AppBundle\Utils\Iso639::code1to3($lang);
+
+        return $this->articles->filter(
+            function($entity) use ($langCode3) {
+               return $entity->getLanguage() == $langCode3;
+            }
+        );
     }
 
+    public function jsonSerialize()
+    {
+        return [
+                 'id' => $this->id,
+                 'fullname' => $this->getFullname(),
+                 'honoricPrefix' => $this->getHonoricPrefix(),
+                 'description' => $this->getDescription(),
+                 'gender' => $this->getGender(),
+                 'gnd' => $this->gnd,
+                 'slug' => $this->slug,
+                 ];
+    }
 }

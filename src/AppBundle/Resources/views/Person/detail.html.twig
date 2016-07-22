@@ -1,12 +1,10 @@
 {% extends 'AppBundle:Default:base.html.twig' %}
 
+{% import 'AppBundle:Shared:helper.html.twig' as helper %}
+{% import 'AppBundle:Shared:map-leaflet.html.twig' as map %}
+
 {% block head %}
-    <link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet-0.7.7/leaflet.css" />
-    <script src="{{ app.request.basepath }}/vendor/leaflet-0.7.7/leaflet.js"></script>
-
-    <link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet.label/leaflet.label.css" />
-    <script src="{{ app.request.basepath }}/vendor/leaflet.label/leaflet.label.js"></script>
-
+    {{ map.head() }}
     <script src="{{ app.request.basepath }}/js/seealso.js"></script>
     <script>
         var service = new SeeAlsoCollection();
@@ -29,7 +27,7 @@
     <div class="row">
         <div class="col-sm-8">
             <dl>
-            {% set birthPlace = person.birthPlaceInfo('de') %}
+            {% set birthPlace = person.birthPlaceInfo(app.request.locale) %}
             {% if birthPlace is not empty or person.birthDate is not empty %}
                 <dt>{{ 'Born'|trans }}:</dt>
                 <dd>
@@ -45,7 +43,7 @@
                     {% endif %}
                 </dd>
             {% endif %}
-            {% set deathPlace = person.deathPlaceInfo('de') %}
+            {% set deathPlace = person.deathPlaceInfo(app.request.locale) %}
             {% if deathPlace is not empty or person.deathDate is not empty %}
                 <dt>{{ 'Died'|trans }}:</dt>
                 <dd>
@@ -63,25 +61,20 @@
             {% endif %}
             </dl>
 
-            <p>{{ person.description['de'] }}</p>
-
-
-            {% if person.articles|length > 0%}
+            <p>{{ person.description[app.request.locale] }}</p>
+            {% set articles = person.articles(app.request.locale) %}
+            {% if articles|length > 0 %}
             <h3>{{ 'interpretations.oneormany'|transchoice(person.articles|length) }}</h3>
             <ul>
-            {% for article in person.articles %}
+            {% for article in articles %}
                 <li>
-                    <a href="{{ path('article', { 'slug' : article.slug }) }}">{{ article.name }}</a>
-                    {% if article.author|length > 0%}
-                    ({% for author in article.author %}{{ author.givenName }} {{ author.familyName }}{% endfor %})
-                    {% endif %}
+                    {{ helper.article_linked(article) }}
                 </li>
             {% endfor %}
             </ul>
             {% endif %}
 
-            <h3>TODO: Erw&auml;hnt in</h3>
-
+            {{ helper.list_entity_mentioned_in(person.articleReferences(app.request.locale)) }}
         </div>
 
         <div class="col-sm-4 sidebar">
@@ -123,23 +116,7 @@
             L.marker([ {% if birthPlace.geo is not empty %}{{ birthPlace.geo }}{% else %}{{ deathPlace.geo }}{% endif %} ]).addTo(map)
             {% endif %}
 
-            if (true) {
-                L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
-                    maxZoom: 16,
-                    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                        '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                        'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                    id: 'mapbox.streets'
-                }).addTo(map);
-            }
-            else {
-                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 18,
-                    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                        '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-                    id: 'mapbox.streets'
-                }).addTo(map);
-            }
+            {{ map.addTileLayer() }}
             </script>
             {% endif %}
 
@@ -148,7 +125,7 @@
             <div class="container-fluid box">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
-                        <h4>Gemeinsame Normdatei
+                        <h4>{{ 'Integrated Authority File'|trans }}
                         <br /><a href="http://d-nb.info/gnd/{{ person.gnd }}" target="_blank">{{ person.gnd }}</a>
                         </h4>
                     </div>

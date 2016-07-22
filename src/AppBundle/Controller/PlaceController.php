@@ -15,7 +15,94 @@ class PlaceController extends Controller
      */
     public function mapAction()
     {
-        return $this->render('AppBundle:Place:map.html.twig');
+        $qb = $this->getDoctrine()
+                ->getRepository('AppBundle:SourceArticle')
+                ->createQueryBuilder('A')
+                ;
+
+        $qb->select('COUNT(DISTINCT A.id) AS number, P.id AS places, P.name, P.geo')
+                ->distinct()
+                ->innerJoin('A.contentLocation', 'P')
+                ->andWhere('P.geo IS NOT NULL')
+                ;
+
+        $locale = $this->get('request')->getLocale();
+        if (!empty($locale)) {
+            $language = \AppBundle\Utils\Iso639::code1to3($locale);
+
+            $qb->andWhere('A.language = :lang')
+                ->setParameter('lang', $language)
+                ;
+        }
+
+        $result = $qb
+                ->getQuery()
+                ->getResult();
+                ;
+
+        $markers = [];
+        foreach ($result as $position) {
+            $geo = $position['geo'];
+            if (empty($geo)) {
+                continue;
+            }
+            if (!array_key_exists($geo, $markers)) {
+                unset($position['geo']);
+                $position['number'] = (int)($position['number']);
+                $latLng = explode(',', $geo);
+                $position['latLng'] = [ (double)$latLng[0], (double)$latLng[1] ];
+                $markers[$geo] = $position;
+            }
+            else {
+                $markers[$geo]['number'] += $position['number'];
+                $markers[$geo]['places'] .= ',' . $position['places'];
+            }
+        }
+
+        return $this->render('AppBundle:Place:map.html.twig',
+                             [ 'markers' => $markers ]);
+    }
+
+    /**
+     * @Route("/map/popup-content/{ids}")
+     */
+    public function mapPopupContentAction($ids)
+    {
+        if (empty($ids)) {
+            $articles = [];
+        }
+        else {
+            $ids = explode(',', $ids);
+            $qb = $this->getDoctrine()
+                    ->getRepository('AppBundle:SourceArticle')
+                    ->createQueryBuilder('A')
+                    ;
+
+            $qb->select('A.uid, A.name')
+                    ->distinct()
+                    ->innerJoin('A.contentLocation', 'P')
+                    ->andWhere('P.id IN (:ids)')
+                    ->setParameter('ids', $ids)
+                    ;
+
+            $locale = $this->get('request')->getLocale();
+            if (!empty($locale)) {
+                $qb->andWhere('A.language = :lang')
+                    ->setParameter('lang', \AppBundle\Utils\Iso639::code1to3($locale))
+                    ;
+            }
+
+            $qb->addOrderBy('A.dateCreated', 'ASC')
+                ->addOrderBy('A.name', 'ASC');
+
+            $articles = $qb
+                    ->getQuery()
+                    ->getResult();
+                    ;
+        }
+        return $this->render('AppBundle:Place:map-popup-content.html.twig',
+                             [ 'articles' => $articles ]);
+
     }
 
     /**

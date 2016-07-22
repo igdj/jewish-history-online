@@ -153,7 +153,7 @@ class Builder implements ContainerAwareInterface
                 break;
 
             case 'topic-background':
-                $item = $menu['topic-index']->addChild($current_route, array('label' => 'Survey', 'uri' => '#'));
+                $item = $menu['topic-index']->addChild($current_route, array('label' => 'Introduction', 'uri' => '#'));
                 break;
 
             case 'article':

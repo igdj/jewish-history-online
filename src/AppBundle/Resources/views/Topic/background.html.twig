@@ -1,46 +1,20 @@
 {% extends 'AppBundle:Default:base.html.twig' %}
+
+{% import 'AppBundle:Shared:helper.html.twig' as helper %}
+{% import 'AppBundle:Shared:entity-lookup.html.twig' as entityLookup %}
+
 {% block head %}
+    {# TODO: move to some shared style-sheet #}
     <style>
-        #authors, #license {
-            display: none;
-        }
+    #authors, #license {
+        display: none;
+    }
     </style>
 
+    {{ entityLookup.head(entity_lookup, glossary_lookup) }}
     <script>
-    var cachedGlossaryData = {};
-
-    function getGlossaryData() {
-        var term = $(this).data('title');
-        if (term in cachedGlossaryData) {
-            return cachedGlossaryData[term];
-        }
-
-        return 'TODO: Glossareintrag f&uuml;r ' + term;
-
-        /*
-        var localData = "error";
-
-        $.ajax('/your/url/' + id, {
-            async: false,
-            success: function(data){
-                localData = data;
-            }
-        });
-
-        cachedGlossaryData[term] = localData;
-
-        return localData;
-        */
-    }
-
     $(function () {
-      // $('[data-toggle="tooltip"]').tooltip()
-
-        $('.hoverTooltip').tooltip({
-            title: getGlossaryData,
-            html: true,
-            delay: { hide: 350 }
-        });
+        initEntityGlossaryNote('.article');
     })
     </script>
 {% endblock %}
@@ -59,35 +33,41 @@
 
     <div class="row">
         <div class="col-xs-12 col-sm-8">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+            {{ 'Content'|trans }}
+            </div>
+            <div class="panel-body">
+            {% if section_headers is not empty %}
+                {% for header in section_headers %}
+                    <p><a href="#{{ header['id'] }}">{{ header['text'] }}</a></p>
+                {% endfor %}
+                <hr />
+            {% endif %}
+            {% if authors is not empty %}
+                <p><a href="#author">{{ helper.article_author_aboutlabel(authors) }}</a></p>
+            {% endif %}
+            <p><a href="#citation">{{ 'Recommended Citation and License Statement'|trans }}</a></p>
+            </div>
+        </div>
+
         {{ html|raw }}
 
         {% if authors is not empty %}
-        <h2 id="author">{{ 'author.oneormany'|transchoice(authors|length) }}</h2>
+        <h2 id="author">{{ helper.article_author_aboutlabel(authors) }}</h2>
             {% for author in authors %}
         <p>{% if author.description is defined %}{{ author.description }}{% else %}{{ author.text }}{% endif %}</p>
             {% endfor %}
         {% endif %}
 
-        <h3 id="citation">{{ 'Citation and License Statement'|trans }}</h3>
-        <p>{% if authors is not empty %}
-            {% for author in authors %}{{ author.text }}, {% endfor %}
-        {% endif %}
-        {{ name }}, in: {{ 'Hamburg Key-Documents of German-Jewish History'|trans }},
-        &lt;{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}&gt;</p>
+        {{ helper.article_citation(article, meta, authors, name) }}
 
-        {% if license is not null %}
-        <div>
-            {% if license.url is defined %}
-                {% if license.url == "http://creativecommons.org/licenses/by-nc-nd/4.0/" %}
-                <a href="{{ license.url }}" target="_blank"><img src="{{ app.request.basepath }}/img/license/by-nc-nd.eu.svg" height="30" style="float: left; padding-right: 6px;" /></a>
-                {% endif %}
-            {% endif %}
-            {{ license.text }}
-        </div>
-        {% endif %}
+        {{ helper.article_license(license) }}
         </div><!-- .col -->
 
         <div class="col-xs-12 col-sm-4 sidebar">
+            {#
             <div class="container-fluid box">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
@@ -105,13 +85,14 @@
                     {% if authors is not empty %}
                         <p><a href="#author">{{ 'author.oneormany'|transchoice(authors|length) }}</a></p>
                     {% endif %}
-                        <p><a href="#citation">{{ 'Citation and License Statement'|trans }}</a></p>
+                        <p><a href="#citation">{{ 'Recommended Citation and License Statement'|trans }}</a></p>
                     </div>
                 </div>
             </div>
+            #}
 
             {% if interpretations is not empty %}
-            <div class="container-fluid box top-buffer">
+            <div class="container-fluid box">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
                         <h4>{{ 'interpretations.oneormany'|transchoice(interpretations|length) }}</h4>
@@ -120,10 +101,7 @@
                 {% for article in interpretations %}
                 <div class="row box-color-content-inverse">
                     <div class="col-sm-12">
-                    <a href="{{ path('article', { 'slug' : article.slug }) }}">{{ article.name }}</a>
-                    {% if article.author|length > 0%}
-                    ({% for author in article.author %}{{ author.givenName }} {{ author.familyName }}{% endfor %})
-                    {% endif %}
+                        {{ helper.article_linked(article) }}
                     </div>
                 </div>
                 {% endfor %}

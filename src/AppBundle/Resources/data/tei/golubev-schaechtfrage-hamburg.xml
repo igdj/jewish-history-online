@@ -2,285 +2,216 @@
 <?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
 type="application/xml"
 schematypens="http://relaxng.org/ns/structure/1.0"?>
-<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf" xml:lang="de">
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf">
     <teiHeader>
         <fileDesc>
             <titleStmt>
                 <title type="main">Die <ref type="editorialNote" target="#Schächten">Schächt</ref>frage in
                         <placeName ref="http://vocab.getty.edu/tgn/7005289">Hamburg</placeName>.
-                        Diskussionen um ein Verbot in der <orgName ref="http://d-nb.info/gnd/4065109-5"
-                        >Weimarer Republik</orgName></title>
+                    Diskussionen um ein Verbot in der <date corresp="http://d-nb.info/gnd/4065109-5">Weimarer Republik</date></title>
                 <author><persName corresp="golubev-pavel">Pavel Golubev</persName></author>
             </titleStmt>
             <publicationStmt>
-                <publisher>
-                    <orgName>Institut für die Geschichte der deutschen Juden</orgName>
-                    <email>redaktion@juedische-geschichte-online.net</email>
-                    <address><addrLine>Beim Schlump 83, 20144 Hamburg</addrLine></address>
-                </publisher>
-                <pubPlace>Hamburg</pubPlace>
-                <date type="publication">2016-09-01</date>
-                <availability>
-                    <licence target="http://creativecommons.org/licenses/by-nc-nd/4.0/">
-                        <p>Dieser Text unterliegt den Bedingungen der Creative Commons Namensnennung - Nicht kommerziell - Keine Bearbeitungen 4.0 International Lizenz. Unter Namensnenung gemäß dem Zitationshinweis darf er in unveränderter Form für nicht-kommerzielle Zwecke nachgenutzt werden.</p>
-                    </licence>
-                </availability>
-                <idno>
-                    <idno type="DTAID">jgo:article-18</idno>
-                    <idno type="DTADirName">golubev-schaechtfrage-hamburg</idno>
-                    <!--<idno type="URLWeb">[TODO: Permalink]</idno>-->
-                </idno>
-            </publicationStmt>
-            <notesStmt><note>Die hier präsentierten Quellen – insgesamt vier Dokumente – stammen aus dem Bestand der
-                        <orgName ref="nognd">Hamburger Schlachthof- und
+                
+            <publisher><orgName>Institut für die Geschichte der deutschen Juden</orgName><email>redaktion@juedische-geschichte-online.net</email><address><addrLine>Beim Schlump 83, 20144 Hamburg</addrLine></address></publisher><date type="firstPublication">2016-09-22</date><availability><licence target="http://creativecommons.org/licenses/by-nc-nd/4.0/"/></availability><idno><idno type="DTAID">jgo:article-18</idno><idno type="DTADirName">golubev-schaechtfrage-hamburg</idno></idno></publicationStmt>
+            <notesStmt><note>Die hier präsentierten Quellen – insgesamt vier Dokumente – stammen aus
+                    dem Bestand der <orgName ref="nognd">Hamburger Schlachthof- und
                         Viehmarktverwaltung</orgName>. Diese Behördenakten dokumentieren einen Teil
-                    der Korrespondenz zwischen den Leitern der <orgName
-                        ref="http://d-nb.info/gnd/10068294-7">Deputation für Handel, Schifffahrt
-                        und Gewerbe</orgName>, der <orgName ref="nognd">Schlachthof- und
-                        Viehmarktverwaltung</orgName> und dem Hamburger <ref type="editorialNote"
-                        target="#Rabbiner">Oberrabbiner</ref>. Die ausgewählten Texte stammen aus
+                    der Korrespondenz zwischen den <roleName>Leitern</roleName> der <orgName ref="http://d-nb.info/gnd/10068294-7">Deputation für Handel, Schifffahrt und
+                        Gewerbe</orgName>, der <orgName ref="nognd">Schlachthof- und
+                        Viehmarktverwaltung</orgName> und dem <placeName ref="http://vocab.getty.edu/tgn/7005289">Hamburger</placeName>
+                    <ref type="editorialNote" target="#Rabbiner"><roleName>Oberrabbiner</roleName></ref>. Die ausgewählten Texte stammen aus
                     dem Jahr <date when="1930">1930</date> und gewähren Einblicke in die damalige
-                    Auseinandersetzung um das jüdische <ref type="editorialNote" target="#Schächten"
-                        >Schächten</ref>. Die Dokumente befinden sich im <orgName
-                        ref="http://d-nb.info/gnd/2022556-8">Hamburger
+                    Auseinandersetzung um das jüdische <ref type="editorialNote" target="#Schächten">Schächten</ref>. Die Dokumente befinden sich im <orgName ref="http://d-nb.info/gnd/2022556-8">Hamburger
                     Staatsarchiv</orgName>.</note></notesStmt>
             <sourceDesc>
                 <p><orgName ref="http://d-nb.info/gnd/2022556-8">Staatsarchiv Hamburg</orgName>,
-                    Findbuch 377-11: Schlachthof, Mappe 176: <ref type="editorialNote"
-                        target="#Schächten">Schächten</ref>, Schreiben vom <date when="1930-02-04"
-                        >4.2.1930</date>, <date when="1930-04-02">2.4.1930</date>, <date
-                        when="1930-10-17">17.10.1930</date>, <date when="1930-10-19"
-                        >9.10.1930</date>, <date when="1930-10-22">22.10.1930</date></p>
+                    Findbuch 377-11: Schlachthof, Mappe 176: <ref type="editorialNote" target="#Schächten">Schächten</ref>, Schreiben vom <date when="1930-02-04">4.2.1930</date>, <date when="1930-04-02">2.4.1930</date>, <date when="1930-10-17">17.10.1930</date>, <date when="1930-10-19">9.10.1930</date>, <date when="1930-10-22">22.10.1930</date></p>
             </sourceDesc>
         </fileDesc>
-        <profileDesc>
-            <langUsage><language ident="deu">Deutsch</language></langUsage>
-            <textClass>
-                <classCode scheme="http://juedische-geschichte-online.net/doku/#genre">Interpretationstext</classCode>
-                <classCode scheme="http://juedische-geschichte-online.net/doku/#topic">Religiöses Leben und Identitätsfragen</classCode>
-                <classCode scheme="http://juedische-geschichte-online.net/doku/#topic">Recht und Politik</classCode>
-                <classCode scheme="http://juedische-geschichte-online.net/doku/#topic">Wirtschaft</classCode>
-            </textClass>
-        </profileDesc>    
-    </teiHeader>
+    <profileDesc><langUsage><language ident="deu">German</language></langUsage><textClass><classCode scheme="http://juedische-geschichte-online.net/doku/#genre">Interpretation</classCode><classCode scheme="http://juedische-geschichte-online.net/doku/#topic">Recht und Politik</classCode><classCode scheme="http://juedische-geschichte-online.net/doku/#topic">Wirtschaft und Berufsstruktur</classCode><classCode scheme="http://juedische-geschichte-online.net/doku/#topic">Religiöses Leben und Identitätsfragen</classCode></textClass></profileDesc></teiHeader>
     <text>
         <body>
-            <div n="2"><head>Religiöser Ritus und Einwände</head><lb/>
-                <p>Die rituelle Schlachtmethode des <ref type="editorialNote" target="#Schächten"
-                        >Schächtens</ref> ist ein Gebot des Judentums. Nach traditioneller
-                    Auffassung ist nur das Fleisch eines vorschriftsgemäß geschächteten Tieres <ref
-                        type="editorialNote" target="#Koscher">koscher</ref> und darf verzehrt
+            <div n="2">
+                <head>Religiöser Ritus und Einwände</head>
+                <lb/>
+                <p>Die rituelle Schlachtmethode des <ref type="editorialNote" target="#Schächten">Schächtens</ref> ist ein Gebot des Judentums. Nach traditioneller
+                    Auffassung ist nur das Fleisch eines vorschriftsgemäß geschächteten Tieres <ref type="editorialNote" target="#koscher">koscher</ref> und darf verzehrt
                     werden. Das unbetäubte Vieh wird durch einen schnellen, tiefen Halsschnitt
                     getötet und entblutet. Dabei darf dieser laut Religionsgesetz nur an einem
                     unverletzten Tier vorgenommen werden. Aus diesem Grund sind Kopfschläge und
-                    andere Einwirkungen auf das Tier streng verboten. Obwohl das Tier durch den
-                    Schächtschnitt nach wenigen Sekunden das Bewusstsein verliert, wurde der für
-                    strenggläubige Juden geheiligte Ritus wiederholt als „Tierquälerei“ angegriffen
-                    und bekämpft. Kampagnen gegen das <ref type="editorialNote" target="#Schächten"
-                        >Schächten</ref>, die mit Tierschutzargumenten einen gesetzlichen
-                    Betäubungszwang, d.h. ein Schächtverbot, propagierten, wurden bereits im <date
-                        when="1800-01-01"><date when="1899-12-31">19. Jahrhundert</date></date> im
-                        <orgName ref="http://d-nb.info/gnd/7509421-6">Deutschen
-                        Kaiserreich</orgName> ebenso wie später in der <orgName
-                        ref="http://d-nb.info/gnd/4065109-5">Weimarer Republik</orgName> geführt.
-                    Meist waren auch <ref type="editorialNote" target="#Antisemitismus"
-                        >Antisemiten</ref> maßgeblich an solchen Initiativen beteiligt. Daneben
-                    unternahm auch die Obrigkeit Versuche, die Schächtpraxis einzuschränken und zu
-                    regulieren. Die Juden setzten sich gegen alle derartigen Bestrebungen zur Wehr
-                    und verteidigten mit dem <ref type="editorialNote" target="#Schächten"
-                        >Schächten</ref> auch ihr Recht auf freie Religionsausübung.</p></div>
-            <div n="2"><head>Konflikt um Schächtungen</head><lb/>
-                <p>Aus dem Briefwechsel zwischen dem Leiter der damals „<orgName
-                        ref="http://d-nb.info/gnd/10068294-7">Deputation für Handel, Schifffahrt
-                        und Gewerbe</orgName>“ genannten <orgName
-                        ref="http://d-nb.info/gnd/2042550-8">Hamburger Wirtschaftsbehörde</orgName>,
-                    dem Schlachthofdirektor und dem Hamburger <ref type="editorialNote"
-                        target="#Rabbiner">Oberrabbiner</ref> lässt sich ablesen, wie das
-                    Schächtwesen in <placeName ref="http://vocab.getty.edu/tgn/7005289"
-                        >Hamburg</placeName> organisiert war: Dem <ref type="editorialNote"
-                        target="#Rabbiner">Oberrabbiner</ref> der Gemeinde oblag die rituelle
-                    Aufsicht über die <ref type="editorialNote" target="#Schächten"
-                        >Schächtungen</ref>. Diese durften wiederum, wie alle Schlachtungen in
+                    andere Einwirkungen auf das Tier streng verboten. Obwohl das Tier durch den <ref type="editorialNote" target="#Schächten">Schächtschnitt</ref> nach wenigen
+                    Sekunden das Bewusstsein verliert, wurde der für strenggläubige Juden geheiligte
+                    Ritus wiederholt als „Tierquälerei“ angegriffen und bekämpft. Kampagnen gegen
+                    das <ref type="editorialNote" target="#Schächten">Schächten</ref>, die mit
+                    Tierschutzargumenten einen gesetzlichen Betäubungszwang, das heißt ein <ref type="editorialNote" target="#Schächten">Schächtverbot</ref>, propagierten,
+                    wurden bereits im <date when="1800"><date when="1899">19.
+                        Jahrhundert</date></date> im <date corresp="http://d-nb.info/gnd/7509421-6">Deutschen Kaiserreich</date> ebenso wie später in der <date corresp="http://d-nb.info/gnd/4065109-5">Weimarer Republik</date> geführt.
+                    Meist waren auch <ref type="editorialNote" target="#Antisemitismus">Antisemiten</ref> maßgeblich an solchen Initiativen beteiligt. Daneben
+                    unternahm auch die Obrigkeit Versuche, die <ref type="editorialNote" target="#Schächten">Schächtpraxis</ref> einzuschränken und zu regulieren.
+                    Die Juden setzten sich gegen alle derartigen Bestrebungen zur Wehr und
+                    verteidigten mit dem <ref type="editorialNote" target="#Schächten">Schächten</ref> auch ihr Recht auf freie Religionsausübung.</p>
+            </div>
+            <div n="2">
+                <head>Konflikt um Schächtungen</head>
+                <lb/>
+                <p>Aus dem Briefwechsel zwischen dem <roleName>Leiter</roleName> der damals
+                        „<orgName ref="http://d-nb.info/gnd/10068294-7">Deputation für Handel,
+                        Schifffahrt und Gewerbe</orgName>“ genannten <orgName ref="http://d-nb.info/gnd/2042550-8">Hamburger Wirtschaftsbehörde</orgName>,
+                    dem <roleName>Schlachthofdirektor</roleName> und dem Hamburger <ref type="editorialNote" target="#Rabbiner"><roleName>Oberrabbiner</roleName></ref> lässt sich ablesen, wie das <ref type="editorialNote" target="#Schächten">Schächtwesen</ref> in <placeName ref="http://vocab.getty.edu/tgn/7005289">Hamburg</placeName> organisiert
+                    war: Dem <ref type="editorialNote" target="#Rabbiner"><roleName>Oberrabbiner</roleName></ref> der Gemeinde oblag die rituelle
+                    Aufsicht über die <ref type="editorialNote" target="#Schächten">Schächtungen</ref>. Diese durften wiederum, wie alle Schlachtungen in
                         <placeName ref="http://vocab.getty.edu/tgn/7005289">Hamburg</placeName>, nur
-                    auf dem <placeName ref="53.5581414, 9.967802800000072"
-                        >Zentralschlachthof</placeName> durchgeführt werden und unterlagen den
+                    auf dem <orgName ref="http://d-nb.info/gnd/10038408-0">Zentralschlachthof</orgName> durchgeführt werden und unterlagen den
                     Vorschriften und der amtlichen Aufsicht der Schlachthofverwaltung und der
-                        <orgName ref="http://d-nb.info/gnd/10068294-7">Deputation</orgName>. Die
-                    Korrespondenz veranschaulicht, dass sich das <ref type="editorialNote"
-                        target="#Schächten">Schächten</ref> im Spannungsfeld zwischen der religiösen
-                    Autorität jüdischer Geistlicher und dem politischen Gestaltungsanspruch des
-                    Staates befand. Die Verwaltung drängte darin auf Veränderungen beim <ref
-                        type="editorialNote" target="#Schächten">Schächten</ref>, denen sich der
-                    orthodoxe <ref type="editorialNote" target="#Rabbiner">Rabbiner</ref> passiv
-                    widersetzte. Zudem entfaltete sich der Konflikt vor dem Hintergrund einer in
-                    mehreren Ländern des <orgName ref="http://d-nb.info/gnd/7509421-6 "
-                        >Reiches</orgName> erbittert ausgetragenen Schächtdebatte, in der der
-                    jüdische Ritus heftigen Angriffen und Verbotsforderungen ausgesetzt war. In
-                        <placeName ref="http://vocab.getty.edu/tgn/7003669">Bayern</placeName>
-                    hatten die Schächtgegner bereits ein landesweites Schächtverbot durchsetzen
-                    können, in weiteren Ländern waren ähnliche Diskussionen im Gange.</p></div>
-            <div n="2"><head>Beginn der Diskussion in Hamburg auf der Verwaltungsebene</head><lb/>
+                        Deputation<note type="editorial" place="foot">Deputation für Handel,
+                        Schifffahrt und Gewerbe</note>. Die Korrespondenz veranschaulicht, dass sich
+                    das <ref type="editorialNote" target="#Schächten">Schächten</ref> im
+                    Spannungsfeld zwischen der religiösen Autorität jüdischer Geistlicher und dem
+                    politischen Gestaltungsanspruch des Staates befand. Die Verwaltung drängte darin
+                    auf Veränderungen beim <ref type="editorialNote" target="#Schächten">Schächten</ref>, denen sich der orthodoxe <ref type="editorialNote" target="#Rabbiner">Rabbiner</ref> passiv widersetzte. Zudem entfaltete sich
+                    der Konflikt vor dem Hintergrund einer in mehreren Ländern des <orgName ref="http://d-nb.info/gnd/7509421-6">Reiches</orgName> erbittert
+                    ausgetragenen <ref type="editorialNote" target="#Schächten">Schächtdebatte</ref>, in der der jüdische Ritus heftigen Angriffen und
+                    Verbotsforderungen ausgesetzt war. In <placeName ref="http://vocab.getty.edu/tgn/7003669">Bayern</placeName> hatten die <ref type="editorialNote" target="#Schächten">Schächtgegner</ref> bereits ein
+                    landesweites <ref type="editorialNote" target="#Schächten">Schächtverbot</ref>
+                    durchsetzen können, in weiteren Ländern waren ähnliche Diskussionen im
+                    Gange.</p>
+            </div>
+            <div n="2">
+                <head>Beginn der Diskussion in <placeName ref="http://vocab.getty.edu/tgn/7005289">Hamburg</placeName> auf der Verwaltungsebene</head>
+                <lb/>
                 <p>Bei dem auf den <date when="1930-02-04">4. Februar 1930</date> datierten ersten
-                    Brief handelt es sich um ein Schreiben des Leiters der <orgName
-                        ref="http://d-nb.info/gnd/10068294-7">Deputation</orgName>,
-                        <roleName>Staatsrat</roleName> Dr. <persName
-                        ref="http://d-nb.info/gnd/126185530">Hugo Heidecker</persName>, an den ihm
-                    unterstellten Direktor der Schlachthofverwaltung Professor Dr. <persName
-                        ref="nognd">Johannes Neumann</persName>. Darin wies <persName
-                        ref="http://d-nb.info/gnd/126185530">Heidecker</persName> den
-                    Schlachthofdirektor unter Verweis auf beigelegte Zeitungsausschnitte an, sich
-                    wieder der Schächtangelegenheit anzunehmen. Die Ausschnitte, die er seinem
-                    Adressaten mitschickte, behandelten das am <date when="1930-01-29">29. Januar
-                        1930</date> vom <orgName ref="http://d-nb.info/gnd/2028096-8">bayerischen
-                        Landtag</orgName> verabschiedete Schächtverbot. Damit war die in <placeName
-                        ref="http://vocab.getty.edu/tgn/7003669">Bayern</placeName> seit mehreren
-                    Jahren geführte Debatte um das <ref type="editorialNote" target="#Schächten"
-                        >Schächten</ref> mit dem ersten landesweiten Schächtverbot der <orgName
-                        ref="http://d-nb.info/gnd/4065109-5">Weimarer Republik</orgName> zu einem
+                    Brief handelt es sich um ein Schreiben des <roleName>Leiters</roleName> der
+                        <orgName ref="http://d-nb.info/gnd/10068294-7">Deputation</orgName>,
+                        <roleName>Staatsrat</roleName> Dr. <persName ref="nognd">Hugo
+                        Heidecker</persName>, an den ihm unterstellten <roleName>Direktor</roleName>
+                    der Schlachthofverwaltung <roleName>Professor</roleName>
+                    <roleName>Dr.</roleName>
+                    <persName ref="nognd">Johannes Neumann</persName>. Darin wies <persName ref="nognd">Heidecker</persName> den
+                        <roleName>Schlachthofdirektor</roleName> unter Verweis auf beigelegte
+                    Zeitungsausschnitte an, sich wieder der <ref type="editorialNote" target="#Schächten">Schächtangelegenheit</ref> anzunehmen. Die Ausschnitte,
+                    die er seinem Adressaten mitschickte, behandelten das am <date when="1930-01-29">29. Januar 1930</date> vom <orgName ref="http://d-nb.info/gnd/2028096-8">bayerischen Landtag</orgName> verabschiedete <ref type="editorialNote" target="#Schächten">Schächtverbot</ref>. Damit war die in <placeName ref="http://vocab.getty.edu/tgn/7003669">Bayern</placeName> seit mehreren
+                    Jahren geführte Debatte um das <ref type="editorialNote" target="#Schächten">Schächten</ref> mit dem ersten landesweiten Schächtverbot der <date corresp="http://d-nb.info/gnd/4065109-5">Weimarer Republik</date> zu einem
                     für die jüdische Gemeinschaft bitteren Abschluss gekommen. Nun sollte
-                    Schlachthofdirektor <persName ref="nognd">Neumann</persName> mit den Hamburger
-                    Juden in Kontakt treten und die bereits <date when="1924">1924</date>/<date
-                        when="1925">1925</date> geführten, aber letztlich im Sande verlaufenen
-                    Verhandlungen über mögliche „Verbesserungen“ des <ref type="editorialNote"
-                        target="#Schächten">Schächtens</ref> wieder aufnehmen. Die bei den Juden auf
-                    Kritik und Widerstand stoßende Grundannahme der Behörde war <date when="1924"
-                        >1924</date> wie <date when="1930">1930</date>, dass das <ref
-                        type="editorialNote" target="#Schächten">Schächten</ref> vom Standpunkt des
-                    Tierschutzes aus unerwünscht und deshalb in der bisherigen Form zu verbieten
-                    oder zumindest einzuschränken sei. Häufig waren solche Tierschutzüberlegungen
-                    von <ref type="editorialNote" target="#Antisemitismus">antisemitischen</ref>
+                        <roleName>Schlachthofdirektor</roleName>
+                    <persName ref="nognd">Neumann</persName> mit den Hamburger Juden in Kontakt
+                    treten und die bereits <date when="1924">1924</date>/<date when="1925">1925</date> geführten, aber letztlich im Sande verlaufenen Verhandlungen
+                    über mögliche „Verbesserungen“ des <ref type="editorialNote" target="#Schächten">Schächtens</ref> wieder aufnehmen. Die bei den Juden auf Kritik und
+                    Widerstand stoßende Grundannahme der Behörde war <date when="1924">1924</date>
+                    wie <date when="1930">1930</date>, dass das <ref type="editorialNote" target="#Schächten">Schächten</ref> vom Standpunkt des Tierschutzes aus
+                    unerwünscht und deshalb in der bisherigen Form zu verbieten oder zumindest
+                    einzuschränken sei. Häufig waren solche Tierschutzüberlegungen von <ref type="editorialNote" target="#Antisemitismus">antisemitischen</ref>
                     Motivationen durchdrungen, wobei insbesondere das Bild vom grausamen und
-                    skrupellosen Juden heraufbeschworen wurde und das <ref type="editorialNote"
-                        target="#Schächten">Schächten</ref> als ein vermeintlicher Beleg galt. Der
-                    von <persName ref="http://d-nb.info/gnd/126185530">Heidecker</persName>
-                    angesprochene sogenannte
-                        <?oxy_comment_start author="jankawlath" timestamp="20160303T145518+0100" comment="@ Nina: Hier bin ich mir unsicher, ob ein extra Glossareintrag gemacht werden soll oder ob die Erklärung im Text ausreichend ist."?><ref
-                        type="editorialNote" target="#Weinbergscher Apparat">Weinbergsche
-                        Apparat</ref><?oxy_comment_end?> war eine in <placeName
-                        ref="http://vocab.getty.edu/tgn/7002445">England</placeName> mit Blick auf
-                    die deutsche Schächtdebatte entwickelte Vorrichtung, die ein schonendes
-                    Niederlegen der zu <ref type="editorialNote" target="#Schächten"
-                        >schächtenden</ref> Tiere gewährleisten sollte. Dies macht die
+                    skrupellosen Juden heraufbeschworen wurde und das <ref type="editorialNote" target="#Schächten">Schächten</ref> als ein vermeintlicher Beleg galt. Der
+                    von <persName ref="nognd">Heidecker</persName> angesprochene sogenannte
+                    Weinbergsche Apparat<note type="editorial" place="foot">Apparat um das
+                        Schlachttier in die benötigte Position für den Schächtschnitt zu bewegen,
+                        ohne das Tier – wie vor der Entwicklung des Apparats üblich – durch abbinden
+                        der Gliedmaßen umlegen oder umwerfen zu müssen.</note> war eine in
+                        <placeName ref="http://vocab.getty.edu/tgn/7002445">England</placeName> mit
+                    Blick auf die deutsche <ref type="editorialNote" target="#Schächten">Schächtdebatte</ref> entwickelte Vorrichtung, die ein schonendes
+                    Niederlegen der zu <ref type="editorialNote" target="#Schächten">schächtenden</ref> Tiere gewährleisten sollte. Dies macht die
                     transnationale Dimension der Debatte deutlich: Nicht nur die innerdeutschen
-                    Entwicklungen in den einzelnen Ländern der <orgName
-                        ref="http://d-nb.info/gnd/4065109-5">Weimarer Republik</orgName> standen in
-                    einer komplexen Wechselbeziehung, wie das Beispiel von <placeName
-                        ref="http://vocab.getty.edu/tgn/7005289">Hamburg</placeName> und <placeName
-                        ref="http://vocab.getty.edu/tgn/7003669">Bayern</placeName> zeigt. Es gab
+                    Entwicklungen in den einzelnen Ländern der <date corresp="http://d-nb.info/gnd/4065109-5">Weimarer Republik</date> standen in
+                    einer komplexen Wechselbeziehung, wie das Beispiel von <placeName ref="http://vocab.getty.edu/tgn/7005289">Hamburg</placeName> und <placeName ref="http://vocab.getty.edu/tgn/7003669">Bayern</placeName> zeigt. Es gab
                     vielmehr Verflechtungen auch über nationale Grenzen hinweg. Um den Anordnungen
-                    seines Vorgesetzten Rechnung zu tragen, kontaktierte <persName ref="nognd"
-                        >Neumann</persName> den Hamburger <ref type="editorialNote"
-                        target="#Rabbiner">Oberrabbiner</ref> Dr. <persName
-                        ref="http://d-nb.info/gnd/1032144750">Samuel Spitzer</persName> (<date
-                        when="1872">1872</date>-<date when="1934">1934</date>). In dem Briefwechsel
-                    ging es vornehmlich um die Anschaffung der neuen <ref type="editorialNote"
-                        target="#Weinbergscher Apparat">Niederlegevorrichtung</ref>, während das
-                    andernorts heiß umkämpfte Thema der neuartigen, elektrischen Betäubung und ihrer
-                    Zulässigkeit beim <ref type="editorialNote" target="#Schächten">Schächten</ref>
-                    nicht berührt wurde. Der Schlachthofdirektor hatte große wirtschaftliche
+                    seines Vorgesetzten Rechnung zu tragen, kontaktierte <persName ref="nognd">Neumann</persName> den Hamburger <ref type="editorialNote" target="#Rabbiner"><roleName>Oberrabbiner</roleName></ref>
+                    <roleName>Dr.</roleName>
+                    <persName ref="http://d-nb.info/gnd/1032144750">Samuel Spitzer</persName>. In
+                    dem Briefwechsel ging es vornehmlich um die Anschaffung der neuen
+                        Niederlegevorrichtung<note type="editorial" place="foot">s.o. „Weinbergscher
+                        Apparat“</note>, während das andernorts heiß umkämpfte Thema der neuartigen,
+                    elektrischen Betäubung und ihrer Zulässigkeit beim <ref type="editorialNote" target="#Schächten">Schächten</ref> nicht berührt wurde. Der
+                        <roleName>Schlachthofdirektor</roleName> hatte große wirtschaftliche
                     Bedenken, den jüdischen Bürgern die Betäubung des Schlachtviehs vorzuschreiben.
                     Er befürchtete, dass sie in diesem Fall auf das Hamburger Umland ausweichen
-                    würden, was für den Schlachthof schmerzhafte finanzielle Einbußen bedeutet
-                    hätte. In der Tat wäre es – im Vergleich zum Flächenstaat <placeName
-                        ref="http://vocab.getty.edu/tgn/7003669">Bayern</placeName> – in <placeName
-                        ref="http://vocab.getty.edu/tgn/7005289">Hamburg</placeName> ein Leichtes
+                    würden, was für den <orgName ref="http://d-nb.info/gnd/10038408-0">Schlachthof</orgName> schmerzhafte finanzielle Einbußen bedeutet hätte. In
+                    der Tat wäre es – im Vergleich zum Flächenstaat <placeName ref="http://vocab.getty.edu/tgn/7003669">Bayern</placeName> – in <placeName ref="http://vocab.getty.edu/tgn/7005289">Hamburg</placeName> ein Leichtes
                     gewesen, die <ref type="editorialNote" target="#Schächten">Schächtungen</ref>
-                    beispielsweise nach <placeName ref="http://vocab.getty.edu/tgn/7012310 "
-                        >Altona</placeName> zu verlegen, das damals zu <placeName
-                        ref="http://d-nb.info/gnd/4047194-9">Preußen</placeName> gehörte. Zum <ref
-                        type="editorialNote" target="#Weinbergscher Apparat">Umlegeapparat</ref> gab
-                        <persName ref="http://d-nb.info/gnd/1032144750">Spitzer</persName> an,
-                    nicht im Bilde zu sein. Er sagte aber zu, sich bei der <orgName
-                        ref="http://d-nb.info/573202834 "
-                        ><?oxy_comment_start author="jankawlath" timestamp="20160303T144856+0100" comment="@ Inka: Die Reichzentrale taucht im dnb-Link nur als Verleger auf. Es gibt keinen eigene Eintrag zur Reichszentrale. Trotzdem verlinken?"?>Reichszentrale
-                        für Schächtangelegenheiten<?oxy_comment_end?></orgName> in <placeName
-                        ref="http://vocab.getty.edu/tgn/7003712">Berlin</placeName> zu informieren
-                    und dann Stellung zu nehmen. Die von dem orthodoxen <ref type="editorialNote"
-                        target="#Rabbiner">Rabbiner</ref>
-                    <persName ref="http://d-nb.info/gnd/127663355">Esra Munk</persName> (<date
-                        when="1867">1867</date>-<date when="1940">1940</date>) zur Abwehr der
-                    Schächtgegner gegründete und geleitete Stelle entfaltete bereits seit mehreren
-                    Jahren reichsweit verschiedene Aktivitäten – unter anderem überwachte sie auch
-                    diverse Versuche, die sowohl mit elektrischer Betäubung als auch mit dem <ref
-                        type="editorialNote" target="#Weinbergscher Apparat">Weinbergschen
-                        Apparat</ref> durchgeführt wurden. So konnte <persName
-                        ref="http://d-nb.info/gnd/1032144750">Spitzer</persName> den Bemühungen des
-                    Schlachthofdirektors, die Sache in <placeName
-                        ref="http://vocab.getty.edu/tgn/7005289">Hamburg</placeName> zu forcieren,
+                    beispielsweise nach <placeName ref="http://vocab.getty.edu/tgn/7012310">Altona</placeName> zu verlegen, das damals zu <placeName ref="http://d-nb.info/gnd/4047194-9">Preußen</placeName> gehörte. Zum
+                        Umlegeapparat<note type="editorial" place="foot">s.o. „Weinbergscher
+                        Apparat“</note> gab <persName ref="http://d-nb.info/gnd/1032144750">Spitzer</persName> an, nicht im Bilde zu sein. Er sagte aber zu, sich bei
+                    der <orgName ref="nognd">Reichszentrale für Schächtangelegenheiten</orgName> in
+                        <placeName ref="http://vocab.getty.edu/tgn/7003712">Berlin</placeName> zu
+                    informieren und dann Stellung zu nehmen. Die von dem orthodoxen <ref type="editorialNote" target="#Rabbiner">Rabbiner</ref>
+                    <persName ref="http://d-nb.info/gnd/127663355">Esra Munk</persName> zur Abwehr
+                    der Schächtgegner gegründete und geleitete Stelle entfaltete bereits seit
+                    mehreren Jahren reichsweit verschiedene Aktivitäten – unter anderem überwachte
+                    sie auch diverse Versuche, die sowohl mit elektrischer Betäubung als auch mit
+                    dem Weinbergschen Apparat<note type="editorial" place="foot">s.o. „Weinbergscher
+                        Apparat“</note> durchgeführt wurden. So konnte <persName ref="http://d-nb.info/gnd/1032144750">Spitzer</persName> den Bemühungen des
+                        <roleName>Schlachthofdirektor</roleName>, die Sache in <placeName ref="http://vocab.getty.edu/tgn/7005289">Hamburg</placeName> zu forcieren,
                     wiederholt mit dem Verweis auf anderweitig laufende Tests entgegenwirken.
-                    Exemplarisch hierfür steht seine lakonisch ablehnende Antwort an <persName
-                        ref="nognd">Neumann</persName> vom <date when="1930-04-02">2. April
+                    Exemplarisch hierfür steht seine lakonisch ablehnende Antwort an <persName ref="nognd">Neumann</persName> vom <date when="1930-04-02">2. April
                         1930</date>, nachdem dieser nahegelegt hatte, die Hamburger jüdische
-                    Gemeinde möge den <ref type="editorialNote" target="#Weinbergscher Apparat"
-                        >Apparat</ref> doch selbst erwerben und testen. Als der Schlachthofdirektor
-                    ein halbes Jahr später erneut an den <ref type="editorialNote"
-                        target="#Weinbergscher Apparat">Niederlegeapparat</ref> erinnerte, erteilte
-                    der <ref type="editorialNote" target="#Rabbiner">Rabbiner</ref> der ganzen
-                    Angelegenheit endgültig eine Absage: Wie dem Bericht <persName ref="nognd"
-                        >Neumanns</persName> an <persName ref="http://d-nb.info/gnd/126185530 "
-                        >Heidecker</persName> vom <date when="1930-10-17">17. Oktober 1930</date>
-                    und dem angehängten Schreiben des <ref type="editorialNote" target="#Rabbiner"
-                        >Oberrabbiners</ref> zu entnehmen ist, hatte <persName
-                        ref="http://d-nb.info/gnd/1032144750">Spitzer</persName> signalisiert, er
-                    nehme an, „der <ref type="editorialNote" target="#Weinbergscher Apparat"
-                        >Apparat</ref> [sei] für untauglich befunden worden“.</p></div>
-            <div n="2"><head>Die Disskusion erhält eine politische Ebene</head><lb/>
-                <p>In seiner Antwort auf den Bericht des Schlachthofdirektors ging <persName
-                        ref="http://d-nb.info/gnd/126185530">Heidecker</persName> nicht mehr auf
-                    den <ref type="editorialNote" target="#Weinbergscher Apparat"
-                        >Niederlegeapparat</ref> ein. Stattdessen informierte der
-                        <roleName>Staatsrat</roleName> über die Pläne des <orgName
-                        ref="http://d-nb.info/gnd/2028248-5">Senats</orgName>, mit dem <ref
-                        type="editorialNote" target="#Rabbiner">Oberrabbiner</ref> über die Frage
-                    der elektrischen Betäubung zu sprechen. Dass sich nun auch der <roleName>Zweite
+                    Gemeinde möge den Apparat<note type="editorial" place="foot">s.o. „Weinbergscher
+                        Apparat“</note> doch selbst erwerben und testen. Als der
+                        <roleName>Schlachthofdirektor</roleName> ein halbes Jahr später erneut an
+                    den Niederlegeapparat<note type="editorial" place="foot">s.o. „Weinbergscher
+                        Apparat“</note> erinnerte, erteilte der <ref type="editorialNote" target="#Rabbiner">Rabbiner</ref> der ganzen Angelegenheit endgültig eine
+                    Absage: Wie dem Bericht <persName ref="nognd">Neumanns</persName> an <persName ref="nognd">Heidecker</persName> vom <date when="1930-10-17">17. Oktober
+                        1930</date> und dem angehängten Schreiben des <ref type="editorialNote" target="#Rabbiner"><roleName>Oberrabbiner</roleName></ref> zu entnehmen ist,
+                    hatte <persName ref="http://d-nb.info/gnd/1032144750">Spitzer</persName>
+                    signalisiert, er nehme an, „der Apparat<note type="editorial" place="foot">s.o.
+                        „Weinbergscher Apparat“</note> [sei] für untauglich befunden worden“.</p>
+            </div>
+            <div n="2">
+                <head>Die Diskussion erhält eine politische Ebene</head>
+                <lb/>
+                <p>In seiner Antwort auf den Bericht des <roleName>Schlachthofdirektors</roleName>
+                    ging <persName ref="nognd">Heidecker</persName> nicht mehr auf den
+                        Niederlegeapparat<note type="editorial" place="foot">s.o. „Weinbergscher
+                        Apparat“</note> ein. Stattdessen informierte der
+                        <roleName>Staatsrat</roleName> über die Pläne des <orgName ref="http://d-nb.info/gnd/2028248-5">Senats</orgName>, mit dem <ref type="editorialNote" target="#Rabbiner"><roleName>Oberrabbiner</roleName></ref> über die Frage der elektrischen
+                    Betäubung zu sprechen. Dass sich nun auch der <roleName>Zweite
                         Bürgermeister</roleName>
-                    <persName ref="http://d-nb.info/gnd/118740245">Carl Petersen</persName> (<date
-                        when="1868">1868</date>-<date when="1933">1933</date>) der Schächtfrage
-                    annehmen wollte, zeugt von der Bedeutung, die dem Thema inzwischen beigemessen
-                    wurde. Damit hob der in jüdischen Belangen vergleichsweise tolerante <orgName
-                        ref="http://d-nb.info/gnd/2028248-5">Hamburger Senat</orgName> die
+                    <persName ref="http://d-nb.info/gnd/118740245">Carl Petersen</persName> der <ref type="editorialNote" target="#Schächten">Schächtfrage</ref> annehmen wollte,
+                    zeugt von der Bedeutung, die dem Thema inzwischen beigemessen wurde. Damit hob
+                    der in jüdischen Belangen vergleichsweise tolerante <orgName ref="http://d-nb.info/gnd/2028248-5">Hamburger Senat</orgName> die
                     Angelegenheit von der bis dahin reinen Verwaltungs- auf die politische Ebene und
-                    entzog dem Leiter der <orgName ref="http://d-nb.info/gnd/10068294-7 "
-                        >Wirtschaftsbehörde</orgName> die Verantwortung. Nach der Erfahrung des
-                    nationalsozialistischen Erdrutscherfolgs bei den Septemberwahlen zum <orgName
-                        ref="http://d-nb.info/gnd/35236-6">Reichstag</orgName>
-                    <date when="1930">1930</date> und mit Blick auf die nächsten Bürgerschaftswahlen
-                    hegte die Hamburger sozial-liberale Koalition möglicherweise die Befürchtung,
-                    das Schächtthema könnte ein populistisches und <ref type="editorialNote"
-                        target="#Antisemitismus">antisemitisches</ref> Potenzial in sich bergen, dem
-                    es rechtzeitig vorzubeugen gelte. Jedenfalls scheint der <orgName
-                        ref="http://d-nb.info/gnd/2028248-5">Senat</orgName> mit seiner
-                    Entscheidung <persName ref="http://d-nb.info/gnd/126185530 "
-                        >Heidecker</persName>, der für die jüdische Position nur wenig Verständnis
-                    gezeigt und auf die Einführung des Betäubungszwangs bei <ref
-                        type="editorialNote" target="#Schächten">Schächtungen</ref> hingearbeitet
-                    hatte, von weiteren Verhandlungen mit der jüdischen Gemeinde ausgeschlossen zu
-                    haben. Wie diese Verhandlungen dann im Einzelnen weiter verliefen, ist zwar
-                    nicht bekannt, aber ein Betäubungszwang wurde in <placeName
-                        ref="http://vocab.getty.edu/tgn/7005289">Hamburg</placeName> erst nach der
-                    nationalsozialistischen Machtübernahme im Jahr <date when="1933">1933</date>
-                    verwirklicht.</p></div>
-            <div n="2"><head>Besonderheiten der Hamburger Disskusion</head><lb/>
-                <p>Insgesamt verdeutlicht die Korrespondenz also, warum es in <placeName
-                        ref="http://vocab.getty.edu/tgn/7005289">Hamburg</placeName> nicht wie in
-                    vielen anderen Ländern in der <date when="1918"><date when="1933">Weimarer
-                            Zeit</date></date> zu einem Schächtverbot oder zu einer
-                    parlamentarischen Schächtdebatte kam: Im Stadtstaat <placeName
-                        ref="http://vocab.getty.edu/tgn/7005289">Hamburg</placeName> hätte ein
+                    entzog dem <roleName>Leiter</roleName> der <orgName ref="http://d-nb.info/gnd/10068294-7">Wirtschaftsbehörde</orgName> die
+                    Verantwortung. Nach der Erfahrung des nationalsozialistischen Erdrutscherfolgs
+                    bei den <date when="1930-09-14">Septemberwahlen zum <orgName ref="http://d-nb.info/gnd/35236-6">Reichstag</orgName> 1930</date> und
+                    mit Blick auf die nächsten Bürgerschaftswahlen hegte die Hamburger
+                    sozial-liberale Koalition möglicherweise die Befürchtung, das Schächtthema
+                    könnte ein populistisches und <ref type="editorialNote" target="#Antisemitismus">antisemitisches</ref> Potenzial in sich bergen, dem es rechtzeitig
+                    vorzubeugen gelte. Jedenfalls scheint der <orgName ref="http://d-nb.info/gnd/2028248-5">Senat</orgName> mit seiner Entscheidung
+                        <persName ref="nognd">Heidecker</persName>, der für die jüdische Position
+                    nur wenig Verständnis gezeigt und auf die Einführung des Betäubungszwangs bei
+                        <ref type="editorialNote" target="#Schächten">Schächtungen</ref>
+                    hingearbeitet hatte, von weiteren Verhandlungen mit der <orgName ref="http://d-nb.info/gnd/236077-9">jüdischen Gemeinde</orgName>
+                    ausgeschlossen zu haben. Wie diese Verhandlungen dann im Einzelnen weiter
+                    verliefen, ist zwar nicht bekannt, aber ein Betäubungszwang wurde in <placeName ref="http://vocab.getty.edu/tgn/7005289">Hamburg</placeName> erst nach der
+                    nationalsozialistischen Machtübernahme im Jahr <date when="1933-01-30">1933</date> verwirklicht.</p>
+            </div>
+            <div n="2">
+                <head>Besonderheiten der Hamburger Diskussion</head>
+                <lb/>
+                <p>Insgesamt verdeutlicht die Korrespondenz also, warum es in <placeName ref="http://vocab.getty.edu/tgn/7005289">Hamburg</placeName> nicht wie in
+                    vielen anderen Ländern in der <date corresp="http://d-nb.info/gnd/4065109-5">Weimarer Zeit</date> zu einem Schächtverbot oder zu einer parlamentarischen
+                    Schächtdebatte kam: Im Stadtstaat <placeName ref="http://vocab.getty.edu/tgn/7005289">Hamburg</placeName> hätte ein
                     Verbot die <ref type="editorialNote" target="#Schächten">Schächtungen</ref>
                     nicht verhindert, sondern lediglich verlagert und so wirtschaftlichen Schaden
-                    verursacht. Obendrein waren im sozial-liberal regierten <placeName
-                        ref="http://vocab.getty.edu/tgn/7005289">Hamburg</placeName> die politischen
+                    verursacht. Obendrein waren im sozial-liberal regierten <placeName ref="http://vocab.getty.edu/tgn/7005289">Hamburg</placeName> die politischen
                     Voraussetzungen nicht gegeben. Schließlich geben die Dokumente einen Einblick in
                     das Wirken <persName ref="http://d-nb.info/gnd/1032144750">Samuel
                         Spitzers</persName>, das infolge der schlechten Quellenlage und im Gegensatz
                     zu dem seines Nachfolgers <persName ref="http://d-nb.info/gnd/119066823">Joseph
-                        Carlebach</persName> bis heute noch kaum erforscht ist.</p></div>
-            <div n="3"><head>Auswahlbibliographie</head><lb/>
-            <listBibl>
-                <bibl>Dorothee Ingeborg Brantz, Stunning Bodies. Animal Slaughter, Judaism, and the Meaning of Humanity in Imperial Germany, in: Central European History 35 (2002)2, S. 167-194.</bibl><lb/>
-                <bibl>Robin Judd, Contested Rituals. Circumcision, Kosher Butchering, and Jewish Political Life in Germany, 1843-1933, Ithaca 2007.</bibl>
-            </listBibl></div>
+                        Carlebach</persName> bis heute noch kaum erforscht ist.</p>
+            </div>
+            <div n="3">
+                <head>Auswahlbibliografie</head>
+                <lb/>
+                <listBibl>
+                    <bibl corresp="Brantz_2002">Dorothee Ingeborg Brantz, Stunning Bodies. Animal
+                        Slaughter, Judaism, and the Meaning of Humanity in Imperial Germany, in:
+                        Central European History 35 (2002) 2, S. 167–194.</bibl>
+                    <lb/>
+                    <bibl corresp="Judd_2007">Robin Judd, Contested Rituals. Circumcision, Kosher
+                        Butchering, and Jewish Political Life in Germany, 1843–1933, Ithaca
+                        2007.</bibl>
+                </listBibl>
+            </div>
         </body>
     </text>
 </TEI>

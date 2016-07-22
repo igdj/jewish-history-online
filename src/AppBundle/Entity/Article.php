@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorColumn(name="genre", type="string")
  * @ORM\DiscriminatorMap({"interpretation" = "Article", "source" = "SourceArticle"})
  */
-class Article
+class Article implements \JsonSerializable
 {
     static function formatDateIncomplete($dateStr)
     {
@@ -51,15 +51,48 @@ class Article
      * @var ArrayCollection<Person> The author of this content. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably.
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Person", inversedBy="articles")
-     * @ORM\JoinTable(inverseJoinColumns={@ORM\JoinColumn(unique=true)})
      */
     protected $author;
+    /**
+     * @var Person Organization or person who adapts a creative work to different languages, regional differences and technical requirements of a target market, or that translates during some event..
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Person")
+     */
+    protected $translator;
+
+    /**
+     * @var string
+     *
+     * @Assert\Type(type="string")
+     * @ORM\Column(nullable=true)
+     */
+    protected $translatedFrom;
+
     /**
      * @var Place The location depicted or described in the content.
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Place", inversedBy="articles")
      */
     protected $contentLocation;
+
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="ArticlePerson", mappedBy="article", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+     */
+    protected $personReferences;
+
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="ArticleOrganization", mappedBy="article", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+     */
+    protected $organizationReferences;
+
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="ArticlePlace", mappedBy="article", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+     */
+    protected $placeReferences;
+
     /**
      * @var string The creator/author of this CreativeWork.
      * @ORM\Column(type="string", nullable=true)
@@ -85,6 +118,13 @@ class Article
      * @ORM\Column(type="date", nullable=true)
      */
     protected $datePublished;
+    /**
+     * @var \DateTime The date on which the CreativeWork was most recently modified or when the item's entry was modified .
+     *
+     * @Assert\Date
+     * @ORM\Column(type="date", nullable=true)
+     */
+    protected $dateModified;
     /**
      * @var Article Indicates a CreativeWork that this CreativeWork is (in some sense) part of.
      *
@@ -164,6 +204,9 @@ class Article
     public function __construct()
     {
         $this->author = new ArrayCollection();
+        $this->personReferences = new ArrayCollection();
+        $this->placeReferences = new ArrayCollection();
+        $this->organizationReferences = new ArrayCollection();
     }
 
     /**
@@ -213,7 +256,8 @@ class Article
     {
         return $this->status;
     }
-    
+
+
     /**
      * Adds author.
      *
@@ -253,9 +297,106 @@ class Article
     }
 
     /**
+     * Sets translator.
+     *
+     * @param Translator $translator
+     *
+     * @return $this
+     */
+    public function setTranslator(Person $translator)
+    {
+        $this->translator = $translator;
+
+        return $this;
+    }
+
+    /**
+     * Gets Translator.
+     *
+     * @return Person|null
+     */
+    public function getTranslator()
+    {
+        return $this->translator;
+    }
+
+    /**
+     * Sets language from which it was translated.
+     *
+     * @param string $translatedFrom
+     *
+     * @return $this
+     */
+    public function setTranslatedFrom($translatedFrom)
+    {
+        $this->translatedFrom = $translatedFrom;
+
+        return $this;
+    }
+
+    /**
+     * Gets language from which it was translated.
+     *
+     * @return string
+     */
+    public function getTranslatedFrom()
+    {
+        return $this->translatedFrom;
+    }
+
+
+    /**
+     * Sets content location.
+     *
+     * @param Place $contentLocation
+     *
+     * @return $this
+     */
+    public function setContentLocation(Place $contentLocation)
+    {
+        $this->contentLocation = $contentLocation;
+
+        return $this;
+    }
+
+    /**
+     * Gets content location.
+     *
+     * @return Place
+     */
+    public function getContentLocation()
+    {
+        return $this->contentLocation;
+    }
+
+    /**
+     * Sets creator.
+     *
+     * @param string $creator
+     *
+     * @return $this
+     */
+    public function setCreator($creator = null)
+    {
+        $this->creator = $creator;
+
+        return $this;
+    }
+
+    /**
+     * Gets creator.
+     *
+     * @return string
+     */
+    public function getCreator()
+    {
+        return $this->creator;
+    }
+
+    /**
      * Sets dateCreated.
      *
-     * @param string $datePublished
+     * @param string $dateCreated
      *
      * @return $this
      */
@@ -274,6 +415,30 @@ class Article
     public function getDateCreated()
     {
         return $this->dateCreated;
+    }
+
+    /**
+     * Sets dateCreatedDisplay.
+     *
+     * @param string $dateCreatedDisplay
+     *
+     * @return $this
+     */
+    public function setDateCreatedDisplay($dateCreatedDisplay = null)
+    {
+        $this->dateCreatedDisplay = $dateCreatedDisplay;
+
+        return $this;
+    }
+
+    /**
+     * Gets dateCreatedDisplay.
+     *
+     * @return string
+     */
+    public function getDateCreatedDisplay()
+    {
+        return $this->dateCreatedDisplay;
     }
 
     /**
@@ -301,18 +466,42 @@ class Article
     }
 
     /**
+     * Sets dateModified.
+     *
+     * @param \DateTime $dateModified
+     *
+     * @return $this
+     */
+    public function setDateModified(\DateTime $dateModified = null)
+    {
+        $this->dateModified = $dateModified;
+
+        return $this;
+    }
+
+    /**
+     * Gets dateModified.
+     *
+     * @return \DateTime
+     */
+    public function getDateModified()
+    {
+        return $this->dateModified;
+    }
+
+    /**
      * Sets genre.
      *
      * @param string $genre
      *
      * @return $this
-     */
     public function setGenre($genre)
     {
         $this->genre = $genre;
 
         return $this;
     }
+     */
 
     /**
      * Gets genre.
@@ -321,7 +510,7 @@ class Article
      */
     public function getGenre()
     {
-        return $this->genre;
+        return $this instanceof SourceArticle ? 'source' : 'interpretation';
     }
 
     /**
@@ -346,6 +535,54 @@ class Article
     public function getIsPartOf()
     {
         return $this->isPartOf;
+    }
+
+    /**
+     * Sets provider.
+     *
+     * @param Organization $provider
+     *
+     * @return $this
+     */
+    public function setProvider(Organization $provider)
+    {
+        $this->provider = $provider;
+
+        return $this;
+    }
+
+    /**
+     * Gets provider.
+     *
+     * @return Organization
+     */
+    public function getProvider()
+    {
+        return $this->provider;
+    }
+
+    /**
+     * Sets providerIdno.
+     *
+     * @param string $providerIdno
+     *
+     * @return $this
+     */
+    public function setProviderIdno($providerIdno)
+    {
+        $this->providerIdno = $providerIdno;
+
+        return $this;
+    }
+
+    /**
+     * Gets providerIdno.
+     *
+     * @return string
+     */
+    public function getProviderIdno()
+    {
+        return $this->providerIdno;
     }
 
     /**
@@ -535,8 +772,81 @@ class Article
      *
      * @return string
      */
-    public function getSlug()
+    public function getSlug($fallback = false)
     {
+        if (empty($this->slug) && $fallback) {
+            return $this->getUid();
+        }
+
         return $this->slug;
+    }
+
+    public function addPersonReference(ArticleEntity $entityReference)
+    {
+        $entityId = $entityReference->getEntity()->getId();
+        if (!$this->personReferences->exists(
+            function ($key, $element) use ($entityId) {
+                return $element->getEntity()->getId() == $entityId;
+            }))
+        {
+            $this->personReferences->add($entityReference);
+            $entityReference->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function addOrganizationReference(ArticleEntity $entityReference)
+    {
+        $entityId = $entityReference->getEntity()->getId();
+        if (!$this->organizationReferences->exists(
+            function ($key, $element) use ($entityId) {
+                return $element->getEntity()->getId() == $entityId;
+            }))
+        {
+            $this->organizationReferences->add($entityReference);
+            $entityReference->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function addPlaceReference(ArticleEntity $entityReference)
+    {
+        $entityId = $entityReference->getEntity()->getId();
+        if (!$this->placeReferences->exists(
+            function ($key, $element) use ($entityId) {
+                return $element->getEntity()->getId() == $entityId;
+            }))
+        {
+            $this->placeReferences->add($entityReference);
+            $entityReference->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'uid' => $this->uid,
+            'slug' => $this->slug,
+            'status' => $this->status,
+            'name' => $this->name,
+            'creator' => $this->creator,
+            'author' => $this->author,
+            'translator' => $this->translator,
+            'contentLocation' => $this->contentLocation,
+            'provider' => $this->provider,
+            'providerIdno' => $this->providerIdno,
+            'dateCreated' => $this->dateCreated,
+            'dateCreatedDisplay' => $this->dateCreatedDisplay,
+            'sourceType' => $this->sourceType,
+            'genre' => isset($this->genre) ? $this->genre : null,
+            'keywords' => $this->keywords,
+            'language' => $this->language,
+            'translatedFrom' => $this->translatedFrom,
+        ];
     }
 }

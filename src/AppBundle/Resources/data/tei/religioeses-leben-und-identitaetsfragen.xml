@@ -21,10 +21,10 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
                     <address><addrLine>Beim Schlump 83, 20144 Hamburg</addrLine></address>
                 </publisher>
                 <pubPlace>Hamburg</pubPlace>
-                <date type="publication">2016-09-01</date>
+                <date type="firstPublication">2016-09-22</date>
                 <availability>
                     <licence target="http://creativecommons.org/licenses/by-nc-nd/4.0/">
-                        <p>Dieser Text unterliegt den Bedingungen der Creative Commons Namensnennung - Nicht kommerziell - Keine Bearbeitungen 4.0 International Lizenz. Unter Namensnenung gemäß dem Zitationshinweis darf er in unveränderter Form für nicht-kommerzielle Zwecke nachgenutzt werden.</p>
+                        <p>Dieser Text unterliegt den Bedingungen der Creative Commons Namensnennung - Nicht kommerziell - Keine Bearbeitungen 4.0 International Lizenz. Unter Namensnennung gemäß der Zitationsempfehlung darf er in unveränderter Form für nicht-kommerzielle Zwecke nachgenutzt werden.</p>
                     </licence>
                 </availability>
                 <idno>

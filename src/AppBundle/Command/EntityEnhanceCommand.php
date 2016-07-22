@@ -20,7 +20,7 @@ class EntityEnhanceCommand extends ContainerAwareCommand
             ->addArgument(
                 'type',
                 InputArgument::REQUIRED,
-                'which entities do you want to enhance (Person / Place)'
+                'which entities do you want to enhance (person / place)'
             )
             ;
     }
@@ -258,7 +258,7 @@ class EntityEnhanceCommand extends ContainerAwareCommand
                                                  'geonames' => null]);
             foreach ($places as $place) {
                 $geo = $place->getGeo();
-                if (empty($geo)) {
+                if (empty($geo) || false === strpos($geo, ':')) {
                     continue;
                 }
                 $persist = false;

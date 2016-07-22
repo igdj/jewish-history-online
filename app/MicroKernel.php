@@ -100,7 +100,7 @@ class MicroKernel extends Kernel
         $routes->mount('/', $routes->import('@AppBundle/Controller', 'annotation'));
         */
 
-        $routes->add('/', 'AppBundle:Default:index', 'home');
+        $routes->add('/preview', 'AppBundle:Default:index', 'home');
         $routes->add('/about', 'AppBundle:About:about', 'about');
         $routes->add('/about/staff', 'AppBundle:About:staff', 'about-staff');
         $routes->add('/about/editors', 'AppBundle:About:editors', 'about-editors');
@@ -110,16 +110,15 @@ class MicroKernel extends Kernel
         $routes->add('/terms', 'AppBundle:About:terms', 'terms');
 
         $routes->add('/topic', 'AppBundle:Topic:index', 'topic-index');
+
         $routes->add('/topic/{slug}', 'AppBundle:Topic:background', 'topic-background');
+        $routes->add('/article/{slug}', 'AppBundle:Article:article', 'article');
+        $routes->add('/source/{uid}', 'AppBundle:Source:sourceViewer', 'source');
 
         $routes->add('/map', 'AppBundle:Place:map', 'place-map');
+        $routes->add('/map/popup-content/{ids}', 'AppBundle:Place:mapPopupContent', 'place-map-popup-content');
 
         $routes->add('/chronology', 'AppBundle:Date:chronology', 'date-chronology');
-
-        $routes->add('/article/{slug}', 'AppBundle:Article:articleBySlug', 'article');
-        // $routes->add('/source/{uid}', 'AppBundle:Article:sourceByUid', 'source');
-        $routes->add('/source/{uid}', 'AppBundle:Article:sourceViewerByUid', 'source');
-        $routes->add('/source/{uid}/viewer', 'AppBundle:Article:sourceViewerByUid', 'source-viewer');
 
         $routes->add('/person', 'AppBundle:Person:index', 'person-index');
         $routes->add('/person/{id}', 'AppBundle:Person:detail', 'person');

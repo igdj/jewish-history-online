@@ -13,7 +13,7 @@ use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 abstract class BaseEntityCommand extends ContainerAwareCommand
 {
-    protected function insertMissingPerson($uri)
+    protected function buildPersonConditionByUri($uri)
     {
         $condition = null;
 
@@ -24,19 +24,32 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
             $condition = [ 'gnd' => $matches[1] ];
         }
 
-        if (!isset($condition)) {
+        return $condition;
+    }
+
+    protected function findPersonByUri($uri)
+    {
+        $condition = $this->buildPersonConditionByUri($uri);
+
+        if (is_null($condition)) {
             die('Currently not handling ' . $uri);
             return -1;
         }
 
-
         $em = $this->getContainer()->get('doctrine')->getEntityManager();
-        $person = $em->getRepository('AppBundle\Entity\Person')->findOneBy($condition);
+        return $em->getRepository('AppBundle\Entity\Person')->findOneBy($condition);
+    }
+
+    protected function insertMissingPerson($uri)
+    {
+        $person = $this->findPersonByUri($uri);
         if (!is_null($person)) {
             return 0;
         }
 
+        $em = $this->getContainer()->get('doctrine')->getEntityManager();
         $person = new \AppBundle\Entity\Person();
+        $condition = $this->buildPersonConditionByUri($uri);
         foreach ($condition as $field => $value) {
             switch ($field) {
                 case 'gnd':
@@ -85,7 +98,92 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
         return 1;
     }
 
-    protected function insertMissingPlace($uri, $additional = [])
+    protected function buildOrganizationConditionByUri($uri)
+    {
+        $condition = null;
+
+        if (preg_match('/^'
+                       . preg_quote('http://d-nb.info/gnd/', '/')
+                       . '(\d+\-?[\dxX]?)$/', $uri, $matches))
+        {
+            $condition = [ 'gnd' => $matches[1] ];
+        }
+
+        return $condition;
+    }
+
+    protected function findOrganizationByUri($uri)
+    {
+        $condition = $this->buildOrganizationConditionByUri($uri);
+
+        if (is_null($condition)) {
+            die('Currently not handling ' . $uri);
+            return -1;
+        }
+
+        $em = $this->getContainer()->get('doctrine')->getEntityManager();
+        return $em->getRepository('AppBundle\Entity\Organization')->findOneBy($condition);
+    }
+
+    protected function insertMissingOrganization($uri)
+    {
+        $organization = $this->findOrganizationByUri($uri);
+        if (!is_null($organization)) {
+            return 0;
+        }
+
+        $em = $this->getContainer()->get('doctrine')->getEntityManager();
+        $organization = new \AppBundle\Entity\Organization();
+        $condition = $this->buildOrganizationConditionByUri($uri);
+        foreach ($condition as $field => $value) {
+            switch ($field) {
+                case 'gnd':
+                    $corporateBody = \AppBundle\Utils\CorporateBodyData::fetchByGnd($value);
+                    if (is_null($corporateBody) || !$corporateBody->isDifferentiated) {
+                        return -1;
+                    }
+                    var_dump($corporateBody);
+                    // TODO: use hydrator
+                    foreach ([
+                              'preferredName',
+                              'dateOfEstablishment',
+                              // 'dateOfDeath',
+                              'biographicalInformation',
+                              ] as $src)
+                    {
+                        if (!empty($corporateBody->{$src})) {
+                            switch ($src) {
+                                case 'preferredName':
+                                    $organization->setName($corporateBody->{$src});
+                                    break;
+                                case 'dateOfEstablishment':
+                                    $organization->setFoundingDate($corporateBody->{$src});
+                                    break;
+                                case 'dateOfTermination':
+                                    $organization->setDissolutionDate($corporateBody->{$src});
+                                    break;
+                                case 'biographicalInformation':
+                                    $organization->setDescription([ 'de' => $corporateBody->{$src} ]);
+                                    break;
+
+                                case 'homepage':
+                                    $organization->setUrl($corporateBody->{$src});
+                                    break;
+                            }
+                        }
+                    }
+                    $organization->setGnd($value);
+                    break;
+                default:
+                    die('TODO: handle field ' . $field);
+            }
+        }
+        $em->persist($organization);
+        $em->flush();
+        return 1;
+    }
+
+    protected function buildPlaceConditionByUri($uri)
     {
         $condition = null;
 
@@ -96,19 +194,32 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
             $condition = [ 'tgn' => $matches[1] ];
         }
 
-        if (!isset($condition)) {
+        return $condition;
+    }
+
+    protected function findPlaceByUri($uri)
+    {
+        $condition = $this->buildPlaceConditionByUri($uri);
+
+        if (is_null($condition)) {
             die('Currently not handling ' . $uri);
-            return -1;
+            return;
         }
 
-
         $em = $this->getContainer()->get('doctrine')->getEntityManager();
-        $entity = $em->getRepository('AppBundle\Entity\Place')->findOneBy($condition);
+        return $em->getRepository('AppBundle\Entity\Place')->findOneBy($condition);
+    }
+
+    protected function insertMissingPlace($uri, $additional = [])
+    {
+        $entity = $this->findPlaceByUri($uri);
         if (!is_null($entity)) {
             return 0;
         }
 
+        $em = $this->getContainer()->get('doctrine')->getEntityManager();
         $entity = new \AppBundle\Entity\Place();
+        $condition = $this->buildPlaceConditionByUri($uri);
         foreach ($condition as $prefix => $value) {
             switch ($prefix) {
                 case 'tgn':
@@ -180,77 +291,4 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
         $em->flush();
         return 1;
     }
-
-    protected function insertMissingOrganization($uri)
-    {
-        $condition = null;
-
-        if (preg_match('/^'
-                       . preg_quote('http://d-nb.info/gnd/', '/')
-                       . '(\d+\-?[\dxX]?)$/', $uri, $matches))
-        {
-            $condition = [ 'gnd' => $matches[1] ];
-        }
-
-        if (!isset($condition)) {
-            die('Currently not handling ' . $uri);
-            return -1;
-        }
-
-
-        $em = $this->getContainer()->get('doctrine')->getEntityManager();
-        $organization = $em->getRepository('AppBundle\Entity\Organization')->findOneBy($condition);
-        if (!is_null($organization)) {
-            return 0;
-        }
-
-        $organization = new \AppBundle\Entity\Organization();
-        foreach ($condition as $field => $value) {
-            switch ($field) {
-                case 'gnd':
-                    $corporateBody = \AppBundle\Utils\CorporateBodyData::fetchByGnd($value);
-                    if (is_null($corporateBody) || !$corporateBody->isDifferentiated) {
-                        return -1;
-                    }
-                    var_dump($corporateBody);
-                    // TODO: use hydrator
-                    foreach ([
-                              'preferredName',
-                              'dateOfEstablishment',
-                              // 'dateOfDeath',
-                              'biographicalInformation',
-                              ] as $src)
-                    {
-                        if (!empty($corporateBody->{$src})) {
-                            switch ($src) {
-                                case 'preferredName':
-                                    $organization->setName($corporateBody->{$src});
-                                    break;
-                                case 'dateOfEstablishment':
-                                    $organization->setFoundingDate($corporateBody->{$src});
-                                    break;
-                                case 'dateOfTermination':
-                                    $organization->setDissolutionDate($corporateBody->{$src});
-                                    break;
-                                case 'biographicalInformation':
-                                    $organization->setDescription([ 'de' => $corporateBody->{$src} ]);
-                                    break;
-
-                                case 'homepage':
-                                    $organization->setUrl($corporateBody->{$src});
-                                    break;
-                            }
-                        }
-                    }
-                    $organization->setGnd($value);
-                    break;
-                default:
-                    die('TODO: handle field ' . $field);
-            }
-        }
-        $em->persist($organization);
-        $em->flush();
-        return 1;
-    }
-
 }

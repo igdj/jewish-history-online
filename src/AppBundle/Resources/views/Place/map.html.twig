@@ -1,222 +1,9 @@
 {% extends 'AppBundle:Default:base.html.twig' %}
+{% import 'AppBundle:Shared:map-leaflet.html.twig' as map %}
 
 {% block head %}
-    {{ parent() }}
-    <style>
-    #map-container {
-        /* margin-left: auto;
-        margin-right: auto; */
-        width: 100%;
-        min-height: 600px;
-        border: 1px solid white;
-    }
-    #map {
-        width: 100%;
-        height: 600px;
-    }
-    </style>
-    <script src="https://maps.googleapis.com/maps/api/js?language=de"></script>
-    <script src="{{ app.request.basepath }}/js/markerclusterer.js"></script>
-    <script type="text/javascript">
-    function instantiateGoogleMap(map_id, center, zoom)
-    {
-        var googleMapSettings = {
-            // center: center,
-            zoom: 6,
-            zoomControl: true,
-            zoomControlOptions: {
-                style: google.maps.ZoomControlStyle.SMALL,
-            },
-            disableDoubleClickZoom: true,
-            mapTypeControl: true,
-            mapTypeControlOptions: {
-                style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-            },
-            scaleControl: false,
-            scrollwheel: true,
-            panControl: false,
-            streetViewControl: true,
-            draggable : true,
-            overviewMapControl: true,
-            overviewMapControlOptions: {
-                opened: false,
-            },            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            styles: [
-              {
-                "featureType": "water",
-                "elementType": "geometry.fill",
-                "stylers": [
-                  { "color": "#d3d3d3" }
-                ]
-              },{
-                "featureType": "transit",
-                "stylers": [
-                  { "color": "#808080" },
-                  { "visibility": "off" }
-                ]
-              },{
-                "featureType": "road.highway",
-                "elementType": "geometry.stroke",
-                "stylers": [
-                  { "visibility": "on" },
-                  { "color": "#b3b3b3" }
-                ]
-              },{
-                "featureType": "road.highway",
-                "elementType": "geometry.fill",
-                "stylers": [
-                  { "color": "#ffffff" }
-                ]
-              },{
-                "featureType": "road.local",
-                "elementType": "geometry.fill",
-                "stylers": [
-                  { "visibility": "on" },
-                  { "color": "#ffffff" },
-                  { "weight": 1.8 }
-                ]
-              },{
-                "featureType": "road.local",
-                "elementType": "geometry.stroke",
-                "stylers": [
-                  { "color": "#d7d7d7" }
-                ]
-              },{
-                "featureType": "poi",
-                "elementType": "geometry.fill",
-                "stylers": [
-                  { "visibility": "on" },
-                  { "color": "#ebebeb" }
-                ]
-              },{
-                "featureType": "administrative",
-                "elementType": "geometry",
-                "stylers": [
-                  { "color": "#a7a7a7" }
-                ]
-              },{
-                "featureType": "road.arterial",
-                "elementType": "geometry.fill",
-                "stylers": [
-                  { "color": "#ffffff" }
-                ]
-              },{
-                "featureType": "road.arterial",
-                "elementType": "geometry.fill",
-                "stylers": [
-                  { "color": "#ffffff" }
-                ]
-              },{
-                "featureType": "landscape",
-                "elementType": "geometry.fill",
-                "stylers": [
-                  { "visibility": "on" },
-                  { "color": "#efefef" }
-                ]
-              },{
-                "featureType": "road",
-                "elementType": "labels.text.fill",
-                "stylers": [
-                  { "color": "#696969" }
-                ]
-              },{
-                "featureType": "administrative",
-                "elementType": "labels.text.fill",
-                "stylers": [
-                  { "visibility": "on" },
-                  { "color": "#737373" }
-                ]
-              },{
-                "featureType": "poi",
-                "elementType": "labels.icon",
-                "stylers": [
-                  { "visibility": "off" }
-                ]
-              },{
-                "featureType": "poi",
-                "elementType": "labels",
-                "stylers": [
-                  { "visibility": "off" }
-                ]
-              },{
-                "featureType": "road.arterial",
-                "elementType": "geometry.stroke",
-                "stylers": [
-                  { "color": "#d6d6d6" }
-                ]
-              },{
-                "featureType": "road",
-                "elementType": "labels.icon",
-                "stylers": [
-                  { "visibility": "off" }
-                ]
-              },{
-              },{
-                "featureType": "poi",
-                "elementType": "geometry.fill",
-                "stylers": [
-                  { "color": "#dadada" }
-                ]
-              }
-            ]
-        };
-        googleMapSettings.center = center;
-        googleMapSettings.zoom = zoom;
-        return new google.maps.Map(document.getElementById(map_id), googleMapSettings);
-    }
-
-    google.maps.event.addDomListener(window, 'load',
-        function () {
-            var center = new google.maps.LatLng(51.163375, 10.447683);
-            var map = instantiateGoogleMap('map', center, 6);
-
-            var iconBase = '{{ app.request.basepath }}/img/';
-            // see https://developers.google.com/maps/documentation/javascript/examples/icon-complex?hl=en
-            var markerIcon = {
-                    url: iconBase + "marker_medium.svg",
-                    anchor: new google.maps.Point(7,20),
-                    // scaledSize: new google.maps.Size(14,20)
-                    // size: new google.maps.Size(14,20)
-                    size: new google.maps.Size(22,32)
-            };
-
-            var markers = [];
-            var infowindow = new google.maps.InfoWindow({
-                content: ''
-            });
-            var data = {"locations":[{"id":52,"name":"Bauhaus Dessau","locality":"Dessau","latitude":"51.83933755","longitude":"12.22744159","infowindow":"<a href=\"#\">Some Source</a>"},
-                                                {"id":63,"name":"Freie Akademie der K\u00fcnste","locality":"Hamburg","latitude":"53.54854645","longitude":"10.00665435","infowindow":"<a href=\"#\"><b>Schreiben an Schlachthof- und Viehmarktverwaltung, Hamburg, 9.10.1930</b></a>"}
-                                    ]};
-            for (var i = 0; i < data.locations.length; i++) {
-              var dataLocation = data.locations[i];
-              var latLng = new google.maps.LatLng(dataLocation.latitude,
-                  dataLocation.longitude);
-              var marker = new google.maps.Marker({
-                position: latLng,
-                html: dataLocation.infowindow,
-                // icon: iconBase + 'marker.png'
-                icon: markerIcon
-              });
-              google.maps.event.addListener(marker, 'click', function() {
-                infowindow.setContent(this.html);
-                infowindow.open(map, this);
-              });
-
-              markers.push(marker);
-            }
-
-            var mcMarker = {
-                url: "{{ app.request.basepath }}/img/markerclusterer/m1.png",
-                width: 53,
-                height: 52
-            };
-
-            // 5 times same red marker
-            var mcOptions = { styles: [ mcMarker, mcMarker, mcMarker, mcMarker, mcMarker ]};
-            var markerCluster = new MarkerClusterer(map, markers, mcOptions);
-        }
-    );
-    </script>
+    {{ map.head() }}
+    {{ map.head_markercluster() }}
 {% endblock %}
 
 {% block body %}
@@ -239,7 +26,92 @@
     </div>-->
     <div class="col-sm-12">
         <div id="map-container">
-            <div id="map"></div>
+            <div id="map" style="width: 100%; min-height: 480px"></div>
+            <script>
+            function escapeHtml(text) {
+                return $('<div/>').text(text).html();
+            }
+
+            function adjustMapSize() {
+                /*
+                $('#map').height(function(index, height) {
+                    return window.innerHeight - $(this).offset().top;
+                });
+                */
+            }
+
+            $( window ).resize(adjustMapSize);
+            adjustMapSize();
+
+            var map = L.map('map');
+
+            map.fitBounds([ [ 47.3024876979, 5.98865807458 ],
+                            [ 54.983104153, 15.0169958839 ] ]);
+
+            {{ map.addTileLayer() }}
+
+            var markers = L.markerClusterGroup({
+                iconCreateFunction: function (cluster) {
+                    // var childCount = cluster.getChildCount();
+                    var markers = cluster.getAllChildMarkers();
+                    var n = 0;
+                    for (var i = 0; i < markers.length; i++) {
+                        n += markers[i].number;
+                    }
+                    var childCount = n;
+                    var c = ' marker-cluster-';
+                    if (childCount < 10) {
+                        c += 'small';
+                    } else if (childCount < 100) {
+                        c += 'medium';
+                    } else {
+                        c += 'large';
+                    }
+
+                    return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
+
+    //				return L.divIcon({ html: n, className: 'mycluster', iconSize: L.point(40, 40) });
+                },
+                // spiderfyOnMaxZoom: false, showCoverageOnHover: false, zoomToBoundsOnClick: false,
+                disableClusteringAtZoom: 17
+            });
+
+            var labelLoading = "{{ 'Loading...'|trans }}";
+            var markerPos = {{ markers|json_encode|raw }};
+            for (var geo in markerPos) {
+                if (markerPos.hasOwnProperty(geo)) {
+                    (function(info) {
+                        // anonymous function to create a closure
+                        var loaded = false;
+                        var marker = L.marker(info['latLng'],
+                                              { title: info['name'] });
+                        marker.number = info['number'];
+                        marker.bindPopup(labelLoading);
+                        marker.on('click', function(e) {
+                            var popup = e.target.getPopup();
+                            if (!loaded) {
+                                loaded = true;
+                                var header = '<b>' + escapeHtml(info['name']) + '</b><br />';
+                                popup.setContent(header
+                                                 + labelLoading);
+                                popup.update();
+                                var urlTemplace = '{{ path('place-map-popup-content', { 'ids' : '{0}' }) }}';
+                                var url = decodeURIComponent(urlTemplace).replace('{0}', info['places']);
+                                console.log('loading...' + url);
+                                $.get(url).done(function(data) {
+                                    popup.setContent(header + data);
+                                    popup.update();
+                                });
+                            }
+                        });
+
+                        markers.addLayer(marker);
+                    })(markerPos[geo]);
+                }
+            }
+
+            map.addLayer(markers);
+            </script>
         </div>
     </div>
 </div>

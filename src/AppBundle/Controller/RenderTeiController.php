@@ -140,16 +140,9 @@ abstract class RenderTeiController extends Controller
 
     protected function buildGlossaryLookup($glossaryTerms)
     {
-        $slugify = $this->container->get('cocur_slugify');
-        switch ($this->container->get('request')->getLocale()) {
-            case 'de':
-                $language = 'deu';
-                break;
+        $language = \AppBundle\Utils\Iso639::code1to3($this->container->get('request')->getLocale());
 
-            default:
-                $language = 'eng';
-                break;
-        }
+        $slugify = $this->container->get('cocur_slugify');
 
         $slugs = array_map(function ($term) use ($slugify) {
                                 return $slugify->slugify($term);
@@ -244,10 +237,11 @@ abstract class RenderTeiController extends Controller
         if (!empty($author_slugs)) {
             $query = $this->get('doctrine')
                 ->getManager()
-                ->createQuery('SELECT p.slug, p.description FROM AppBundle:Person p WHERE p.slug IN (:slugs)')
+                ->createQuery('SELECT p.slug, p.description, p.gender FROM AppBundle:Person p WHERE p.slug IN (:slugs)')
                 ->setParameter('slugs', $author_slugs);
 
             foreach ($query->getResult() as $person) {
+                $authors_by_slug[$person['slug']]['gender'] = $person['gender'];
                 if (!is_null($person['description']) && array_key_exists($locale, $person['description'])) {
                     $authors_by_slug[$person['slug']]['description'] = $person['description'][$locale];
                 }

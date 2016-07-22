@@ -1,12 +1,16 @@
 {% extends 'AppBundle:Default:base.html.twig' %}
 {% block body %}
     <div class="row">
-    {% for slug,topic in topics %}
+    {% for slug,topicDescr in topics %}
         <div class="col-sm-4 col-xs-6 topic">
-            <a href="{{ path('topic-background', { 'slug' : slugify.slugify(topic) }) }}">
-                <h4>{{ topic }}</h4>
+            {% if topicDescr.article is not empty %}
+            <a href="{{ path('topic-background', { 'slug' : topicDescr.article }) }}">
+            {% endif %}
+                <h4>{{ topicDescr.label }}</h4>
                 <img src="{{ asset('img/topic/' ~ slug ~ '.jpg') }}" style="width: 100%; height: auto" />
+            {% if topicDescr.article is not empty %}
             </a>
+            {% endif %}
         </div>
     {% endfor %}
     </div><!-- .row -->

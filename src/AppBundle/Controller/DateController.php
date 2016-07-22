@@ -15,10 +15,17 @@ class DateController extends Controller
      */
     public function chronologyAction()
     {
+        $criteria = [ 'status' => [ 0, 1 ] ];
+
+        $locale = $this->get('request')->getLocale();
+        if (!empty($locale)) {
+            $criteria['language'] = \AppBundle\Utils\Iso639::code1to3($locale);
+        }
+
         $articles = $this->getDoctrine()
                 ->getRepository('AppBundle:SourceArticle')
-                ->findBy(array('status' => [ 0, 1 ]),
-                         array('dateCreated' => 'ASC'));
+                ->findBy($criteria,
+                         [ 'dateCreated' => 'ASC' ]);
 
         return $this->render('AppBundle:Date:chronology.html.twig',
                              [ 'articles' => $articles]);

@@ -161,6 +161,11 @@ header {
 	z-index: -5;
 }
 
+#image-viewer {
+	.tooltip {
+		font-size: 1.2rem;
+	}
+}
 #breadcrumb {
 	background-color: $color-gray-light;
 	margin-bottom: 20px;
@@ -192,6 +197,23 @@ header {
 	.dta-p, div.dta-bibl {
 		@include article-text;
 	}
+
+	.editorial.foot {
+		display: none;
+	}
+
+}
+
+@mixin hyphenate {
+	hyphens: auto;
+	-webkit-hyphens: auto;
+	-ms-hyphens: auto;
+	-moz-hyphens: auto;
+}
+
+.justify-hyphens {
+	text-align:justify;
+	@include hyphenate;
 }
 
 .article > div {
@@ -236,8 +258,10 @@ h2 + br, h3 + br {
 }
 
 h3#citation {
+	/*
 	color: $color-gray-dark;
 	font-weight: bold;
+	*/
 }
 
 /* see https://gist.github.com/JayHoltslander/9998612 */
@@ -342,6 +366,17 @@ footer {
 	}
 }
 
+.back-to-top {
+    cursor: pointer;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+	border-color:  $color-gray-dark;
+	background-color: white;
+	&:focus {outline:none;}
+}
+
 /* size-specific styles */
 @media (min-width: $screen-sm-size) {
 	#footer-dfg {
@@ -360,6 +395,16 @@ footer {
 		padding-top: 5px;
 		color: $color-gray-dark;
 		min-height: 46px;
+	}
+}
+
+/* hyphenate */
+body.route-topic-background, body.route-article,
+body[class^="route-about"]
+{
+	.dta-p, .source-description {
+		text-align:justify;
+		@include hyphenate;
 	}
 }
 

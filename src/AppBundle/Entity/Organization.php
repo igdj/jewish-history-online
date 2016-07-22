@@ -98,6 +98,14 @@ class Organization implements \JsonSerializable
      * @ORM\Column(type="string", nullable=true)
      */
     protected $gnd;
+
+    use ArticleReferencesTrait;
+
+   /**
+     * @ORM\OneToMany(targetEntity="ArticleOrganization", mappedBy="organization", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+     */
+    protected $articleReferences;
+
     /**
      * @var \DateTime
      *

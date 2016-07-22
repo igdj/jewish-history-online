@@ -17,14 +17,14 @@
             {% endif %}
             <li>
                 <b id="{{ term.slug }}">{{ term.term }}</b>{% if term.headline is not empty %}: {{ term.headline }}{% endif %}
-                {% if term.url is not empty %}
+                {#% if term.url is not empty %}
                     <br />Siehe auch <a href="{{ term.url }}" target="_blank">{{ term.url|prettifyurl }}</a>
-                {% endif %}
+                {% endif %#}
             </li>
         {% endfor %}
         </ul>
         {% else %}
-            Es wurden keine Glossarbegriffe gefunden
+            {{ 'No glossary terms were found'|trans }}
         {% endif %}
         </div>
     </div><!-- .row -->

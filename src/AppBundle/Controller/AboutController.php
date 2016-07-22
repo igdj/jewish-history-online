@@ -14,9 +14,9 @@ class AboutController extends RenderTeiController
 {
     protected function renderContent()
     {
-        $current_route = $this->container->get('request')->get('_route');
-        $current_locale = $this->container->get('request')->getLocale();
-        $fnameTei = $current_route . '.' . $current_locale . '.xml';
+        $route = $this->get('request')->get('_route');
+        $locale = $this->get('request')->getLocale();
+        $fnameTei = $route . '.' . $locale . '.xml';
 
         $html = $this->renderTei($fnameTei);
 

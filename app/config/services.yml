@@ -2,6 +2,7 @@
 services:
     app.twig_extension:
         class: AppBundle\Twig\AppExtension
+        arguments: [@translator]
         public: false
         tags:
             - { name: twig.extension }

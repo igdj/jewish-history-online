@@ -1,67 +1,21 @@
 {% extends 'AppBundle:Default:base.html.twig' %}
+
+{% import 'AppBundle:Shared:helper.html.twig' as helper %}
+{% import 'AppBundle:Shared:entity-lookup.html.twig' as entityLookup %}
+
 {% block head %}
     {# TODO: move to some shared style-sheet #}
     <style>
-        #authors, #license {
-            display: none;
-        }
+    #authors, #license {
+        display: none;
+    }
     </style>
 
+    {{ entityLookup.head(entity_lookup, glossary_lookup) }}
     <script>
-    var entityLookup = {{ entity_lookup|json_encode|raw }};
-
-    var glossaryLookup = {{ glossary_lookup|json_encode|raw }};
-
-    function buildGlossaryInfo($el) {
-        var url = {{ path('glossary-index')|json_encode|raw }};
-        var term = $el.data('title');
-        if (term in glossaryLookup) {
-            var url_detail = url + '#' + glossaryLookup[term].slug;
-            return { "url" :  url_detail,
-                     "title" : glossaryLookup[term].headline };
-        }
-        return null;
-    }
-
     $(function () {
-        $( '.glossary' ).each (function ( index ) {
-            var $el = $( this );
-            var info = buildGlossaryInfo($el);
-            if (null != info) {
-                $el.addClass('hoverable');
-                $el.click(function() {
-                    window.location = info.url;
-                    return false;
-                });
-                $el.tooltip({
-                    title: info.title,
-                    html: false /*,
-                    delay: { hide: 350 } */
-                });
-            }
-        });
-
-        // link entities
-        $( '.entity-ref' ).each(function( index ) {
-            var $el = $( this );
-            var type = $el.data('type');
-            var uri = $el.data('uri');
-            var info = entityLookup[type][uri];
-            if (info != null && info.url != null) {
-                $el.addClass('hoverable');
-                $el.click(function() {
-                  window.location = info.url;
-                  return false;
-                });
-                $el.tooltip({
-                    title: 'TODO: Info zu ' + $el.text() + '<a href="' + info.url + '">...mehr</a>',
-                    html: true,
-                    delay: { hide: 350 }
-                });
-
-                console.log( index + ": " + $el.text() + JSON.stringify(info));
-            }
-        });
+        initEntityGlossaryNote('.source-description');
+        initEntityGlossaryNote('.article');
     })
     </script>
 {% endblock %}
@@ -99,16 +53,15 @@
             {% if authors is not empty %}
                 <p><a href="#author">{{ 'author.oneormany'|transchoice(authors|length) }}</a></p>
             {% endif %}
-            <p><a href="#citation">{{ 'Citation and License Statement'|trans }}</a></p>
+            <p><a href="#citation">{{ 'Recommended Citation and License Statement'|trans }}</a></p>
             </div>
             {% if related is not empty %}
             {% set source = related[0] %}
             <div class="panel-heading">
-                <a href="{{ path('source', { 'uid' : source.uid }) }}">Quelle</a>
+                <a href="{{ path('source', { 'uid' : source.uid }) }}">{{ 'Source'|trans }}</a>
             </div>
             {% endif %}
         </div>
-
 
         {{ html|raw }}
 
@@ -122,27 +75,13 @@
         {% if related is not empty %}
         {% set source = related[0] %}
         <h3 id="source-link">
-            <a href="{{ path('source', { 'uid' : source.uid }) }}">Quelle anzeigen &gt;</a>
+            <a href="{{ path('source', { 'uid' : source.uid }) }}">{{ 'Display Source'|trans }} &gt;</a>
         </h3>
         {% endif %}
+{#{ dump(meta)}#}
+        {{ helper.article_citation(article, meta, authors, name) }}
 
-        <h3 id="citation">{{ 'Citation and License Statement'|trans }}</h3>
-        <p>{% if authors is not empty %}
-            {% for author in authors %}{{ author.text }}, {% endfor %}
-        {% endif %}
-        {{ name }}, in: {{ 'Hamburg Key-Documents of German-Jewish History'|trans }},
-        &lt;{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}&gt;</p>
-
-        {% if license is not null %}
-        <div>
-            {% if license.url is defined %}
-                {% if license.url == "http://creativecommons.org/licenses/by-nc-nd/4.0/" %}
-                <a href="{{ license.url }}" target="_blank"><img src="{{ app.request.basepath }}/img/license/by-nc-nd.eu.svg" height="30" style="float: left; padding-right: 6px;" /></a>
-                {% endif %}
-            {% endif %}
-            {{ license.text }}
-        </div>
-        {% endif %}
+        {{ helper.article_license(license) }}
         </div><!-- .col -->
 
         <div class="col-xs-12 col-sm-4 sidebar">
@@ -157,7 +96,7 @@
                 <div class="row box-color-content-inverse">
                     <div class="col-sm-12">
                     {% for source in related %}
-                        <p><a href="{{ path('source', { 'uid' : source.uid }) }}">{{ source.name }}</a></p>
+                        <p>{{ helper.article_linked(source) }}</p>
                     {% endfor %}
                     </div>
                 </div>
@@ -174,10 +113,11 @@
 
                 <div class="row box-color-content-inverse">
                 {% for topic in article.keywords %}
+                    {% set img_slug = slugify.slugify(topic|lookupLocalizedTopic) %}
                     {% set slug = slugify.slugify(topic) %}
                     {% if loop.first %}
                     <div class="col-sm-6">
-                        <a href="{{ path('topic-background', { 'slug' : slug }) }}"><img src="{{ asset('img/topic/' ~ slug ~ '.jpg') }}" style="width: 100%; height: auto" /></a>
+                        <a href="{{ path('topic-background', { 'slug' : slug }) }}"><img src="{{ asset('img/topic/' ~ img_slug ~ '.jpg') }}" style="width: 100%; height: auto" /></a>
                     </div>
                     <div class="col-sm-6">
                     {% endif %}
@@ -208,7 +148,7 @@
                     {% if authors is not empty %}
                         <p><a href="#author">{{ 'author.oneormany'|transchoice(authors|length) }}</a></p>
                     {% endif %}
-                        <p><a href="#citation">{{ 'Citation and License Statement'|trans }}</a></p>
+                        <p><a href="#citation">{{ 'Recommended Citation and License Statement'|trans }}</a></p>
                     </div>
                 </div>
             </div>

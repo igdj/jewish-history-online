@@ -1,6 +1,9 @@
 {% extends 'AppBundle:Default:base.html.twig' %}
+
+{% import 'AppBundle:Shared:helper.html.twig' as helper %}
+{% import 'AppBundle:Shared:entity-lookup.html.twig' as entityLookup %}
+
 {% block head %}
-    <script src="{{ app.request.basepath }}/js/jquery-2.2.3.min.js"></script>
     <script src="{{ app.request.basepath }}/js/screenfull.min.js"></script>
     <script src="{{ app.request.basepath }}/viewer/shared/iview2/js/iview-client-base.js"></script>
     <script src="{{ app.request.basepath }}/viewer/shared/iview2/js/iview-client-desktop.js"></script>
@@ -10,7 +13,6 @@
     <!-- TODO: port to scss -->
     <link rel="stylesheet/less" href="{{ app.request.basepath }}/viewer/shared/dta-tei.less" type="text/css" />
     <script src="{{ app.request.basepath }}/js/less-2.6.1.min.js"></script>
-
     <!-- <link rel="stylesheet" href="../META-INF/resources/components/iview/templates/mobile/jquery.mobile-1.3.2.min.css" />     -->
 
     {# TODO: move to some shared style-sheet #}
@@ -26,18 +28,18 @@
         }
     </style>
 
-
+    {{ entityLookup.head(entity_lookup, glossary_lookup) }}
     <script>
         function setViewerClose(id) {
             var $button = jQuery('[data-id="CloseViewerGroup"] > button');
             var $span = jQuery('[data-id="CloseViewerGroup"] span.glyphicon');
             if (screenfull.isFullscreen) {
-                $button.attr('title', 'Vollbildmodus verlassen');
+                $button.attr('title', '{{ 'Exit Fullscreen Mode'|trans }}');
                 $span.removeClass('glyphicon-fullscreen');
                 $span.addClass('glyphicon-off');
             }
             else {
-                $button.attr('title', 'Im Vollbildmodus anzeigen');
+                $button.attr('title', '{{ 'View Fullscreen'|trans }}');
                 $span.removeClass('glyphicon-off');
                 $span.addClass('glyphicon-fullscreen');
             }
@@ -45,7 +47,7 @@
 
         function fullscreenViewer(id) {
             if (screenfull.enabled) {
-                document.addEventListener(screenfull.raw.fullscreenchange, () => {
+                document.addEventListener(screenfull.raw.fullscreenchange, function() {
                     setViewerClose(id);
                 });
                 screenfull.request(document.getElementById(id));
@@ -81,7 +83,7 @@
                 "filePath": "/f0001.jpg", // initial facs
                 derivate: "{{ path }}",
                 i18nURL: "{{ app.request.basepath }}/viewer/shared/iview2/i18n/{lang}.json",
-                lang: "de",
+                lang: "{{ app.request.locale }}",
                 // pdfCreatorStyle: "pdf",
                 // pdfCreatorURI: "http://wrackdm17.thulb.uni-jena.de/mets-printer/pdf",
                 // "text.enabled":"true",
@@ -137,6 +139,8 @@
         }
 
         $( document ).ready(function() {
+            initEntityGlossaryNote('.source-description');
+
             // see http://stackoverflow.com/a/16735080 - other .width() is wrong
             setTimeout(function(){
                 createViewer();
@@ -154,15 +158,18 @@
             {% if description is not null %}
             <h2 id="description">{{ 'Source Description'|trans }}</h2>
             {{ description.html|raw }}
-            <a href="{{ path('article', { 'slug' : description.article.slug }) }}">{{ 'Read on'|trans }} &gt;</a>
+            <a href="{{ path('article', { 'slug' : description.article.getSlug(true) }) }}">{{ 'Read on'|trans }} &gt;</a>
             {% endif %}
 
             <h3 id="citation">{{ 'Recommended Citation'|trans }}</h3>
-            <p>{% if authors is not empty %}
+            <p>
+            {#% if meta.provider is not empty %}
+                {{ meta.provider.name }}{% if meta.providerIdno is not empty %}: {{ meta.providerIdno }}{% endif %}{% endif %#}
+            {#% if authors is not empty %}
                 {% for author in authors %}{{ author.text }}, {% endfor %}
-            {% endif %}
-            {{ name }}, in: {{ 'Hamburg Key-Documents of German-Jewish History'|trans }},
-            &lt;{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}&gt;</p>
+            {% endif %#}
+            {{ name }}{% if article.translator is not empty %} ({{ 'translated by'|trans }} {{ article.translator.fullname(true) }}){% endif%}, {{ 'edited in'|trans }}: {{ 'Hamburg Key-Documents of German-Jewish History'|trans }},
+            &lt;{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}&gt; [{{ 'now'|date('F d, Y'|trans) }}].</p>
 
             {% if license is not null %}
             <div>
@@ -227,7 +234,11 @@
                         {% if meta.provider is not empty %}
                             <dt>{{ 'Holding Institution'|trans }}</dt>
                             <dd>
+                                {% if meta.provider.gnd is not empty %}
+                                <a href="{{ path('organization-by-gnd', { 'gnd' : meta.provider.gnd }) }}">{{ meta.provider.name }}</a>
+                                {% else %}
                                 {{ meta.provider.name }}
+                                {% endif %}
                             </dd>
                             {% if meta.providerIdno is not empty %}
                             <dt>{{ 'Signature'|trans }}</dt>
@@ -261,10 +272,7 @@
                 {% for article in interpretations %}
                 <div class="row box-color-content-inverse">
                     <div class="col-sm-12">
-                    <a href="{{ path('article', { 'slug' : article.slug }) }}">{{ article.name }}</a>
-                    {% if article.author|length > 0%}
-                    ({% for author in article.author %}{{ author.givenName }} {{ author.familyName }}{% endfor %})
-                    {% endif %}
+                        {{ helper.article_linked(article) }}
                     </div>
                 </div>
                 {% endfor %}
@@ -281,7 +289,7 @@
                 {% for source in related if source.id != article.id %}
                 <div class="row box-color-content-inverse">
                     <div class="col-sm-12">
-                        <a href="{{ path('source', { 'uid' : source.uid }) }}">{{ source.name }}</a>
+                        {{ helper.article_linked(source) }}
                     </div>
                 </div>
                 {% endfor %}

@@ -13,8 +13,8 @@ Migration:                          Migration
 Organizations and Institutions:     Organisationen und Institutionen
 Law and Politics:                   Recht und Politik
 Religious Life and Identity Issues: Religiöses Leben und Identitätsfragen
-Social Issues and Welfare:          Soziale Fragen und Wohlfahrt
-Economy:                            Wirtschaft
+Social Issues and Welfare:          Soziale Fragen und Wohlfahrtswesen
+Economy and Occupational Composition: Wirtschaft und Berufsstruktur
 Scholarship:                        Wissenschaft
 Content:                            Inhalt
 Citation and License Statement:     Zitations- und Lizenzhinweis
@@ -29,3 +29,5 @@ Places:                             Orte
 Neighborhood:                       Ortsteil
 author.oneormany:                   "Zum Autor|Zu den Autoren"
 topic.oneormany:                    "Thema|Themen"
+epoch.century:                      "%century%. Jahrhundert"
+epoch.decade:                       "%epoch%er Jahre"

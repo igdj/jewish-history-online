@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
-class ImportCommand extends ContainerAwareCommand
+class ImportGlossaryCommand extends ContainerAwareCommand
 {
     protected function configure()
     {

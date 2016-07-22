@@ -14,8 +14,7 @@ framework:
     validation: ~
     templating:
         engines: ['twig']
-    translator: { fallbacks: ['%locale%'] }
-
+    translator: { fallbacks: ['%locale%'], logging: false }    
 
 twig:
     globals:
@@ -24,20 +23,38 @@ twig:
 # Doctrine Configuration
 doctrine:
     dbal:
-        host:     '%database.host%'
-        port:     '%database.port%'
-        dbname:   '%database.name%'
-        user:     '%database.user%'
-        password: '%database.password%'
-        #driver:  pdo_mysql
-        charset:  '%database.charset%' # UTF8
-        options:
-                1002: "SET NAMES '%database.charset%' COLLATE '%database.charset%_unicode_ci'"
-        default_table_options:
-            charset: %database.charset%
-            collate: '%database.charset%_unicode_ci'
-            engine:  MyISAM     # InnoDB
+        default_connection: default
+        connections:
+            default:
+                host:     '%database.host%'
+                port:     '%database.port%'
+                dbname:   '%database.name%'
+                user:     '%database.user%'
+                password: '%database.password%'
+                #driver:  pdo_mysql
+                charset:  '%database.charset%' # UTF8
+                options:
+                        1002: "SET NAMES '%database.charset%' COLLATE '%database.charset%_unicode_ci'"
+                default_table_options:
+                    charset: %database.charset%
+                    collate: '%database.charset%_unicode_ci'
+                    engine:  MyISAM     # InnoDB
+            admin:
+                host:     '%database.host%'
+                port:     '%database.port%'
+                dbname:   'juedischegeschichte'
+                user:     '%database.user%'
+                password: '%database.password%'
+                #driver:  pdo_mysql
+                charset:  '%database.charset%' # UTF8
+                options:
+                        1002: "SET NAMES '%database.charset%' COLLATE '%database.charset%_unicode_ci'"
+                default_table_options:
+                    charset: %database.charset%
+                    collate: '%database.charset%_unicode_ci'
+                    engine:  MyISAM     # InnoDB
     orm:
+        connection: default        
         auto_generate_proxy_classes: '%kernel.debug%'
         auto_mapping: true 
 

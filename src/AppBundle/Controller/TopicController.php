@@ -23,9 +23,37 @@ class TopicController extends RenderTeiController
         'Law and Politics',
         'Religious Life and Identity Issues',
         'Social Issues and Welfare',
-        'Economy',
+        'Economy and Occupational Composition',
         'Scholarship',
     ];
+
+    public static function lookupLocalizedTopic($topic, $translator, $locale)
+    {
+        if ('en' == $locale) {
+            // no lookup needed
+            return $topic;
+        }
+
+        // we need to get from german to english term
+        $localeTranslator =  $translator->getLocale();
+        if ($localeTranslator != $locale) {
+            $translator->setLocale($locale);
+        }
+
+        foreach (\AppBundle\Controller\TopicController::$TOPICS as $label) {
+            /** @Ignore */
+            if ($translator->trans($label) == $topic) {
+                $topic = $label;
+                break;
+            }
+        }
+
+        if ($localeTranslator != $locale) {
+            $translator->setLocale($localeTranslator);
+        }
+
+        return $topic;
+    }
 
     private function buildTopicsBySlug($translate_keys = false)
     {
@@ -49,8 +77,19 @@ class TopicController extends RenderTeiController
     {
         $topics = $this->buildTopicsBySlug();
         asort($topics);
+
+        $slugify = $this->get('cocur_slugify');
+        $topicsDescription = [];
+        foreach ($topics as $slug => $label) {
+            $topicsDescription[$slug] = [ 'label' => $label ];
+            $articleSlug =  $slugify->slugify($label);
+            $articlePath = $this->locateTeiResource($articleSlug . '.xml');
+            if (false !== $articlePath) {
+                $topicsDescription[$slug]['article'] = $articleSlug;
+            }
+        }
         return $this->render('AppBundle:Topic:index.html.twig',
-                             [ 'topics' => $topics ]);
+                             [ 'topics' => $topicsDescription ]);
     }
 
     /**
@@ -63,7 +102,12 @@ class TopicController extends RenderTeiController
             return $this->redirectToRoute('topic-index');
         }
 
-        $html = $this->renderTei($slug . '.xml');
+        $fname = $slug . '.xml';
+
+        $teiHelper = new \AppBundle\Utils\TeiHelper();
+        $meta = $teiHelper->analyzeHeader($this->locateTeiResource($fname));
+
+        $html = $this->renderTei($fname);
 
         list($authors, $section_headers, $license, $entities, $glossaryTerms) = $this->extractPartsFromHtml($html);
 
@@ -80,6 +124,7 @@ class TopicController extends RenderTeiController
                                 'slug' => $slug,
                                 'name' => $topics[$slug],
                                 'html' => $html,
+                                'meta' => $meta,
                                 'authors' => $authors,
                                 'section_headers' => $section_headers,
                                 'license' => $license,

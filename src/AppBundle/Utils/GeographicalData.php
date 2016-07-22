@@ -186,12 +186,32 @@ class GeographicalData
                     $values['type'] = 'state';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300387110':
+                    $values['type'] = 'autonomous republic';
+                    break;
+
+                case 'http://vocab.getty.edu/aat/300235093':
+                    $values['type'] = 'governorate';
+                    break;
+
+                case 'http://vocab.getty.edu/aat/300000774':
+                    $values['type'] = 'province';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300132618':
                     $values['type'] = 'metropolitan area';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300387346':
+                    $values['type'] = 'general region';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300000771':
                     $values['type'] = 'county';
+                    break;
+
+                case 'http://vocab.getty.edu/aat/300387113':
+                    $values['type'] = 'autonomous community';
                     break;
 
                 case 'http://vocab.getty.edu/aat/300008347':

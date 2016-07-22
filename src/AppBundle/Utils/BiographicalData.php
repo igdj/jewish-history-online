@@ -50,7 +50,10 @@ class BiographicalData
         foreach ($triples as $triple) {
             switch ($triple['p']) {
                 case 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type':
-                    $bio->isDifferentiated = 'http://d-nb.info/standards/elementset/gnd#DifferentiatedPerson' == $triple['o'];
+                    $bio->isDifferentiated =
+                        in_array($triple['o'],
+                                 [ 'http://d-nb.info/standards/elementset/gnd#DifferentiatedPerson',
+                                   'http://d-nb.info/standards/elementset/gnd#Pseudonym' ]);
                     break;
                 case 'http://d-nb.info/standards/elementset/gnd#dateOfBirth':
                 case 'dateOfBirth':

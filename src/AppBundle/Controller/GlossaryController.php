@@ -15,15 +15,8 @@ class GlossaryController extends Controller
      */
     public function indexAction()
     {
-        switch ($this->container->get('request')->getLocale()) {
-            case 'de':
-                $language = 'deu';
-                break;
+        $language = \AppBundle\Utils\Iso639::code1to3($this->container->get('request')->getLocale());
 
-            default:
-                $language = 'eng';
-                break;
-        }
         $terms = $this->getDoctrine()
                 ->getRepository('AppBundle:GlossaryTerm')
                 ->findBy([ 'status' => [ 0, 1 ],

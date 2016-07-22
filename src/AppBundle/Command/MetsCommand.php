@@ -50,12 +50,23 @@ class MetsCommand extends ContainerAwareCommand
             return 1;
         }
 
+        $teiHelper = new \AppBundle\Utils\TeiHelper();
+
+        $article = $teiHelper->analyzeHeader($fname);
+        if (false === $article) {
+            $output->writeln(sprintf('<error>%s could not be loaded</error>', $fname));
+            foreach ($teiHelper->getErrors() as $error) {
+                $output->writeln(sprintf('<error>  %s</error>', trim($error->message)));
+            }
+            return 1;
+        }
+
         libxml_use_internal_errors(true);
         $xml = @simplexml_load_file($fname);
 
         if (false === $xml) {
             $output->writeln(sprintf('<error>%s could not be loaded</error>', $fname));
-            foreach(libxml_get_errors() as $error) {
+            foreach (libxml_get_errors() as $error) {
                 $output->writeln(sprintf('<error>  %s</error>', trim($error->message)));
             }
             return 1;
@@ -81,8 +92,10 @@ class MetsCommand extends ContainerAwareCommand
             if (!empty($facs) && preg_match('/(\d+)/', $facs, $matches)) {
                 $facs_ref = $matches[1];
             }
-            $page = [ 'counter' => $facs_counter++,
-                      'facs' => sprintf('f%04d', $facs_ref++) ];
+            $page = [
+                'counter' => $facs_counter++,
+                'facs' => sprintf('f%04d', $facs_ref++),
+            ];
             $n = $element['n'];
             if (!empty($n)) {
                 $page['n'] = $n;
@@ -90,17 +103,26 @@ class MetsCommand extends ContainerAwareCommand
             $PAGES[] = $page;
         }
 
-        // TODO: allow to set a more complex structure, e.g. in a yaml-file
+        // set the publisher - needs to be localized
+        $translator = $this->getContainer()->get('translator');
+        $translator->setLocale(\AppBundle\Utils\Iso639::code3To1($article->language));
+
+        // TODO: allow to set a more complex structure
         $FILE_GROUPS = [
                         'MASTER',
                         'TRANSCRIPTION',
                         ];
-        $LOGICAL_TYPE = 'Source'; // Letter, Manuscript, ...
-        $LOGICAL_LABEL = 'Clavius, Christoph: Geometria practica';
+
+        if (!empty($article->translatedFrom) && $article->translatedFrom != $article->language) {
+            $FILE_GROUPS[] = 'TRANSLATION';
+        }
+
+        $LOGICAL_TYPE = 'Source';
+        $LOGICAL_LABEL = $article->name;
         $LOGICAL_STRUCTURE = [
             'content' => [
                            'TYPE' => 'content',
-                           'LABEL' => 'Quelle',
+                           'LABEL' => $translator->trans($LOGICAL_TYPE),
                            'ORDER' => 1,
                            'physical_start' => 1,
                            ],
@@ -138,7 +160,31 @@ class MetsCommand extends ContainerAwareCommand
                 }
                 else {
                     $mime = 'text/xml';
-                    $href = sprintf('page-%d.xml', $page);
+
+                    $langCode3 = $article->language;
+
+                    if ('TRANSLATION' == $group) {
+                        /*
+                        the following must correspond to in iview-client-mets.js
+                        // tei/translation.de/THULB_129846422_1801_1802_LLZ_001_18010701_001.xml -> de
+                        MetsStructureBuilder.prototype.extractTranslationLanguage = function (href) {
+                            return href.split("/")[1].split(".")[1];
+                        };
+                        */
+                        $href = sprintf('tei/translation.%s/page-%d.xml',
+                                        \AppBundle\Utils\Iso639::code3to1($langCode3),
+                                        $page);
+                    }
+                    else {
+                        // language of the transcription
+                        if (!empty($article->translatedFrom)) {
+                            $langCode3 = $article->translatedFrom;
+                        }
+
+                        $href = sprintf('tei/transcription.%s/page-%d.xml',
+                                        \AppBundle\Utils\Iso639::code3to1($langCode3),
+                                        $page);
+                    }
                 }
                 $id = sprintf('%s_%s', strtolower($group), md5($href));
                 if (!array_key_exists($page, $fileids_by_page)) {

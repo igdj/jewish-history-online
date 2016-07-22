@@ -42,7 +42,7 @@ class PersonController extends Controller
         }
 
         return $this->render('AppBundle:Person:detail.html.twig',
-                             array('person' => $person));
+                             [ 'person' => $person ]);
     }
 
 }

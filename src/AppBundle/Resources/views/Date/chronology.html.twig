@@ -1,4 +1,7 @@
 {% extends 'AppBundle:Default:base.html.twig' %}
+
+{% import 'AppBundle:Shared:helper.html.twig' as helper %}
+
 {% block body %}
     <h1>{{ 'Chronology'|trans }}</h1>
     <div class="row">
@@ -6,17 +9,17 @@
         {% if articles is not empty %}
         {% set last_epoch = '' %}
         {% for source in articles %}
-            {% set epoch = article.dateCreated.year %}
-            {% if epoch != last_epoch %}
+            {% set epochLabel = source.epochLabel %}
+            {% if epochLabel[0] != last_epoch %}
                 {% if last_epoch != '' %}
             </ul>
                 {% endif %}
-            <h2>{{ epoch }} </h2>
-            {% set last_epoch = epoch %}
+            <h2>{{ epochLabel[0]|epoch(epochLabel[1]) }} </h2>
+            {% set last_epoch = epochLabel[0] %}
             <ul class="list-unstyled">
             {% endif %}
             <li>
-                <a href="{{ path('source', { 'uid' : source.uid }) }}">{{ source.name }}</a>
+                {{ helper.article_linked(source) }}
             </li>
         {% endfor %}
         </ul>

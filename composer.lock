@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cf323d1337f69d79ff1f948bfb1ce750",
-    "content-hash": "46ab23a1bc60da623cf7532dc9fdea95",
+    "hash": "a21be453020162d7de40ca382f40ef5f",
+    "content-hash": "23b726bae79c250e65c0759869fd0e48",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1013,16 +1013,16 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v2.4.13",
+            "version": "v2.4.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "5f4b6c848f0d6834a434a62a09a0935d147082e1"
+                "reference": "a5a5ee1391fc9abadd0fd1524ca38569df72005f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/5f4b6c848f0d6834a434a62a09a0935d147082e1",
-                "reference": "5f4b6c848f0d6834a434a62a09a0935d147082e1",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/a5a5ee1391fc9abadd0fd1524ca38569df72005f",
+                "reference": "a5a5ee1391fc9abadd0fd1524ca38569df72005f",
                 "shasum": ""
             },
             "require": {
@@ -1088,7 +1088,43 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2016-02-18 15:33:43"
+            "time": "2016-07-25 14:14:57"
+        },
+        {
+            "name": "gmo/iso-639",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gmo/iso-639.git",
+                "reference": "c6f7f1233459dbe1833245ae47cdd075b0849ab0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gmo/iso-639/zipball/c6f7f1233459dbe1833245ae47cdd075b0849ab0",
+                "reference": "c6f7f1233459dbe1833245ae47cdd075b0849ab0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Gmo\\Iso639\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Convert between ISO-639 codes",
+            "keywords": [
+                "639",
+                "iso",
+                "iso-639",
+                "language"
+            ],
+            "time": "2015-07-17 00:18:37"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -3816,6 +3852,66 @@
             "time": "2016-06-29 05:29:29"
         },
         {
+            "name": "symfony/property-access",
+            "version": "v2.8.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/property-access.git",
+                "reference": "8fa1fe88f80fd8baefcc71d7cb3007c977d769bd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/property-access/zipball/8fa1fe88f80fd8baefcc71d7cb3007c977d769bd",
+                "reference": "8fa1fe88f80fd8baefcc71d7cb3007c977d769bd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\PropertyAccess\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony PropertyAccess Component",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "access",
+                "array",
+                "extraction",
+                "index",
+                "injection",
+                "object",
+                "property",
+                "property path",
+                "reflection"
+            ],
+            "time": "2016-06-29 05:29:29"
+        },
+        {
             "name": "symfony/routing",
             "version": "v2.8.8",
             "source": {
@@ -4015,6 +4111,70 @@
             "description": "Symfony Security Component - CSRF Library",
             "homepage": "https://symfony.com",
             "time": "2016-03-07 14:04:32"
+        },
+        {
+            "name": "symfony/serializer",
+            "version": "v2.8.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/serializer.git",
+                "reference": "b03cb6d8f94637669cd9b62b4a5ae2ba631486aa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/serializer/zipball/b03cb6d8f94637669cd9b62b4a5ae2ba631486aa",
+                "reference": "b03cb6d8f94637669cd9b62b4a5ae2ba631486aa",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9",
+                "symfony/polyfill-php55": "~1.0"
+            },
+            "require-dev": {
+                "doctrine/annotations": "~1.0",
+                "doctrine/cache": "~1.0",
+                "symfony/config": "~2.2|~3.0.0",
+                "symfony/property-access": "~2.3|~3.0.0",
+                "symfony/yaml": "~2.0,>=2.0.5|~3.0.0"
+            },
+            "suggest": {
+                "doctrine/annotations": "For using the annotation mapping. You will also need doctrine/cache.",
+                "doctrine/cache": "For using the default cached annotation reader and metadata cache.",
+                "symfony/config": "For using the XML mapping loader.",
+                "symfony/property-access": "For using the ObjectNormalizer.",
+                "symfony/yaml": "For using the default YAML mapping loader."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Serializer\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Serializer Component",
+            "homepage": "https://symfony.com",
+            "time": "2016-06-29 05:29:29"
         },
         {
             "name": "symfony/stopwatch",
@@ -4640,11 +4800,13 @@
     "stability-flags": {
         "symfony/framework-bundle": 0,
         "symfony/yaml": 0,
-        "symfony/console": 0,
         "sensio/framework-extra-bundle": 0,
         "symfony/twig-bundle": 0,
-        "symfony/monolog-bundle": 0,
         "symfony/validator": 0,
+        "symfony/serializer": 0,
+        "symfony/property-access": 0,
+        "symfony/console": 0,
+        "symfony/monolog-bundle": 0,
         "doctrine/doctrine-bundle": 0,
         "doctrine/orm": 0,
         "stof/doctrine-extensions-bundle": 0,
@@ -4661,7 +4823,8 @@
         "sabre/xml": 0,
         "semsol/arc2": 0,
         "ddeboer/data-import": 0,
-        "phpoffice/phpexcel": 0
+        "phpoffice/phpexcel": 0,
+        "gmo/iso-639": 0
     },
     "prefer-stable": false,
     "prefer-lowest": false,

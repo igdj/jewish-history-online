@@ -9,7 +9,8 @@
 <xsl:output method="html" doctype-system="about:legacy-compat"/>
 
 <xsl:template match="tei:TEI">
-    <div class="text-layer"><xsl:apply-templates/></div>
+    <div id="{generate-id()}" class="text-layer"><xsl:apply-templates/></div>
+    <script>initEntityGlossaryNote('#<xsl:value-of select="generate-id()" />')</script>
 </xsl:template>
 
 <xsl:template match='tei:ref'>

@@ -1,4 +1,5 @@
 # project specific
+/web/.htaccess
 /web/viewer
 /sphinx-2.2.10-release-win64-full
 /sql
