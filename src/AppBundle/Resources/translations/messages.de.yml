@@ -31,3 +31,5 @@ author.oneormany:                   "Zum Autor|Zu den Autoren"
 topic.oneormany:                    "Thema|Themen"
 epoch.century:                      "%century%. Jahrhundert"
 epoch.decade:                       "%epoch%er Jahre"
+Image:                              Bild
+Object:                             Objekt

@@ -174,6 +174,18 @@ class GeographicalData
                     $values['type'] = 'continent';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300008694':
+                    $values['type'] = 'sea';
+                    break;
+
+                case 'http://vocab.getty.edu/aat/300386854':
+                    $values['type'] = 'archipelago';
+                    break;
+
+                case 'http://vocab.getty.edu/aat/300008791':
+                    $values['type'] = 'island';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300128207':
                     $values['type'] = 'nation';
                     break;
@@ -198,6 +210,10 @@ class GeographicalData
                     $values['type'] = 'province';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300387081':
+                    $values['type'] = 'national district';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300132618':
                     $values['type'] = 'metropolitan area';
                     break;
@@ -206,8 +222,16 @@ class GeographicalData
                     $values['type'] = 'general region';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300387178':
+                    $values['type'] = 'historical region';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300000771':
                     $values['type'] = 'county';
+                    break;
+
+                case 'http://vocab.getty.edu/aat/300387069':
+                    $values['type'] = 'autonomous city';
                     break;
 
                 case 'http://vocab.getty.edu/aat/300387113':
@@ -218,12 +242,20 @@ class GeographicalData
                     $values['type'] = 'inhabited place';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300387067':
+                    $values['type'] = 'special city';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300000745':
                     $values['type'] = 'neighborhood';
                     break;
 
-                case 'http://vocab.getty.edu/aat/300387178':
-                    $values['type'] = 'historical region';
+                case 'http://vocab.getty.edu/aat/300386698':
+                    $values['type'] = 'miscellaneous';
+                    break;
+
+                case 'http://vocab.getty.edu/aat/300386832':
+                    $values['type'] = 'mountain system';
                     break;
 
                 default:

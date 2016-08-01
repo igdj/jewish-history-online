@@ -18,7 +18,8 @@ class ArticleController extends RenderTeiController
     protected function buildArticleFname($article, $extension = '.xml')
     {
         $fname = $article->getSlug();
-        if (empty($fname)) {
+
+        if (empty($fname) || false === $this->locateTeiResource($fname . $extension)) {
             $uid = $article->getUid();
             if (preg_match('/(article|source)\-(\d+)/', $uid, $matches)) {
                 $fname = sprintf('%s-%05d.%s',

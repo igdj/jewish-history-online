@@ -55,12 +55,14 @@ class ArticleAdjustCommand extends BaseEntityCommand
             case 'source':
                 $sql = "SELECT 'source' AS query_type, Publication.*"
                      . ", Translator.slug AS translator_slug, Translator.firstname, Translator.lastname"
-                     . ", Provider.name AS provider_name, Provider.gnd AS provider_gnd"
+                     . ", Provider.name AS provider_name, Provider.gnd AS provider_gnd, T1.name AS type_name"
                      . " FROM Publication"
                      . " LEFT OUTER JOIN User Translator"
                      . " ON Publication.translator = Translator.id"
                      . " LEFT OUTER JOIN Publisher Provider"
                      . " ON Publication.publisher_id = Provider.id"
+                     . " LEFT OUTER JOIN Term T1"
+                     . " ON Publication.type = T1.id"
                      . " WHERE Publication.id=:id AND Publication.status <> -1"
                      ;
                 $params = [ 'id' => $matches[2] ];
@@ -136,7 +138,22 @@ class ArticleAdjustCommand extends BaseEntityCommand
 
             case 'source':
                 $locale = $translator->getLocale();
-                $data['genre'] = $translator->trans('Source') . ':Text';
+                $type = 'Text';
+                switch ($result['type_name']) {
+                    case 'Audio':
+                    case 'Video':
+                    case 'Text':
+                        $type = $result['type_name'];
+                        break;
+                    case 'Bild':
+                        $type = 'Image';
+                        break;
+                    case 'Objekt':
+                        $type = 'Object';
+                        break;
+                }
+
+                $data['genre'] = $translator->trans('Source') . ':' . $translator->trans($type);
 
                       // articles related to this source
                 $sql = "SELECT Message.id AS id, subject, status"
