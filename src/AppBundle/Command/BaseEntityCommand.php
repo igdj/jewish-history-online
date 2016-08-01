@@ -57,6 +57,7 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
                     if (!$bio->isDifferentiated) {
                         return -1;
                     }
+
                     // TODO: use hydrator
                     foreach ([
                               'surname',
@@ -142,7 +143,7 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
                     if (is_null($corporateBody) || !$corporateBody->isDifferentiated) {
                         return -1;
                     }
-                    var_dump($corporateBody);
+                    // var_dump($corporateBody);
                     // TODO: use hydrator
                     foreach ([
                               'preferredName',

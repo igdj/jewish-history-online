@@ -98,9 +98,9 @@ class MetsCommand extends ContainerAwareCommand
             ];
             $n = $element['n'];
             if (!empty($n)) {
-                $page['n'] = $n;
+                $page['n'] = (string)$n;
             }
-            $PAGES[] = $page;
+            $PAGES[$page['counter']] = $page;
         }
 
         // set the publisher - needs to be localized
@@ -222,6 +222,12 @@ class MetsCommand extends ContainerAwareCommand
                     $xw->writeAttribute('ID', 'phys_dmd_' . $ID . '_' . $order);
                     $xw->writeAttribute('TYPE', 'page');
                     $xw->writeAttribute('ORDER', $order);
+
+                    if (array_key_exists($order, $PAGES)) {
+                        if (!empty($PAGES[$order]['n'])) {
+                           $xw->writeAttribute('ORDERLABEL', $PAGES[$order]['n']);
+                        }
+                    }
 
                     foreach ($fileids as $fileid) {
                         $xw->startElement('mets:fptr');

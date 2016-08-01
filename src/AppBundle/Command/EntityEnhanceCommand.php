@@ -185,6 +185,18 @@ class EntityEnhanceCommand extends ContainerAwareCommand
                     }
                 }
                 if (!is_null($entityfacts)) {
+                    $fullname = $person->getFullname();
+                    if (empty($fullname)) {
+                        // set surname - e.g. http://hub.culturegraph.org/entityfacts/118676059
+                        foreach ([ 'surname' => 'givenName' ] as $src => $property) {
+                            if (!empty($entityfacts[$src])) {
+                                $method = 'set' . ucfirst($property);
+                                $person->$method($entityfacts[$src]);
+                                $persist = true;
+                            }
+                        }
+                    }
+
                     // try to set birth/death place
                     foreach ([ 'birth', 'death' ] as $property) {
                         $method = 'get' . ucfirst($property) . 'PlaceInfo';
