@@ -31,10 +31,12 @@ abstract class DnbData
         $parser->parse($url . '/about/lds');
         $triples = $parser->getTriples();
         $index = \ARC2::getSimpleIndex($triples, true) ; /* true -> flat version */
-        if (isset($index[$url]['http://d-nb.info/standards/elementset/gnd#preferredNameForThePlaceOrGeographicName']))
-            return $index[$url]['http://d-nb.info/standards/elementset/gnd#preferredNameForThePlaceOrGeographicName'][0];
-        if (isset($index[$url]['preferredNameForThePlaceOrGeographicName']))
-            return $index[$url]['preferredNameForThePlaceOrGeographicName'][0];
+        if (isset($index[$url]['http://d-nb.info/standards/elementset/gnd#preferredNameForThePlaceOrGeographicName'])) {
+            return self::normalizeString($index[$url]['http://d-nb.info/standards/elementset/gnd#preferredNameForThePlaceOrGeographicName'][0]);
+        }
+        if (isset($index[$url]['preferredNameForThePlaceOrGeographicName'])) {
+            return self::normalizeString($index[$url]['preferredNameForThePlaceOrGeographicName'][0]);
+        }
         foreach ($triples as $triple) {
             if ('sameAs' == $triple['p']) {
                 if (preg_match('/d\-nb\.info/', $triple['o']) && $triple['o'] != $url) {
@@ -48,7 +50,14 @@ abstract class DnbData
     {
         $type = $index['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0]['value'];
         switch ($type) {
+            case 'http://d-nb.info/standards/elementset/gnd#DifferentiatedPerson':
+            case 'http://d-nb.info/standards/elementset/gnd#RoyalOrMemberOfARoyalHouse':
+                return new BiographicalData();
+                break;
+
+            case 'http://d-nb.info/standards/elementset/gnd#CorporateBody':
             case 'http://d-nb.info/standards/elementset/gnd#OrganOfCorporateBody':
+            case 'http://d-nb.info/standards/elementset/gnd#TerritorialCorporateBodyOrAdministrativeUnit':
                 return new CorporateBodyData();
                 break;
 
@@ -57,6 +66,7 @@ abstract class DnbData
 
             default:
                 var_dump($type);
+                exit;
         }
     }
 

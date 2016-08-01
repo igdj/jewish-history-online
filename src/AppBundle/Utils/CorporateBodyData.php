@@ -21,8 +21,9 @@ class CorporateBodyData extends DnbData
             */
             case 'http://d-nb.info/standards/elementset/gnd#placeOfBusiness':
                 $placeOfBusiness = self::fetchGeographicLocation($triple['o']);
-                if (!empty($placeOfBusiness))
-                    $this->placeOfBusiness = self::normalizeString($placeOfBusiness);
+                if (!empty($placeOfBusiness)) {
+                    $this->placeOfBusiness = $placeOfBusiness;
+                }
                 break;
             case 'http://d-nb.info/standards/elementset/gnd#dateOfTermination':
                 $this->dateOfTermination = $triple['o'];
