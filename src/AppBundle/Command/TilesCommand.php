@@ -83,6 +83,16 @@ class TilesCommand extends ContainerAwareCommand
                 $files[] = $file->getFilename();
             }
         }
+        foreach (new \GlobIterator($srcDir . '/f*.png') as $file) {
+            if ($file->isFile()) {
+                $fname = $file->getFilename();
+                $fnameJpg = preg_replace('/\.png/i', '.jpg', $fname);
+                $convert_args = [ $srcDir . '/' . $fname,
+                                  $srcDir . '/' . $fnameJpg ];
+                $this->convertExec($convert_args);
+                $files[] = $fnameJpg;
+            }
+        }
 
         $targetPath = sprintf('web/viewer/%s', $DERIVATE);
         if (!is_dir($baseDir . '/' . $targetPath)) {

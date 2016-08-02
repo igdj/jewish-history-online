@@ -160,7 +160,7 @@ class Article implements \JsonSerializable
      * @var string A license document that applies to this content, typically indicated by URL.
      *
      * @Assert\Type(type="string")
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(nullable=true, length=2048)
      */
     protected $rights;
     /**

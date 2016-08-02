@@ -191,6 +191,9 @@ header {
 .source-description, .source-link {
 	@include article-text;
 	margin-bottom: 1em;
+	.editorial.foot {
+		display: none;
+	}
 }
 
 .article {

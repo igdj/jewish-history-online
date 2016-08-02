@@ -84,4 +84,105 @@ class SourceController extends ArticleController
 
         return $this->renderSourceViewer($uid, $article);
     }
+
+    public function tei2htmlAction($path)
+    {
+        $parts = explode('/', $path, 2);
+        $lang = 'de';
+
+        if (preg_match('/^tei\/(translation|transcription)\.(de|en)\/(page\-(\d+)(\.xml))$/', $parts[1], $matches)) {
+            $lang = $matches[2];
+            $page = $matches[3];
+        }
+        else {
+            $page = preg_replace('/[^0-9a-zA-Z\.\-]/', '', $parts[1]);
+        }
+        /*
+        if (preg_match('/(.+)\.(de|en)(\.xml)$/', $page, $matches)) {
+            $page = $matches[1] . $matches[3];
+            $lang = $matches[2];
+        }
+        */
+
+        // source
+        $uid = preg_replace('/[^0-9a-zA-Z_\-\:]/', '', $parts[0]);
+        if (preg_match('/(article|source)\-(\d+)/', $uid, $matches)) {
+            $fname = sprintf('%s-%05d.%s',
+                             $matches[1], $matches[2], $lang);
+        }
+        $fname .= '.xml';
+
+
+        // check if source is splitted into parts
+        $baseDir = realpath($this->get('kernel')->getRootDir() . '/..');
+
+        $targetPath = sprintf('web/viewer/%s', $uid);
+        $targetDir = realpath($baseDir . '/' . $targetPath);
+
+        $html = 'TODO: A problem occured';
+        if (!empty($targetDir)) {
+            $pagesPath = 'pages.' . $lang;
+            if (!is_dir($targetDir . '/' . $pagesPath)) {
+                mkdir($targetDir . '/' . $pagesPath);
+            }
+
+            if (is_dir($targetDir . '/' . $pagesPath)) {
+                $pagesDir = realpath($targetDir . '/' . $pagesPath);
+
+                if (!file_exists($pagesDir . '/' . $page)) {
+                    // TODO: check dates
+                    $pagesDirUri = 'file:///' . str_replace('\\', '/', $pagesDir);
+                    // we have to split the source file to pages
+                    $res = $this->renderTei($fname, 'split-pages.xsl',
+                                            [ 'params' => [ 'outdir' => $pagesDirUri ]]);
+                }
+
+                if (file_exists($pagesDir . '/' . $page)) {
+                    $html = $this->renderTei(realpath($pagesDir . '/' . $page), 'dtabf_viewer.xsl',
+                                             [ 'locateXmlResource' => false ]);
+                }
+            }
+
+        }
+
+        return new Response($html);
+    }
+
+    public function imgInfoAction($path)
+    {
+        $parts = explode('/', $path);
+
+        $derivate = preg_replace('/[^0-9a-zA-Z_\-\:]/', '', $parts[0]);
+        $fname = preg_replace('/[^0-9a-zA-Z\.]/', '', $parts[1]);
+
+        $baseDir = realpath($this->get('kernel')->getRootDir() . '/..');
+        $srcPath = sprintf('src/AppBundle/Resources/data/img/%s', $derivate);
+
+        $fnameFull = realpath($baseDir . '/' . $srcPath . '/' . $fname);
+
+        if (!file_exists($fnameFull)) {
+            throw $this->createNotFoundException('This source-image does not exist');
+        }
+
+        $size = @getimagesize($fnameFull);
+        if (empty($size)) {
+            throw $this->createNotFoundException('The size of the source-image could not be determined');
+        }
+
+        $width = $size[0];
+        $height = $size[1];
+
+        $iViewTiler = new \AppBundle\Utils\IViewTiler();
+        $level = $iViewTiler->determineMaxZoom($width, $height);
+
+        $response = new Response(<<<EOX
+<?xml version="1.0" encoding="UTF-8"?>
+<imageinfo derivate="${derivate}" path="${fname}" tiles="1" width="${width}" height="${height}" zoomLevel="${level}" />
+EOX
+        );
+        $response->headers->set('Content-Type', 'text/xml');
+
+        return $response;
+    }
+
 }

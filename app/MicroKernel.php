@@ -138,13 +138,13 @@ class MicroKernel extends Kernel
         // allow / in route .+
         $routes->addRoute(
                           new \Symfony\Component\Routing\Route('/source/imginfo/{path}',
-                                                               array('_controller' => 'AppBundle:Article:imgInfo'),
-                                                               array('path' => '.*')),
+                                                               [ '_controller' => 'AppBundle:Source:imgInfo' ],
+                                                               [ 'path' => '.*' ]),
                           'imginfo');
         $routes->addRoute(
                           new \Symfony\Component\Routing\Route('/source/tei2html/{path}',
-                                                               array('_controller' => 'AppBundle:Article:tei2html'),
-                                                               array('path' => '.*')),
+                                                               [ '_controller' => 'AppBundle:Source:tei2html' ],
+                                                               [ 'path' => '.*' ]),
                           'tei2html');
     }
 }
