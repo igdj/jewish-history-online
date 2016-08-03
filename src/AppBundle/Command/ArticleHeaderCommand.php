@@ -184,15 +184,16 @@ class ArticleHeaderCommand extends ContainerAwareCommand
                     $methodGet = 'get' . ucfirst($attribute);
                     $currentValues = $entity->$methodGet();
                     foreach ($value as $singleValue) {
+                        $criteria = [ $key => $singleValue ];
                         $relatedEntity = $em->getRepository('AppBundle:' . $repoClass)
                             ->findOneBy($criteria);
+                            
                         if (!is_null($relatedEntity)
                             && !$currentValues->contains($relatedEntity))
                         {
                             $method = 'add' . ucfirst($attribute);
                             $entity->$method($relatedEntity);
                         }
-
                     }
                     $currentValues = $entity->$methodGet();
                 }

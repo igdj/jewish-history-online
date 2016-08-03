@@ -46,12 +46,14 @@ abstract class DnbData
         }
     }
 
-    static function instantiateResult($index)
+    static function instantiateResult($index, $gnd = null)
     {
         $type = $index['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0]['value'];
         switch ($type) {
             case 'http://d-nb.info/standards/elementset/gnd#DifferentiatedPerson':
+            case 'http://d-nb.info/standards/elementset/gnd#Pseudonym':
             case 'http://d-nb.info/standards/elementset/gnd#RoyalOrMemberOfARoyalHouse':
+            case 'http://d-nb.info/standards/elementset/gnd#UndifferentiatedPerson':
                 return new BiographicalData();
                 break;
 
@@ -66,6 +68,7 @@ abstract class DnbData
 
             default:
                 var_dump($type);
+                var_dump($gnd);
                 exit;
         }
     }
@@ -83,7 +86,7 @@ abstract class DnbData
         }
         $index = \ARC2::getSimpleIndex($triples, false) ; /* false -> non-flat version */
 
-        $res = self::instantiateResult($index['http://d-nb.info/gnd/' . $gnd]);
+        $res = self::instantiateResult($index['http://d-nb.info/gnd/' . $gnd], $gnd);
         if (is_null($res)) {
             // type not handled
             return null;

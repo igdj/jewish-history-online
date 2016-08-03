@@ -44,9 +44,12 @@ class ArticleAdjustCommand extends BaseEntityCommand
             case 'article':
                 $sql = "SELECT 'article' AS query_type, Message.*"
                      . ", Translator.slug AS translator_slug, Translator.firstname, Translator.lastname"
+                     . ", Referee.slug AS referee_slug"
                      . " FROM Message"
                      . " LEFT OUTER JOIN User Translator"
                      . " ON Message.translator = Translator.id"
+                     . " LEFT OUTER JOIN User Referee"
+                     . " ON Message.referee = Referee.id"
                      . " WHERE Message.id=:id AND Message.status <> -1"
                      ;
                 $params = [ 'id' => $matches[2] ];
@@ -107,11 +110,52 @@ class ArticleAdjustCommand extends BaseEntityCommand
                         /** @Ignore */
                         $topics[] = $translator->trans(\AppBundle\Controller\TopicController::lookupLocalizedTopic($term['name'], $translator, 'de')); // db-terms in German
                     }
+
+                    $responsible = [];
+                    switch ($result['referee_slug']) {
+                        case 'bergmann-werner':
+                            $responsible = [ $translator->trans('Anti-Semitism and Persecution') ];
+                            break;
+                        case 'brinkmann-tobias':
+                            $responsible = [ $translator->trans('Migration') ];
+                            break;
+                        case 'braemer-andreas':
+                            $responsible = [ $translator->trans('Religious Life and Identity Issues') ];
+                            break;
+                        case 'jensen-uffa':
+                            $responsible = [
+                                $translator->trans('Law and Politics'),
+                                $translator->trans('Economy and Occupational Composition'),
+                            ];
+                            break;
+                        case 'meyer-beate':
+                            $responsible = [ $translator->trans('Remembrance') ];
+                            break;
+                        default:
+                            die('TODO: handle ' . $result['referee_slug']);
+                    }
+                    usort($topics, function ($a, $b) use ($responsible) {
+                        if ($a == $b) {
+                            return 0;
+                        }
+                        if (in_array($a, $responsible) && in_array($b, $responsible)) {
+                            return strcmp($a, $b);
+                        }
+                        if (in_array($a, $responsible)) {
+                            return -1;
+                        }
+                        if (in_array($b, $responsible)) {
+                            return 1;
+                        }
+                        return strcmp($a, $b);
+                    });
                     $data['topic'] = $topics;
                 }
-                if (!empty($result['slug'])) {
-                    // TODO: needs to be language dependant!
+                if ('en' == $translator->getLocale() && !empty($result['slug'])) {
                     $data['slug'] = $result['slug'];
+                }
+                else if ('de' == $translator->getLocale() && !empty($result['slug_de'])) {
+                    $data['slug'] = $result['slug_de'];
                 }
                 $dates = [];
                 if (!empty($result['published'])) {

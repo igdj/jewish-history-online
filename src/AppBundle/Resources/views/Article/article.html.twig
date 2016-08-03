@@ -51,7 +51,7 @@
                 <hr />
             {% endif %}
             {% if authors is not empty %}
-                <p><a href="#author">{{ 'author.oneormany'|transchoice(authors|length) }}</a></p>
+                <p><a href="#author">{{ helper.article_author_aboutlabel(authors) }}</a></p>
             {% endif %}
             <p><a href="#citation">{{ 'Recommended Citation and License Statement'|trans }}</a></p>
             </div>
@@ -66,7 +66,7 @@
         {{ html|raw }}
 
         {% if authors is not empty %}
-        <h2 id="author">{{ 'author.oneormany'|transchoice(authors|length) }}</h2>
+        <h2 id="author">{{ helper.article_author_aboutlabel(authors) }}</h2>
             {% for author in authors %}
         <p>{% if author.description is defined %}{{ author.description }}{% else %}{{ author.text }}{% endif %}</p>
             {% endfor %}

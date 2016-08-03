@@ -15,7 +15,7 @@
         <a href="{{ path('article', { 'slug' : article.getSlug(true) }) }}">
             {{ article.name }}
             {% if article.author|length > 0%}
-            ({% for author in article.author %}{{ author.givenName }} {{ author.familyName }}{% endfor %})
+            ({% for author in article.author %}{{ author.givenName }} {{ author.familyName }}{% if not loop.last %}, {% endif %}{% endfor %})
             {% endif %}
         </a>
     {% elseif 'source' == article.genre %}
