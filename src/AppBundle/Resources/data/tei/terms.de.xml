@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
+type="application/xml"
+schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="main">Über uns</title>
+            </titleStmt>
+            <publicationStmt>
+                <publisher>
+                    <orgName>Institut für die Geschichte der deutschen Juden</orgName>
+                    <email>redaktion@juedische-geschichte-online.net</email>
+                    <address><addrLine>Beim Schlump 83, 20144 Hamburg</addrLine></address>
+                </publisher>
+                <pubPlace>Hamburg</pubPlace>
+                <date type="publication">2016-09-01</date>
+                <availability>
+                    <licence target="http://creativecommons.org/licenses/by-nc/3.0/de/">
+                        <p>Dieser Text basiert auf den <ref target="http://www.deutschestextarchiv.de/doku/nutzungsbedingungen">Nutzungsbestimmungen des Deutschen Textarchivs</ref> und darf gemäß den Bestimmungen der <ref target="http://creativecommons.org/licenses/by-nc/3.0/de/">CC-BY-NC 3.0</ref> für nicht-kommerzielle Zwecke in jedwedem Format oder Medium vervielfältigt und weiterverbreitet werden. </p>
+                    </licence>
+                </availability>
+            </publicationStmt>
+            <sourceDesc>
+                <p></p>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <langUsage><language ident="deu">Deutsch</language></langUsage>
+        </profileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <div n="2">
+                <p>Das Institut für die Geschichte der deutschen Juden (IGdJ) stellt Ihnen auf diesen Seiten kostenlos die Online-Quellenedition „Hamburger Schlüsseldokumente zur deutsch-jüdischen Geschichte“ zur Verfügung. Die für die Online-Quellenedition eigens erstellten Texte können unter den nachstehend ausgeführten Bedingungen für nicht-kommerzielle Zwecke genutzt werden. Bei den von Partnern bereitgestellten Digitalisaten gelten deren Nutzungsbedingungen.</p>
+                
+                <div n="3">
+                    <head>1. Lizensierung</head>
+                    <p>Die Quelleninterpretationen, Hintergrundartikel sowie Übersetzungen stehen – soweit nicht anderweitig gekennzeichnet – unter einer Creative Commons Lizenz (CC BY-NC 4.0) zur Verfügung. Diese dürfen für nichtkommerzielle Zwecke nachgenutzt werden. Bei einer Weiterverwendung der Texte sind die in den Zitationsempfehlungen vorgegebenen Urheber- und Rechteangaben mit anzugeben.
+                        <lb/></p>
+                </div>
+                <div n="3">
+                    <head>2. Gemeinfreiheit</head>
+                    <p>Bei Quellen, die keinem Urheberrechtsschutz mehr unterliegen, ist die reine Textversion von einer angegebenen Lizenz (soweit nicht gesondert gekennzeichnet) nicht betroffen. Das heißt: Die Reintext-Version eines Werkes (ohne Annotationen der XML- bzw. HTML-Versionen) kann bei solchen Quellen im Sinne der Gemeinfreiheit ohne jegliche Einschränkungen benutzt werden.
+                        <lb/></p>
+                </div>
+                <div n="3">
+                    <head>3. Bilddigitalisate</head>
+                    <p>Dieses Angebot konnte durch die Kooperation mit mehreren Archiven und Bibliotheken, die ausgewählte Werke aus ihrem Bestand für die Digitalisierung zur Verfügung stellen, aufbauen. Soweit nicht explizit gekennzeichnet gilt: Voraussetzung für die Anzeige der Bilddigitalisate ist, dass die Bilddaten nur zu wissenschaftlichen und privaten, nicht zu kommerziellen Zwecken genutzt werden und bei der Bildanzeige auf die besitzende Institution verwiesen wird. Eine Publikation der Bilddigitalisate durch Dritte ist nur in Abstimmung mit den besitzenden Institutionen und entsprechend den dort geltenden Bestimmungen möglich.<lb/></p>
+                    <p>Die Rechte an den in der Quellenedition angezeigten Bilddigitalisaten liegen bei den angegebenen Archiven und Bibliotheken. Soweit nicht explizit gekennzeichnet gilt: Für Fragen zur Reproduktion der Bilder, zum Beispiel in Publikationen, wenden Sie sich bitte an die bewahrenden Institutionen.
+                    <lb/></p>
+                </div>
+                <div n="3">
+                    <head>4. Haftungsfragen</head>
+                    <p>Das IGdJ gewährleistet weder die Vollständigkeit und Richtigkeit der Inhalte, noch das störungsfreie Funktionieren oder die dauerhafte Abrufbarkeit der Internetanwendung.
+                        <lb/></p>
+                    <p>Insbesondere im Hinblick auf die §§ 86a StGB und 130 StGB wird festgestellt, dass die auf diesen Seiten abgebildeten Inhalte weder in irgendeiner Form propagandistischen Zwecken dienen, oder Werbung für verbotene Organisationen oder Vereinigungen darstellen, oder nationalsozialistische Verbrechen leugnen oder verharmlosen, noch zum Zwecke der Herabwürdigung der Menschenwürde gezeigt werden. Die auf diesen Seiten abgebildeten Inhalte (in Wort und Bild) dienen im Sinne des § 86 StGB Abs. 3 ausschließlich historischen, sozial- oder kulturwissenschaftlichen Forschungszwecken. Ihre Veröffentlichung erfolgt in der Absicht, Wissen zur Anregung der intellektuellen Selbstständigkeit und Verantwortungsbereitschaft des Staatsbürgers zu vermitteln und damit der Förderung seiner Mündigkeit zu dienen.
+                        <lb/></p>
+                </div>
+            </div>
+        </body>
+    </text>
+</TEI>

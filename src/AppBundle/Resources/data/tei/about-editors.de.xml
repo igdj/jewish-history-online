@@ -32,19 +32,24 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
     </teiHeader>
     <text>
         <body>
-            <p>Prof. Dr. Werner Bergmann, Zentrum für Antisemitismusforschung, Berlin (Judenfeindschaft und Verfolgung)</p>
-            <p>PD Dr. Andreas Brämer, Institut für die Geschichte der deutschen Juden, Hamburg (Religiöses Leben und Identitätsfragen)</p>
-            <p>Prof. Dr. Tobias Brinkmann, PennState University, USA (Migration)</p>
-            <p>Dr. Stefanie Fischer, Zentrum für Jüdische Studien Berlin-Brandenburg (Alltag und Familie)</p>
-            <p>PD Dr. Kirsten Heinsohn, Forschungsstelle für Zeitgeschichte, Hamburg (Freizeit und Sport)</p>
-            <p>Dr. Uffa Jensen, Max-Planck-Institut für Bildungsforschung, Berlin (Rechtslage, Politik und Wirtschaft)</p>
-            <p>Dr. Anthony Kauders, Keele University, UK (Kunst und Kultur)</p>
-            <p>Prof. Dr. Rainer Liedtke, Universität Regensburg (Organisationen und Institutionen)</p>
-            <p>Prof. Dr. Ingrid Lohmann, Universität Hamburg (Erziehung und Bildung)</p>
-            <p>Dr. Beate Meyer, Institut für die Geschichte der deutschen Juden (Gedenken und Erinnerung)</p>
-            <p>Dr. Miriam Rürup, Institut für die Geschichte der deutschen Juden (Demographie und soziale Strukturen)</p>
-            <p>Prof. Dr. Stefanie Schüler-Springorum, Zentrum für Antisemitismusforschung, Berlin (Soziale Fragen und Wohlfahrt)</p>
-            <p>Dr. Lilian Türk, Universität Hamburg (Wissenschaft)</p>
+            <p><hi rendition="#b">Werner Bergmann</hi> (<ref corresp="jgo:topic-judenfeindschaft-und-verfolgung">Judenfeindschaft und Verfolgung</ref>), Prof. Dr., geb. 1950, ist Professor
+                für Soziologie am Zentrum für Antisemitismusforschung an der Technischen Universität
+                Berlin und leitet seit 2015 das Forschungsprojekt „Analyse und Bewertung von
+                aufgeklärten Tötungsdelikten in Berlin hinsichtlich ihrer politischen Aspekte
+                (1990-2014)“. Seine Forschungsschwerpunkte sind Soziologie und Geschichte des
+                Antisemitismus und angrenzende Gebiete wie Rassismus und Rechtsextremismus.</p>
+            <p><hi rendition="#b">Andreas Brämer</hi> (<ref corresp="#">Religion und Identität</ref>), PD Dr., stellvertretender Direktor des IGdJ und ist u.a. Mitglied im Vorstand der Wissenschaftlichen Arbeitsgemeinschaft des Leo Baeck Instituts. Seine Forschungsschwerpunkte sind Deutsch-jüdische Geschichte des 19. und 20. Jahrhunderts, jüdische Geschichte „von innen“, jüdische Religionsgeschichte und jüdische Historiographiegeschichte.</p>
+            <p><hi rendition="#b">Tobias Brinkmann</hi> (<ref corresp="#">Migration</ref>), Dr. phil., ist Malvin and Lea Bank Associate Professor für jüdische Studien und Geschichte im Fachbereich Geschichte und Religionswissenschaften der Penn State University. Sein Forschungsschwerpunkt liegt in der Migrationsgeschichte, insbesondere jüdische Migration von Mittel- und Osteuropa nach Nordamerika.</p>
+            <p><hi rendition="#b">Stefanie Fischer</hi> (<ref corresp="#">Alltag und Familie</ref>), Dr. des., forscht am Zentrum für jüdische Studien Berlin-Brandenburg. In ihrem aktuellen Forschungsprojekt untersucht sie die Beziehungen jüdischer Holocaustüberlebender zu ihren deutschen Heimatstätten in den 1950er und 1960er Jahren. Ihre Dissertation schrieb sie über Zusammenhänge von ökonomischem Vertrauen und antisemitsicher Gewalt am Beispiel deutsch-jüdischer Viehhändler zwischen 1919 und 1939.</p>
+            <p><hi rendition="#b">Kirsten Heinsohn</hi> (<ref corresp="#">Freizeit und Sport</ref>), Dr. phil., war von 2013-2015 Associate Professor im Fachbereich für Englische, Germanische und Romanische Studien an der Universität Kopenhagen. Seit 2015 ist sie stellvertretende Direktorin der Forschungsstelle für Zeitgeschichte in Hamburg. Ihre Forschungsschwerpunkte liegen in der neueren deutschen Geschichte, deutsch-jüdischer Geschichte und Gender Studien.</p>
+            <p><hi rendition="#b">Uffa Jensen</hi> (<ref corresp="#">Recht und Politik</ref>, <ref corresp="#">Wirtschaft und Berufsstruktur</ref>), Dr. phil., ist wissenschaftlicher Mitarbeiter im Forschungsbereich Geschichte der Gefühle am Max Planck Institut für Bildungsforschung in Berlin. Zu seinen Forschungsinteressen zählen: Wissens- und Wissenschaftsgeschichte, transnationale Geschichte, Geschichte der Psychoanalyse, moderne jüdische Geschichte und Geschichte des Antisemitismus.</p>
+            <p><hi rendition="#b">Anthony D. Kauders</hi> (<ref corresp="#">Kunst und Kultur</ref>), Dr., geb. 1967, ist stellvertretender Programmleiter der Keele University und erforscht derzeit die Geschichte der Hypnose an der Universität München.</p>
+            <p><hi rendition="#b">Rainer Liedtke</hi> (<ref corresp="#">Organisationen und Institutionen</ref>), Prof. Dr. phil., geb. 1967, ist Professor für europäische Geschichte des 19. und 20. Jahrhunderts an der Universität Regensburg. Seine Forschungsschwerpunkte sind: vergleichende europäische Geschichte und Stadtgeschichte sowie jüdische Geschichte, britische Geschichte und die Geschichte des neuzeitlichen Griechenlands.</p>
+            <p><hi rendition="#b">Ingrid Lohmann</hi> (<ref corresp="#">Erziehung und Bildung</ref>), Prof. Dr. phil, ist Professorin für Ideen- und Sozialgeschichte der Erziehung an der Universität Hamburg. Zu ihren Forschungsschwerpunkten zählen: Zusammenhänge von Wirtschaft und Bildung seit Beginn der Neuzeit, besonders Privatisierung und Kommerzialisierung im Bildungs- und Wissenschaftsbereich, sowie jüdische Bildungsgeschichte, insbesondere in der deutschen Spätaufklärung.</p>
+            <p><hi rendition="#b">Beate Meyer</hi> (<ref corresp="#">Erinnern und Gedenken</ref>), Dr. phil., ist wissenschaftliche Mitarbeiterin am Institut für die Geschichte der deutschen Juden (IGdJ). Ihre Forschungsinteressen sind: deutsch-jüdische Geschichte, Nationalsozialismus, Oral History, Geschlechtergeschichte und Erinnerungskultur.</p>
+            <p><hi rendition="#b">Miriam Rürup</hi> (<ref corresp="#">Demographie und soziale Strukturen</ref>), Dr. phil., ist Direktorin des Instituts für die Geschichte der deutschen Juden (IGdJ). Ihre Forschungsschwerpunkte sind: Geschlechtergeschichte, Deutsch-jüdische Geschichte, Zeitgeschichte, Migrationsgeschichte, Studenten- und Universitätsgeschichte, Geschichte der Erinnerungspolitik sowie Geschichte des Nationalsozialismus.</p>
+            <p><hi rendition="#b">Stefanie Schüler-Springorum</hi> (<ref corresp="#">Soziale Fragen und Wohlfahrt</ref>), Prof. Dr., ist seit Juni 2011 Leiterin des Zentrum für Antisemitismusforschung an der TU Berlin und vertritt diese seit 2012 im Direktorium des Zentrum Jüdische Studien Berlin-Brandenburg. Von 2001 bis 2011 war sie Direktorin des Institut für die Geschichte der deutschen Juden.</p>
+            <p><hi rendition="#b">Lilian Türk</hi> (<ref corresp="#">Wissenschaft</ref>), Dr. des., ist wissenschaftliche Mitarbeiterin am Institut für jüdische Religion und Philosophie der Universität Hamburg. Ihre Forschungsschwerpunkte sind: jiddische Religionsphänomenologie, jiddische Sprache und Literatur, jiddische Presse in sozialen Bewegungen 1850-1950 und nonkonforme jüdische Identitäten mit besonderer Beachtung des religiösen Anarchismus.</p>
         </body>
     </text>
 </TEI>

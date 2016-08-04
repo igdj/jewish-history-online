@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
+type="application/xml"
+schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="main">Über uns</title>
+            </titleStmt>
+            <publicationStmt>
+                <publisher>
+                    <orgName>Institut für die Geschichte der deutschen Juden</orgName>
+                    <email>redaktion@juedische-geschichte-online.net</email>
+                    <address><addrLine>Beim Schlump 83, 20144 Hamburg</addrLine></address>
+                </publisher>
+                <pubPlace>Hamburg</pubPlace>
+                <date type="publication">2016-09-01</date>
+                <!--
+                <availability>
+                    <licence target="http://creativecommons.org/licenses/by-nc/3.0/de/">
+                        <p>Dieser Text basiert auf den <ref target="http://www.deutschestextarchiv.de/doku/nutzungsbedingungen">Nutzungsbestimmungen des Deutschen Textarchivs</ref> und darf gemäß den Bestimmungen der <ref target="http://creativecommons.org/licenses/by-nc/3.0/de/">CC-BY-NC 3.0</ref> für nicht-kommerzielle Zwecke in jedwedem Format oder Medium vervielfältigt und weiterverbreitet werden. </p>
+                    </licence>
+                </availability>
+                -->
+            </publicationStmt>
+            <sourceDesc>
+                <p></p>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <langUsage><language ident="deu">Deutsch</language></langUsage>
+        </profileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <div n="2">
+                
+                
+                <p>Ihre Fragen und Anregungen erreichen uns per E-Mail an info@juedische-geschichte-online.net oder über die auf der Mitarbeiter/innen-Seite verlinkten persönlichen Kontaktangaben.<lb/></p>
+                
+                 
+                <div n="3">
+                    <head>Impressum</head>
+                    <p>Institut für die Geschichte der deutschen Juden<lb/>
+                        Beim Schlump 83<lb/>
+                        20144 Hamburg<lb/></p>
+                    
+                    <p>              
+                        Tel. +49 40 – 42 838-2617<lb/>
+                        Fax +49 40 – 44 808-66<lb/>
+                        E-Mail: IGdJ@public.uni-hamburg.de<lb/>
+                    Internet: http://www.igdj-hh.de</p>      
+                    
+                    <p>Das Institut ist eine Stiftung bürgerlichen Rechts in der Trägerschaft der
+                        Freien Hansestadt Hamburg.</p>
+                    
+                    <p>Vertretungsberechtigte Personen<lb/>
+                    Direktorin: Dr. Miriam Rürup<lb/>
+                        Stellvertretender Direktor: PD Dr. Andreas Brämer</p>
+                    
+                    <p>Inhaltlich verantwortlich:<lb/>
+                    Dr. Anna Menny und Daniel Burckhardt</p>
+                    
+                    <p>Aufsichtbehörde<lb/>
+                        Justizverwaltungsamt Stiftungsangelegenheiten<lb/>
+                    Drehbahn 36, 20354 Hamburg</p>
+                </div>
+
+
+                <div n="3">
+                    <head>Haftungshinweis</head>
+                    <p>
+                    Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.
+                    <lb/></p>
+                </div>
+            </div>
+        </body>
+    </text>
+</TEI>

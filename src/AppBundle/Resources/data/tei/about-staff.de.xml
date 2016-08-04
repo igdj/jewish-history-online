@@ -33,32 +33,36 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
     <text>
         <body>
             <div n="3">
-                <head>Projektleitung<lb/></head>
-                <p><hi rendition="#b">Dr. Miriam Rürup</hi><lb/></p>
-                <p>Sie ist Direktorin des Instituts für die Geschichte der deutschen Juden. Zuvor
-                    war sie u.a. wissenschaftliche Mitarbeiterin am DHI in Washington, USA, und
-                    wissenschaftliche Assistentin am Seminar für Mittlere und Neuere Geschichte der
-                    Universität Göttingen. Sie hat Geschichte, Soziologie und Europäische Ethnologie
-                    an den Universitäten Göttingen, Tel Aviv und Berlin studiert und wurde an der TU
-                    Berlin zu jüdischen Studentenverbindungen promoviert. Ihre Forschungsinteressen
-                    umfassen die deutsch-jüdische Geschichte, Zeitgeschichte, Geschichte des
-                    Nationalsozialismus sowie der Gedenkpolitik, Geschlechtergeschichte sowie aus
-                    dem Umfeld ihrer Habilitation vor allem die Geschichte von Migration,
-                    Staatsbürgerschaft und Staatenlosigkeit.<lb/></p>
-            </div>
-            <div n="3">
-                <head>Projektkoordination<lb/></head>
-                <p><hi rendition="#b">Dr. Anna Menny</hi><lb/></p>
-                <p>Sie ist wissenschaftliche Mitarbeiterin am Institut für die Geschichte der
-                    deutschen Juden. Sie hat an der Universität Hamburg Geschichte, Politik und
-                    Medienkultur studiert und wurde an der LMU München zu spanisch-jüdischer
-                    Zeitgeschichte promoviert. Sie ist Sprecherin des Netzwerks Jüdische Geschichte
-                    digital innerhalb der AG digitale Geschichtswissenschaft des
-                    Historikerverbandes.<lb/></p>
-            </div>
-            <div n="3">
                 <head>Projektmitarbeiter/innen<lb/></head>
-                <p>TODO: Ergänzen</p>
+                
+                <p><hi rendition="#b"><ref target="http://www.igdj-hh.de/daniel-burckhardt.html">Daniel Burckhardt, M.A.</ref></hi> (Technik)<lb/></p>
+                <p>Er ist seit 2015 wissenschaftlicher Mitarbeiter am Institut für die Geschichte der deutschen Juden. Er hat in Zürich und Berlin studiert und war bisher als wissenschaftlicher Mitarbeiter am Institut für Geschichtswissenschaften der Humboldt-Universität zu Berlin sowie am Zentrum für Zeithistorische Forschung Potsdam tätig. Er ist außerdem Lehrbeauftragter im Public History Master der Freien Universität zu Berlin und Mitglied der Redaktion und Steuerungsgruppe von H-Soz-Kult.</p>
+
+                <p><hi rendition="#b"><ref target="http://www.igdj-hh.de/inka-le-huu-ma.html">Dr. Inka Le-Huu</ref></hi> (Redaktion)<lb/></p>
+                <p>Sie ist seit 2014 wissenschaftliche Mitarbeiterin am Institut für die Geschichte der deutschen Juden. Sie war Stipendiatin der Studienstiftung des deutschen Volkes und ist Lehrbeauftragte im Arbeitsfeld Public History des Historischen Seminars der Universität Hamburg. Ihre Forschungsinteressen liegen in der deutsch-jüdischen Geschichte des 19. Jahrhunderts und der Hamburger Lokalgeschichte.
+                </p>
+
+                <p><hi rendition="#b"><ref target="http://www.igdj-hh.de/dr-anna-menny.html">Dr. Anna Menny</ref></hi> (Projektkoordination)<lb/></p>
+                <p>Sie ist seit 2012 wissenschaftliche Mitarbeiterin am Institut für die Geschichte der deutschen Juden und koordiniert die Online-Quellenedition In ihren wissenschaftlichen Forschungsarbeiten befasst sie sich mit der jüdisch-spanischen Geschichte, Fragen zur Erinnerungskultur und den Digital Humanities.</p>
+                
+                <p><hi rendition="#b"><ref target="http://www.igdj-hh.de/dr-miriam-ruerup.html">Dr. Miriam Rürup</ref></hi> (Projektleitung)<lb/></p>
+                <p>Sie ist seit 2012 Direktorin des Instituts für die Geschichte der deutschen Juden und initiierte die Online-Quellenedition Hamburger Schlüsseldokumente zur deutsch-jüdischen Geschichte, die einen Einblick in die hamburgisch-jüdische Geschichte auf unterschiedlichen Vertiefungsebenen sichtbar und zugänglich macht. Ihre Forschungsinteressen umfassen die deutsch-jüdische Geschichte, Zeitgeschichte, Geschichte des Nationalsozialismus, die Gedenkpolitik, Geschlechtergeschichte sowie aus dem Umfeld ihrer Habilitation vor allem die Geschichte von Migration, Staatsbürgerschaft und Staatenlosigkeit.<lb/></p>
+
+                <p><hi rendition="#b"><ref target="http://www.igdj-hh.de/nina-zellerhoff-ma.html">Nina Zellerhoff, M.A.</ref></hi> (Redaktion)<lb/></p>
+                <p>Sie ist seit 2016 wissenschaftliche Mitarbeiterin am Institut für die Geschichte der deutschen Juden. Ihre Forschungsarbeiten befassen sich mit der Initialisierung und Etablierung von Gedenkstätten, Fragen zur Erinnerungskultur und der Zukunft des Gedenkens. Ihre Forschungsinteressen beziehen sich auf die deutsch-jüdische Zeitgeschichte, die Geschichte des Nationalsozialismus und Digital Humanities.<lb/></p>                
+            </div>
+
+            <div n="3">
+                <head>Studentische Hilfskräfte<lb/></head>
+                
+                <p><hi rendition="#b">René Grothkopf</hi><lb/></p>
+                <p>Er studiert an der Universität Hamburg Soziologie und Geschichte. Seine Forschungsinteressen sind: Antisemitismusforschung, Ökonomiekritik und Geschlechterforschung.<lb/></p>
+
+                <p><hi rendition="#b">Clara Hestermann</hi><lb/></p>
+                <p>Sie studiert an der Universität Hamburg Geschichte und Politikwissenschaften. Ihre Forschungsinteressen sind: Jüdische Geschichte, Europäische Geschichte des 20. Jahrhunderts, Geschichte des Nahen Ostens. <lb/></p>
+                
+                <p><hi rendition="#b">Jan Kawlath</hi><lb/></p>
+                <p>Er studiert an der Universität Hamburg Geschichte und Philosophie. Seine Forschungsinteressen sind: deutsche Kolonialgeschichte, Genozidforschung und Postkolonialismus.<lb/></p>
             </div>
         </body>
     </text>
