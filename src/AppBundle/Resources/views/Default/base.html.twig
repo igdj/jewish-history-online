@@ -84,7 +84,7 @@
                     <div class="col-sm-12" style="position: relative">
                         <div style="position: absolute; right: 0; z-index: 100">
                             {{ knp_menu_render('AppBundle:Builder:topMenu') }}
-                            {% if app.request.attributes.get("_route") is not null %}
+                            {% if app.request.attributes.get("_route") is not null and app.request.getBaseUrl != '' %}
                             <ul id="menu-lang" class="list-inline">
                             {% for locale in [ 'de', 'en' ] %}
                                 <li{% if locale == app.request.locale %} class="current"{% endif %}>
