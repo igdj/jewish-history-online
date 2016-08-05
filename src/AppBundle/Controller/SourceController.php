@@ -36,7 +36,7 @@ class SourceController extends ArticleController
             $related = $this->getDoctrine()
                 ->getRepository('AppBundle:Article')
                 ->findBy([ 'isPartOf' => $interpretation ],
-                         [ 'name' => 'ASC']);
+                         [ 'dateCreated' => 'ASC', 'name' => 'ASC']);
         }
 
         $entityLookup = $this->buildEntityLookup($entities);

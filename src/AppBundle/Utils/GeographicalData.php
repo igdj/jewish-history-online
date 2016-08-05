@@ -267,6 +267,14 @@ class GeographicalData
                     $values['type'] = 'special city';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300387356':
+                    $values['type'] = 'former primary political entity';
+                    break;
+
+                case 'http://vocab.getty.edu/aat/300387198':
+                    $values['type'] = 'community'; //third level subdivisions (political entities)
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300265612':
                     $values['type'] = 'municipality';
                     break;

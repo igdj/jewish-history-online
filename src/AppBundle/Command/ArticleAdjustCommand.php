@@ -128,6 +128,9 @@ class ArticleAdjustCommand extends BaseEntityCommand
                                 $translator->trans('Economy and Occupational Composition'),
                             ];
                             break;
+                        case 'liedtke-rainer':
+                            $responsible = [ $translator->trans('Organizations and Institutions') ];
+                            break;
                         case 'meyer-beate':
                             $responsible = [ $translator->trans('Remembrance') ];
                             break;

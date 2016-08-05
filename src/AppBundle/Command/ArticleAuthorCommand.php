@@ -72,7 +72,7 @@ class ArticleAuthorCommand extends BaseEntityCommand
         }
         echo json_encode($persons, JSON_PRETTY_PRINT);
 
-        if ($input->getOption('insert-missing')) {
+        if ($input->getOption('insert-missing') || $input->getOption('update')) {
             $em = $this->getContainer()->get('doctrine')->getEntityManager();
             foreach ($persons as $author) {
                 $slug = $author->getSlug();

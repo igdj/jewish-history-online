@@ -17,6 +17,7 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
     <profileDesc><langUsage><language ident="deu">German</language></langUsage><textClass><classCode scheme="http://juedische-geschichte-online.net/doku/#genre">Quelle:Text</classCode></textClass></profileDesc></teiHeader>
     <text>
         <body>
+            <pb facs="1"/>
             <div type="letter">
                 <opener>
                         <orgName ref="http://d-nb.info/gnd/10068294-7">DEPUTATION FÜR

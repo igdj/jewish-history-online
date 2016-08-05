@@ -54,8 +54,7 @@ class ArticleController extends RenderTeiController
         $related = $this->getDoctrine()
             ->getRepository('AppBundle:Article')
             ->findBy([ 'isPartOf' => $article ],
-                     [ 'name' => 'ASC']);
-
+                     [ 'dateCreated' => 'ASC', 'name' => 'ASC']);
 
         $localeSwitch = [];
         $translations = $this->getDoctrine()
