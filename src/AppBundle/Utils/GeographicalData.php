@@ -251,6 +251,10 @@ class GeographicalData
                     $values['type'] = 'county';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300235112':
+                    $values['type'] = 'voivodeship';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300387069':
                     $values['type'] = 'autonomous city';
                     break;

@@ -435,8 +435,6 @@ class TeiHelper
                                                 if (!empty($target)) {
                                                     $self = $self->addChild('tei:licence');
                                                     $self->addAttribute('tei:target', $target);
-                                                }
-                                                else {
                                                     $this->addChildStructure($self, [ 'p' => $data['license'][$target] ], 'tei:');
                                                 }
                                             }
@@ -596,6 +594,7 @@ class TeiHelper
             '{http://www.tei-c.org/ns/1.0}orgName' => '\\AppBundle\\Utils\\CollectingReader::collectElement',
         ];
 
+        $additional = [];
         try {
             $reader->xml($input);
             $output = $reader->parse();
@@ -650,7 +649,7 @@ class TeiHelper
 
                 if (isset($uri)) {
                     if (!isset($additional[$type])) {
-                        $additional[$type] = array();
+                        $additional[$type] = [];
                     }
                     if (!isset($additional[$type][$uri])) {
                         $additional[$type][$uri] = 0;

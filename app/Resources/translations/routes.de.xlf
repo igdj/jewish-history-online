@@ -28,7 +28,7 @@
       </trans-unit>
       <trans-unit id="565cecd7e8f5c6063935b41db41797aa37d53b04" resname="article">
         <source>/article/{slug}</source>
-        <target>/artikel/{slug}</target>
+        <target>/beitrag/{slug}</target>
       </trans-unit>
       <trans-unit id="1a73af9e7ae00182733b2292511b814be66f065f" resname="contact">
         <source>/contact</source>

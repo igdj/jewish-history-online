@@ -116,11 +116,14 @@ class ArticleAdjustCommand extends BaseEntityCommand
                         case 'bergmann-werner':
                             $responsible = [ $translator->trans('Anti-Semitism and Persecution') ];
                             break;
+                        case 'braemer-andreas':
+                            $responsible = [ $translator->trans('Religious Life and Identity Issues') ];
+                            break;
                         case 'brinkmann-tobias':
                             $responsible = [ $translator->trans('Migration') ];
                             break;
-                        case 'braemer-andreas':
-                            $responsible = [ $translator->trans('Religious Life and Identity Issues') ];
+                        case 'heinsohn-kirsten':
+                            $responsible = [ $translator->trans('Leisure and Sports') ];
                             break;
                         case 'jensen-uffa':
                             $responsible = [
@@ -128,12 +131,26 @@ class ArticleAdjustCommand extends BaseEntityCommand
                                 $translator->trans('Economy and Occupational Composition'),
                             ];
                             break;
+                        case 'kauders-anthony':
+                            $responsible = [ $translator->trans('Arts and Culture') ];
+                            break;
                         case 'liedtke-rainer':
                             $responsible = [ $translator->trans('Organizations and Institutions') ];
                             break;
                         case 'meyer-beate':
                             $responsible = [ $translator->trans('Remembrance') ];
                             break;
+                        case 'ruerup-miriam':
+                            $responsible = [ $translator->trans('Demography and Social Structures') ];
+                            break;
+                            break;
+                        case 'schueler-springorum-stefanie':
+                            $responsible = [ $translator->trans('Social Issues and Welfare') ];
+                            break;
+                        case 'tuerk-lilian':
+                            $responsible = [ $translator->trans('Scholarship') ];
+                            break;
+
                         default:
                             die('TODO: handle ' . $result['referee_slug']);
                     }
