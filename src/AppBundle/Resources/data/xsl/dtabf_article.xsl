@@ -6,7 +6,7 @@
 
 <xsl:import href="dtabf_base.xsl"/>
 
-<xsl:output method="html" doctype-system="about:legacy-compat"/>
+<xsl:output method="html" doctype-system=""/>
 
 <xsl:template match="tei:TEI">
     <ul id="authors">
@@ -51,6 +51,69 @@
       </xsl:choose>
     </xsl:when>
     <xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<xsl:template match='tei:figure'>
+  <xsl:choose>
+    <xsl:when test="tei:media/@mimeType='audio/mpeg'">
+      <!-- custom code for audio/video -->
+      <audio controls="controls">
+        <source>
+          <xsl:attribute name="src"><xsl:value-of select='tei:media/@url' /></xsl:attribute>
+          <xsl:attribute name="type"><xsl:value-of select='tei:media/@mimeType' /></xsl:attribute>
+        </source>
+      </audio>
+    </xsl:when>
+    <xsl:when test="tei:media/@mimeType='video/mp4'">
+      <!-- custom code for audio/video -->
+      <div class="embed-responsive embed-responsive-16by9">
+      <video controls="controls" preload="none" class="embed-responsive-item">
+        <source>
+          <xsl:attribute name="src"><xsl:value-of select='tei:media/@url' /></xsl:attribute>
+          <xsl:attribute name="type"><xsl:value-of select='tei:media/@mimeType' /></xsl:attribute>
+        </source>
+      </video>
+      </div>
+    </xsl:when>
+    <xsl:when test="(local-name(preceding-sibling::node()[1]) = 'lb' and local-name(following-sibling::node()[1]) = 'lb') or @rendition='#c'">
+      <xsl:element name="div">
+        <xsl:attribute name="class">phbl dta-figure</xsl:attribute>
+        <xsl:attribute name="type"><xsl:value-of select="count(preceding::tei:figure)+1"/></xsl:attribute>
+        <xsl:if test="@rendition='#c'">
+          <xsl:attribute name="style">text-align:center</xsl:attribute>
+        </xsl:if>
+        <xsl:if test="@facs">
+          <xsl:element name="img">
+            <xsl:attribute name="src"><xsl:value-of select="@facs"/></xsl:attribute>
+          </xsl:element><br />
+        </xsl:if>
+        [<xsl:choose>
+          <xsl:when test="@type='notatedMusic'">Musik</xsl:when>
+          <xsl:otherwise>Abbildung</xsl:otherwise>
+        </xsl:choose>
+        <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if>]
+        <xsl:apply-templates/>
+      </xsl:element>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:element name="span">
+        <xsl:attribute name="class">ph dta-figure</xsl:attribute>
+        <xsl:attribute name="type"><xsl:value-of select="count(preceding::tei:figure)+1"/></xsl:attribute>
+        <xsl:if test="@facs">
+          <xsl:element name="img">
+            <xsl:attribute name="class">img-responsive</xsl:attribute>
+            <xsl:attribute name="src"><xsl:value-of select="@facs"/></xsl:attribute>
+          </xsl:element><br />
+        </xsl:if>
+        <!--[<xsl:choose>
+          <xsl:when test="@type='notatedMusic'">Musik</xsl:when>
+          <xsl:otherwise>Abbildung</xsl:otherwise>
+        </xsl:choose>-->
+        <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if><!--]-->
+        <xsl:apply-templates/>
+      </xsl:element>
+    </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
 

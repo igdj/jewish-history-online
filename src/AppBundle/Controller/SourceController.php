@@ -12,6 +12,29 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
  */
 class SourceController extends ArticleController
 {
+    protected function adjustMedia($html, $baseUrl)
+    {
+        $crawler = new \Symfony\Component\DomCrawler\Crawler();
+        $crawler->addHtmlContent($html);
+
+        $crawler->filter('audio > source')->each(function ($node, $i) use ($baseUrl) {
+            $src = $node->attr('src');
+            $node->getNode(0)->setAttribute('src', $baseUrl . '/' . $src);
+        });
+
+        $crawler->filter('video > source')->each(function ($node, $i) use ($baseUrl) {
+            $src = $node->attr('src');
+            $node->getNode(0)->setAttribute('src', $baseUrl . '/' . $src);
+        });
+
+        $crawler->filter('img')->each(function ($node, $i) use ($baseUrl) {
+            $src = $node->attr('src');
+            $node->getNode(0)->setAttribute('src', $baseUrl . '/' . $src);
+        });
+
+        return $crawler->html();
+    }
+
     protected function renderSourceViewer($uid, $sourceArticle)
     {
         $fname = $this->buildArticleFname($sourceArticle);
@@ -45,6 +68,28 @@ class SourceController extends ArticleController
         $fnameMets = $this->buildArticleFname($sourceArticle, '.mets.xml');
         $parts = explode('.', $fnameMets);
         $path = $parts[0];
+
+        if (in_array($sourceArticle->getSourceType(), [ 'Audio', 'Video', 'Bild', 'Image', 'Objekt', 'Object' ])) {
+            $html = $this->adjustMedia($html,
+                                       $this->get('request')->getBaseURL()
+                                       . '/viewer/' . $path);
+
+            return $this->render('AppBundle:Article:viewer-media.html.twig',
+                                 [
+                                    'article' => $sourceArticle,
+                                    'html' => $html,
+                                    'meta' => $meta,
+                                    'description' => $sourceDescription,
+                                    'name' => $sourceArticle->getName(),
+                                    'interpretations' => [ $interpretation ],
+                                    'related' => $related,
+                                    'uid' => $uid,
+                                    'path' => $path,
+                                    'license' => $license,
+                                    'entity_lookup' => $entityLookup,
+                                    'glossary_lookup' => $glossaryLookup,
+                                  ]);
+        }
 
         return $this->render('AppBundle:Article:viewer.html.twig',
                              [

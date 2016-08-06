@@ -58,17 +58,18 @@
 
     function initNote(element) {
         var id_sel = $( element ).attr('href');
-            {#
-            $(this).tooltipster({
-              content: $('<span>' + $(id_sel).html() + '</span>'),
-              interactive: true
-            });
-            #}
-            $( element ).tooltip({
-                title: $( id_sel ).html(),
-                html: true  /*,
-                delay: { hide: 350 } */
-            });
+        {#
+        $(this).tooltipster({
+          content: $('<span>' + $(id_sel).html() + '</span>'),
+          interactive: true
+        });
+        #}
+        // console.log('Note ' + $( id_sel ).html());
+        $( element ).tooltip({
+            title: $( id_sel ).html(),
+            html: true  /*,
+            delay: { hide: 350 } */
+        });
     }
 
     function initNotes(selector) {
@@ -77,7 +78,7 @@
             selector_full = selector + ' ' + selector_full;
         }
 
-        $(selector_full).each(function( index ) {
+        $( selector_full ).each(function( index ) {
             var sibling = this.previousSibling;
             if (sibling.nodeType == 3) {
                 // text-node
