@@ -45,4 +45,39 @@ class PersonController extends Controller
                              [ 'person' => $person ]);
     }
 
+    public function gndBeaconAction()
+    {
+        $translator = $this->container->get('translator');
+
+        $personRepo = $this->getDoctrine()
+                ->getRepository('AppBundle:Person');
+
+        $query = $personRepo
+                ->createQueryBuilder('P')
+                ->where('P.status >= 0')
+                ->andWhere('P.gnd IS NOT NULL')
+                ->orderBy('P.gnd')
+                ->getQuery()
+                ;
+
+        $persons = $query->execute();
+
+        $ret = '#FORMAT: BEACON' . "\n"
+             . '#PREFIX: http://d-nb.info/gnd/'
+             . "\n";
+        $ret .= sprintf('#TARGET: %s/gnd/{ID}',
+                        $this->generateUrl('person-index', [], true))
+              . "\n";
+        $ret .= '#NAME: ' . $translator->trans('Hamburg Key-Documents of German-Jewish History')
+              . "\n";
+        // $ret .= '#MESSAGE: ' . "\n";
+
+        foreach ($persons as $person) {
+            $ret .=  $person->getGnd() . "\n";
+        }
+
+        return new \Symfony\Component\HttpFoundation\Response($ret, \Symfony\Component\HttpFoundation\Response::HTTP_OK,
+                                                              [ 'Content-Type' => 'text/plain; charset=UTF-8' ]);
+    }
+
 }

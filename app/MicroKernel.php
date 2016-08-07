@@ -122,6 +122,7 @@ class MicroKernel extends Kernel
 
         $routes->add('/person', 'AppBundle:Person:index', 'person-index');
         $routes->add('/person/{id}', 'AppBundle:Person:detail', 'person');
+        $routes->add('/person/gnd/beacon', 'AppBundle:Person:gndBeacon', 'person-gnd-beacon');
         $routes->add('/person/gnd/{gnd}', 'AppBundle:Person:detail', 'person-by-gnd');
 
         $routes->add('/place', 'AppBundle:Place:index', 'place-index');
@@ -130,6 +131,7 @@ class MicroKernel extends Kernel
 
         $routes->add('/organization', 'AppBundle:Organization:index', 'organization-index');
         $routes->add('/organization/{id}', 'AppBundle:Organization:detail', 'organization');
+        $routes->add('/organization/gnd/beacon', 'AppBundle:Organization:gndBeacon', 'organization-gnd-beacon');
         $routes->add('/organization/gnd/{gnd}', 'AppBundle:Organization:detail', 'organization-by-gnd');
 
         $routes->add('/glossary', 'AppBundle:Glossary:index', 'glossary-index');

@@ -45,4 +45,39 @@ class OrganizationController extends Controller
                              array('organization' => $organization));
     }
 
+    public function gndBeaconAction()
+    {
+        $translator = $this->container->get('translator');
+
+        $personRepo = $this->getDoctrine()
+                ->getRepository('AppBundle:Organization');
+
+        $query = $personRepo
+                ->createQueryBuilder('O')
+                ->where('O.status >= 0')
+                ->andWhere('O.gnd IS NOT NULL')
+                ->orderBy('O.gnd')
+                ->getQuery()
+                ;
+
+        $organizations = $query->execute();
+
+        $ret = '#FORMAT: BEACON' . "\n"
+             . '#PREFIX: http://d-nb.info/gnd/'
+             . "\n";
+        $ret .= sprintf('#TARGET: %s/gnd/{ID}',
+                        $this->generateUrl('organization-index', [], true))
+              . "\n";
+        $ret .= '#NAME: ' . $translator->trans('Hamburg Key-Documents of German-Jewish History')
+              . "\n";
+        // $ret .= '#MESSAGE: ' . "\n";
+
+        foreach ($organizations as $organization) {
+            $ret .=  $organization->getGnd() . "\n";
+        }
+
+        return new \Symfony\Component\HttpFoundation\Response($ret, \Symfony\Component\HttpFoundation\Response::HTTP_OK,
+                                                              [ 'Content-Type' => 'text/plain; charset=UTF-8' ]);
+    }
+
 }
