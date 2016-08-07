@@ -48,6 +48,11 @@ class ArticleController extends RenderTeiController
 
         list($authors, $section_headers, $license, $entities, $glossaryTerms) = $this->extractPartsFromHtml($html);
 
+        $sourceDescription = $this->renderSourceDescription($article);
+        list($dummy, $dummy, $license, $entitiesSourceDescription, $glossaryTermsSourceDescription) = $this->extractPartsFromHtml($sourceDescription);
+
+        $entities = array_merge($entities, $entitiesSourceDescription);
+
         $entityLookup = $this->buildEntityLookup($entities);
         $glossaryLookup = $this->buildGlossaryLookup($glossaryTerms);
 
@@ -66,8 +71,6 @@ class ArticleController extends RenderTeiController
                     = [ 'slug' => $translation->getSlug(true) ];
             }
         }
-
-        $sourceDescription = $this->renderSourceDescription($article);
 
         return $this->render('AppBundle:Article:article.html.twig',
                              [

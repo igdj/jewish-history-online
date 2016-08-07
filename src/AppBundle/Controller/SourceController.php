@@ -53,7 +53,7 @@ class SourceController extends ArticleController
                                    'html' => $this->renderSourceDescription($interpretation) ];
             list($dummy, $dummy, $license, $entitiesSourceDescription, $glossaryTermsSourceDescription) = $this->extractPartsFromHtml($sourceDescription['html']);
 
-            $entities += $entitiesSourceDescription;
+            $entities = array_merge($entities, $entitiesSourceDescription);
             $glossaryTerms += $glossaryTermsSourceDescription;
 
             $related = $this->getDoctrine()
