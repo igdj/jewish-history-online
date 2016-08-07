@@ -21,9 +21,9 @@ class PlaceController extends Controller
                 ;
 
         $qb->select('COUNT(DISTINCT A.id) AS number, P.id AS places, P.name, P.geo')
-                ->distinct()
                 ->innerJoin('A.contentLocation', 'P')
                 ->andWhere('P.geo IS NOT NULL')
+                ->groupBy('P.id')
                 ;
 
         $locale = $this->get('request')->getLocale();

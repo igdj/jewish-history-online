@@ -86,7 +86,7 @@
                         var marker = L.marker(info['latLng'],
                                               { title: info['name'] });
                         marker.number = info['number'];
-                        marker.bindPopup(labelLoading);
+                        marker.bindPopup(labelLoading, { maxHeight: 160 });
                         marker.on('click', function(e) {
                             var popup = e.target.getPopup();
                             if (!loaded) {
