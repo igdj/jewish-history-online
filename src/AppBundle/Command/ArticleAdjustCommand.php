@@ -219,7 +219,11 @@ class ArticleAdjustCommand extends BaseEntityCommand
 
                 $data['genre'] = $translator->trans('Source') . ':' . $translator->trans($type);
 
-                      // articles related to this source
+                if (!empty($result['url'])) {
+                    $data['URLImages'] = $result['url'];
+                }
+
+                // articles related to this source
                 $sql = "SELECT Message.id AS id, subject, status"
                      . " FROM Message, MessagePublication"
                      . " WHERE MessagePublication.publication_id=? AND MessagePublication.message_id=Message.id AND Message.status <> 1"

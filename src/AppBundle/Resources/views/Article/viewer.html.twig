@@ -247,6 +247,12 @@
                             </dd>
                             {% endif %}
                         {% endif %}
+                        {% if meta.url is not empty %}
+                            <dt>{{ 'URL'|trans }}</dt>
+                            <dd>
+                                <a href="{{ meta.url }}" target="_blank">{{ meta.url|prettifyurl }}</a>
+                            </dd>
+                        {% endif %}
                         {% if meta.rights is not empty %}
                             <dt>{{ 'Rights Statements'|trans }}</dt>
                             <dd>

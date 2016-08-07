@@ -194,6 +194,13 @@ class Article implements \JsonSerializable
      */
     protected $uid;
     /**
+     * @var string URL of the item.
+     *
+     * @Assert\Url
+     * @ORM\Column(nullable=true)
+     */
+    protected $url;
+    /**
      * @var string
      *
      * @Assert\Type(type="string")
@@ -751,6 +758,30 @@ class Article implements \JsonSerializable
     public function getUid()
     {
         return $this->uid;
+    }
+
+    /**
+     * Sets url.
+     *
+     * @param string $url
+     *
+     * @return $this
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Gets url.
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
     }
 
     /**

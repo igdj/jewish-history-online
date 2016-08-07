@@ -167,6 +167,12 @@ class TeiHelper
             }
         }
 
+        // url
+        $result = $header->xpath('(./tei:fileDesc/tei:sourceDesc/tei:msDesc/tei:msIdentifier/tei:idno/tei:idno[@type="URLImages"])[1]');
+        if (!empty($result)) {
+            $article->url = (string)$result[0];
+        }
+
         // classification
         $keywords = [];
         $result = $header->xpath('./tei:profileDesc/tei:textClass/tei:classCode');
@@ -437,6 +443,14 @@ class TeiHelper
                                                     $self->addAttribute('tei:target', $target);
                                                     $this->addChildStructure($self, [ 'p' => $data['license'][$target] ], 'tei:');
                                                 }
+                                                else {
+                                                    $availability = $data['license'][$target];
+                                                    if (!empty($availability)) {
+                                                        /* $self = $self->addChild('tei:licence');
+                                                        $self->addAttribute('tei:target', '#'); */
+                                                        $this->addChildStructure($self, [ 'p' => $availability ], 'tei:');
+                                                    }
+                                                }
                                             }
                                             return $self;
                                         },
@@ -502,6 +516,21 @@ class TeiHelper
                                     'tei:bibl' => function ($parent, $name) use ($data) {
                                         $self = $parent->addChild($name);
                                         $this->addChildStructure($self, $data['bibl'], 'tei:');
+                                    }
+                                 ]);
+        }
+
+        if (!empty($data['URLImages'])) {
+            $this->addDescendants($header, 'tei:fileDesc/tei:sourceDesc/tei:msDesc/tei:msIdentifier',
+                                 [
+                                    'tei:msIdentifier' => function ($parent, $name) use ($data) {
+                                        $self = $parent->addChild($name);
+                                        $this->addChildStructure($self,
+                                                                 [
+                                                                   'repository' => $data['bibl']['orgName']['@value'],
+                                                                   'idno' => [ 'idno' => [ '@type' => 'URLImages', '@value' => $data['URLImages']] ]
+                                                                 ],
+                                                                 'tei:');
                                     }
                                  ]);
         }

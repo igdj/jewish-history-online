@@ -61,7 +61,7 @@ class ArticleHeaderCommand extends ContainerAwareCommand
 
         if (false === $article) {
             $output->writeln(sprintf('<error>%s could not be loaded</error>', $fname));
-            foreach($teiHelper->getErrors() as $error) {
+            foreach ($teiHelper->getErrors() as $error) {
                 $output->writeln(sprintf('<error>  %s</error>', trim($error->message)));
             }
             return 1;
@@ -187,7 +187,7 @@ class ArticleHeaderCommand extends ContainerAwareCommand
                         $criteria = [ $key => $singleValue ];
                         $relatedEntity = $em->getRepository('AppBundle:' . $repoClass)
                             ->findOneBy($criteria);
-                            
+
                         if (!is_null($relatedEntity)
                             && !$currentValues->contains($relatedEntity))
                         {
