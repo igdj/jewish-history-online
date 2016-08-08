@@ -54,6 +54,32 @@
   </xsl:choose>
 </xsl:template>
 
+<xsl:template match="tei:choice">
+  <xsl:choose>
+    <xsl:when test="./tei:reg">
+      <xsl:element name="span">
+        <xsl:attribute name="title">Original: <xsl:value-of select="tei:orig"/></xsl:attribute>
+        <xsl:attribute name="class">dta-reg</xsl:attribute>
+        <xsl:apply-templates select="tei:reg"/>
+      </xsl:element>
+    </xsl:when>
+    <xsl:when test="./tei:abbr">
+      <xsl:element name="span">
+        <xsl:attribute name="title"><xsl:value-of select="tei:expan"/></xsl:attribute>
+        <xsl:attribute name="class">dta-abbr</xsl:attribute>
+        <xsl:apply-templates select="tei:abbr"/>
+      </xsl:element>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:element name="span">
+        <xsl:attribute name="title">Schreibfehler: <xsl:value-of select="tei:sic"/></xsl:attribute>
+        <xsl:attribute name="class">dta-corr</xsl:attribute>
+        <xsl:apply-templates select="tei:corr"/>
+      </xsl:element>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
 <xsl:template match='tei:figure'>
   <xsl:choose>
     <xsl:when test="tei:media/@mimeType='audio/mpeg'">
@@ -64,6 +90,7 @@
           <xsl:attribute name="type"><xsl:value-of select='tei:media/@mimeType' /></xsl:attribute>
         </source>
       </audio>
+      <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if>
     </xsl:when>
     <xsl:when test="tei:media/@mimeType='video/mp4'">
       <!-- custom code for audio/video -->
@@ -75,6 +102,7 @@
         </source>
       </video>
       </div>
+      <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if>
     </xsl:when>
     <xsl:when test="(local-name(preceding-sibling::node()[1]) = 'lb' and local-name(following-sibling::node()[1]) = 'lb') or @rendition='#c'">
       <xsl:element name="div">

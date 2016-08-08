@@ -11,8 +11,9 @@
     <!--<script src=".{{ app.request.basepath }}/viewer/shared/iview2/js/iview-client-metadata.js"></script>  -->
     <link href="{{ app.request.basepath }}/viewer/shared/iview2/css/default.css" type="text/css" rel="stylesheet">
     <!-- TODO: port to scss -->
+    <!--
     <link rel="stylesheet/less" href="{{ app.request.basepath }}/viewer/shared/dta-tei.less" type="text/css" />
-    <script src="{{ app.request.basepath }}/js/less-2.6.1.min.js"></script>
+    <script src="{{ app.request.basepath }}/js/less-2.6.1.min.js"></script>-->
     <!-- <link rel="stylesheet" href="../META-INF/resources/components/iview/templates/mobile/jquery.mobile-1.3.2.min.css" />     -->
 
     {# TODO: move to some shared style-sheet #}
@@ -25,6 +26,14 @@
         .informationBar
         {
             display: none;
+        }
+
+        a.img-info-sign {
+            display: inline-block;
+            width: 1em;
+            background-image: url('{{ app.request.basepath }}/img/icon/info-sign.png');
+            background-size:     cover;
+            background-repeat:   no-repeat;
         }
     </style>
 

@@ -278,7 +278,7 @@ header {
         .s        { text-decoration: line-through }
         .smaller  { font-size:smaller }
         .sub      { vertical-align:sub; font-size:.7rem }
-        .sup      { vertical-align:sup; font-size:.7rem }
+        .sup      { vertical-align:super; font-size:.7rem }
         .u        { text-decoration:underline }
         .uu       { border-bottom:double 3px #000 }
 
@@ -366,6 +366,13 @@ header {
 		display: none;
 	}
 
+}
+
+.mycoreViewer .tei {
+	@include dta-styles;
+	.editorial.foot {
+		display: none;
+	}
 }
 
 @mixin hyphenate {

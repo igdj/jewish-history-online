@@ -35,4 +35,42 @@
   </xsl:choose>
 </xsl:template>
 
+<xsl:template match="tei:choice">
+  <xsl:choose>
+    <xsl:when test="./tei:reg">
+      <xsl:element name="span">
+        <xsl:attribute name="title"><!--Original: --><xsl:value-of select="tei:reg"/></xsl:attribute>
+        <xsl:attribute name="class">dta-reg</xsl:attribute>
+        <xsl:apply-templates select="tei:orig"/>
+      </xsl:element>
+    </xsl:when>
+    <xsl:when test="./tei:abbr">
+      <xsl:element name="span">
+        <xsl:attribute name="title">Original: <xsl:value-of select="tei:abbr"/></xsl:attribute>
+        <xsl:attribute name="class">dta-abbr</xsl:attribute>
+        <xsl:apply-templates select="tei:expan"/>
+      </xsl:element>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:element name="span">
+        <xsl:attribute name="title">Schreibfehler: <xsl:value-of select="tei:sic"/></xsl:attribute>
+        <xsl:attribute name="class">dta-corr</xsl:attribute>
+        <xsl:apply-templates select="tei:corr"/>
+      </xsl:element>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<!-- editorial notes -->
+<xsl:template match='tei:note[@type="editorial"]'>
+  <xsl:choose>
+    <xsl:when test="@place='foot'"><a class="editorial-marker img-info-sign" href="#{generate-id()}">&#160;</a><span id="{generate-id()}" class="editorial foot"><xsl:apply-templates/></span>
+    </xsl:when>
+    <xsl:otherwise>
+      <span class="editorial inline"><xsl:apply-templates/></span>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+
 </xsl:stylesheet>

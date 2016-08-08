@@ -49,7 +49,7 @@ class ArticleController extends RenderTeiController
         list($authors, $section_headers, $license, $entities, $glossaryTerms) = $this->extractPartsFromHtml($html);
 
         $sourceDescription = $this->renderSourceDescription($article);
-        list($dummy, $dummy, $license, $entitiesSourceDescription, $glossaryTermsSourceDescription) = $this->extractPartsFromHtml($sourceDescription);
+        list($dummy, $dummy, $dummy, $entitiesSourceDescription, $glossaryTermsSourceDescription) = $this->extractPartsFromHtml($sourceDescription);
 
         $entities = array_merge($entities, $entitiesSourceDescription);
 
