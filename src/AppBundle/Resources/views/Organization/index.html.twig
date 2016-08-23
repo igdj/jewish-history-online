@@ -6,18 +6,19 @@
         {% if organizations is not empty %}
         {% set last_initial = '' %}
         {% for organization in organizations %}
-            {% set initial = organization.name|first|upper %}
+            {% set name = organization.nameLocalized(app.request.locale) %}
+            {% set initial = name|first|upper %}
             {% if initial != last_initial %}
                 {% if last_initial != '' %}
             </ul>
                 {% endif %}
-            <h2>{{ initial }} </h2>
+            <h2>{{ initial }}</h2>
             {% set last_initial = initial %}
             <ul class="list-unstyled">
             {% endif %}
             <li>
                 <a href="{% if organization.gnd is not empty %}{{ path('organization-by-gnd', { 'gnd' : organization.gnd }) }}{% else %}{{ path('organization', { 'id' : organization.id }) }}{% endif %}">
-                {{ organization.name }}
+                {{ name }}
                 </a>
             </li>
         {% endfor %}

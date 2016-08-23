@@ -17,7 +17,7 @@
             {% endif %}
             <li>
                 <a href="{% if place.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : place.tgn }) }}{% else %}{{ path('person', { 'id' : person.id }) }}{% endif %}">
-                    {{ place.name }}
+                    {{ place.nameLocalized(app.request.locale) }}
                 </a>
                 {% if place.children|length > 0 %}
                     <ul>

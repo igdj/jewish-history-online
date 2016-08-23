@@ -32,6 +32,11 @@ class Organization implements \JsonSerializable
         return $dateStr;
     }
 
+    static function stripAt($name)
+    {
+        return preg_replace('/(\s+)@/', '\1', $name);
+    }
+
     /**
      * @var int
      *
@@ -49,7 +54,7 @@ class Organization implements \JsonSerializable
     /**
      * @var string An alias for the item.
      *
-     * @Assert\Type(type="string")
+     * @Assert\Type(type="json_array")
      * @ORM\Column(nullable=true)
      */
     protected $alternateName;
@@ -101,7 +106,7 @@ class Organization implements \JsonSerializable
 
     use ArticleReferencesTrait;
 
-   /**
+    /**
      * @ORM\OneToMany(targetEntity="ArticleOrganization", mappedBy="organization", cascade={"persist", "remove"}, orphanRemoval=TRUE)
      */
     protected $articleReferences;
@@ -296,6 +301,22 @@ class Organization implements \JsonSerializable
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Gets localized name.
+     *
+     * @return string
+     */
+    public function getNameLocalized($locale = 'en')
+    {
+        if (is_array($this->alternateName)
+            && array_key_exists($locale, $this->alternateName)) {
+            $name = $this->alternateName[$locale];
+        }
+        $name = $this->getName();
+
+        return self::stripAt($name);
     }
 
     /**

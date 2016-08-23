@@ -20,18 +20,35 @@ Content:                            Inhalt
 Citation and License Statement:     Zitations- und Lizenzhinweis
 Continent:                          Kontinent
 Continents:                         Kontinente
+Miscellaneous:                      Verschiedenes
 Oceans:                             Ozeane
 Seas:                               Meere
 Nation:                             Staat
 Nations:                            Staaten
 Country:                            Land
+Former primary political entity:    Ehemaliger Staat
+Former primary political entities:  Ehemalige Staaten
+Historical region:                  Historische Region
+Historical regions:                 Historische Regionen
 State:                              Land
-Canton:                             Kanton
 States:                             Länder
+Oblast:                             Gebiet
+Oblasts:                            Gebiete
+Canton:                             Kanton
+Cantons:                            Kantone
+National district:                  Bezirk
+Governorate:                        Gouvernement
+General region:                     Allgemeine Gegend
+Municipality:                       Gemeinde
 Place:                              Ort
 Places:                             Orte
+Autonomous city:                    Autonome Stadt
+Autonomous cities:                  Autonome Städte
 Districts:                          Ortsteile
+City districts:                     Ortsteile
+City district:                      Ortsteil
 Neighborhood:                       Ortsteil
+Neighborhoods:                      Ortsteile
 author.oneormany:                   "Zum Autor|Zu den Autoren"
 topic.oneormany:                    "Thema|Themen"
 epoch.century:                      "%century%. Jahrhundert"

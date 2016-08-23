@@ -25,14 +25,17 @@
     <div class="row">
         <div class="col-sm-8">
         {% if place.children|length > 0 %}
-            <h3>{{ place.childrenLabel|trans }}</h3>
+            {% set childrenByType = place.getChildrenByType() %}
+            {% for type, children in childrenByType %}
+            <h3>{{ type|placeTypeLabel(children|length)|trans }}</h3>
             <ul>
-            {% for child in place.children %}
+                {% for child in childrenByType[type] %}
                 <li><a href="{% if child.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : child.tgn }) }}{% else %}{{ path('place', { 'id' : child.id }) }}{% endif %}">
                     {{ child.nameLocalized(app.request.locale) }}
                 </a></li>
-            {% endfor %}
+                {% endfor %}
             </ul>
+            {% endfor %}
         {% endif %}
 
         {{ helper.list_entity_mentioned_in(place.articleReferences(app.request.locale)) }}
@@ -59,7 +62,12 @@
             {% if place.additional.bounds is not empty %}
             map.fitBounds({{ place.additional.bounds|json_encode|raw }});
             {% else %}
-            map.setView([{{ geo }}], 3);
+                {% if place.showCenterMarker %}
+                    L.marker([ {{ geo }} ]).addTo(map);
+                    map.setView([{{ geo }}], {{ place.defaultZoomlevel }});
+                {% else %}
+                    map.setView([{{ geo }}], 3);
+                {% endif %}
             {% endif %}
 
             {{ map.addTileLayer() }}

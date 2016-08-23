@@ -17,6 +17,36 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Place implements \JsonSerializable
 {
+    static $zoomLevelByType = [
+        'neighborhood' => 12,
+        'city district' => 11,
+        'district' => 11,
+        'inhabited place' => 10,
+    ];
+
+    public static function buildTypeLabel($type)
+    {
+        if ('root' == $type) {
+            return '';
+        }
+        if ('inhabited place' == $type) {
+            return 'place';
+        }
+        return $type;
+    }
+
+    public static function buildPluralizedTypeLabel($type, $count)
+    {
+        if (empty($type)) {
+            return '';
+        }
+        $label = self::buildTypeLabel($type);
+        if ($count > 1) {
+            $label = \Doctrine\Common\Inflector\Inflector::pluralize($label);
+        }
+        return ucfirst($label);
+    }
+
     /**
      * @var int
      *
@@ -96,6 +126,7 @@ class Place implements \JsonSerializable
 
     /**
      * @ORM\OneToMany(targetEntity="Place", mappedBy="parent")
+     * @ORM\OrderBy({"type" = "ASC", "name" = "ASC"})
      */
     private $children;
 
@@ -221,6 +252,27 @@ class Place implements \JsonSerializable
     public function getGeo()
     {
         return $this->geo;
+    }
+
+    public function showCenterMarker()
+    {
+        $hasPlaceParent = false;
+        $ancestorOrSelf = $this;
+        while (!is_null($ancestorOrSelf)) {
+            if ($ancestorOrSelf->type == 'inhabited place') {
+                return true;
+            }
+            $ancestorOrSelf = $ancestorOrSelf->getParent();
+        }
+        return false;
+    }
+
+    public function getDefaultZoomlevel()
+    {
+        if (array_key_exists($this->type, self::$zoomLevelByType)) {
+            return self::$zoomLevelByType[$this->type];
+        }
+        return 8;
     }
 
     /**
@@ -406,6 +458,37 @@ class Place implements \JsonSerializable
         return $this->children;
     }
 
+    public function getChildrenByType()
+    {
+        if (is_null($this->children)) {
+            return null;
+        }
+        $ret = [];
+        foreach ($this->children as $child) {
+            $type = $child->getType();
+            if (!array_key_exists($type, $ret)) {
+                $ret[$type] = [];
+            }
+            $ret[$type][] = $child;
+        }
+        $typeWeights = [
+                         'nation' => 0,
+                         'state' => 2,
+                         'former primary political entity' => 5,
+                         'general region' => 10,
+                         'historical region' => 11,
+                         ];
+        uksort($ret, function($typeA, $typeB) use ($typeWeights) {
+            if ($typeA == $typeB) {
+                return 0;
+            }
+            $typeOrderA = array_key_exists($typeA, $typeWeights) ? $typeWeights[$typeA] : 99;
+            $typeOrderB = array_key_exists($typeB, $typeWeights) ? $typeWeights[$typeB] : 99;
+            return ($typeOrderA < $typeOrderB) ? -1 : 1;
+        });
+        return $ret;
+    }
+
     /**
      * Gets localized name.
      *
@@ -422,25 +505,7 @@ class Place implements \JsonSerializable
 
     public function getTypeLabel()
     {
-        if ('root' == $this->type) {
-            return;
-        }
-        if ('inhabited place' == $this->type) {
-            return 'place';
-        }
-        return $this->type;
-    }
-
-    public function getChildrenLabel()
-    {
-        if (is_null($this->children) || count($this->children) == 0) {
-            return '';
-        }
-        $label = $this->children[0]->getTypeLabel();
-        if (count($this->children) > 1) {
-            $label = \Doctrine\Common\Inflector\Inflector::pluralize($label);
-        }
-        return ucfirst($label);
+        return buildTypeLabel($this->type);
     }
 
     public function getPath()

@@ -35,6 +35,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFilter('prettifyurl', array($this, 'prettifyurlFilter')),
 
             // appbundle-specific
+            new \Twig_SimpleFilter('placeTypeLabel', array($this, 'placeTypeLabelFilter')),
             new \Twig_SimpleFilter('lookupLocalizedTopic', array($this, 'lookupLocalizedTopFilter')),
         );
     }
@@ -85,6 +86,14 @@ class AppExtension extends \Twig_Extension
             $locale = $this->getLocale();
         }
         return \AppBundle\Controller\TopicController::lookupLocalizedTopic($topic, $this->translator, $locale);
+    }
+
+    public function placeTypeLabelFilter($placeType, $count = 1, $locale = null)
+    {
+        if (is_null($locale)) {
+            $locale = $this->getLocale();
+        }
+        return \AppBundle\Entity\Place::buildPluralizedTypeLabel($placeType, $count);
     }
 
     public function getName()
