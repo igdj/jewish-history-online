@@ -15,10 +15,19 @@ class PersonController extends Controller
      */
     public function indexAction()
     {
-        $persons = $this->getDoctrine()
-                ->getRepository('AppBundle:Person')
-                ->findBy([ 'status' => [ 0, 1 ] ],
-                         [ 'familyName' => 'ASC', 'givenName' => 'ASC' ]);
+        $qb = $this->getDoctrine()
+                ->getManager()
+                ->createQueryBuilder();
+
+        $qb->select([ 'P',
+                     "CONCAT(COALESCE(P.familyName,P.givenName), ' ', P.givenName) HIDDEN nameSort"
+                     ])
+            ->from('AppBundle:Person', 'P')
+            ->where('P.status IN (0,1)')
+            ->orderBy('nameSort')
+            ;
+        $query = $qb->getQuery();
+        $persons = $query->getResult();
 
         return $this->render('AppBundle:Person:index.html.twig',
                              [ 'persons' => $persons ]);

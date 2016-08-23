@@ -789,8 +789,8 @@ class Person implements \JsonSerializable
 
     public function getFullname($givenNameFirst = false)
     {
-        $parts = array();
-        foreach (array('familyName', 'givenName') as $key) {
+        $parts = [];
+        foreach ([ 'familyName', 'givenName' ] as $key) {
             if (!empty($this->$key)) {
                 $parts[] = $this->$key;
             }

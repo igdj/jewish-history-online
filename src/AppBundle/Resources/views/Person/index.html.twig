@@ -6,7 +6,7 @@
         {% if persons is not empty %}
         {% set last_initial = '' %}
         {% for person in persons %}
-            {% set initial = person.familyName|first|upper %}
+            {% set initial = person.fullname|first|upper %}
             {% if initial != last_initial %}
                 {% if last_initial != '' %}
             </ul>
