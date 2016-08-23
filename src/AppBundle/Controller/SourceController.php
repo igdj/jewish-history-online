@@ -47,6 +47,7 @@ class SourceController extends ArticleController
         list($authors, $section_headers, $license, $entities, $glossaryTerms) = $this->extractPartsFromHtml($html);
 
         $sourceDescription = null;
+        $related = [];
         $interpretation = $sourceArticle->getIsPartOf();
         if (isset($interpretation)) {
             $sourceDescription = [ 'article' => $interpretation,

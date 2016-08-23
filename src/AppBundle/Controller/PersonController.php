@@ -17,8 +17,8 @@ class PersonController extends Controller
     {
         $persons = $this->getDoctrine()
                 ->getRepository('AppBundle:Person')
-                ->findBy(array('status' => [ 0, 1 ]),
-                         array('familyName' => 'ASC', 'givenName' => 'ASC'));
+                ->findBy([ 'status' => [ 0, 1 ] ],
+                         [ 'familyName' => 'ASC', 'givenName' => 'ASC' ]);
 
         return $this->render('AppBundle:Person:index.html.twig',
                              [ 'persons' => $persons ]);
@@ -34,7 +34,6 @@ class PersonController extends Controller
         }
         else if (!empty($gnd)) {
             $person = $personRepo->findOneByGnd($gnd);
-
         }
 
         if (!isset($person) || $person->getStatus() < 0) {

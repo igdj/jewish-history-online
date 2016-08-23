@@ -8,12 +8,12 @@
     <body>
       <trans-unit id="ed63036d8730b34c2af3aa53fe984d9883388a1c" resname="Editors">
         <source>Editors</source>
-        <target>Herausgeber/innen</target>
+        <target>Herausgeber_innen</target>
         <jms:reference-file line="37">./src\AppBundle\Menu\Builder.php</jms:reference-file>
       </trans-unit>
       <trans-unit id="a4730a22cf494f758716c5c83bbf4c258c37a8b8" resname="Staff">
         <source>Staff</source>
-        <target>Mitarbeiter/innen</target>
+        <target>Mitarbeiter_innen</target>
         <jms:reference-file line="34">./src\AppBundle\Menu\Builder.php</jms:reference-file>
       </trans-unit>
     </body>
