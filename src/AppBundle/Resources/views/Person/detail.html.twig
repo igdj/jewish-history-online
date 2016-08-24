@@ -59,6 +59,12 @@
                     {% endif %}
                 </dd>
             {% endif %}
+            {% if person.url is not empty %}
+                <dt>{{ 'Homepage'|trans }}:</dt>
+                <dd>
+                    <a href="{{ person.url }}" target="_blank">{{ person.url|prettifyurl }}</a>
+                </dd>
+            {% endif %}
             </dl>
 
             <p>{{ person.description[app.request.locale] }}</p>

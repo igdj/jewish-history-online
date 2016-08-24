@@ -108,7 +108,9 @@ class ArticleAuthorCommand extends BaseEntityCommand
                            'lastname' => 'familyName',
                            'position' => 'jobTitle',
                            'sex' => 'gender',
-                           ] as $src => $target) {
+                           'url' => 'url',
+                           ] as $src => $target)
+                {
                     if (!empty($user[$src])) {
                         $methodName = 'set' . ucfirst($target);
                         $person->$methodName($user[$src]);
