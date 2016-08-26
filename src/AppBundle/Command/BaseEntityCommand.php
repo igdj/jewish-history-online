@@ -148,8 +148,9 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
                     foreach ([
                               'preferredName',
                               'dateOfEstablishment',
-                              // 'dateOfDeath',
+                              'dateOfTermination',
                               'biographicalInformation',
+                              'homepage',
                               ] as $src)
                     {
                         if (!empty($corporateBody->{$src})) {

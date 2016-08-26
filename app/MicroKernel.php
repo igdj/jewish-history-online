@@ -45,6 +45,9 @@ class MicroKernel extends Kernel
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
             new AppBundle\AppBundle(),
+
+            // solr
+            // new FS\SolrBundle\FSSolrBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
@@ -111,8 +114,22 @@ class MicroKernel extends Kernel
 
         $routes->add('/topic', 'AppBundle:Topic:index', 'topic-index');
 
-        $routes->add('/topic/{slug}', 'AppBundle:Topic:background', 'topic-background');
-        $routes->add('/article/{slug}', 'AppBundle:Article:article', 'article');
+        $topicBackgroundRoute = new \Symfony\Component\Routing\Route(
+            '/topic/{slug}',
+            [ '_controller' => 'AppBundle:Topic:background' ],
+            [ 'slug' => '[^\.]+' ]
+        );
+        $routes->addRoute($topicBackgroundRoute, 'topic-background');
+        $routes->add('/topic/{slug}.pdf', 'AppBundle:Topic:background', 'topic-background-pdf');
+
+        $articleRoute = new \Symfony\Component\Routing\Route(
+            '/article/{slug}',
+            [ '_controller' => 'AppBundle:Article:article' ],
+            [ 'slug' => '[^\.]+' ]
+        );
+        $routes->addRoute($articleRoute, 'article');
+        $routes->add('/article/{slug}.pdf', 'AppBundle:Article:article', 'article-pdf');
+
         $routes->add('/source/{uid}', 'AppBundle:Source:sourceViewer', 'source');
 
         $routes->add('/map', 'AppBundle:Place:map', 'place-map');

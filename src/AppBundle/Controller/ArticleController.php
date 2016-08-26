@@ -39,16 +39,42 @@ class ArticleController extends RenderTeiController
 
     protected function renderArticle($article)
     {
+        $generatePrintView = 'article-pdf' == $this->container->get('request')->get('_route');
+
         $fname = $this->buildArticleFname($article);
 
         $teiHelper = new \AppBundle\Utils\TeiHelper();
         $meta = $teiHelper->analyzeHeader($this->locateTeiResource($fname));
 
-        $html = $this->renderTei($fname);
+        $html = $this->renderTei($fname, $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl');
 
         list($authors, $section_headers, $license, $entities, $glossaryTerms) = $this->extractPartsFromHtml($html);
 
         $sourceDescription = $this->renderSourceDescription($article);
+        if ($generatePrintView) {
+            $html = $this->removeByCssSelector('<body>' . $html . '</body>',
+                                               [ 'h2 + br', 'h3 + br' ]);
+
+            $templating = $this->container->get('templating');
+
+            $html = $templating->render('AppBundle:Article:article-printview.html.twig',
+                                 [
+                                    'article' => $article,
+                                    'meta' => $meta,
+                                    'source_description' => $sourceDescription,
+                                    'name' => $article->getName(),
+                                    'html' => preg_replace('/<\/?body>/', '', $html),
+                                    'authors' => $authors,
+                                    'section_headers' => $section_headers,
+                                    'license' => $license,
+                                  ]);
+            // return new Response($html);
+            $pdfGenerator = new \AppBundle\Utils\PdfGenerator();
+            $pdfGenerator->writeHTML($html);
+            $pdfGenerator->Output();
+            return;
+        }
+
         list($dummy, $dummy, $dummy, $entitiesSourceDescription, $glossaryTermsSourceDescription) = $this->extractPartsFromHtml($sourceDescription);
 
         $entities = array_merge($entities, $entitiesSourceDescription);

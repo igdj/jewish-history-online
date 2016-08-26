@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use FS\SolrBundle\Doctrine\Annotation as Solr;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -12,6 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * See also [blog post](http://blog.schema.org/2014/09/schemaorg-support-for-bibliographic_2.html).
  *
  * @see http://schema.org/Article Documentation on Schema.org
+ *
+ * @Solr\Document()
  *
  * @ORM\Entity
  * @ORM\Table(name="article")
@@ -35,6 +38,8 @@ class Article implements \JsonSerializable
 
     /**
      * @var int
+     *
+     * @Solr\Id
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -169,6 +174,7 @@ class Article implements \JsonSerializable
      * @Assert\Type(type="string")
      * @Assert\NotNull
      * @ORM\Column
+     * @Solr\Field(name="title")
      */
     protected $name;
     /**

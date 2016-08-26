@@ -67,6 +67,9 @@
         </div><!-- .col -->
 
         <div class="col-xs-12 col-sm-4 sidebar">
+            <h3 class="pdf-link">
+                <a href="{{ path(app.request.attributes.get('_route') ~ '-pdf', app.request.attributes.get('_route_params')) }}">{{ 'Print Version'|trans }}</a>
+            </h3>
             {#
             <div class="container-fluid box">
                 <div class="row box-color-title">

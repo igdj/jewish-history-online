@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2016-08-01T17:24:16Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2016-08-26T16:00:00Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -29,6 +29,10 @@
       <trans-unit id="565cecd7e8f5c6063935b41db41797aa37d53b04" resname="article">
         <source>/article/{slug}</source>
         <target>/beitrag/{slug}</target>
+      </trans-unit>
+      <trans-unit id="49d68eebf12335dc304162bc32bd219f7bb060d2" resname="article-pdf">
+        <source>/article/{slug}.pdf</source>
+        <target>/beitrag/{slug}.pdf</target>
       </trans-unit>
       <trans-unit id="1a73af9e7ae00182733b2292511b814be66f065f" resname="contact">
         <source>/contact</source>
@@ -62,6 +66,10 @@
         <source>/organization/gnd/{gnd}</source>
         <target>/organisation/gnd/{gnd}</target>
       </trans-unit>
+      <trans-unit id="3dd0557da5c0c1443d8ddd42a7bd8c91ca13e4be" resname="organization-gnd-beacon">
+        <source>/organization/gnd/beacon</source>
+        <target>/organization/gnd/beacon</target>
+      </trans-unit>
       <trans-unit id="962e9b7257293397ca2d65e822d153e49758bf09" resname="organization-index">
         <source>/organization</source>
         <target>/organisation</target>
@@ -73,6 +81,10 @@
       <trans-unit id="84d06288bde5af1c4dba24a1e5150f6b0ec557d9" resname="person-by-gnd">
         <source>/person/gnd/{gnd}</source>
         <target>/person/gnd/{gnd}</target>
+      </trans-unit>
+      <trans-unit id="6007191513c806f499122915873026637df3c9b1" resname="person-gnd-beacon">
+        <source>/person/gnd/beacon</source>
+        <target>/person/gnd/beacon</target>
       </trans-unit>
       <trans-unit id="3cc9ceefcb5a007d97352c78bde75d274ff13a90" resname="person-index">
         <source>/person</source>
@@ -112,7 +124,11 @@
       </trans-unit>
       <trans-unit id="11382b2dc45c0a18f2c1b76687a989ba9c1d1002" resname="topic-background">
         <source>/topic/{slug}</source>
-        <target>/thema/{slug}</target>
+        <target state="new">/thema/{slug}</target>
+      </trans-unit>
+      <trans-unit id="176db8bb3eb07c6d739969f6195e15d3633644f2" resname="topic-background-pdf">
+        <source>/topic/{slug}.pdf</source>
+        <target>/thema/{slug}.pdf</target>
       </trans-unit>
       <trans-unit id="bf59c6f5385a2d06f22101ce213218d6364ee82b" resname="topic-index">
         <source>/topic</source>

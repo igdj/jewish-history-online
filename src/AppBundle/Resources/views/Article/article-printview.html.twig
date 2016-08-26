@@ -1,0 +1,62 @@
+{% extends 'AppBundle:Default:base-printview.html.twig' %}
+
+{% import 'AppBundle:Shared:helper.html.twig' as helper %}
+
+{% block head %}
+    {# TODO: move to some shared style-sheet #}
+    <style>
+    #authors, #license {
+        display: none;
+    }
+    /* reset to bootstrap initials */
+    .source-description {
+        /* font-size: 14px;
+        line-height: 1.42857; */
+    }
+    /*
+    h2 + br {
+        display: initial;
+        content: "Read this: ";
+        border-bottom: 1px solid red;
+    }
+    */
+
+    body {
+        font-family: roboto;
+    }
+
+    .source-description, .article .dta-p, .article div.dta-bibl {
+        font-size: 14px;
+    }
+
+    .article > div.dta-endnote {
+        margin-top: 0;
+    }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <h1>{{ name }}</h1>
+    {% if authors is not empty %}
+        <div class="author">
+            <!--<a href="#author">-->
+            {% for author in authors %}
+                {{ author.text }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+            <!--</a>-->
+        </div>
+    {% endif %}
+
+    {{ html|raw }}
+
+    {% if authors is not empty %}
+    <h2 id="author">{{ helper.article_author_aboutlabel(authors) }}</h2>
+        {% for author in authors %}
+        <p>{% if author.description is defined %}{{ author.description }}{% else %}{{ author.text }}{% endif %}</p>
+        {% endfor %}
+    {% endif %}
+
+    {{ helper.article_citation(article, meta, authors, name) }}
+
+    {{ helper.article_license(license) }}
+{% endblock %}

@@ -39,6 +39,12 @@
                     {{ organization.dissolutionDate|dateincomplete }}
                 </dd>
             {% endif %}
+            {% if organization.url is not empty %}
+                <dt>{{ 'Homepage'|trans }}:</dt>
+                <dd>
+                    <a href="{{ organization.url }}" target="_blank">{{ organization.url|prettifyurl }}</a>
+                </dd>
+            {% endif %}
             </dl>
 
             <p>{{ organization.description[app.request.locale] }}</p>

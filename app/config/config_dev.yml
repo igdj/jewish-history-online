@@ -16,3 +16,13 @@ monolog:
             type:   console
             verbosity_levels:
                 VERBOSITY_NORMAL: NOTICE # DEBUG
+
+# app/config/config.yml
+#fs_solr:
+#    endpoints:
+#        core0:
+#            host: host
+#            port: 8983
+#            path: /solr/core0
+#            core: corename
+#            timeout: 5

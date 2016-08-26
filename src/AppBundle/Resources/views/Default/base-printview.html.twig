@@ -1,0 +1,44 @@
+<!doctype html>
+<html class="no-js" lang="{{ app.request.getLocale() }}"
+      prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+        {% if pageTitle is defined %}
+            {{ pageTitle }} |
+        {% endif %}
+        {{ 'Hamburg Key-Documents of German-Jewish History'|trans }}
+        </title>
+
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+        {% stylesheets filter="scssphp" output="css/app.css"
+            "assets/scss/base.scss"
+        %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+        <style>
+        @media print {
+            /* http://drupal.stackexchange.com/a/59908*/
+            a[href]:after {
+                content: none;
+            }
+        }
+        </style>
+        {% block head %}{% endblock %}
+    </head>
+
+    <body role="document" class="route-{{ app.request.get('_route') | replace({'_' : '-'}) }}">
+        <!--<header>
+			<h1>
+				<a href="{{ path('home') }}">{{ 'Hamburg Key-Documents of German-Jewish History'|trans }}</a><br />
+				<a href="{{ path('home') }}" style="font-size: 14px; font-weight: normal">{{ 'A Digital Source Edition'|trans }}</a></smaller>
+			</h1>
+        </header>-->
+
+        {% block body %}{% endblock %}
+    </body>
+</html>

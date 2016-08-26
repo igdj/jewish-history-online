@@ -76,7 +76,7 @@ class AppExtension extends \Twig_Extension
     {
         $parsed = parse_url($url);
 
-        return $parsed['host'] . ('/' !== $parsed['path'] ? $parsed['path'] : '');
+        return $parsed['host'] . (!empty($parsed['path']) && '/' !== $parsed['path'] ? $parsed['path'] : '');
     }
 
 

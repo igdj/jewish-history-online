@@ -157,6 +157,7 @@ class Builder implements ContainerAwareInterface
                 break;
 
             case 'article':
+            case 'article-pdf':
                 $item = $menu->addChild($current_route, array('label' => 'Article'));
                 break;
 

@@ -16,11 +16,11 @@ class EntityEnhanceCommand extends ContainerAwareCommand
     {
         $this
             ->setName('entity:enhance')
-            ->setDescription('Enhance Person/Place Entities')
+            ->setDescription('Enhance Person/Place/Organization Entities')
             ->addArgument(
                 'type',
                 InputArgument::REQUIRED,
-                'which entities do you want to enhance (person / place)'
+                'which entities do you want to enhance (person / place / organization)'
             )
             ;
     }
@@ -34,6 +34,10 @@ class EntityEnhanceCommand extends ContainerAwareCommand
 
             case 'place':
                 return $this->enhancePlace();
+                break;
+
+            case 'organization':
+                return $this->enhanceOrganization();
                 break;
 
             case 'country':
@@ -255,7 +259,6 @@ class EntityEnhanceCommand extends ContainerAwareCommand
         }
     }
 
-
     protected function enhancePlace()
     {
         // currently only geonames
@@ -388,6 +391,55 @@ class EntityEnhanceCommand extends ContainerAwareCommand
                     $em->persist($place);
                     $em->flush();
                 }
+            }
+        }
+    }
+
+    protected function enhanceOrganization()
+    {
+        // currently only homepages
+        $em = $this->getContainer()->get('doctrine')->getEntityManager();
+        $organizationRepository = $em->getRepository('AppBundle:Organization');
+        $organizations = $organizationRepository->findBy([ 'url' => null ]);
+        foreach ($organizations as $organization) {
+            $persist = false;
+            $gnd = $organization->getGnd();
+            if (empty($gnd)) {
+                continue;
+            }
+            $corporateBody = \AppBundle\Utils\CorporateBodyData::fetchByGnd($gnd);
+            if (is_null($corporateBody) || !$corporateBody->isDifferentiated) {
+                continue;
+            }
+
+            // the following were missing in the beginning
+            foreach ([
+                      'dateOfTermination',
+                      'homepage',
+                      ] as $src)
+            {
+                if (!empty($corporateBody->{$src})) {
+                    switch ($src) {
+                        case 'dateOfTermination':
+                            $val = $organization->getDissolutionDate();
+                            if (empty($val)) {
+                                $organization->setDissolutionDate($corporateBody->{$src});
+                                $persist = true;
+                            }
+                            break;
+                        case 'homepage':
+                            $val = $organization->getUrl();
+                            if (empty($val)) {
+                                $organization->setUrl($corporateBody->{$src});
+                                $persist = true;
+                            }
+                            break;
+                    }
+                }
+            }
+            if ($persist) {
+                $em->persist($organization);
+                $em->flush();
             }
         }
     }

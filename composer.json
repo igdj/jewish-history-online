@@ -47,7 +47,11 @@
         "ddeboer/data-import": "*@stable",
         "phpoffice/phpexcel": "*@stable",
 
-        "gmo/iso-639": "*@stable"
+        "gmo/iso-639": "*@stable",
+
+        "mpdf/mpdf": "~6.0",
+
+        "floriansemm/solr-bundle": "1.4"
     },
 
     "autoload": {

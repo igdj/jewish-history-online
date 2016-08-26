@@ -356,7 +356,23 @@ header {
 	}
 }
 
+.pdf-link {
+	margin-top: 0;
+	line-height: 28px;
+	margin-bottom: 15px;
+    padding-left: 28px;
+    background: url("../img/icon/pdf.png") 0px 0px no-repeat;
+	background-size: auto 100%;
+}
+
 .article {
+	&> div {
+		margin-top: 2em;
+		&:first-child {
+			margin-top: 0;
+		}
+	}
+
 	@include dta-styles;
 
 	.dta-p, div.dta-bibl {
@@ -366,7 +382,6 @@ header {
 	.editorial.foot {
 		display: none;
 	}
-
 }
 
 .mycoreViewer .tei {
@@ -388,13 +403,6 @@ header {
 	@include hyphenate;
 }
 
-.article > div {
-	margin-top: 2em;
-	&:first-child {
-		margin-top: 0;
-	}
-}
-
 .author {
 	color: $color-gray-dark;
 	margin-bottom: 2em;
@@ -403,6 +411,7 @@ header {
 a, a:visited, .hoverable {
 	color: $color-gray-dark;
 }
+
 .hoverable:hover {
 	text-decoration: underline;
 	cursor: pointer;

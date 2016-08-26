@@ -7,6 +7,7 @@
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\CssSelector\CssSelectorConverter;
 
 abstract class RenderTeiController extends Controller
 {
@@ -43,6 +44,31 @@ abstract class RenderTeiController extends Controller
         $pathToXslt = $kernel->locateResource('@AppBundle/Resources/data/xsl/' . $fnameXslt);
         $res = $proc->transformFileToXml($pathToXml, $pathToXslt, $options);
         return $res;
+    }
+
+    function removeByCssSelector($html, $selectorsToRemove)
+    {
+        $crawler = new \Symfony\Component\DomCrawler\Crawler();
+        $crawler->addHtmlContent($html);
+
+        foreach ($selectorsToRemove as $selector) {
+            $crawler->filter($selector)->each(function ($crawler) {
+                foreach ($crawler as $node) {
+                    // var_dump($node);
+                    $node->parentNode->removeChild($node);
+                }
+            });
+            
+            /*
+            // TODO: switch to reduce - doesn't work yet
+            $crawler->filter($selector)->reduce(function ($crawler, $i) {
+                return false;
+
+            });
+            */
+        }
+
+        return $crawler->html();
     }
 
     protected function buildEntityLookup($entities)
@@ -173,6 +199,25 @@ abstract class RenderTeiController extends Controller
         }
 
         return $glossaryLookup;
+    }
+
+    protected function renderPdf()
+    {
+        // mpdf
+        $pdf = new \AppBundle\Utils\PdfGenerator();
+
+        /*
+        // hyphenation
+        list($lang, $region) = explode('_', $display_lang, 2);
+        $pdf->SHYlang = $lang;
+        $pdf->SHYleftmin = 3;
+
+
+        $pdf->logo = file_get_contents(BASE_PATH . '/media/logo_arthist.jpg');
+        $pdf->logo_footer = file_get_contents(BASE_PATH . '/media/logo_arthist_footer.jpg');
+        */
+        $pdf->writeHTML($html);
+        $pdf->Output();
     }
 
     protected function extractPartsFromHtml($html)
