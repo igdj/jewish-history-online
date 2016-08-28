@@ -89,3 +89,8 @@ knp_menu:
     templating: false
     # the renderer to use, list is also available by default
     default_renderer: twig
+    
+liip_url_auto_converter:
+    linkclass:
+    target: _blank
+    debugmode: false

@@ -47,7 +47,7 @@
             {% endif %}
             </dl>
 
-            <p>{{ organization.description[app.request.locale] }}</p>
+            <p>{{ organization.description[app.request.locale]|nl2br  }}</p>
 
             {{ helper.list_entity_mentioned_in(organization.articleReferences(app.request.locale)) }}
         </div>

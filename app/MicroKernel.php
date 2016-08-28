@@ -44,6 +44,10 @@ class MicroKernel extends Kernel
             // see http://symfony.com/doc/current/bundles/KnpMenuBundle/index.html
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
+            // converturls filter
+            new Liip\UrlAutoConverterBundle\LiipUrlAutoConverterBundle(),
+
+            // own code
             new AppBundle\AppBundle(),
 
             // solr

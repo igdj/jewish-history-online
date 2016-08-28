@@ -27,6 +27,7 @@
         "jms/translation-bundle": "*@stable",
 
         "cocur/slugify": "*@stable",
+        "liip/url-auto-converter-bundle": "*@stable",
 
         "symfony/dom-crawler": "*@stable",
         "symfony/css-selector": "*@stable",

@@ -79,7 +79,6 @@ class AppExtension extends \Twig_Extension
         return $parsed['host'] . (!empty($parsed['path']) && '/' !== $parsed['path'] ? $parsed['path'] : '');
     }
 
-
     public function lookupLocalizedTopFilter($topic, $locale = null)
     {
         if (is_null($locale)) {

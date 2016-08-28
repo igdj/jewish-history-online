@@ -54,8 +54,7 @@ class Organization implements \JsonSerializable
     /**
      * @var string An alias for the item.
      *
-     * @Assert\Type(type="json_array")
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(type="json_array", nullable=true)
      */
     protected $alternateName;
     /**
@@ -314,7 +313,9 @@ class Organization implements \JsonSerializable
             && array_key_exists($locale, $this->alternateName)) {
             $name = $this->alternateName[$locale];
         }
-        $name = $this->getName();
+        else {
+            $name = $this->getName();
+        }
 
         return self::stripAt($name);
     }
