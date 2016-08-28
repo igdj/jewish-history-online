@@ -155,6 +155,16 @@ class Person implements \JsonSerializable
      * @var string
      * @ORM\Column(type="string", nullable=true)
      */
+    protected $stolpersteine;
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $djh;
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
     protected $viaf;
 
     /**
@@ -690,6 +700,54 @@ class Person implements \JsonSerializable
     public function getGnd()
     {
         return $this->gnd;
+    }
+
+    /**
+     * Sets djh.
+     *
+     * @param string $djh
+     *
+     * @return $this
+     */
+    public function setDjh($djh)
+    {
+        $this->djh = $djh;
+
+        return $this;
+    }
+
+    /**
+     * Gets djh.
+     *
+     * @return string
+     */
+    public function getDjh()
+    {
+        return $this->djh;
+    }
+
+    /**
+     * Sets stolpersteine.
+     *
+     * @param string $stolpersteine
+     *
+     * @return $this
+     */
+    public function setStolpersteine($stolpersteine)
+    {
+        $this->stolpersteine = $stolpersteine;
+
+        return $this;
+    }
+
+    /**
+     * Gets stolpersteine.
+     *
+     * @return string
+     */
+    public function getStolpersteine()
+    {
+        return $this->stolpersteine;
     }
 
     /**

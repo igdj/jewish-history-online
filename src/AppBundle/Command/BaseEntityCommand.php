@@ -23,6 +23,18 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
         {
             $condition = [ 'gnd' => $matches[1] ];
         }
+        else if (preg_match('/^'
+                            . preg_quote('http://www.dasjuedischehamburg.de/inhalt/', '/')
+                            . '(.+)$/', $uri, $matches))
+        {
+            $condition = [ 'djh' => urldecode($matches[1]) ];
+        }
+        else if (preg_match('/^'
+                            . preg_quote('http://www.stolpersteine-hamburg.de/', '/')
+                            . '.*?BIO_ID=(\d+)/', $uri, $matches))
+        {
+            $condition = [ 'stolpersteine' => $matches[1] ];
+        }
 
         return $condition;
     }
@@ -176,6 +188,7 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
                     }
                     $organization->setGnd($value);
                     break;
+
                 default:
                     die('TODO: handle field ' . $field);
             }

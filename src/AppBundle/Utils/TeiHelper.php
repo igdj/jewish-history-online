@@ -650,8 +650,18 @@ class TeiHelper
                         $type = 'person';
                         if (preg_match('/^'
                                        . preg_quote('http://d-nb.info/gnd/', '/')
-                                       . '\d+[xX]?$/', $uri))
+                                       . '\d+[xX]?$/', $uri)
+
+                            || preg_match('/^'
+                                       . preg_quote('http://www.dasjuedischehamburg.de/inhalt/', '/')
+                                       . '.+$/', $uri)
+
+                            || preg_match('/^'
+                                            . preg_quote('http://www.stolpersteine-hamburg.de/', '/')
+                                            . '.*?BIO_ID=(\d+)/', $uri)
+                        )
                         {
+                            ;
                         }
                         else {
                             // die($uri);

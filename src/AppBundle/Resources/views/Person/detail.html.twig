@@ -127,7 +127,6 @@
             {% endif %}
 
             {% if person.gnd is not empty %}
-            <!--<h3>{{ 'Externe Angebote'|trans }}</h3>-->
             <div class="container-fluid box">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
@@ -136,7 +135,6 @@
                         </h4>
                     </div>
                 </div>
-
                 <div class="row box-color-content-inverse">
                     {% if person.additional.beacon is not empty %}
                     <div class="col-sm-12 beacon-ul">
@@ -149,6 +147,30 @@
                     {% endif %}
                     <div class="col-sm-12">
                         <div title="{{ person.gnd }}" class="pndaks seealso-ul"></div>
+                    </div>
+                </div>
+            </div>
+            {% elseif person.djh is not empty or person.stolpersteine is not empty %}
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>{{ 'Additional Information'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse">
+                    <div class="col-sm-12 beacon-ul">
+                        <ul>
+                            {% if person.djh is not empty %}
+                            <li>
+                                <a href="http://www.dasjuedischehamburg.de/inhalt/{{ person.djh|url_encode }}" target="_blank">„Das Jüdische Hamburg“</a>
+                            </li>
+                            {% endif %}
+                            {% if person.stolpersteine is not empty %}
+                            <li>
+                                <a href="http://www.stolpersteine-hamburg.de//?MAIN_ID=7&BIO_ID={{ person.stolpersteine }}" target="_blank">Stolpersteine Hamburg</a>
+                            </li>
+                            {% endif %}
+                        </ul>
                     </div>
                 </div>
             </div>

@@ -58,7 +58,7 @@ abstract class RenderTeiController extends Controller
                     $node->parentNode->removeChild($node);
                 }
             });
-            
+
             /*
             // TODO: switch to reduce - doesn't work yet
             $crawler->filter($selector)->reduce(function ($crawler, $i) {
@@ -87,13 +87,25 @@ abstract class RenderTeiController extends Controller
         foreach ($entitiesByType as $type => $uriCount) {
             switch ($type) {
                 case 'person':
-                    $personGnds = [];
+                    $personGnds = $personDjhs = $personStolpersteine = [];
                     foreach ($uriCount as $uri => $count) {
                         if (preg_match('/^'
                                        . preg_quote('http://d-nb.info/gnd/', '/')
                                        . '(\d+[xX]?)$/', $uri, $matches))
                         {
                             $personGnds[$matches[1]] = $uri;
+                        }
+                        else if (preg_match('/^'
+                                    . preg_quote('http://www.dasjuedischehamburg.de/inhalt/', '/')
+                                    . '(.+)$/', $uri, $matches))
+                        {
+                            $personDjhs[urldecode($matches[1])] = $uri;
+                        }
+                        else if (preg_match('/^'
+                                            . preg_quote('http://www.stolpersteine-hamburg.de/', '/')
+                                            . '.*?BIO_ID=(\d+)/', $uri, $matches))
+                        {
+                            $personStolpersteine[$matches[1]] = $uri;
                         }
                     }
                     if (!empty($personGnds)) {
@@ -104,6 +116,30 @@ abstract class RenderTeiController extends Controller
                             if ($person->getStatus() >= 0) {
                                 $uri = $personGnds[$person->getGnd()];
                                 $details = [ 'url' => $this->generateUrl('person-by-gnd', [ 'gnd' => $person->getGnd()]) ];
+                                $entitiesByType[$type][$uri] += $details;
+                            }
+                        }
+                    }
+                    if (!empty($personDjhs)) {
+                        $persons = $this->getDoctrine()
+                            ->getRepository('AppBundle:Person')
+                            ->findBy([ 'djh' => array_keys($personDjhs) ]);
+                        foreach ($persons as $person) {
+                            if ($person->getStatus() >= 0) {
+                                $uri = $personDjhs[$person->getDjh()];
+                                $details = [ 'url' => $this->generateUrl('person', [ 'id' => $person->getId()]) ];
+                                $entitiesByType[$type][$uri] += $details;
+                            }
+                        }
+                    }
+                    if (!empty($personStolpersteine)) {
+                        $persons = $this->getDoctrine()
+                            ->getRepository('AppBundle:Person')
+                            ->findBy([ 'stolpersteine' => array_keys($personStolpersteine) ]);
+                        foreach ($persons as $person) {
+                            if ($person->getStatus() >= 0) {
+                                $uri = $personStolpersteine[$person->getStolpersteine()];
+                                $details = [ 'url' => $this->generateUrl('person', [ 'id' => $person->getId()]) ];
                                 $entitiesByType[$type][$uri] += $details;
                             }
                         }
