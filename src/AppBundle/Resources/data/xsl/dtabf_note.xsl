@@ -4,7 +4,9 @@
   exclude-result-prefixes="tei"
   version="2.0">
 
-<xsl:import href="dtabf_base.xsl"/>
+<!--<xsl:import href="dtabf_base.xsl"/>-->
+<xsl:import href="dta-tools/dta-base.xsl"/>
+<xsl:import href="dtabf_customize.xsl"/>
 
 <xsl:output method="html" />
 
@@ -14,6 +16,16 @@
             <xsl:apply-templates select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:notesStmt/tei:note/node()"/>
         </div>
     </xsl:if>
+</xsl:template>
+
+<xsl:template match='tei:note[@type="editorial"]'>
+  <xsl:choose>
+    <xsl:when test="@place='foot'"><a class="editorial-marker glyphicon glyphicon-info-sign" href="#{generate-id()}"></a><span id="{generate-id()}" class="editorial foot"><xsl:apply-templates/></span>
+    </xsl:when>
+    <xsl:otherwise>
+      <span class="editorial inline"><xsl:apply-templates/></span>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:template>
 
 <xsl:template match='tei:ref'>

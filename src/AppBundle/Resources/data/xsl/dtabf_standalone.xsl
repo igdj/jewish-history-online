@@ -5,6 +5,7 @@
   version="2.0">
 
 <xsl:import href="dtabf_base.xsl"/>
+<xsl:import href="dtabf_customize.xsl"/>
 
 <xsl:output method="html" doctype-system="about:legacy-compat"/>
 

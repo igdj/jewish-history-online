@@ -245,9 +245,11 @@ header {
 
         .gap       { color:#666 }
 
-        .dta-foreign { color:#666 }
+        /* dbu - remove
+		.dta-foreign { color:#666 }
         .dta-foreign:before { content:"[" }
         .dta-foreign:after { content:"]" }
+        */
 
         .dta-corr { border-bottom:dotted 2px #97002d }
         .dta-reg  { border-bottom:dotted 2px #2d9700 }
