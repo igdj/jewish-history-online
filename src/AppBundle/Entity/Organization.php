@@ -97,11 +97,27 @@ class Organization implements \JsonSerializable
      * @ORM\JoinColumn(name="foundingLocation_id", referencedColumnName="id")
      */
     protected $foundingLocation;
+
     /**
      * @var string
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", length=32, nullable=true)
      */
     protected $gnd;
+
+    /**
+     * @var Organization The organization that preceded this on.
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Organization", inversedBy="succeedingOrganization")
+     * @ORM\JoinColumn(name="precedingId", referencedColumnName="id")
+     */
+    protected $precedingOrganization;
+
+    /**
+     * @var Organization The organization that suceeded this on.
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Organization", mappedBy="precedingOrganization")
+     */
+    protected $succeedingOrganization;
 
     use ArticleReferencesTrait;
 
@@ -366,6 +382,40 @@ class Organization implements \JsonSerializable
     public function getFoundingLocation()
     {
         return $this->foundingLocation;
+    }
+
+    /**
+     * Sets precedingOrganization.
+     *
+     * @param Organization $precedingOrganization
+     *
+     * @return $this
+     */
+    public function setPrecedingOrganization(Organization $precedingOrganization = null)
+    {
+        $this->precedingOrganization = $precedingOrganization;
+
+        return $this;
+    }
+
+    /**
+     * Gets precedingOrganization.
+     *
+     * @return Organization
+     */
+    public function getPrecedingOrganization()
+    {
+        return $this->precedingOrganization;
+    }
+
+    /**
+     * Gets succeedingOrganization.
+     *
+     * @return Organization
+     */
+    public function getSucceedingOrganization()
+    {
+        return $this->succeedingOrganization;
     }
 
     /**

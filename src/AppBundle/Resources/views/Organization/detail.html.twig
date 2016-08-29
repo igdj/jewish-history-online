@@ -32,11 +32,23 @@
                     {{ organization.foundingDate|dateincomplete }}
                 </dd>
             {% endif %}
+            {% if organization.precedingOrganization is not null %}
+                <dt>{{ 'Predecessor'|trans }}:</dt>
+                <dd>
+                    <a href="{% if organization.precedingOrganization.gnd is not empty %}{{ path('organization-by-gnd', { 'gnd' : organization.precedingOrganization.gnd }) }}{% else %}{{ path('organization', { 'id' : organization.precedingOrganization.id }) }}{% endif %}">{{ organization.precedingOrganization.nameLocalized(app.request.locale) }}</a>
+                </dd>
+            {% endif %}
             {% if organization.dissolutionPlace is not empty or organization.dissolutionDate is not empty %}
                 <dt>{{ 'Dissolved'|trans }}:</dt>
                 <dd>
                     {{ organization.dissolutionPlace }}
                     {{ organization.dissolutionDate|dateincomplete }}
+                </dd>
+            {% endif %}
+            {% if organization.succeedingOrganization is not null %}
+                <dt>{{ 'Successor'|trans }}:</dt>
+                <dd>
+                    <a href="{% if organization.succeedingOrganization.gnd is not empty %}{{ path('organization-by-gnd', { 'gnd' : organization.succeedingOrganization.gnd }) }}{% else %}{{ path('organization', { 'id' : organization.succeedingOrganization.id }) }}{% endif %}">{{ organization.succeedingOrganization.nameLocalized(app.request.locale) }}</a>
                 </dd>
             {% endif %}
             {% if organization.url is not empty %}
