@@ -582,6 +582,14 @@ class Person implements \JsonSerializable
         return $placeInfo;
     }
 
+    private static function buildPlaceInfoFromWikidata($wikidata, $key)
+    {
+        if (is_null($wikidata) || !array_key_exists($key, $wikidata)) {
+            return;
+        }
+        return [ 'name' => $wikidata[$key] ];
+    }
+
     /**
      * Gets birthPlace info
      *
@@ -627,7 +635,15 @@ class Person implements \JsonSerializable
         if (!is_null($this->deathPlace)) {
             return self::buildPlaceInfo($this->deathPlace, $locale);
         }
-        return self::buildPlaceInfoFromEntityfacts($this->getEntityfacts($locale), 'placeOfDeath');
+        $placeInfo = self::buildPlaceInfoFromEntityfacts($this->getEntityfacts($locale), 'placeOfDeath');
+        if (!empty($placeInfo)) {
+            return $placeInfo;
+        }
+        if (!is_null($this->additional) && array_key_exists('wikidata', $this->additional)) {
+            return self::buildPlaceInfoFromWikidata($this->additional['wikidata']['de'],
+                                                    'placeOfDeath');
+
+        }
     }
 
     /**

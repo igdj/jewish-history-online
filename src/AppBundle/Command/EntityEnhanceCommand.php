@@ -147,7 +147,7 @@ class EntityEnhanceCommand extends ContainerAwareCommand
 
     protected function enhancePerson()
     {
-        // currently entityfacts and beacon
+        // currently beacon, entityfacts and wikidata
         $gndBeacon = $this->loadGndBeacon();
 
         $em = $this->getContainer()->get('doctrine')->getEntityManager();
@@ -165,6 +165,24 @@ class EntityEnhanceCommand extends ContainerAwareCommand
                 $person->setAdditional($additional);
                 $persist = true;
             }
+            $additional = $person->getAdditional();
+            if (is_null($additional) || !array_key_exists('wikidata', $additional)) {
+                foreach ([ 'de' /*, 'en' */ ] as $locale) {
+                    $wikidata = \AppBundle\Utils\BiographicalWikidata::fetchByGnd($gnd, $locale);
+                    if (!empty($wikidata)) {
+                        if (is_null($additional)) {
+                            $additional = [];
+                        }
+                        if (!array_key_exists('wikidata', $additional)) {
+                            $additional['wikidata'] = [];
+                        }
+                        $additional['wikidata'][$locale] = (array)$wikidata;
+                        $person->setAdditional($additional);
+                        $persist = true;
+                    }
+                }
+            }
+
             foreach ([ 'de', /* en */] as $locale) {
                 // en currently not working
                 $entityfacts = $person->getEntityfacts($locale, true);

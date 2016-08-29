@@ -276,7 +276,7 @@ class GeographicalData
                     break;
 
                 case 'http://vocab.getty.edu/aat/300387198':
-                    $values['type'] = 'community'; //third level subdivisions (political entities)
+                    $values['type'] = 'district'; //third level subdivisions (political entities)
                     break;
 
                 case 'http://vocab.getty.edu/aat/300265612':

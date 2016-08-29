@@ -476,7 +476,10 @@ class Place implements \JsonSerializable
                          'state' => 2,
                          'former primary political entity' => 5,
                          'general region' => 10,
+                         'community' => 10,
                          'historical region' => 11,
+                         'inhabited place' => 15,
+                         'archipelago' => 20,
                          ];
         uksort($ret, function($typeA, $typeB) use ($typeWeights) {
             if ($typeA == $typeB) {

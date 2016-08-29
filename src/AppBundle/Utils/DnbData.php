@@ -5,7 +5,7 @@ abstract class DnbData
 {
     private static $RDFParser = NULL;
 
-    protected static function getRDFParser ()
+    protected static function getRDFParser()
     {
         if (!isset(self::$RDFParser)) {
             self::$RDFParser = \ARC2::getRDFParser();
@@ -25,7 +25,7 @@ abstract class DnbData
 
     /*
      */
-    static function fetchGeographicLocation ($url)
+    static function fetchGeographicLocation($url)
     {
         $parser = self::getRDFParser();
         $parser->parse($url . '/about/lds');
@@ -75,7 +75,7 @@ abstract class DnbData
 
     abstract function processTriple($triple);
 
-    static function fetchByGnd ($gnd)
+    static function fetchByGnd($gnd)
     {
         $parser = self::getRDFParser();
         $url = sprintf('http://d-nb.info/gnd/%s/about/lds', $gnd);
