@@ -108,12 +108,11 @@ class EntityEnhanceCommand extends ContainerAwareCommand
         return $json;
     }
 
-    protected function loadGndBeacon()
+    protected function loadGndBeacon($files = [ 'dasjuedischehamburg'  => 'BEACON-GND-dasjuedischehamburg.txt' ])
     {
         $gndBeacon = [];
 
-        foreach ([ 'dasjuedischehamburg'  => 'BEACON-GND-dasjuedischehamburg.txt' ]
-                 as $key => $fname)
+        foreach ($files as $key => $fname)
         {
             $info = [];
 
@@ -415,7 +414,32 @@ class EntityEnhanceCommand extends ContainerAwareCommand
 
     protected function enhanceOrganization()
     {
+        // currently beacon
+        $gndBeacon = $this->loadGndBeacon([ 'dasjuedischehamburg' => 'BEACON-GND-ORG-dasjuedischehamburg.txt' ]);
+
+        $em = $this->getContainer()->get('doctrine')->getEntityManager();
+        $organizationRepository = $em->getRepository('AppBundle:Organization');
+        $organizations = $organizationRepository->findBy([ 'status' => [0, 1] ]);
+        foreach ($organizations as $organization) {
+            $persist = false;
+            $gnd = $organization->getGnd();
+            if (empty($gnd)) {
+                continue;
+            }
+            if (array_key_exists($gnd, $gndBeacon)) {
+                $additional = $organization->getAdditional();
+                $additional['beacon'] = $gndBeacon[$gnd];
+                $organization->setAdditional($additional);
+                $persist = true;
+            }
+            if ($persist) {
+                $em->persist($organization);
+                $em->flush();
+            }
+        }
+
         // currently only homepages
+        /*
         $em = $this->getContainer()->get('doctrine')->getEntityManager();
         $organizationRepository = $em->getRepository('AppBundle:Organization');
         $organizations = $organizationRepository->findBy([ 'url' => null ]);
@@ -460,6 +484,7 @@ class EntityEnhanceCommand extends ContainerAwareCommand
                 $em->flush();
             }
         }
+        */
     }
 
     protected function enhanceCountry()

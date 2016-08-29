@@ -65,12 +65,7 @@
 
         {{ html|raw }}
 
-        {% if authors is not empty %}
-        <h2 id="author">{{ helper.article_author_aboutlabel(authors) }}</h2>
-            {% for author in authors %}
-        <p>{% if author.description is defined %}{{ author.description }}{% else %}{{ author.text }}{% endif %}</p>
-            {% endfor %}
-        {% endif %}
+        {{ helper.article_authors(authors) }}
 
         {% if related is not empty %}
         {% set source = related[0] %}

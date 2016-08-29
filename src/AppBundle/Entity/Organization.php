@@ -105,6 +105,11 @@ class Organization implements \JsonSerializable
     protected $gnd;
 
     /**
+    * @ORM\Column(type="json_array", nullable=true)
+    */
+    protected $additional;
+
+    /**
      * @var Organization The organization that preceded this on.
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Organization", inversedBy="succeedingOrganization")
@@ -440,6 +445,30 @@ class Organization implements \JsonSerializable
     public function getGnd()
     {
         return $this->gnd;
+    }
+
+    /**
+     * Sets additional.
+     *
+     * @param array $additional
+     *
+     * @return $this
+     */
+    public function setAdditional($additional)
+    {
+        $this->additional = $additional;
+
+        return $this;
+    }
+
+    /**
+     * Gets additional.
+     *
+     * @return array
+     */
+    public function getAdditional()
+    {
+        return $this->additional;
     }
 
     /**

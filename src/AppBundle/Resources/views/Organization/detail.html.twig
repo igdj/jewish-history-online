@@ -76,7 +76,6 @@
                 {% endif %}
             {% endif %}
             {% if organization.gnd is not empty %}
-            <!--<h3>{{ 'Externe Angebote'|trans }}</h3>-->
             <div class="container-fluid box">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
@@ -87,6 +86,15 @@
                 </div>
 
                 <div class="row box-color-content-inverse">
+                    {% if organization.additional.beacon is not empty %}
+                    <div class="col-sm-12 beacon-ul">
+                        <ul>
+                            {% for info in organization.additional.beacon %}
+                            <li><a href="{{ info.url }}" target="_blank">{{ info.description }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
                     <div class="col-sm-12">
                         <div title="{{ organization.gnd }}" class="gkdaks seealso-ul"></div>
                     </div>

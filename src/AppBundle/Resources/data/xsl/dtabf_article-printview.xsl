@@ -33,7 +33,7 @@
         <xsl:if test='//tei:note[@place="foot"]'>
           <div class="dta-footnotesep"/>
           <h3>Anmerkungen</h3>
-          <xsl:apply-templates select='//tei:note[@place="foot" and text()]' mode="footnotes"/>
+          <xsl:apply-templates select='//tei:note[@place="foot" and (text() or *)]' mode="footnotes"/>
         </xsl:if>
         <xsl:apply-templates select='//tei:fw[@place="bottom" and (text() or *)]' mode="signatures"/>
       </div>
@@ -48,15 +48,41 @@
       </xsl:if>
   </xsl:template>
 
+  <!-- put expansions in brackets for print -->
+  <xsl:template match="tei:choice">
+    <xsl:choose>
+      <xsl:when test="./tei:reg">
+        <xsl:element name="span">
+          <xsl:attribute name="title">Original: <xsl:apply-templates select="tei:orig" mode="choice"/></xsl:attribute>
+          <xsl:attribute name="class">dta-reg</xsl:attribute>
+          <xsl:apply-templates select="tei:reg" mode="choice"/>
+        </xsl:element>
+      </xsl:when>
+      <xsl:when test="./tei:abbr">
+        <xsl:element name="span">
+          <!--<xsl:attribute name="class">dta-abbr</xsl:attribute>-->
+          <xsl:apply-templates select="tei:abbr" mode="choice"/> (<xsl:apply-templates select="tei:expan" mode="choice"/>)
+        </xsl:element>
+      </xsl:when>
+      <xsl:when test="./tei:corr">
+        <xsl:element name="span">
+          <xsl:attribute name="title">Schreibfehler: <xsl:apply-templates select="tei:sic" mode="choice"/></xsl:attribute>
+          <xsl:attribute name="class">dta-corr</xsl:attribute>
+          <xsl:apply-templates select="tei:corr" mode="choice"/>
+        </xsl:element>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
   <!-- begin footnotes -->
   <xsl:template match='tei:note[@place="foot"]'>
     <xsl:if test="string-length(@prev)=0">
       <a class="dta-fn-intext">
-          <xsl:attribute name="name">note-<xsl:number level="any" count='//tei:note[@place="foot" and text()]' format="1"/>-marker</xsl:attribute>
-          <xsl:attribute name="href">#note-<xsl:number level="any" count='//tei:note[@place="foot" and text()]' format="1"/></xsl:attribute>
+          <xsl:attribute name="name">note-<xsl:number level="any" count='//tei:note[@place="foot" and (text() or *)]' format="1"/>-marker</xsl:attribute>
+          <xsl:attribute name="href">#note-<xsl:number level="any" count='//tei:note[@place="foot" and (text() or *)]' format="1"/></xsl:attribute>
 
         <!--<xsl:value-of select="@n"/>-->
-        <xsl:number level="any" count='//tei:note[@place="foot" and text()]' format="[1]"/>
+        <xsl:number level="any" count='//tei:note[@place="foot" and (text() or *)]' format="[1]"/>
       </a>
       <xsl:text> </xsl:text>
     </xsl:if>
@@ -72,10 +98,10 @@
           <xsl:when test="local-name(*[1])!='pb'">
             <div class="dta-endnote dta-endnote-indent">
               <a class="dta-fn-sign">
-                <xsl:attribute name="name">note-<xsl:number level="any" count='//tei:note[@place="foot" and text()]' format="1"/></xsl:attribute>
-                <xsl:attribute name="href">#note-<xsl:number level="any" count='//tei:note[@place="foot" and text()]' format="1"/>-marker</xsl:attribute>
+                <xsl:attribute name="name">note-<xsl:number level="any" count='//tei:note[@place="foot" and (text() or *)]' format="1"/></xsl:attribute>
+                <xsl:attribute name="href">#note-<xsl:number level="any" count='//tei:note[@place="foot" and (text() or *)]' format="1"/>-marker</xsl:attribute>
 <!--                <xsl:value-of select="@n"/> -->
-        <xsl:number level="any" count='//tei:note[@place="foot" and text()]' format="[1]"/>
+        <xsl:number level="any" count='//tei:note[@place="foot" and (text() or *)]' format="[1]"/>
               </a>
               <xsl:text> </xsl:text>
               <xsl:apply-templates/>

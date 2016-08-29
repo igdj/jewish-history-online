@@ -1,13 +1,13 @@
 {% macro list_entity_mentioned_in(articleReferences) %}
-{% import _self as helper %}
-{% if articleReferences is not empty %}
+    {% import _self as helper %}
+    {% if articleReferences is not empty %}
     <h3>{{ 'Mentioned in'|trans }}</h3>
     <ul>
-    {% for articleReference in articleReferences %}
+        {% for articleReference in articleReferences %}
         <li>{{ helper.article_linked(articleReference.article) }}</li>
-    {% endfor %}
+        {% endfor %}
     </ul>
-{% endif %}
+    {% endif %}
 {% endmacro %}
 
 {% macro article_linked(article) %}
@@ -24,9 +24,23 @@
 {% endmacro %}
 
 {% macro article_author_aboutlabel(authors) %}
+    {% set all_female = true %}
+    {% for author in authors if all_female %}
+        {% if author.gender != 'F' %}{% set all_female = false %}{% endif %}
+    {% endfor %}
     {% set how_many = authors|length %}
-    {% if how_many == 1 and authors|first.gender == 'F' %}{{ 'author.onefemale'|trans }}
+    {% if all_female %}{{ 'author.oneormany-female'|transchoice(how_many) }}
     {% else %}{{ 'author.oneormany'|transchoice(how_many) }}{% endif %}
+{% endmacro %}
+
+{% macro article_authors(authors) %}
+    {% import _self as helper %}
+    {% if authors is not empty %}
+    <h2 id="author">{{ helper.article_author_aboutlabel(authors) }}</h2>
+        {% for author in authors %}
+        <p>{{ author.description|converturls }}</p>
+        {% endfor %}
+    {% endif %}
 {% endmacro %}
 
 {% macro article_citation(article, meta, authors, name) %}
