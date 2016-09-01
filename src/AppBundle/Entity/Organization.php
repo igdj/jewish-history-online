@@ -5,12 +5,17 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo; // alias for Gedmo extensions annotations
 
+use FS\SolrBundle\Doctrine\Annotation as Solr;
+
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * An organization such as a school, NGO, corporation, club, etc.
  *
  * @see http://schema.org/Organization Documentation on Schema.org
+ *
+ * @Solr\Document(indexHandler="indexHandler")
+ * @Solr\SynchronizationFilter(callback="shouldBeIndexed")
  *
  * @ORM\Entity
  * @ORM\Table(name="organization")
@@ -32,6 +37,41 @@ class Organization implements \JsonSerializable
         return $dateStr;
     }
 
+    public static function ensureSortByPreferredLanguages($assoc, $default = null)
+    {
+        $language_preferred_ordered = [ 'de', 'en' ];
+
+        if (is_null($assoc)) {
+            $assoc = [];
+        }
+
+        foreach ($language_preferred_ordered as $lang) {
+            if (!array_key_exists($lang, $assoc)) {
+                $assoc[$lang] = $default;
+            }
+        }
+
+        // make sure order is as in $language_preferred_ordered
+        uksort($assoc, function($langA, $langB) use ($language_preferred_ordered) {
+            if ($langA == $langB) {
+                return 0;
+            }
+
+            $langOrderA = array_search($langA, $language_preferred_ordered);
+            if (false === $langOrderA) {
+                $langOrderA = 99;
+            }
+            $langOrderB = array_search($langB, $language_preferred_ordered);
+            if (false === $langOrderB) {
+                $langOrderB = 99;
+            }
+
+            return ($langOrderA < $langOrderB) ? -1 : 1;
+        });
+
+        return $assoc;
+    }
+
     static function stripAt($name)
     {
         return preg_replace('/(\s+)@/', '\1', $name);
@@ -39,6 +79,8 @@ class Organization implements \JsonSerializable
 
     /**
      * @var int
+     *
+     * @Solr\Id
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -55,6 +97,7 @@ class Organization implements \JsonSerializable
      * @var string An alias for the item.
      *
      * @ORM\Column(type="json_array", nullable=true)
+     * @Solr\Field(type="strings")
      */
     protected $alternateName;
     /**
@@ -81,6 +124,7 @@ class Organization implements \JsonSerializable
      *
      * @Assert\Type(type="string")
      * @ORM\Column(nullable=true)
+     * @Solr\Field(type="string")
      */
     protected $name;
     /**
@@ -206,7 +250,7 @@ class Organization implements \JsonSerializable
     /**
      * Sets alternateName.
      *
-     * @param string $alternateName
+     * @param array|null $alternateName
      *
      * @return $this
      */
@@ -220,11 +264,11 @@ class Organization implements \JsonSerializable
     /**
      * Gets alternateName.
      *
-     * @return string
+     * @return array|null
      */
     public function getAlternateName()
     {
-        return $this->alternateName;
+        return self::ensureSortByPreferredLanguages($this->alternateName, self::stripAt($this->name));
     }
 
     /**
@@ -503,4 +547,21 @@ class Organization implements \JsonSerializable
                  'gnd' => $this->gnd,
                  ];
     }
+
+    // solr-stuff
+    public function indexHandler()
+    {
+        return '*';
+    }
+
+    /**
+     * TODO: move to a trait
+     *
+     * @return boolean
+    */
+    public function shouldBeIndexed()
+    {
+        return $this->status >= 0;
+    }
+
 }

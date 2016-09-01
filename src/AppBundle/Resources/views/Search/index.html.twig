@@ -1,0 +1,60 @@
+{% extends 'AppBundle:Default:base.html.twig' %}
+{% block body %}
+    <h1>{{ 'Search' | trans }}</h1>
+    <div class="row">
+        <div class="col-sm-12">
+        <form action="{{ path('search-index') }}" method="post" style="margin-bottom: 0.5em">
+            <div class="input-group">
+                <input id="search-box" name="q" value="{{ meta.query }}" class="form-control" style="outline:none;" />
+                <span class="input-group-btn">
+                  <button type="submit" class="btn btn-outline" >
+                    <i class="glyphicon glyphicon-search"></i>
+                  </button>
+                </span>
+            </div><!-- .input-group -->
+            <style type="text/css">
+            .btn-outline {
+                background-color: transparent;
+
+                border: 1px solid #c0c0c0;
+            }
+
+            #search-box:focus {
+                box-shadow: none;
+                -moz-box-shadow: none;
+                -webkit-box-shadow: none;
+            }
+            </style>
+        </form>
+        {% if meta is not empty %}
+            <div class="alert alert-info">
+                {{ pagination.getTotalItemCount }} {{ 'result.oneormany'|transchoice(pagination.getTotalItemCount) }}
+                {% if meta.query is not empty %}
+                    {{ 'for'|trans }}
+                    <b>{{ meta.query }}</b>
+                {% endif %}
+            </div>
+
+            {{ dump(meta.facet)}}
+
+            {% for result in results %}
+                {% if loop.first %}
+                <ul>
+                {% endif %}
+
+                <li>{{ dump(result) }}</li>
+
+                {% if loop.last %}
+                </ul>
+                {# display navigation #}
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+                {% endif %}
+            {% else %}
+                {#{ 'Your search did not match any entries in this site. '|trans }#}
+            {% endfor %}
+        {% endif %}
+        </div>
+    </div><!-- .row -->
+{% endblock %}

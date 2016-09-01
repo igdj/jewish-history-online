@@ -283,6 +283,14 @@ class EntityEnhanceCommand extends ContainerAwareCommand
         // http://www.geonames.org/servlet/geonames?&srv=780&geonameId=2921044&type=json
         $em = $this->getContainer()->get('doctrine')->getEntityManager();
         $placeRepository = $em->getRepository('AppBundle:Place');
+        /*
+        foreach ($placeRepository->findAll() as $place) {
+            $place->setAlternateName($place->getAlternateName());
+            $em->persist($place);
+        }
+        $em->flush();
+        return;
+        */
         foreach ([ 'nation', 'country',
                   'state', 'metropolitan area',
                   'inhabited place', 'neighborhood' ] as $type) {
@@ -419,6 +427,15 @@ class EntityEnhanceCommand extends ContainerAwareCommand
 
         $em = $this->getContainer()->get('doctrine')->getEntityManager();
         $organizationRepository = $em->getRepository('AppBundle:Organization');
+        /*
+        foreach ($organizationRepository->findAll() as $organization) {
+            $organization->setAlternateName($organization->getAlternateName());
+            $em->persist($organization);
+        }
+        $em->flush();
+        return;
+        */
+
         $organizations = $organizationRepository->findBy([ 'status' => [0, 1] ]);
         foreach ($organizations as $organization) {
             $persist = false;

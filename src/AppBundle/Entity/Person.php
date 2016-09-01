@@ -5,12 +5,17 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo; // alias for Gedmo extensions annotations
 
+use FS\SolrBundle\Doctrine\Annotation as Solr;
+
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * A person (alive, dead, undead, or fictional).
  *
  * @see http://schema.org/Person Documentation on Schema.org
+ *
+ * @Solr\Document(indexHandler="indexHandler")
+ * @Solr\SynchronizationFilter(callback="shouldBeIndexed")
  *
  * @ORM\Entity
  * @ORM\Table(name="person")
@@ -31,6 +36,8 @@ class Person implements \JsonSerializable
 
     /**
      * @var int
+     *
+     * @Solr\Id
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -74,6 +81,9 @@ class Person implements \JsonSerializable
      * @var string A short description of the item.
      *
      * @ORM\Column(type="json_array", nullable=true)
+     *
+     * @Solr\Field(type="strings")
+     *
      */
     protected $description;
     /**
@@ -81,6 +91,7 @@ class Person implements \JsonSerializable
      *
      * @Assert\Type(type="string")
      * @ORM\Column(nullable=true)
+     * @Solr\Field(type="string")
      */
     protected $familyName;
     /**
@@ -95,6 +106,7 @@ class Person implements \JsonSerializable
      *
      * @Assert\Type(type="string")
      * @ORM\Column(nullable=true)
+     * @Solr\Field(type="string")
      */
     protected $givenName;
     /**
@@ -360,7 +372,7 @@ class Person implements \JsonSerializable
     /**
      * Sets description.
      *
-     * @param string $description
+     * @param array|null $description
      *
      * @return $this
      */
@@ -374,7 +386,7 @@ class Person implements \JsonSerializable
     /**
      * Gets description.
      *
-     * @return string
+     * @return array|null
      */
     public function getDescription()
     {
@@ -904,4 +916,21 @@ class Person implements \JsonSerializable
                  'slug' => $this->slug,
                  ];
     }
+
+    // solr-stuff
+    public function indexHandler()
+    {
+        return '*';
+    }
+
+    /**
+     * TODO: move to a trait
+     *
+     * @return boolean
+    */
+    public function shouldBeIndexed()
+    {
+        return $this->status >= 0;
+    }
+
 }

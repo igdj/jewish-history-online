@@ -52,7 +52,8 @@
 
         "mpdf/mpdf": "~6.0",
 
-        "floriansemm/solr-bundle": "1.4"
+        "floriansemm/solr-bundle": "1.4",
+        "knplabs/knp-paginator-bundle": "*@stable"
     },
 
     "autoload": {

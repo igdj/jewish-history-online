@@ -18,11 +18,29 @@ monolog:
                 VERBOSITY_NORMAL: NOTICE # DEBUG
 
 # app/config/config.yml
-#fs_solr:
-#    endpoints:
-#        core0:
-#            host: host
-#            port: 8983
-#            path: /solr/core0
-#            core: corename
-#            timeout: 5
+fs_solr:
+    endpoints:
+        jgo_presentation-de:
+            host: localhost
+            port: 8983
+            path: /solr
+            core: jgo_presentation-de
+            timeout: 5
+        jgo_presentation-en:
+            host: localhost
+            port: 8983
+            path: /solr
+            core: jgo_presentation-en
+            timeout: 5
+            
+knp_paginator:
+    page_range: 5                      # default page range used in pagination control
+    default_options:
+        page_name: page                # page query parameter name
+        sort_field_name: sort          # sort field query parameter name
+        sort_direction_name: direction # sort direction query parameter name
+        #distinct: true                 # ensure distinct results, useful when ORM queries are using GROUP BY statements
+    template:
+        # pagination: KnpPaginatorBundle:Pagination:sliding.html.twig     # sliding pagination controls template
+        pagination: KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig
+        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template

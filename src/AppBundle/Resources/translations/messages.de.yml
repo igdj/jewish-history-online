@@ -58,3 +58,5 @@ epoch.century:                      "%century%. Jahrhundert"
 epoch.decade:                       "%epoch%er Jahre"
 Image:                              Bild
 Object:                             Objekt
+Previous:                           Zurück
+Next:                               Weiter

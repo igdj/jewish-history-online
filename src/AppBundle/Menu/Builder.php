@@ -190,7 +190,11 @@ class Builder implements ContainerAwareInterface
                 $item = $item->addChild($current_route, array('label' => 'Detail', 'uri' => '#'));
                 break;
 
-            default:
+            case 'search-index':
+                $item = $menu->addChild($current_route, array('label' => 'Search'));
+                break;
+
+           default:
                 var_dump($current_route);
         }
         if (isset($item)) {

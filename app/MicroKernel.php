@@ -49,10 +49,13 @@ class MicroKernel extends Kernel
 
             // own code
             new AppBundle\AppBundle(),
-
-            // solr
-            // new FS\SolrBundle\FSSolrBundle(),
         );
+
+        if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
+            // solr
+            $bundles[] = new FS\SolrBundle\FSSolrBundle();
+            $bundles[] = new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle();
+        }
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
@@ -169,5 +172,7 @@ class MicroKernel extends Kernel
                                                                [ '_controller' => 'AppBundle:Source:tei2html' ],
                                                                [ 'path' => '.*' ]),
                           'tei2html');
+
+        $routes->add('/search', 'AppBundle:Search:index', 'search-index');
     }
 }

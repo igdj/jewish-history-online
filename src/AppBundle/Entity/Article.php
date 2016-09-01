@@ -14,7 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @see http://schema.org/Article Documentation on Schema.org
  *
- * @Solr\Document()
+ * @Solr\Document(indexHandler="indexHandler")
+ * @Solr\SynchronizationFilter(callback="shouldBeIndexed")
  *
  * @ORM\Entity
  * @ORM\Table(name="article")
@@ -56,6 +57,7 @@ class Article implements \JsonSerializable
      * @var ArrayCollection<Person> The author of this content. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably.
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Person", inversedBy="articles")
+     * @Solr\Field(type="strings", getter="getFullname")
      */
     protected $author;
     /**
@@ -174,7 +176,7 @@ class Article implements \JsonSerializable
      * @Assert\Type(type="string")
      * @Assert\NotNull
      * @ORM\Column
-     * @Solr\Field(name="title")
+     * @Solr\Field(type="string")
      */
     protected $name;
     /**
@@ -190,6 +192,7 @@ class Article implements \JsonSerializable
      *
      * @Assert\Type(type="string")
      * @ORM\Column
+     * @Solr\Field(type="string")
      */
     protected $sourceType;
     /**
@@ -886,4 +889,22 @@ class Article implements \JsonSerializable
             'translatedFrom' => $this->translatedFrom,
         ];
     }
+
+    // solr-stuf
+    public function indexHandler()
+    {
+        if (!empty($this->language) && 'eng' == $this->language) {
+            return 'jgo_presentation-en';
+        }
+        return 'jgo_presentation-de';
+    }
+
+    /**
+     * @return boolean
+    */
+    public function shouldBeIndexed()
+    {
+        return $this->status >= 0;
+    }
+
 }
