@@ -1,4 +1,7 @@
 {% extends 'AppBundle:Default:base.html.twig' %}
+
+{% import 'AppBundle:Search:search-helper.html.twig' as searchHelper %}
+
 {% block body %}
     <h1>{{ 'Search' | trans }}</h1>
         <form action="{{ path('search-index') }}" method="post" style="margin-bottom: 0.5em">
@@ -46,7 +49,7 @@
             <h3>Ergebnisse filtern</h3>
             {% for key,facet in meta.facet %}
                 <h4>{% if 'entity' == key %}{{ 'Section'|trans }}{% endif %}</h4>
-                <ul class="facet">
+                <ul class="facet list-unstyled">
                     {% for val,count in facet %}
                     {% set active = pagination.params.filter[key] is defined and pagination.params.filter[key] == val %}
                     {% set params = {} %}
@@ -83,13 +86,24 @@
         </div>
         <div class="col-xs-12 col-sm-9">
             {% endif %}
-
             {% for result in results %}
                 {% if loop.first %}
-                <ul>
+                <ul class="list-unstyled">
                 {% endif %}
 
-                <li>{{ dump(result) }}</li>
+                <li style="margin-bottom: 2em">
+                {{ searchHelper.display_result(result) }}
+                {% if highlighting is defined %}
+                    {% set highlightedDoc = highlighting.result(result.id) %}
+                    {% if highlightedDoc is not empty %}
+                        <blockquote>
+                        {% for field, highlight in highlightedDoc %}
+                            {{ highlight|join('...')|raw }}<br/>
+                        {% endfor %}
+                        </blockquote>
+                    {% endif %}
+                {% endif %}
+                </li>
 
                 {% if loop.last %}
                 </ul>

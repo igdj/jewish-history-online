@@ -55,9 +55,7 @@ class SearchController extends Controller
 
             // actual query
             $edismax = $solrQuery->getEdisMax();
-
             $edismax->setQueryFields('_text_');
-
             $edismax->setMinimumMatch('100%');
 
             $solrQuery->setQuery($q);
@@ -85,9 +83,24 @@ class SearchController extends Controller
                     ;
             }
 
-            // this executes the query and returns the result
+            // highlighting
+            $hl = $solrQuery->getHighlighting();
+            $hl->setFields('highlight');
+            // hl.requireFieldMatch=true.
+            $hl->setSimplePrefix('<b>');
+            $hl->setSimplePostfix('</b>');
+
+            // set the proper $endpoint
             $solrClient->setDefaultEndpoint($endpoint);
 
+            /*
+            // debug
+            $request = $solrClient->createRequest($solrQuery);
+            $uri = $request->getUri();
+            die($uri);
+            */
+
+            // build paginator - this one excecutes the quey
             $paginator = $this->get('knp_paginator');
 
             $pagination = $paginator->paginate(
@@ -133,6 +146,7 @@ class SearchController extends Controller
                                'results' => $results,
                                'meta' => $meta,
                                'pagination' => $pagination,
+                               'highlighting' => isset($resultset) ? $resultset->getHighlighting() : null,
                              ]);
     }
 

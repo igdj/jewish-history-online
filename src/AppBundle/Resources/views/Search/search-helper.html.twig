@@ -1,0 +1,36 @@
+{% macro display_result(result) %}
+    {% import _self as searchHelper %}
+    {% if result.entity_s == 'article' %}
+        {{ searchHelper.display_article_result(result) }}
+    {% else %}
+        {{ searchHelper.display_other_result(result) }}
+    {% endif %}
+{% endmacro %}
+
+{% macro build_result_path(result) %}
+    {% set parts = result.id|split('_') %}
+    {#{ dump(parts)}#}
+    {% if parts[0] == 'sourcearticle' %}
+        {% set route = 'source' %}
+        {% set params = { 'uid' : result.uid_s } %}
+    {% elseif parts[0] == 'article' %}
+        {% set route = 'article' %}
+        {% set params = { 'slug' : result.uid_s } %}
+    {% else %}
+        {% set route = parts[0]  %}
+        {% set params = { 'id' : parts[1] } %}
+    {% endif %}
+    {{ path(route, params) }}
+{% endmacro %}
+
+{% macro display_other_result(result) %}
+    {% import _self as searchHelper %}
+    <h4><a href="{{ searchHelper.build_result_path(result) }}">{{ result.name_order_s }}</a></h4>
+{% endmacro %}
+
+{% macro display_article_result(result) %}
+    {% import _self as searchHelper %}
+    <h4><a href="{{ searchHelper.build_result_path(result) }}">{{ result.name_order_s }}</a></h4>
+    {{ result.author_ss|join(', ') }}
+{% endmacro %}
+
