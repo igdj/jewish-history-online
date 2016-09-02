@@ -22,8 +22,10 @@ class SearchController extends Controller
         $locale = $request->getLocale();
         $endpoint = 'jgo_presentation-' . $locale;
 
+        $facetNames = [ 'entity' ];
+
         $meta = $results = [];
-        $q = '';
+        $q = ''; $filter = [];
         $pagination = null;
 
         if ($request->getMethod() == 'POST') {
@@ -31,21 +33,27 @@ class SearchController extends Controller
         }
         else {
             $q = trim($request->query->get('q'));
+            $filter = $request->query->get('filter');
+            if (!empty($filter)) {
+                // filter down to allowed facetNames as keys
+                $filter = array_intersect_key($filter, array_flip($facetNames));
+            }
         }
 
-        if (!empty($q)) {
+        if (!empty($q) || !empty($filter)) {
             $meta['query'] = $q;
 
             // get a select query instance
             $solrQuery = $solrClient->createSelect();
 
-            // TODO: paging
+            // paging
             $resultsPerPage = 20;
             $solrQuery
                 ->setStart(0)
                 ->setRows($resultsPerPage)
                 ;
 
+            // actual query
             $edismax = $solrQuery->getEdisMax();
 
             $edismax->setQueryFields('_text_');
@@ -57,11 +65,25 @@ class SearchController extends Controller
             // get the facetset component
             $facetSet = $solrQuery->getFacetSet();
 
-            // create a facet query on entity_
-            $facetSet->createFacetField('entity')
-                ->setField('entity_s')
-                ->setMinCount(1) // only get the ones with matches
-                ;
+            // create the facets
+            foreach ($facetNames as $facetName) {
+                $field = $facetName . '_s'; // currently all string fields
+
+                if (!empty($filter[$facetName])) {
+                    // set a filter-query to this value
+                    $solrQuery->addFilterQuery([
+                        'key' => $facetName,
+                        'tag' => $facetName,
+                        'query' => $field . ':' . $filter[$facetName]
+                    ]);
+                }
+
+                // create a facet field
+                $facetField = $facetSet
+                    ->createFacetField([ 'key' => $facetName, 'field' => $field, 'exclude' => $facetName ])
+                    ->setMinCount(1) // only get the ones with matches
+                    ;
+            }
 
             // this executes the query and returns the result
             $solrClient->setDefaultEndpoint($endpoint);
@@ -80,8 +102,11 @@ class SearchController extends Controller
             $meta['numFound'] = $pagination->getTotalItemCount(); // not really needed
 
             $meta['facet'] = [];
-            foreach ([ 'entity' ] as $facetName) {
-                $meta['facet'][$facetName] = $resultset->getFacetSet()->getFacet('entity');
+            foreach ($facetNames as $facetName) {
+                $facet = $resultset->getFacetSet()->getFacet($facetName);
+                if (count($facet) > 1) {
+                    $meta['facet'][$facetName] = $facet;
+                }
             }
 
             // show documents using the resultset iterator

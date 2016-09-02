@@ -517,6 +517,15 @@ div.two-columns {
 
 		}
 	}
+
+	.facet {
+		li.active a {
+			font-weight: bold;
+			&::before {
+				content: "(x)";
+			}
+		}
+	}
 }
 
 footer {

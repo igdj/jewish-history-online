@@ -1,8 +1,6 @@
 {% extends 'AppBundle:Default:base.html.twig' %}
 {% block body %}
     <h1>{{ 'Search' | trans }}</h1>
-    <div class="row">
-        <div class="col-sm-12">
         <form action="{{ path('search-index') }}" method="post" style="margin-bottom: 0.5em">
             <div class="input-group">
                 <input id="search-box" name="q" value="{{ meta.query }}" class="form-control" style="outline:none;" />
@@ -27,15 +25,64 @@
             </style>
         </form>
         {% if meta is not empty %}
-            <div class="alert alert-info">
-                {{ pagination.getTotalItemCount }} {{ 'result.oneormany'|transchoice(pagination.getTotalItemCount) }}
-                {% if meta.query is not empty %}
-                    {{ 'for'|trans }}
-                    <b>{{ meta.query }}</b>
-                {% endif %}
-            </div>
+        <div class="alert alert-info">
+            {{ pagination.getTotalItemCount }} {{ 'result.oneormany'|transchoice(pagination.getTotalItemCount) }}
+            {% if meta.query is not empty %}
+                {{ 'for'|trans }}
+                <b>{{ meta.query }}</b>
+            {% endif %}
+            {% if pagination.params.filter is not empty %}
+                eingeschränkt auf
+                {% for key,val in pagination.params.filter %}
+                    {% if 'entity' == key %}{{ 'Section'|trans }}{% endif %}
+                    <b>{{ (val ~ '.oneormany')|transchoice(pagination.getTotalItemCount) }}</b>
+                {% endfor %}
+            {% endif %}
+        </div>
 
-            {{ dump(meta.facet)}}
+            {% if meta.facet is not empty %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-3 sidebar">
+            <h3>Ergebnisse filtern</h3>
+            {% for key,facet in meta.facet %}
+                <h4>{% if 'entity' == key %}{{ 'Section'|trans }}{% endif %}</h4>
+                <ul class="facet">
+                    {% for val,count in facet %}
+                    {% set active = pagination.params.filter[key] is defined and pagination.params.filter[key] == val %}
+                    {% set params = {} %}
+                    {% for pagination_key,pagination_val in pagination.params %}
+                        {% if 'page' != pagination_key %}
+                            {% if 'filter' == pagination_key %}
+                                {% set filters = {} %}
+                                {% for filterkey,filterval in pagination_val %}
+                                    {% if filterkey != key %}
+                                        {% set filters = filters|merge({ (filterkey) : filterval }) %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if filters is not empty %}
+                                    {% set params = params|merge(filters) %}
+                                {% endif %}
+                            {% else %}
+                                {% set params = params|merge({ (pagination_key) : pagination_val }) %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if not active %}
+                        {% set params = params|merge({ 'filter' : { (key) : val } }) %}
+                    {% endif %}
+                    {#{ dump(params)}#}
+                    {% set transkey = val ~ '.oneormany' %}
+                    <li{% if active %} class="active"{% endif %}>
+                        <a href="{{ path('search-index', params) }}">
+                            {{ transkey|transchoice(count) }}
+                        </a> ({{ count }})
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </div>
+        <div class="col-xs-12 col-sm-9">
+            {% endif %}
 
             {% for result in results %}
                 {% if loop.first %}
@@ -54,7 +101,9 @@
             {% else %}
                 {#{ 'Your search did not match any entries in this site. '|trans }#}
             {% endfor %}
-        {% endif %}
+            {% if meta.facet is not empty %}
         </div>
     </div><!-- .row -->
+            {% endif %}
+        {% endif %}
 {% endblock %}
