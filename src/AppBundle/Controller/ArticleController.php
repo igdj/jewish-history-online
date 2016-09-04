@@ -43,10 +43,21 @@ class ArticleController extends RenderTeiController
 
         $fname = $this->buildArticleFname($article);
 
+        // localize labels in xslt
+        $params = [];
+        if ($article instanceof \AppBundle\Entity\Article) {
+            $lang = $article->getLanguage();
+            if (!empty($lang)) {
+                $params['lang'] = $lang;
+            }
+        }
+
         $teiHelper = new \AppBundle\Utils\TeiHelper();
         $meta = $teiHelper->analyzeHeader($this->locateTeiResource($fname));
 
-        $html = $this->renderTei($fname, $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl');
+        $html = $this->renderTei($fname,
+                                 $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl',
+                                 [ 'params' => $params ]);
 
         list($authors, $section_headers, $license, $entities, $glossaryTerms) = $this->extractPartsFromHtml($html);
 

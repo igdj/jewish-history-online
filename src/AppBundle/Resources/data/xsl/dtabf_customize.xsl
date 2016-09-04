@@ -4,6 +4,23 @@
   exclude-result-prefixes="tei"
   version="2.0">
 
+
+  <!-- translate-layer -->
+  <xsl:param name="lang" />
+  <xsl:variable name="strings" select="document('translation.xml')/strings"/>
+
+  <xsl:template name="translate">
+   <xsl:param name="label" />
+   <xsl:choose>
+      <xsl:when test="$strings/string[@key=$label and @language=$lang]">
+         <xsl:value-of select="$strings/string[@key=$label and @language=$lang]" />
+      </xsl:when>
+      <xsl:otherwise>
+         <xsl:value-of select="$label" />
+      </xsl:otherwise>
+   </xsl:choose>
+  </xsl:template>
+
   <!-- we do separate note-handling -->
   <xsl:template match="tei:text[not(descendant::tei:text)]">
     <xsl:apply-templates/>
