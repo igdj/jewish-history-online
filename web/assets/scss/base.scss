@@ -265,24 +265,24 @@ header {
         .dta-lb-n { float:right }
 
         /* renditions inline */
-        .aq       { font-family:sans-serif }
-        .b        { font-weight:bold }
-        .blue     { color:blue }
-        .fr       { border:1px dotted silver }
-        .g        { letter-spacing:0.125em }
-        .g:before { content:''; margin-left:0.125em }
-        .g:after  { content:''; margin-right:0em }
-        .i        { font-style:italic }
+        .aq, span.dta-aq       { font-family:sans-serif }
+        .b, span.dta-b { font-weight:bold }
+        .blue, span.dta-blue     { color:blue }
+        .fr, span.dta-fr       { border:1px dotted silver }
+        .g, span.dta-g        { letter-spacing:0.125em }
+        .g:before, span.dta-g:before { content:''; margin-left:0.125em }
+        .g:after, span.dta-g:after  { content:''; margin-right:0em }
+        .i, span.dta-i { font-style:italic }
         /*.in       { font-size:150% } */
-        .k        { font-variant:small-caps }
-        .larger   { font-size:larger }
-        .red      { color:red }
-        .s        { text-decoration: line-through }
-        .smaller  { font-size:smaller }
-        .sub      { vertical-align:sub; font-size:.7rem }
-        .sup      { vertical-align:super; font-size:.7rem }
-        .u        { text-decoration:underline }
-        .uu       { border-bottom:double 3px #000 }
+        .k, span.dta-k        { font-variant:small-caps }
+        .larger, span.dta-larger   { font-size:larger }
+        .red, span.dta-red      { color:red }
+        .s, span.dta-s        { text-decoration: line-through }
+        .smaller, span.dta-smaller  { font-size:smaller }
+        .sub, span.dta-sub      { vertical-align:sub; font-size:.7rem }
+        .sup, span.dta-sup      { vertical-align:super; font-size:.7rem }
+        .u, span.dta-u        { text-decoration:underline }
+        .uu, span.dta-uu       { border-bottom:double 3px #000 }
 
         /* renditions block */
         .c     { display:block; text-align:center }
