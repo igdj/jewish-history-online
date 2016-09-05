@@ -25,13 +25,13 @@ fs_solr:
             port: 8983
             path: /solr
             core: jgo_presentation-de
-            timeout: 5
+            timeout: 15
         jgo_presentation-en:
             host: localhost
             port: 8983
             path: /solr
             core: jgo_presentation-en
-            timeout: 5
+            timeout: 15
             
 knp_paginator:
     page_range: 5                      # default page range used in pagination control
