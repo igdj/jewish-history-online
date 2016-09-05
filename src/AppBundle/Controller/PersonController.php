@@ -76,7 +76,7 @@ class PersonController extends Controller
         $ret .= sprintf('#TARGET: %s/gnd/{ID}',
                         $this->generateUrl('person-index', [], true))
               . "\n";
-        $ret .= '#NAME: ' . $translator->trans('Hamburg Key-Documents of German-Jewish History')
+        $ret .= '#NAME: ' . $translator->trans('Key Documents of German-Jewish History')
               . "\n";
         // $ret .= '#MESSAGE: ' . "\n";
 
