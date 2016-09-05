@@ -97,6 +97,12 @@ class TopicController extends RenderTeiController
      */
     public function backgroundAction($slug)
     {
+        $language = null;
+        $locale = $this->get('request')->getLocale();
+        if (!empty($locale)) {
+            $language = \AppBundle\Utils\Iso639::code1to3($locale);
+        }
+
         $topics = $this->buildTopicsBySlug(true);
         if (!array_key_exists($slug, $topics)) {
             return $this->redirectToRoute('topic-index');
@@ -133,11 +139,22 @@ class TopicController extends RenderTeiController
             return;
         }
 
+        $entityLookup = $this->buildEntityLookup($entities);
+        $glossaryLookup = $this->buildGlossaryLookup($glossaryTerms);
+
+
         // sidebar
         $query = $this->get('doctrine')
             ->getManager()
-            ->createQuery('SELECT a FROM AppBundle:Article a WHERE a.keywords LIKE :topic ORDER BY a.name')
-            ->setParameter('topic', '%' . $topics[$slug] . '%');
+            ->createQuery("SELECT a FROM AppBundle:Article a"
+                          . " WHERE a.keywords LIKE :topic AND a.articleSection <> 'background'"
+                          . (!empty($language) ? ' AND a.language=:language' : '')
+                          . " ORDER BY a.name")
+            ->setParameter('topic', '%' . $topics[$slug] . '%')
+            ;
+        if (!empty($language)) {
+            $query->setParameter('language', $language);
+        }
 
         $articles = $query->getResult();
 
@@ -150,6 +167,8 @@ class TopicController extends RenderTeiController
                                 'authors' => $authors,
                                 'section_headers' => $section_headers,
                                 'license' => $license,
+                                'entity_lookup' => $entityLookup,
+                                'glossary_lookup' => $glossaryLookup,
                                 'interpretations' => $articles,
                               ]);
     }

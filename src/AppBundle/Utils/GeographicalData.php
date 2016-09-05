@@ -292,6 +292,10 @@ class GeographicalData
                     break;
 
 
+                case 'http://vocab.getty.edu/aat/300025950':
+                    $values['type'] = 'association'; // Verbuende wie Commonwealth
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300386698':
                     $values['type'] = 'miscellaneous';
                     break;

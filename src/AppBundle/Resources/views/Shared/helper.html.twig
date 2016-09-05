@@ -12,7 +12,12 @@
 
 {% macro article_linked(article) %}
     {% if 'interpretation' == article.genre %}
-        <a href="{{ path('article', { 'slug' : article.getSlug(true) }) }}">
+        {% if 'background' == article.articleSection %}
+            {% set path = path('topic-background', { 'slug' : article.getSlug(true) }) %}
+        {% else %}
+            {% set path = path('article', { 'slug' : article.getSlug(true) }) %}
+        {% endif %}
+        <a href="{{ path }}">
             {{ article.name }}
             {% if article.author|length > 0%}
             ({% for author in article.author %}{{ author.givenName }} {{ author.familyName }}{% if not loop.last %}, {% endif %}{% endfor %})

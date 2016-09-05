@@ -93,12 +93,15 @@ class ArticleHeaderCommand extends ContainerAwareCommand
             if ($input->getOption('insert-missing')) {
                 switch ($article->genre) {
                     case 'interpretation':
+                    case 'background':
                         $entity = new \AppBundle\Entity\Article();
+                        $entity->setArticleSection($article->genre);
                         $entity->setSourceType('Text');
                         break;
 
                     case 'source':
                         $entity = new \AppBundle\Entity\SourceArticle();
+                        $entity->setArticleSection($article->genre);
                         // $entity->setSourceType($article->sourceType);
                         break;
 

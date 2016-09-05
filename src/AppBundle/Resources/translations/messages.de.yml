@@ -34,12 +34,17 @@ Former primary political entity:    Ehemaliger Staat
 Former primary political entities:  Ehemalige Staaten
 Historical region:                  Historische Region
 Historical regions:                 Historische Regionen
+General regions:                    Großregionen
 State:                              Land
 States:                             Länder
+Province:                           Provinz
+Provinces:                          Provinzen
 Oblast:                             Gebiet
 Oblasts:                            Gebiete
 Canton:                             Kanton
 Cantons:                            Kantone
+Voivodeship:                        Woiwodschaft 
+Voivodeships:                       Woiwodschaften
 National district:                  Bezirk
 Governorate:                        Gouvernement
 General region:                     Allgemeine Gegend
@@ -48,11 +53,14 @@ Place:                              Ort
 Places:                             Orte
 Autonomous city:                    Autonome Stadt
 Autonomous cities:                  Autonome Städte
+Autonomous community:               Autonome Gemeinschaft 
+Special city:                       Stadt
 Districts:                          Ortsteile
 City districts:                     Ortsteile
 City district:                      Ortsteil
 Neighborhood:                       Ortsteil
 Neighborhoods:                      Ortsteile
+Mountain system:                    Gebirge
 organization.oneormany:             "Organisation|Organisationen"
 person.oneormany:                   "Person|Personen"
 place.oneormany:                    "Ort|Orte"

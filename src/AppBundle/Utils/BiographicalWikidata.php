@@ -78,7 +78,7 @@ class BiographicalWikidata
 		}
 	}
 
-	private static function normalizePropertyValue ($value, $type, $lang)
+	private static function normalizePropertyValue($value, $type, $lang)
 	{
 		switch ($type) {
 			case 'item':
@@ -90,8 +90,11 @@ class BiographicalWikidata
 				if (preg_match('/([0-9]+\-[0-9]+\-[0-9]+)T/', $value, $matches)) {
 					return preg_replace('/^0+/', '', $matches[1]); // trim leading 0es
 				}
-				die('TODO: handle time ' . $value);
+				else if ((string)$value != '+00000000000--55-00T00:00:00Z') {
+					die('TODO: handle time ' . $value);
+				}
 				break;
+
 			default:
 				return $value;
 		}

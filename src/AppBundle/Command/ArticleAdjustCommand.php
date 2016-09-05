@@ -152,7 +152,9 @@ class ArticleAdjustCommand extends BaseEntityCommand
                             break;
 
                         default:
-                            die('TODO: handle ' . $result['referee_slug']);
+                            if (!empty($result['referee_slug'])) {
+                                die('TODO: handle ' . $result['referee_slug']);
+                            }
                     }
                     usort($topics, function ($a, $b) use ($responsible) {
                         if ($a == $b) {

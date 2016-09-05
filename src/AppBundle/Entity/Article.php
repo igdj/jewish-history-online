@@ -54,6 +54,13 @@ class Article implements \JsonSerializable
      */
     protected $status = 0;
     /**
+     * @var string
+     *
+     * @ORM\Column(nullable=true)
+     * @Solr\Field(type="string")
+     */
+    protected $articleSection;
+    /**
      * @var ArrayCollection<Person> The author of this content. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably.
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Person", inversedBy="articles")
@@ -274,6 +281,29 @@ class Article implements \JsonSerializable
         return $this->status;
     }
 
+    /**
+     * Sets articleSection.
+     *
+     * @param string $articleSection
+     *
+     * @return $this
+     */
+    public function setArticleSection($articleSection = null)
+    {
+        $this->articleSection = $articleSection;
+
+        return $this;
+    }
+
+    /**
+     * Gets articleSection.
+     *
+     * @return string
+     */
+    public function getArticleSection()
+    {
+        return $this->articleSection;
+    }
 
     /**
      * Adds author.
