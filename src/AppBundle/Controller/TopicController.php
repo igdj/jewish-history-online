@@ -11,17 +11,17 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class TopicController extends RenderTeiController
 {
     static $TOPICS = [
-        'Daily and Family Life',
-        'Demography and Social Structures',
-        'Education',
+        'Demographics and Social Structure',
+        'Education and Learning',
+        'Family and Everyday Life',
         'Leisure and Sports',
-        'Remembrance',
-        'Anti-Semitism and Persecution',
+        'Memory and Remembrance',
+        'Antisemitism and Persecution',
         'Arts and Culture',
         'Migration',
         'Organizations and Institutions',
         'Law and Politics',
-        'Religious Life and Identity Issues',
+        'Religion and Identity',
         'Social Issues and Welfare',
         'Economy and Occupational Composition',
         'Scholarship',

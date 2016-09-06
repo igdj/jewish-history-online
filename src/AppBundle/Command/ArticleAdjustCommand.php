@@ -114,10 +114,10 @@ class ArticleAdjustCommand extends BaseEntityCommand
                     $responsible = [];
                     switch ($result['referee_slug']) {
                         case 'bergmann-werner':
-                            $responsible = [ $translator->trans('Anti-Semitism and Persecution') ];
+                            $responsible = [ $translator->trans('Antisemitism and Persecution') ];
                             break;
                         case 'braemer-andreas':
-                            $responsible = [ $translator->trans('Religious Life and Identity Issues') ];
+                            $responsible = [ $translator->trans('Religion and Identity') ];
                             break;
                         case 'brinkmann-tobias':
                             $responsible = [ $translator->trans('Migration') ];
@@ -138,10 +138,10 @@ class ArticleAdjustCommand extends BaseEntityCommand
                             $responsible = [ $translator->trans('Organizations and Institutions') ];
                             break;
                         case 'meyer-beate':
-                            $responsible = [ $translator->trans('Remembrance') ];
+                            $responsible = [ $translator->trans('Memory and Remembrance') ];
                             break;
                         case 'ruerup-miriam':
-                            $responsible = [ $translator->trans('Demography and Social Structures') ];
+                            $responsible = [ $translator->trans('Demographics and Social Structure') ];
                             break;
                             break;
                         case 'schueler-springorum-stefanie':
