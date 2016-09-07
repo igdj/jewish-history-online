@@ -8,9 +8,9 @@ $color-color-dark: #070E44;
 $color-color-medium: #99A0B4;
 
 $color-color-topic: #970376;
-$color-color-map: #F4AE11;
+$color-color-map: #F29B00;
 $color-color-chronology: #3B97D7;
-$color-color-lookup: #99A0B4;
+$color-color-lookup: #9C9C9C;
 
 $color-gray-dark: #9B9B9B;
 $color-gray-medium: #C0C0C0;
@@ -24,6 +24,10 @@ body {
 }
 
 header {
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
 	h1 {
 		margin-top: 3rem;
 		font-size: 18px;
@@ -84,6 +88,9 @@ header {
 		}
 		li:hover .menu_level_1 {
 			display: block;
+			a {
+				padding-right: 5px;
+			}
 		}
 	}
 
@@ -105,7 +112,7 @@ header {
 			padding-bottom: 5px;
 			a {
 				padding: 5px;
-				padding-right: 15px;
+				padding-right: 36px;
 			}
 		}
 
@@ -116,6 +123,9 @@ header {
 
 		#menu-item-topic {
 			a {
+				background: url("../img/icon/topic.svg") no-repeat;
+				background-size: auto 50%;
+				background-position: right 12px center;
 				display: inline-block;
 				background-color: $color-color-topic;
 			}
@@ -123,8 +133,14 @@ header {
 				border-bottom: 6px solid $color-color-topic;
 			}
 		}
+
 		#menu-item-map {
 			a {
+				background: url("../img/icon/map.svg") no-repeat;
+				background-position: right 13px top -15px;
+				background-size: auto 130%;
+				padding-right: 33px;
+
 				display: inline-block;
 				background-color: $color-color-map;
 			}
@@ -134,6 +150,9 @@ header {
 		}
 		#menu-item-chronology {
 			a {
+				background: url("../img/icon/chronology.svg") no-repeat;
+				background-position: right 12px top -8px;
+				background-size: auto 105%;
 				display: inline-block;
 				background-color: $color-color-chronology;
 			}
@@ -141,11 +160,18 @@ header {
 				border-bottom: 6px solid $color-color-chronology;
 			}
 		}
+
 		#menu-item-lookup {
+			> a {
+				background: url("../img/icon/lookup.png") no-repeat;
+				background-position: right 8px center;
+			}
+
 			a {
 				display: inline-block;
 				background-color: $color-color-lookup;
 			}
+
 			&:hover {
 				border-bottom: 6px solid $color-color-lookup;
 			}
