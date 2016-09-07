@@ -30,7 +30,10 @@ class PersonController extends Controller
         $persons = $query->getResult();
 
         return $this->render('AppBundle:Person:index.html.twig',
-                             [ 'persons' => $persons ]);
+                             [
+                                'pageTitle' => $this->get('translator')->trans('Persons'),
+                                'persons' => $persons,
+                            ]);
     }
 
     public function detailAction($id = null, $gnd = null)
@@ -50,7 +53,10 @@ class PersonController extends Controller
         }
 
         return $this->render('AppBundle:Person:detail.html.twig',
-                             [ 'person' => $person ]);
+                             [
+                                'pageTitle' => $person->getFullname(true), // TODO: lifespan in brackets
+                                'person' => $person,
+                              ]);
     }
 
     public function gndBeaconAction()

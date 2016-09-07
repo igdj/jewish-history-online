@@ -112,7 +112,7 @@
       </trans-unit>
       <trans-unit id="a24c6189587e0f225c5028256a04ac51b5fe6667" resname="search-index">
         <source>/search</source>
-        <target>/search</target>
+        <target>/suche</target>
       </trans-unit>
       <trans-unit id="828d338a9b04221c9cbe286f50cd389f68de4ecf" resname="source">
         <source>/source/{uid}</source>

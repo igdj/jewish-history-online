@@ -60,7 +60,10 @@ class PlaceController extends Controller
         }
 
         return $this->render('AppBundle:Place:map.html.twig',
-                             [ 'markers' => $markers ]);
+                             [
+                              'pageTitle' => $this->get('translator')->trans('Map'),
+                              'markers' => $markers,
+                              ]);
     }
 
     /**
@@ -101,7 +104,9 @@ class PlaceController extends Controller
                     ;
         }
         return $this->render('AppBundle:Place:map-popup-content.html.twig',
-                             [ 'articles' => $articles ]);
+                             [
+                                'articles' => $articles,
+                             ]);
 
     }
 
@@ -116,7 +121,10 @@ class PlaceController extends Controller
                          [ 'name' => 'ASC' ]);
 
         return $this->render('AppBundle:Place:index.html.twig',
-                             [ 'places' => $places ]);
+                             [
+                                'pageTitle' => $this->get('translator')->trans('Places'),
+                                'places' => $places,
+                             ]);
     }
 
     public function detailAction($id = null, $tgn = null)
@@ -143,7 +151,10 @@ class PlaceController extends Controller
         }
 
         return $this->render('AppBundle:Place:detail.html.twig',
-                             array('place' => $place));
+                             [
+                                'pageTitle' => $place->getNameLocalized($this->get('request')->getLocale()),
+                                'place' => $place,
+                             ]);
     }
 
 }

@@ -24,7 +24,10 @@ class GlossaryController extends Controller
                          [ 'term' => 'ASC' ]);
 
         return $this->render('AppBundle:Glossary:index.html.twig',
-                             [ 'terms' => $terms ]);
+                             [
+                                'pageTitle' => $this->get('translator')->trans('Glossary'),
+                                'terms' => $terms,
+                              ]);
     }
 
     /*

@@ -28,7 +28,10 @@ class DateController extends Controller
                          [ 'dateCreated' => 'ASC' ]);
 
         return $this->render('AppBundle:Date:chronology.html.twig',
-                             [ 'articles' => $articles]);
+                             [
+                                'pageTitle' =>  $this->get('translator')->trans('Chronology'),
+                                'articles' => $articles,
+                              ]);
     }
 
 }

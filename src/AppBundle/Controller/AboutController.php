@@ -55,8 +55,10 @@ class AboutController extends RenderTeiController
     public function editorsAction()
     {
         return $this->render('AppBundle:Default:sitetext-about.html.twig',
-                             [ 'title' => 'Editors',
-                               'content' => $this->renderContent() ]);
+                             [
+                               'title' => 'Editors',
+                               'content' => $this->renderContent(),
+                             ]);
     }
 
     /**

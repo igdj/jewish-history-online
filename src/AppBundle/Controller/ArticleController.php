@@ -116,6 +116,7 @@ class ArticleController extends RenderTeiController
                                 'source_description' => $sourceDescription,
                                 'related' => $related,
                                 'name' => $article->getName(),
+                                'pageTitle' => $article->getName(), // TODO: append authors in brackets
                                 'html' => $html,
                                 'authors' => $authors,
                                 'section_headers' => $section_headers,

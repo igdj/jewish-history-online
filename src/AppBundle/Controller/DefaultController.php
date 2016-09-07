@@ -16,7 +16,9 @@ class DefaultController extends Controller
     public function indexAction()
     {
         return $this->render('AppBundle:Default:index.html.twig',
-                             array('title' => 'Welcome'));
+                             [
+                                'pageTitle' => $this->get('translator')->trans('Welcome'),
+                             ]);
     }
 
 }

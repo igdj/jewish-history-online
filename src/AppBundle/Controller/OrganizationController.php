@@ -17,11 +17,14 @@ class OrganizationController extends Controller
     {
         $organizations = $this->getDoctrine()
                 ->getRepository('AppBundle:Organization')
-                ->findBy(array('status' => [ 0, 1 ]),
-                         array('name' => 'ASC'));
+                ->findBy([ 'status' => [ 0, 1 ] ],
+                         [ 'name' => 'ASC' ]);
 
         return $this->render('AppBundle:Organization:index.html.twig',
-                             [ 'organizations' => $organizations ]);
+                             [
+                                'pageTitle' => $this->get('translator')->trans('Organizations'),
+                                'organizations' => $organizations,
+                             ]);
     }
 
     public function detailAction($id = null, $gnd = null)
@@ -42,7 +45,10 @@ class OrganizationController extends Controller
         }
 
         return $this->render('AppBundle:Organization:detail.html.twig',
-                             array('organization' => $organization));
+                             [
+                                'pageTitle' => $organization->getNameLocalized($this->get('request')->getLocale()),
+                                'organization' => $organization,
+                              ]);
     }
 
     public function gndBeaconAction()

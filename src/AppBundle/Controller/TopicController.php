@@ -92,7 +92,10 @@ class TopicController extends RenderTeiController
             }
         }
         return $this->render('AppBundle:Topic:index.html.twig',
-                             [ 'topics' => $topicsDescription ]);
+                             [
+                                'pageTitle' => $this->get('translator')->trans('Topics'),
+                                'topics' => $topicsDescription,
+                             ]);
     }
 
     /**
@@ -146,7 +149,6 @@ class TopicController extends RenderTeiController
         $entityLookup = $this->buildEntityLookup($entities);
         $glossaryLookup = $this->buildGlossaryLookup($glossaryTerms);
 
-
         // sidebar
         $query = $this->get('doctrine')
             ->getManager()
@@ -166,6 +168,7 @@ class TopicController extends RenderTeiController
                              [
                                 'slug' => $slug,
                                 'name' => $topics[$slug],
+                                'pageTitle' => $topics[$slug], // TODO: Prepend Einfuehrung, append authors in brackets
                                 'html' => $html,
                                 'meta' => $meta,
                                 'authors' => $authors,
