@@ -85,7 +85,7 @@ class ArticleController extends RenderTeiController
             $pdfGenerator->logo_top = file_get_contents($fnameLogo);
 
             $pdfGenerator->writeHTML($html);
-            $pdfGenerator->Output();
+            $pdfGenerator->Output(str_replace(':', '-', $article->getSlug(true)) . '.pdf', 'I');
             return;
         }
 

@@ -141,8 +141,11 @@ class TopicController extends RenderTeiController
                                   ]);
             // return new Response($html);
             $pdfGenerator = new \AppBundle\Utils\PdfGenerator();
+            $fnameLogo = $this->get('kernel')->getRootDir() . '/../web/img/icon/icons.png';
+            $pdfGenerator->logo_top = file_get_contents($fnameLogo);
+
             $pdfGenerator->writeHTML($html);
-            $pdfGenerator->Output();
+            $pdfGenerator->Output($slug . '.pdf', 'I');
             return;
         }
 
