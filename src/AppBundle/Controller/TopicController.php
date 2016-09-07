@@ -75,6 +75,9 @@ class TopicController extends RenderTeiController
      */
     public function indexAction()
     {
+        $locale = $this->get('request')->getLocale();
+        $fnameAppend = !empty($locale) ? '.' . $locale : '';
+
         $topics = $this->buildTopicsBySlug();
         asort($topics);
 
@@ -83,7 +86,7 @@ class TopicController extends RenderTeiController
         foreach ($topics as $slug => $label) {
             $topicsDescription[$slug] = [ 'label' => $label ];
             $articleSlug =  $slugify->slugify($label);
-            $articlePath = $this->locateTeiResource($articleSlug . '.xml');
+            $articlePath = $this->locateTeiResource($articleSlug . $fnameAppend . '.xml');
             if (false !== $articlePath) {
                 $topicsDescription[$slug]['article'] = $articleSlug;
             }
@@ -102,6 +105,7 @@ class TopicController extends RenderTeiController
         if (!empty($locale)) {
             $language = \AppBundle\Utils\Iso639::code1to3($locale);
         }
+        $fnameAppend = !empty($locale) ? '.' . $locale : '';
 
         $topics = $this->buildTopicsBySlug(true);
         if (!array_key_exists($slug, $topics)) {
@@ -109,7 +113,7 @@ class TopicController extends RenderTeiController
         }
 
         $generatePrintView = 'topic-background-pdf' == $this->container->get('request')->get('_route');
-        $fname = $slug . '.xml';
+        $fname = $slug . $fnameAppend . '.xml';
 
         $teiHelper = new \AppBundle\Utils\TeiHelper();
         $meta = $teiHelper->analyzeHeader($this->locateTeiResource($fname));
