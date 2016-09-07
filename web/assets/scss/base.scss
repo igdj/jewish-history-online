@@ -12,7 +12,8 @@ $color-color-map: #F29B00;
 $color-color-chronology: #3B97D7;
 $color-color-lookup: #9C9C9C;
 
-$color-gray-dark: #9B9B9B;
+/* $color-gray-dark: #9B9B9B; */
+$color-gray-dark: #8E8E8E;
 $color-gray-medium: #C0C0C0;
 $color-gray-light: #E0DFE0;
 
@@ -609,10 +610,17 @@ footer {
 	}
 
 	h4 {
-		border-top: 1px solid $color-gray-medium;
+		/* border-top: 1px solid $color-gray-dark; */
 		padding-top: 5px;
 		color: $color-gray-dark;
 		min-height: 46px;
+		/* text-transform: uppercase; */
+		position: relative;
+
+		.topic-label {
+			position: absolute;
+			bottom: 0;
+		}
 	}
 }
 

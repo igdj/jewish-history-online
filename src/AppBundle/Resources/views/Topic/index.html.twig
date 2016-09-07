@@ -6,7 +6,9 @@
             {% if topicDescr.article is not empty %}
             <a href="{{ path('topic-background', { 'slug' : topicDescr.article }) }}">
             {% endif %}
-                <h4>{{ topicDescr.label }}</h4>
+                <h4>
+                    <div class="topic-label">{{ topicDescr.label }}</div>
+                </h4>
                 <img src="{{ asset('img/topic/' ~ slug ~ '.jpg') }}" style="width: 100%; height: auto" />
             {% if topicDescr.article is not empty %}
             </a>
