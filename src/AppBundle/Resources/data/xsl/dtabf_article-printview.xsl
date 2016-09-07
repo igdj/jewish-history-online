@@ -23,7 +23,7 @@
       </ul>
       <div class="article">
         <xsl:if test="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:notesStmt/tei:note">
-          <h2>
+          <h2 class="source-description-head">
             <xsl:call-template name="translate">
               <xsl:with-param name="label" select="'Quellenbeschreibung'" />
             </xsl:call-template>
@@ -36,12 +36,14 @@
 
         <xsl:if test='//tei:note[@place="foot"]'>
           <div class="dta-footnotesep"/>
-          <h3>
+          <div class="appendix">
+          <h3 id="notes">
             <xsl:call-template name="translate">
               <xsl:with-param name="label" select="'Anmerkungen'" />
             </xsl:call-template>
           </h3>
           <xsl:apply-templates select='//tei:note[@place="foot" and (text() or *)]' mode="footnotes"/>
+          </div>
         </xsl:if>
         <xsl:apply-templates select='//tei:fw[@place="bottom" and (text() or *)]' mode="signatures"/>
       </div>

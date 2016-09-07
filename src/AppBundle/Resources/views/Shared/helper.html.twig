@@ -41,7 +41,7 @@
 {% macro article_authors(authors) %}
     {% import _self as helper %}
     {% if authors is not empty %}
-    <h2 id="author">{{ helper.article_author_aboutlabel(authors) }}</h2>
+    <h3 id="author">{{ helper.article_author_aboutlabel(authors) }}</h3>
         {% for author in authors %}
         <p>{{ author.description|converturls }}</p>
         {% endfor %}
