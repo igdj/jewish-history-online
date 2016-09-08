@@ -193,6 +193,10 @@ header {
 			border: none;
 			padding: 5px;
 			padding-right: 26px;
+
+			&::-webkit-input-placeholder {
+				color: #CBD3DC !important;
+			}
 		}
 	}
 }
