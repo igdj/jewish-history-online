@@ -35,7 +35,7 @@
                 <b>{{ meta.query }}</b>
             {% endif %}
             {% if pagination.params.filter is not empty %}
-                eingeschränkt auf
+                {{ 'limited to'|trans }}
                 {% for key,val in pagination.params.filter %}
                     {% if 'entity' == key %}{{ 'Section'|trans }}{% endif %}
                     <b>{{ (val ~ '.oneormany')|transchoice(pagination.getTotalItemCount) }}</b>
@@ -46,7 +46,7 @@
             {% if meta.facet is not empty %}
     <div class="row">
         <div class="col-xs-12 col-sm-3 sidebar">
-            <h3>Ergebnisse filtern</h3>
+            <h3>{{ 'Filter Results'|trans }}</h3>
             {% for key,facet in meta.facet %}
                 <h4>{% if 'entity' == key %}{{ 'Section'|trans }}{% endif %}</h4>
                 <ul class="facet list-unstyled">
