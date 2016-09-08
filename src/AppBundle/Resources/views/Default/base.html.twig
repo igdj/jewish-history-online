@@ -82,7 +82,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12" style="position: relative">
-                        <div style="position: absolute; right: 0; z-index: 100">
+                        <div style="position: absolute; right: 18px; z-index: 100">
                             {{ knp_menu_render('AppBundle:Builder:topMenu') }}
                             {% if app.request.attributes.get("_route") is not null and app.request.getBaseUrl != '' %}
                             <ul id="menu-lang" class="list-inline">
@@ -104,15 +104,22 @@
                         </div>
                     </div>
                     <div class="col-sm-12">
-
                         <h1>
                             <a href="{{ path('home') }}">{{ 'Key Documents of German-Jewish History'|trans }}</a><br />
                             <a href="{{ path('home') }}" style="font-size: 14px; font-weight: normal">{{ 'A Digital Source Edition'|trans }}</a>
                         </h1>
-
+					</div>
+                    <div class="col-sm-9">
                         {{ knp_menu_render('AppBundle:Builder:mainMenu') }}
                     </div>
-
+                    <div id="header-search-wrapper" class="col-sm-3 hidden-xs">
+						<form action="{{ path('search-index') }}" method="post">
+							<div class="form-group has-feedback">
+							<input name="q" type="text" placeholder="{{ 'Search'|trans }}" />
+							<i style="margin-top: -2px" class="glyphicon glyphicon-search form-control-feedback"></i>
+							</div>
+						</form>
+					</div>
                 </div>
             </div>
         </header>

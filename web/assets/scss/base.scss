@@ -179,6 +179,16 @@ header {
 			}
 		}
 	}
+
+	#header-search-wrapper {
+		input[type='text'] {
+			width: 10em;
+			background-color: $color-color-medium;
+			border: none;
+			padding: 5px;
+			padding-right: 26px;
+		}
+	}
 }
 
 #top {
@@ -599,7 +609,7 @@ footer {
 
 /* size-specific styles */
 @media (min-width: $screen-sm-size) {
-	#footer-dfg {
+	#footer-dfg, #header-search-wrapper {
 		text-align: right;
 	}
 }
