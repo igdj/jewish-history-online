@@ -81,7 +81,7 @@ class ArticleController extends RenderTeiController
                                   ]);
             // return new Response($html);
             $pdfGenerator = new \AppBundle\Utils\PdfGenerator();
-            $fnameLogo = $this->get('kernel')->getRootDir() . '/../web/img/icon/icons.png';
+            $fnameLogo = $this->get('kernel')->getRootDir() . '/../web/img/icon/icons_wide.png';
             $pdfGenerator->logo_top = file_get_contents($fnameLogo);
 
             $pdfGenerator->writeHTML($html);

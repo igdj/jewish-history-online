@@ -164,8 +164,9 @@ header {
 
 		#menu-item-lookup {
 			> a {
-				background: url("../img/icon/lookup.png") no-repeat;
-				background-position: right 8px center;
+				background: url("../img/icon/lookup.svg") no-repeat;
+				background-position: right 9px top 6px;
+				background-size: auto 59%;
 			}
 
 			a {
@@ -639,4 +640,28 @@ body[class^="route-about"] {
     #license {
 		display: none;
 	}
+}
+
+/* bootstrap tooltips */
+.tooltip.top {
+	.tooltip-inner {
+		border: 1px solid $color-gray-dark;
+		/*
+		padding: 10px;
+		max-width: 450px;
+		*/
+		color: black;
+		text-align: left;
+		background-color: white;
+		background: white;
+		border-radius: 0;
+	}
+	.tooltip-arrow {
+		border-top-color: black;
+	}
+}
+
+.tooltip.in {
+	opacity: 1;
+	filter:alpha(opacity=100);
 }
