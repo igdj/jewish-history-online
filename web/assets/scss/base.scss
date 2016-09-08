@@ -131,6 +131,7 @@ header {
 				background-color: $color-color-topic;
 			}
 			&:hover /*, &.current */ {
+				z-index: 999 !important;
 				border-bottom: 6px solid $color-color-topic;
 			}
 		}
@@ -146,6 +147,7 @@ header {
 				background-color: $color-color-map;
 			}
 			&:hover, &.current {
+				z-index: 999 !important;
 				border-bottom: 6px solid $color-color-map;
 			}
 		}
@@ -158,6 +160,7 @@ header {
 				background-color: $color-color-chronology;
 			}
 			&:hover, &.current {
+				z-index: 999 !important;
 				border-bottom: 6px solid $color-color-chronology;
 			}
 		}
@@ -195,8 +198,25 @@ header {
 	margin-bottom: 20px;
 }
 
-.carousel-inner .item {
-	z-index: -5;
+.carousel-indicators {
+	top: 70px;
+}
+
+.carousel-inner  {
+	/* z-index: -5; // this is now solved by setting z-index on menu-hover */
+	.carousel-caption {
+		top: 0px;
+		h4 {
+			background-color: $color-gray-dark;
+			opacity:0.9;
+			padding-top: 0.3em;
+			padding-bottom: 0.3em;
+			a {
+				color: white;
+			}
+		}
+	}
+
 }
 
 #image-viewer {

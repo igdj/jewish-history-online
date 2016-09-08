@@ -72,7 +72,6 @@
                 });
 
                 // $('#back-to-top').tooltip('show');
-
         });
         </script>
     </head>
@@ -114,7 +113,7 @@
                     </div>
                     <div id="header-search-wrapper" class="col-sm-3 hidden-xs">
 						<form action="{{ path('search-index') }}" method="post">
-							<div class="form-group has-feedback">
+							<div class="form-group has-feedback" style="margin-bottom: 0">
 							<input name="q" type="text" placeholder="{{ 'Search'|trans }}" />
 							<i style="margin-top: -2px" class="glyphicon glyphicon-search form-control-feedback"></i>
 							</div>
