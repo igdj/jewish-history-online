@@ -467,7 +467,7 @@
       </trans-unit>
       <trans-unit id="75962ca27eeadbbc69a86ccbcb9697fd1365f6d0" resname="interpretations.oneormany">
         <source>interpretations.oneormany</source>
-        <target>Beitrag|Beiträge</target>
+        <target>Interpretation|Interpretationen</target>
         <jms:reference-file line="154">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\viewer-media.html.twig\</jms:reference-file>
         <jms:reference-file line="284">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\viewer.html.twig\</jms:reference-file>
         <jms:reference-file line="73">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Person\detail.html.twig\</jms:reference-file>
