@@ -434,6 +434,29 @@ header {
 	background-size: auto 100%;
 }
 
+.sourcetype-icon {
+    /* padding-left: 46px; */
+	background-repeat: no-repeat;
+	background-position: right 10px top 8px;
+	background-size: auto 60%;
+
+	&.sourcetype-text {
+		background-image: url("../img/icon/text.png");
+	}
+
+	&.sourcetype-bild {
+		background-image: url("../img/icon/image.png");
+	}
+
+	&.sourcetype-audio {
+		background-image: url("../img/icon/audio.png");
+	}
+
+	&.sourcetype-video {
+		background-image: url("../img/icon/video.png");
+	}
+}
+
 .article {
 	&> div {
 		margin-top: 2em;
@@ -519,7 +542,7 @@ h2 {
 	}
 }
 
-h2 + br, h3 + br {
+h2 + br, h3 + br, p + br {
 	display: none;
 }
 
@@ -539,8 +562,26 @@ div.two-columns {
 	-moz-column-gap:      20px; /* Firefox */
 	column-gap:           20px;
 	/* column-rule-color: #ccc; */ /* Optional */
-	/* ccolumn-rule-style:solid; */ /* Optional */
-	/* ccolumn-rule-width: 1px; */ /* Optional */
+	/* column-rule-style:solid; */ /* Optional */
+	/* column-rule-width: 1px; */ /* Optional */
+}
+
+.panel.source-box {
+	max-width: 640px;
+
+	.panel-heading {
+		color: white;
+		a {
+			color: $color-gray-light;
+		}
+		background-color: $color-color-dark;
+	}
+
+	/*
+	&:last-of-type {
+		margin-bottom: 0;
+	}
+	*/
 }
 
 .sidebar {
@@ -576,6 +617,7 @@ div.two-columns {
 			}
 
 			&.box-color-content-inverse {
+				border-color: $color-color-medium;
 				background-color: $color-color-medium;
 				a, a:visited {
 					color: white;
@@ -680,6 +722,36 @@ footer {
 	}
 }
 
+.route-date-chronology {
+	#timeline {
+		display: table;
+
+		& > .row {
+			display: table-row;
+		}
+	}
+
+	.epoch-label {
+		position: relative;
+		h4 {
+			text-align: center;
+			min-width: 140px;
+			padding: 5px;
+			color: white;
+			background-color: $color-color-chronology;
+		}
+	}
+	.epoch-label:after {
+	    content:"";
+		position: absolute;
+		z-index: -1;
+		top: 0;
+		bottom: 0;
+		left: 50%;
+		border-left: 2px dotted $color-gray-medium;
+	}
+}
+
 /* hyphenate */
 body.route-topic-background, body.route-article,
 body[class^="route-about"]
@@ -694,6 +766,14 @@ body[class^="route-about"]
 body[class^="route-about"] {
     #license {
 		display: none;
+	}
+}
+
+/* bootstrap panels */
+.panel {
+	border-radius: 0px;
+	.panel-heading {
+		border-radius: 0px;
 	}
 }
 

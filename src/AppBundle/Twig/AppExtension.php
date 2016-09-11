@@ -75,8 +75,13 @@ class AppExtension extends \Twig_Extension
     public function prettifyurlFilter($url)
     {
         $parsed = parse_url($url);
+        if (empty($parsed['host'])) {
+            // probably not an url, so return as is;
+            return $url;
+        }
 
-        return $parsed['host'] . (!empty($parsed['path']) && '/' !== $parsed['path'] ? $parsed['path'] : '');
+        return $parsed['host']
+            . (!empty($parsed['path']) && '/' !== $parsed['path'] ? $parsed['path'] : '');
     }
 
     public function lookupLocalizedTopFilter($topic, $locale = null)

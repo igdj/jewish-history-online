@@ -68,7 +68,7 @@ place.oneormany:                    "Ort|Orte"
 sourcearticle.oneormany:            "Quelle|Quellen"
 article.oneormany:                  "Beitrag|Beiträge"
 epoch.century:                      "%century%. Jahrhundert"
-epoch.decade:                       "%epoch%er Jahre"
+epoch.decade:                       "%epoch%er-Jahre"
 Image:                              Bild
 Object:                             Objekt
 Previous:                           Zurück

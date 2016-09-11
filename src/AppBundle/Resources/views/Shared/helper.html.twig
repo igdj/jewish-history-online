@@ -72,3 +72,28 @@
     </div>
     {% endif %}
 {% endmacro %}
+
+{% macro source_box(source) %}
+    {% set path = path('source', { 'uid' : source.uid }) %}
+    <div class="panel panel-default source-box">
+        <div class="panel-heading  sourcetype-icon {% if source.sourceType is not empty %}sourcetype-{{ source.sourceType|lower }}{% endif %}">
+        {% if source.dateCreated is not empty %}
+            {% if source.dateCreatedDisplay is not empty %}{{ source.dateCreatedDisplay }}{% else %}{{ source.dateCreated|dateincomplete }}{% endif %}
+            {%- if source.contentLocation is not empty %}, {% endif %}
+        {% endif %}
+        {% if source.contentLocation is not empty %}
+            {% if source.contentLocation.id is not empty %}
+                <a href="{% if source.contentLocation.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : source.contentLocation.tgn }) }}{% else %}{{ path('place', { 'id' : source.contentLocation.id }) }}{% endif %}">
+                {{ source.contentLocation.name }}
+                </a>
+            {% else %}
+                {{ source.contentLocation.name }}
+            {% endif %}
+        {% endif %}
+        </div>
+        <div class="panel-body">
+            <h5 style="margin-top: 0"><a href="{{ path }}">{{ source.name }}</a></h5>
+            {#<img src="{{ app.request.basepath }}/img/mockup/judaismus.jpg" alt="Neue Quelle" style="height: 120px; width: auto;">#}
+        </div>
+    </div>
+{% endmacro %}

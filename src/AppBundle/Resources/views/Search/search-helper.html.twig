@@ -14,8 +14,16 @@
         {% set route = 'source' %}
         {% set params = { 'uid' : result.uid_s } %}
     {% elseif parts[0] == 'article' %}
-        {% set route = 'article' %}
-        {% set params = { 'slug' : result.uid_s } %}
+        {% if result.article_section_s == 'background' %}
+            {% set route = 'topic-background' %}
+        {% else %}
+            {% set route = 'article' %}
+        {% endif %}
+        {% if result.slug_s is not empty %}
+            {% set params = { 'slug' : result.slug_s } %}
+        {% else %}
+            {% set params = { 'slug' : result.uid_s } %}
+        {% endif %}
     {% else %}
         {% set route = parts[0]  %}
         {% set params = { 'id' : parts[1] } %}
@@ -33,4 +41,3 @@
     <h4><a href="{{ searchHelper.build_result_path(result) }}">{{ result.name_order_s }}</a></h4>
     {{ result.author_ss|join(', ') }}
 {% endmacro %}
-

@@ -149,6 +149,28 @@ class TopicController extends RenderTeiController
             return;
         }
 
+        $localeSwitch = [];
+        if ('en' == $locale) {
+            $translator = $this->get('translator');
+            $slugify = $this->get('cocur_slugify');
+            foreach ([ 'de' ] as $alternateLocale) {
+                $translator->setLocale($alternateLocale);
+                $localeSwitch[$alternateLocale] = [ 'slug' => $slugify->slugify($translator->trans($topics[$slug])) ];
+            }
+            $translator->setLocale($locale);
+        }
+        else {
+            // find corresponding english slug
+            $translator = $this->get('translator');
+            $slugify = $this->get('cocur_slugify');
+            foreach (self::$TOPICS as $topicLabel) {
+                if ($topics[$slug] == $translator->trans($topicLabel)) {
+                    $localeSwitch['en'] = [ 'slug' => $slugify->slugify($topicLabel) ];
+                    break;
+                }
+            }
+        }
+
         $entityLookup = $this->buildEntityLookup($entities);
         $glossaryLookup = $this->buildGlossaryLookup($glossaryTerms);
 
@@ -179,6 +201,7 @@ class TopicController extends RenderTeiController
                                 'license' => $license,
                                 'entity_lookup' => $entityLookup,
                                 'glossary_lookup' => $glossaryLookup,
+                                'route_params_locale_switch' => $localeSwitch,
                                 'interpretations' => $articles,
                               ]);
     }

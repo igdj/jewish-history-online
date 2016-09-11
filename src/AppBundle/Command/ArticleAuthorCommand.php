@@ -112,6 +112,9 @@ class ArticleAuthorCommand extends BaseEntityCommand
                            ] as $src => $target)
                 {
                     if (!empty($user[$src])) {
+                        if ('url' == $src && preg_match('/^keine/i', $user[$src])) {
+                           $user[$src] = null;
+                        }
                         $methodName = 'set' . ucfirst($target);
                         $person->$methodName($user[$src]);
                     }

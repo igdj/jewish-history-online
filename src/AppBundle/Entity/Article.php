@@ -222,6 +222,7 @@ class Article implements \JsonSerializable
      *
      * @Assert\Type(type="string")
      * @ORM\Column(nullable=true)
+     * @Solr\Field(type="string")
      */
     protected $slug;
 
