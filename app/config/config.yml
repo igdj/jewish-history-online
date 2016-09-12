@@ -20,6 +20,7 @@ twig:
     globals:
         slugify: "@cocur_slugify"
         webDir: "%kernel.root_dir%/../web"
+        piwikSiteId: "%piwik.site_id%"
         
 # Doctrine Configuration
 doctrine:

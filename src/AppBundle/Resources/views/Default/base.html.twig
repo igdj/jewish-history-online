@@ -152,5 +152,24 @@
         </footer>
         <a id="back-to-top" href="#" class="btn btn-lg back-to-top" role="button" title="{{ 'Click to return to the top of the page'|trans }}" data-toggle="tooltip" data-placement="left"><span class="glyphicon glyphicon-chevron-up"></span></a>
         {% block javascripts %}{% endblock %}
+
+		{% if piwikSiteId is not empty %}
+		<!-- Piwik -->
+		<script type="text/javascript">
+		  var _paq = _paq || [];
+		  _paq.push(["setDomains", ["*.juedische-geschichte-online.net","*.jewish-history-online.net"]]);
+		  _paq.push(['trackPageView']);
+		  _paq.push(['enableLinkTracking']);
+		  (function() {
+			var u="//juedische-geschichte-online.net/piwik/";
+			_paq.push(['setTrackerUrl', u+'piwik.php']);
+			_paq.push(['setSiteId', {{ piwikSiteId }}]);
+			var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+			g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+		  })();
+		</script>
+		<noscript><p><img src="//juedische-geschichte-online.net/piwik/piwik.php?idsite={{ piwikSiteId }}" style="border:0;" alt="" /></p></noscript>
+		<!-- End Piwik Code -->
+		{% endif %}
     </body>
 </html>
