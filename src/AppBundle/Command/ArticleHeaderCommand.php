@@ -210,6 +210,7 @@ class ArticleHeaderCommand extends ContainerAwareCommand
                 }
             }
         }
+
         echo json_encode($entity, JSON_PRETTY_PRINT);
 
         $em->persist($entity);

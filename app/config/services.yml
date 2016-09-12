@@ -1,11 +1,17 @@
 # app/config/services.yml
 services:
+    twig.extension.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }
+            
     app.twig_extension:
         class: AppBundle\Twig\AppExtension
         arguments: [@translator]
         public: false
         tags:
             - { name: twig.extension }
+            
     app.xslt_adapter:
         class:        "%app.xslt.adapter.class%"
         arguments:    [ "%app.xslt.adapter.arguments%" ]

@@ -26,6 +26,13 @@ class AppExtension extends \Twig_Extension
         $this->translator = $translator;
     }
 
+    public function getFunctions()
+    {
+        return array(
+            new \Twig_SimpleFunction('file_exists', 'file_exists'),
+        );
+    }
+
     public function getFilters()
     {
         return array(

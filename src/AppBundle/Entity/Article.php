@@ -139,6 +139,15 @@ class Article implements \JsonSerializable
      * @ORM\Column(type="date", nullable=true)
      */
     protected $dateModified;
+
+    /**
+     * @var string A short description of the item.
+     *
+     * @ORM\Column(type="text", length=65535, nullable=true)
+     * @Solr\Field(type="string")
+     */
+    protected $description;
+
     /**
      * @var Article Indicates a CreativeWork that this CreativeWork is (in some sense) part of.
      *
@@ -202,6 +211,13 @@ class Article implements \JsonSerializable
      * @Solr\Field(type="string")
      */
     protected $sourceType;
+    /**
+     * @var string The textual content of this CreativeWork.
+     *
+     * @ORM\Column(type="text", length=16777215, nullable=true)
+     * @Solr\Field(type="text")
+     */
+    protected $text;
     /**
      * @var string
      *
@@ -538,6 +554,30 @@ class Article implements \JsonSerializable
     }
 
     /**
+     * Sets description.
+     *
+     * @param string $description
+     *
+     * @return $this
+     */
+    public function setDescription($description = null)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Gets description.
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
      * Sets genre.
      *
      * @param string $genre
@@ -703,6 +743,30 @@ class Article implements \JsonSerializable
     public function getRights()
     {
         return $this->rights;
+    }
+
+    /**
+     * Sets text.
+     *
+     * @param string $text
+     *
+     * @return $this
+     */
+    public function setText($text = null)
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    /**
+     * Gets text.
+     *
+     * @return string
+     */
+    public function getText()
+    {
+        return $this->text;
     }
 
     /**
@@ -919,6 +983,8 @@ class Article implements \JsonSerializable
             'keywords' => $this->keywords,
             'language' => $this->language,
             'translatedFrom' => $this->translatedFrom,
+            'description' => $this->description,
+            'text' => $this->text,
         ];
     }
 

@@ -92,8 +92,22 @@
         {% endif %}
         </div>
         <div class="panel-body">
-            <h5 style="margin-top: 0"><a href="{{ path }}">{{ source.name }}</a></h5>
-            {#<img src="{{ app.request.basepath }}/img/mockup/judaismus.jpg" alt="Neue Quelle" style="height: 120px; width: auto;">#}
+            <h5><a href="{{ path }}">{{ source.name }}</a></h5>
+            {% set thumb = "/viewer/source-%05d/thumb.jpg"|format(source.uid|replace({'jgo:source-' : ''})) %}
+            {% if file_exists(webDir ~ thumb) %}
+            <div style="max-height: 125px; width: 35%; padding-right: 24px; overflow: hidden; float: left;">
+                <a href="{{ path }}"><img src="{{ app.request.basepath }}{{ thumb }}" alt="" style="width: 100%; height: auto;"></a>
+            </div>
+        {% endif %}
+        {% if source.isPartOf is not null %}
+            {% set description = source.isPartOf.description %}
+            {% if description is not empty %}
+                <div style="font-size: 90%">
+                {{ description|truncate(300, true, '') }}
+                ... <a href="{{ path }}">{{ 'Show Source'|trans }} &gt;</a>
+                </div>
+            {% endif %}
+        {% endif %}
         </div>
     </div>
 {% endmacro %}

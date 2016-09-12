@@ -613,6 +613,10 @@ div.two-columns {
 					margin: 0;
 					color: white;
 					text-transform: uppercase;
+
+					a {
+						color: $color-gray-light;
+					}
 				}
 			}
 
@@ -749,6 +753,14 @@ footer {
 		bottom: 0;
 		left: 50%;
 		border-left: 2px dotted $color-gray-medium;
+	}
+
+	.panel-body {
+		h5 {
+			line-height: 1.4;
+			margin-top: 0;
+			margin-bottom: 14px;
+		}
 	}
 }
 

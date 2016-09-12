@@ -19,6 +19,7 @@ framework:
 twig:
     globals:
         slugify: "@cocur_slugify"
+        webDir: "%kernel.root_dir%/../web"
         
 # Doctrine Configuration
 doctrine:

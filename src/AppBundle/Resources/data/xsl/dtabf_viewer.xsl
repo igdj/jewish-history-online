@@ -46,9 +46,9 @@
     </xsl:when>
     <xsl:when test="./tei:abbr">
       <xsl:element name="span">
-        <xsl:attribute name="title">Original: <xsl:value-of select="tei:abbr"/></xsl:attribute>
+        <xsl:attribute name="title"><!--Original: --><xsl:value-of select="tei:expan"/></xsl:attribute>
         <xsl:attribute name="class">dta-abbr</xsl:attribute>
-        <xsl:apply-templates select="tei:expan"/>
+        <xsl:apply-templates select="tei:abbr"/>
       </xsl:element>
     </xsl:when>
     <xsl:otherwise>

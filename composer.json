@@ -28,6 +28,7 @@
 
         "cocur/slugify": "*@stable",
         "liip/url-auto-converter-bundle": "*@stable",
+        "twig/extensions": "*@stable",
 
         "symfony/dom-crawler": "*@stable",
         "symfony/css-selector": "*@stable",
@@ -40,6 +41,7 @@
         "symfony/debug-bundle": "*@stable",
 
         "sabre/xml": "@stable",
+        "html2text/html2text": "@stable",
 
         "semsol/arc2": "@stable",
         "easyrdf/easyrdf": "~0.9",
