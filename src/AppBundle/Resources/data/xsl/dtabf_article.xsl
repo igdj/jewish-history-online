@@ -4,7 +4,6 @@
   exclude-result-prefixes="tei"
   version="2.0">
 
-<!--<xsl:import href="dtabf_base.xsl"/>-->
 <xsl:import href="dta-tools/dta-base.xsl"/>
 <xsl:import href="dtabf_customize.xsl"/>
 
@@ -43,6 +42,32 @@
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
+
+  <xsl:template match="tei:choice">
+    <xsl:choose>
+      <xsl:when test="./tei:reg">
+        <xsl:element name="span">
+          <xsl:attribute name="title">Original: <xsl:apply-templates select="tei:orig" mode="choice"/></xsl:attribute>
+          <xsl:attribute name="class">dta-reg</xsl:attribute>
+          <xsl:apply-templates select="tei:reg" mode="choice"/>
+        </xsl:element>
+      </xsl:when>
+      <xsl:when test="./tei:abbr">
+        <xsl:element name="span">
+          <xsl:attribute name="title"><xsl:variable name="temp"><xsl:apply-templates select="tei:expan" mode="choice"/></xsl:variable><xsl:value-of select="normalize-space($temp)" /></xsl:attribute>
+          <xsl:attribute name="class">dta-abbr</xsl:attribute>
+          <xsl:apply-templates select="tei:abbr" mode="choice"/>
+        </xsl:element>
+      </xsl:when>
+      <xsl:when test="./tei:corr">
+        <xsl:element name="span">
+          <xsl:attribute name="title">Schreibfehler: <xsl:apply-templates select="tei:sic" mode="choice"/></xsl:attribute>
+          <xsl:attribute name="class">dta-corr</xsl:attribute>
+          <xsl:apply-templates select="tei:corr" mode="choice"/>
+        </xsl:element>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
 
 <xsl:template match='tei:ref'>
   <xsl:choose>
@@ -181,33 +206,6 @@
     </xsl:choose>
   </xsl:template>
 
-<!--
-<xsl:template match="tei:choice">
-  <xsl:choose>
-    <xsl:when test="./tei:reg">
-      <xsl:element name="span">
-        <xsl:attribute name="title">Original: <xsl:value-of select="tei:orig"/></xsl:attribute>
-        <xsl:attribute name="class">dta-reg</xsl:attribute>
-        <xsl:apply-templates select="tei:reg"/>
-      </xsl:element>
-    </xsl:when>
-    <xsl:when test="./tei:abbr">
-      <xsl:element name="span">
-        <xsl:attribute name="title"><xsl:value-of select="tei:expan"/></xsl:attribute>
-        <xsl:attribute name="class">dta-abbr</xsl:attribute>
-        <xsl:apply-templates select="tei:abbr"/>
-      </xsl:element>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:element name="span">
-        <xsl:attribute name="title">Schreibfehler: <xsl:value-of select="tei:sic"/></xsl:attribute>
-        <xsl:attribute name="class">dta-corr</xsl:attribute>
-        <xsl:apply-templates select="tei:corr"/>
-      </xsl:element>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:template>
--->
 
 <xsl:template match='tei:figure'>
   <xsl:choose>
