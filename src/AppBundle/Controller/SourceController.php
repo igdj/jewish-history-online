@@ -41,6 +41,7 @@ class SourceController extends ArticleController
 
         $teiHelper = new \AppBundle\Utils\TeiHelper();
         $meta = $sourceArticle; // $teiHelper->analyzeHeader($this->locateTeiResource($fname));
+        $firstFacs = $teiHelper->getFirstPbFacs($this->locateTeiResource($fname));
 
         $html = $this->renderTei($fname);
 
@@ -70,7 +71,7 @@ class SourceController extends ArticleController
         $parts = explode('.', $fnameMets);
         $path = $parts[0];
 
-        if (in_array($sourceArticle->getSourceType(), [ 'Audio', 'Video', 'Bild', 'Image', 'Objekt', 'Object' ])) {
+        if (empty($firstFacs) && in_array($sourceArticle->getSourceType(), [ 'Audio', 'Video', 'Bild', 'Image', 'Objekt', 'Object' ])) {
             $html = $this->adjustMedia($html,
                                        $this->get('request')->getBaseURL()
                                        . '/viewer/' . $path);
@@ -105,6 +106,7 @@ class SourceController extends ArticleController
                                 'uid' => $uid,
                                 'path' => $path,
                                 'mets' => $fnameMets,
+                                'firstFacs' => !empty($firstFacs) ? $firstFacs : 'f0001',
                                 'license' => $license,
                                 'entity_lookup' => $entityLookup,
                                 'glossary_lookup' => $glossaryLookup,

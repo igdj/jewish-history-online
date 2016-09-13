@@ -26,7 +26,7 @@ class TeiHelper
         return $person;
     }
 
-    public function analyzeHeader($fname)
+    protected function loadXml($fname)
     {
         libxml_use_internal_errors(true);
         $xml = @simplexml_load_file($fname);
@@ -40,6 +40,39 @@ class TeiHelper
         libxml_use_internal_errors(false);
 
         $this->registerXpathNamespaces($xml);
+
+        return $xml;
+    }
+
+    public function getFirstPbFacs($fname)
+    {
+        $xml = $this->loadXml($fname);
+        if (false === $xml) {
+            return false;
+        }
+
+        $fnameFacs = '';
+
+        $result = $xml->xpath('/tei:TEI/tei:text//tei:pb');
+        $facsRef = 1;
+        foreach ($result as $element) {
+            $facs = $element['facs'];
+            if (!empty($facs) && preg_match('/(\d+)/', $facs, $matches)) {
+                $facsRef = $matches[1];
+            }
+            $fnameFacs = sprintf('f%04d', $facsRef);
+            break; // we only care about the first one
+        }
+
+        return $fnameFacs;
+    }
+
+    public function analyzeHeader($fname)
+    {
+        $xml = $this->loadXml($fname);
+        if (false === $xml) {
+            return false;
+        }
 
         $result = $xml->xpath('/tei:TEI/tei:teiHeader');
         if (empty($result)) {

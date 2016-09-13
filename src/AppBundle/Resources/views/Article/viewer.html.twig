@@ -89,7 +89,7 @@
                 "imageXmlPath": "{{ path('imginfo', {'path' : ''}) }}",
                 "derivateContentTransformerServlet": "{{ path('tei2html', {'path' : ''}) }}",
                 "tileProviderPath": "{{ app.request.basepath }}/viewer/",
-                "filePath": "/f0001.jpg", // initial facs
+                "filePath": "/{{ firstFacs }}.jpg", // initial facs
                 derivate: "{{ path }}",
                 i18nURL: "{{ app.request.basepath }}/viewer/shared/iview2/i18n/{lang}.json",
                 lang: "{{ app.request.locale }}",

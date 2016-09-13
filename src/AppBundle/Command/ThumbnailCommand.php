@@ -29,7 +29,7 @@ class ThumbnailCommand extends ContainerAwareCommand
         ;
     }
 
-    /* move the following shared methods to commone base */
+    /* move the following shared methods to common base */
     protected function convertExec($arguments)
     {
         if ($this->getContainer()->hasParameter('imagemagick.path2bin')) {
@@ -56,48 +56,6 @@ class ThumbnailCommand extends ContainerAwareCommand
         $xml->registerXPathNamespace('tei', 'http://www.tei-c.org/ns/1.0');
     }
 
-
-    protected function getFirstFacsimile($output, $fname)
-    {
-        libxml_use_internal_errors(true);
-        $xml = @simplexml_load_file($fname);
-
-        if (false === $xml) {
-            $output->writeln(sprintf('<error>%s could not be loaded</error>', $fname));
-            foreach (libxml_get_errors() as $error) {
-                $output->writeln(sprintf('<error>  %s</error>', trim($error->message)));
-            }
-            return false;
-        }
-
-        libxml_use_internal_errors(false);
-
-        $this->registerXpathNamespaces($xml);
-
-        $result = $xml->xpath('/tei:TEI/tei:text//tei:pb');
-        if (empty($result)) {
-            $output->writeln('<error>No pb found</error>');
-            return false;
-        }
-
-        $facs_ref = $facs_counter = 1;
-        foreach ($result as $element) {
-            $facs = $element['facs'];
-            if (!empty($facs) && preg_match('/(\d+)/', $facs, $matches)) {
-                $facs_ref = $matches[1];
-            }
-            $page = [
-                'counter' => $facs_counter++,
-                'facs' => sprintf('f%04d', $facs_ref++),
-            ];
-
-            return $page['facs'];
-        }
-
-        return false; // nothing found
-    }
-
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $fname = $input->getArgument('file');
@@ -120,15 +78,19 @@ class ThumbnailCommand extends ContainerAwareCommand
             return 1;
         }
 
-        $facsimile = false;
-        switch ($article->sourceType) {
-            case 'Text':
-                // get first fac
-                $facsimile = $this->getFirstFacsimile($output, $fname);
-                break;
+        $facsimile = $teiHelper->getFirstPbFacs($fname);
 
-            default:
-                die('TODO: handle ' . $article->sourceType);
+        if (empty($facsimile)) {
+            switch ($article->sourceType) {
+                case 'Text':
+                    $facsimile = false; // no alternative
+                    break;
+
+                default:
+                    die('TODO: handle ' . $article->sourceType);
+                    $facsimile = false;
+            }
+
         }
 
         if (false === $facsimile) {
