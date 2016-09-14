@@ -70,7 +70,7 @@
             <p>{{ person.description[app.request.locale]|converturls|nl2br  }}</p>
             {% set articles = person.articles(app.request.locale) %}
             {% if articles|length > 0 %}
-            <h3>{{ 'interpretations.oneormany'|transchoice(person.articles|length) }}</h3>
+            <h3>{{ 'article.oneormany'|transchoice(person.articles|length) }}</h3>
             <ul>
             {% for article in articles %}
                 <li>

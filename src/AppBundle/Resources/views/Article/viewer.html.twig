@@ -10,10 +10,6 @@
     <script src="{{ app.request.basepath }}/viewer/shared/iview2/js/iview-client-mets.js"></script>
     <!--<script src=".{{ app.request.basepath }}/viewer/shared/iview2/js/iview-client-metadata.js"></script>  -->
     <link href="{{ app.request.basepath }}/viewer/shared/iview2/css/default.css" type="text/css" rel="stylesheet">
-    <!-- TODO: port to scss -->
-    <!--
-    <link rel="stylesheet/less" href="{{ app.request.basepath }}/viewer/shared/dta-tei.less" type="text/css" />
-    <script src="{{ app.request.basepath }}/js/less-2.6.1.min.js"></script>-->
     <!-- <link rel="stylesheet" href="../META-INF/resources/components/iview/templates/mobile/jquery.mobile-1.3.2.min.css" />     -->
 
     {# TODO: move to some shared style-sheet #}
@@ -244,9 +240,9 @@
                             <dt>{{ 'Holding Institution'|trans }}</dt>
                             <dd>
                                 {% if meta.provider.gnd is not empty %}
-                                <a href="{{ path('organization-by-gnd', { 'gnd' : meta.provider.gnd }) }}">{{ meta.provider.name }}</a>
+                                <a href="{{ path('organization-by-gnd', { 'gnd' : meta.provider.gnd }) }}">{{ meta.provider.nameLocalized(app.request.locale) }}</a>
                                 {% else %}
-                                {{ meta.provider.name }}
+                                {{ meta.provider.nameLocalized(app.request.locale) }}
                                 {% endif %}
                             </dd>
                             {% if meta.providerIdno is not empty %}
@@ -281,7 +277,7 @@
             <div class="container-fluid box top-buffer">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
-                        <h4>{{ 'interpretations.oneormany'|transchoice(interpretations|length) }}</h4>
+                        <h4>{{ 'interpretation.oneormany'|transchoice(interpretations|length) }}</h4>
                     </div>
                 </div>
                 {% for article in interpretations %}
