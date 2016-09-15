@@ -20,10 +20,13 @@ namespace AppBundle\Twig;
 class AppExtension extends \Twig_Extension
 {
     private $translator;
+    private $slugifyer;
 
-    public function __construct(\Symfony\Component\Translation\TranslatorInterface $translator)
+    public function __construct(\Symfony\Component\Translation\TranslatorInterface $translator,
+                                $slugifyer = null)
     {
         $this->translator = $translator;
+        $this->slugifyer = $slugifyer;
     }
 
     public function getFunctions()
@@ -43,7 +46,9 @@ class AppExtension extends \Twig_Extension
 
             // appbundle-specific
             new \Twig_SimpleFilter('placeTypeLabel', array($this, 'placeTypeLabelFilter')),
-            new \Twig_SimpleFilter('lookupLocalizedTopic', array($this, 'lookupLocalizedTopFilter')),
+            new \Twig_SimpleFilter('lookupLocalizedTopic', array($this, 'lookupLocalizedTopicFilter')),
+            new \Twig_SimpleFilter('glossaryAddRefLink', array($this, 'glossaryAddRefLinkFilter'),
+                                   array('is_safe' => array('html'))),
         );
     }
 
@@ -91,12 +96,29 @@ class AppExtension extends \Twig_Extension
             . (!empty($parsed['path']) && '/' !== $parsed['path'] ? $parsed['path'] : '');
     }
 
-    public function lookupLocalizedTopFilter($topic, $locale = null)
+    public function lookupLocalizedTopicFilter($topic, $locale = null)
     {
         if (is_null($locale)) {
             $locale = $this->getLocale();
         }
         return \AppBundle\Controller\TopicController::lookupLocalizedTopic($topic, $this->translator, $locale);
+    }
+
+    public function glossaryAddRefLinkFilter($description)
+    {
+        $slugifyer = $this->slugifyer;
+
+        return preg_replace_callback('/\[\[(.*?)\]\]/',
+                                             function ($matches) use ($slugifyer) {
+                                                $slug = $label = $matches[1];
+                                                if (!is_null($slugifyer)) {
+                                                    $slug = $slugifyer->slugify($slug);
+                                                }
+                                                return '→ <a href="#' . rawurlencode($slug) . '">'
+                                                  . $label
+                                                  . '</a>';
+                                             },
+                                             $description);
     }
 
     public function placeTypeLabelFilter($placeType, $count = 1, $locale = null)

@@ -229,8 +229,11 @@ abstract class RenderTeiController extends Controller
             $slug = $slugify->slugify($glossaryTerm);
             if (array_key_exists($slug, $termsBySlug)) {
                 $term = $termsBySlug[$slug];
+                $headline = $term->getHeadline();
+                $headline = str_replace(']]', '', $headline);
+                $headline = str_replace('[[', '→', $headline);
                 $glossaryLookup[$glossaryTerm] = [ 'slug' => $term->getSlug(),
-                                                   'headline' => $term->getHeadline() ];
+                                                   'headline' => $headline];
             }
         }
 

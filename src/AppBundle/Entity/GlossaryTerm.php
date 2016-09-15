@@ -47,15 +47,22 @@ class GlossaryTerm
      */
     protected $term;
     /**
+     * @var string Name.
+     *
+     * @Assert\Type(type="string")
+     * @ORM\Column(nullable=true)
+     */
+    protected $name;
+    /**
      * @var string Headline of the item.
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", length=1023, nullable=true)
      */
     protected $headline;
     /**
      * @var string A short description of the item.
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="text", length=65535, nullable=true)
      */
     protected $description;
     /**
@@ -166,6 +173,33 @@ class GlossaryTerm
     public function getTerm()
     {
         return $this->term;
+    }
+
+    /**
+     * Sets name
+     *
+     * @param string $name
+     *
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Gets name.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        if (empty($this->name)) {
+            return $this->term;
+        }
+        return $this->name;
     }
 
     /**

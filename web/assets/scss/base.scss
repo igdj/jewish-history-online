@@ -16,6 +16,7 @@ $color-color-lookup: #9C9C9C;
 $color-gray-dark: #8E8E8E;
 $color-gray-medium: #C0C0C0;
 $color-gray-light: #E0DFE0;
+$color-gray-ultralight: #E9E9E9;
 
 $color-text: #333;
 
@@ -512,10 +513,19 @@ a, a:visited {
 	background: linear-gradient(#fff, #fff) no-repeat scroll 0 90% / 0.05em 1px,
 		linear-gradient(#fff, #fff) no-repeat scroll 100% 90% / 0.05em 1px,
 		rgba(0, 0, 0, 0) linear-gradient($color-gray-medium, $color-gray-medium)
-			repeat-x scroll 0 90% / 1px 1px;
+			repeat-x scroll 0 92% / 1px 1px;
 
 	/* border-bottom: 1px solid $color-gray-light; */
 
+	&.glossary {
+		/*
+		background: none;
+		*/
+		background: linear-gradient(#fff, #fff) no-repeat scroll 0 90% / 0.05em 1px,
+			linear-gradient(#fff, #fff) no-repeat scroll 100% 90% / 0.05em 1px,
+			rgba(0, 0, 0, 0) linear-gradient($color-gray-ultralight, $color-gray-ultralight)
+				repeat-x scroll 0 92% / 1px 1px;
+	}
 
 	&:hover {
 		color: $color-gray-dark;
@@ -524,6 +534,8 @@ a, a:visited {
 		cursor: pointer;
 	}
 }
+
+
 
 .h1, h1 {
 	font-size: 30px;

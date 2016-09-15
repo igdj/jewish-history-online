@@ -7,7 +7,7 @@ services:
             
     app.twig_extension:
         class: AppBundle\Twig\AppExtension
-        arguments: [@translator]
+        arguments: [@translator, @cocur_slugify]
         public: false
         tags:
             - { name: twig.extension }

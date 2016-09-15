@@ -56,18 +56,20 @@ class ImportGlossaryCommand extends ContainerAwareCommand
 
             $output->writeln('Insert/Update: ' . $row['term']);
 
-            $term = $termRepository->findOneBy([ 'term' => $row['term'],
+            $term = $termRepository->findOneBy([
+                                                 'term' => $row['term'],
                                                  'language' => $row['language'],
                                                  ]);
             if (is_null($term)) {
                 $term = new \AppBundle\Entity\GlossaryTerm();
-                $term->setTerm($row['term']);
+                $term->setTerm(trim($row['term']));
                 $term->setSlug($slugify->slugify($term->getTerm()));
                 $term->setLanguage($row['language']);
             }
 
             foreach ($row as $key => $value) {
                 switch ($key) {
+                    case 'name':
                     case 'headline':
                     case 'description':
                     case 'url':

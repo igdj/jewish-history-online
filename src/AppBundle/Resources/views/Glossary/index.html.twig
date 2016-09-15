@@ -11,15 +11,12 @@
                 {% if last_initial != '' %}
             </ul>
                 {% endif %}
-            <h2>{{ initial }} </h2>
+            <h2>{% if initial != '"' %}{{ initial }}{% endif %}</h2>
             {% set last_initial = initial %}
             <ul class="list-unstyled">
             {% endif %}
             <li>
-                <b id="{{ term.slug }}">{{ term.term }}</b>{% if term.headline is not empty %}: {{ term.headline }}{% endif %}
-                {#% if term.url is not empty %}
-                    <br />Siehe auch <a href="{{ term.url }}" target="_blank">{{ term.url|prettifyurl }}</a>
-                {% endif %#}
+                <b id="{{ term.slug }}">{{ term.name }}</b>{% if term.description is not empty %}: {{ term.description|escape('html')|glossaryAddRefLink }}{% endif %}
             </li>
         {% endfor %}
         </ul>
