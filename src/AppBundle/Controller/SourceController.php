@@ -147,12 +147,6 @@ class SourceController extends ArticleController
         else {
             $page = preg_replace('/[^0-9a-zA-Z\.\-]/', '', $parts[1]);
         }
-        /*
-        if (preg_match('/(.+)\.(de|en)(\.xml)$/', $page, $matches)) {
-            $page = $matches[1] . $matches[3];
-            $lang = $matches[2];
-        }
-        */
 
         // source
         $uid = preg_replace('/[^0-9a-zA-Z_\-\:]/', '', $parts[0]);
@@ -161,7 +155,6 @@ class SourceController extends ArticleController
                              $matches[1], $matches[2], $lang);
         }
         $fname .= '.xml';
-
 
         // check if source is splitted into parts
         $baseDir = realpath($this->get('kernel')->getRootDir() . '/..');
@@ -187,9 +180,16 @@ class SourceController extends ArticleController
                                             [ 'params' => [ 'outdir' => $pagesDirUri ]]);
                 }
 
+                $params = [
+                    'locateXmlResource' => false,
+                    'params' => [
+                        'lang' => \AppBundle\Utils\Iso639::code1To3($lang), // localize labels in xslt
+                    ],
+                ];
+
                 if (file_exists($pagesDir . '/' . $page)) {
                     $html = $this->renderTei(realpath($pagesDir . '/' . $page), 'dtabf_viewer.xsl',
-                                             [ 'locateXmlResource' => false ]);
+                                             $params);
                 }
             }
 

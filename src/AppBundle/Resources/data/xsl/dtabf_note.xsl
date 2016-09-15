@@ -4,7 +4,6 @@
   exclude-result-prefixes="tei"
   version="2.0">
 
-<!--<xsl:import href="dtabf_base.xsl"/>-->
 <xsl:import href="dta-tools/dta-base.xsl"/>
 <xsl:import href="dtabf_customize.xsl"/>
 

@@ -13,9 +13,15 @@
 <xsl:template match='tei:cb'>
   <span class="dta-cb">
     <xsl:choose>
-      <xsl:when test="@type='start'">[Beginn Spaltensatz]</xsl:when>
-      <xsl:when test="@type='end'">[Ende Spaltensatz]</xsl:when>
-      <xsl:otherwise>[Spaltenumbruch]</xsl:otherwise>
+      <xsl:when test="@type='start'">[<xsl:call-template name="translate">
+              <xsl:with-param name="label" select="'Beginn Spaltensatz'" />
+    </xsl:call-template>]</xsl:when>
+      <xsl:when test="@type='end'">[<xsl:call-template name="translate">
+              <xsl:with-param name="label" select="'Ende Spaltensatz'" />
+    </xsl:call-template>]</xsl:when>
+      <xsl:otherwise>[<xsl:call-template name="translate">
+              <xsl:with-param name="label" select="'Spaltenumbruch'" />
+    </xsl:call-template>]</xsl:otherwise>
     </xsl:choose>
   </span>
 </xsl:template>
@@ -268,9 +274,13 @@
   <span class="gap">
     <xsl:text>[</xsl:text>
     <xsl:if test="@reason='lost'">verlorenes Material</xsl:if>
-    <xsl:if test="@reason='insignificant'">irrelevantes Material</xsl:if>
+    <xsl:if test="@reason='insignificant'"><xsl:call-template name="translate">
+              <xsl:with-param name="label" select="'irrelevantes Material'" />
+    </xsl:call-template></xsl:if>
     <xsl:if test="@reason='fm'">fremdsprachliches Material</xsl:if>
-    <xsl:if test="@reason='illegible'">unleserliches Material</xsl:if>
+    <xsl:if test="@reason='illegible'"><xsl:call-template name="translate">
+              <xsl:with-param name="label" select="'unleserliches Material'" />
+    </xsl:call-template></xsl:if>
     <xsl:if test="@unit"><xsl:text> – </xsl:text></xsl:if>
     <xsl:choose>
       <xsl:when test="@unit">

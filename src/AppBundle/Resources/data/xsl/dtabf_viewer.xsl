@@ -4,7 +4,30 @@
   exclude-result-prefixes="tei"
   version="2.0">
 
+
 <xsl:import href="dtabf_base.xsl"/>
+<!-- TODO: switch to
+<xsl:import href="dta-tools/dta-base.xsl"/>
+<xsl:import href="dtabf_customize.xsl"/>
+-->
+
+<!-- copied over from dtabf_customize.xsl -->
+  <!-- translate-layer -->
+  <xsl:param name="lang" />
+  <xsl:variable name="strings" select="document('translation.xml')/strings"/>
+
+  <xsl:template name="translate">
+   <xsl:param name="label" />
+   <xsl:choose>
+      <xsl:when test="$strings/string[@key=$label and @language=$lang]">
+         <xsl:value-of select="$strings/string[@key=$label and @language=$lang]" />
+      </xsl:when>
+      <xsl:otherwise>
+         <xsl:value-of select="$label" />
+      </xsl:otherwise>
+   </xsl:choose>
+  </xsl:template>
+
 
 <xsl:output method="html" doctype-system="about:legacy-compat"/>
 
