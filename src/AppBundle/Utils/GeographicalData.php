@@ -190,6 +190,10 @@ class GeographicalData
                     $values['type'] = 'peninsula';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300132316':
+                    $values['type'] = 'bay';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300128207':
                     $values['type'] = 'nation';
                     break;

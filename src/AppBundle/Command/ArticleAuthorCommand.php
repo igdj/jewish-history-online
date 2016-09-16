@@ -85,7 +85,7 @@ class ArticleAuthorCommand extends BaseEntityCommand
                     continue;
                 }
                 // either insert or update
-                $user = $this->findUserFromAdminBySlug($slug);
+                $user = $this->findUserFromAdminBySlug($slug, $output);
                 if (is_null($person)) {
                     if (is_null($user)) {
                         $output->writeln(sprintf('<error>No user found for %s</error>',
@@ -134,11 +134,11 @@ class ArticleAuthorCommand extends BaseEntityCommand
         }
     }
 
-    protected function findUserFromAdminBySlug($slug)
+    protected function findUserFromAdminBySlug($slug, $output)
     {
         $conn =  $this->getContainer()->get('doctrine.dbal.admin_connection');
 
-        $sql = "SELECT * FROM User WHERE slug = :slug AND status <> -1";
+        $sql = "SELECT * FROM User WHERE slug = :slug AND status <> -100";
         $users = $conn->fetchAll($sql, [ 'slug' => $slug ]);
         if (empty($users)) {
             return;
