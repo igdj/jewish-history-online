@@ -148,8 +148,8 @@ class ArticleContentCommand extends ContainerAwareCommand
 
         // localize labels in xslt
         $params = [];
-        if ($article instanceof \AppBundle\Entity\Article) {
-            $lang = $article->getLanguage();
+        if ($entity instanceof \AppBundle\Entity\Article) {
+            $lang = $entity->getLanguage();
             if (!empty($lang)) {
                 $params['lang'] = $lang;
             }
@@ -182,7 +182,7 @@ class ArticleContentCommand extends ContainerAwareCommand
         $html = $this->removeByCssSelector($html,
                                            [ '.fn-intext', '.footnote > .fn-sign', '.gap' ]);
 
-        $text = $this->html2Text($html);
+        $text = ltrim(trim($this->html2Text($html)), '*'); // * comes from <li> in authors
 
         $entity->setText($text);
 
