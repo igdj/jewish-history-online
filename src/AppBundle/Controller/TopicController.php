@@ -22,6 +22,7 @@ class TopicController extends RenderTeiController
         'Organizations and Institutions',
         'Law and Politics',
         'Religion and Identity',
+        'Sephardic Jews',
         'Social Issues and Welfare',
         'Economy and Occupational Composition',
         'Scholarship',
