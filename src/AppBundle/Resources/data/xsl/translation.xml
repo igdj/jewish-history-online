@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <strings>
     <string language="eng" key="Quellenbeschreibung">Source Description</string>
+    <string language="eng" key="Zusammenfassung">Summary</string>
     <string language="eng" key="Anmerkungen">Notes</string>
     <string language="eng" key="irrelevantes Material">irrelevant material</string>
     <string language="eng" key="unleserliches Material">illegible material</string>

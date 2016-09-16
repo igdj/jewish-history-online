@@ -166,6 +166,15 @@ class ArticleContentCommand extends ContainerAwareCommand
                 $entity->setDescription(trim($description));
                 break;
 
+            case 'background':
+                // sourceDescription
+                $html = $this->renderTei($fname, 'dtabf_summary.xsl',
+                                         [ 'params' => $params,
+                                           'locateXmlResource' => false ]);
+                $description = $this->html2Text($html);
+                $entity->setDescription(trim($description));
+                break;
+
             case 'source':
                 $fnameXslt = 'dtabf_viewer.xsl';
                 break;
