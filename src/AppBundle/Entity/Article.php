@@ -932,6 +932,11 @@ class Article implements \JsonSerializable
         return $this;
     }
 
+    public function getPersonReferences()
+    {
+        return $this->personReferences;
+    }
+
     public function addOrganizationReference(ArticleEntity $entityReference)
     {
         $entityId = $entityReference->getEntity()->getId();
@@ -947,6 +952,11 @@ class Article implements \JsonSerializable
         return $this;
     }
 
+    public function getOrganizationReferences()
+    {
+        return $this->organizationReferences;
+    }
+
     public function addPlaceReference(ArticleEntity $entityReference)
     {
         $entityId = $entityReference->getEntity()->getId();
@@ -960,6 +970,11 @@ class Article implements \JsonSerializable
         }
 
         return $this;
+    }
+
+    public function getPlaceReferences()
+    {
+        return $this->placeReferences;
     }
 
     public function jsonSerialize()

@@ -110,6 +110,14 @@ class ArticleEntityCommand extends BaseEntityCommand
             }
             $persist = false;
             foreach ([ 'person', 'place', 'organization' ] as $type) {
+                // clear existing before adding them back
+                $method = 'get' . ucfirst($type) . 'References';
+                $references = $article->$method();
+                if (!empty($references)) {
+                    $references->clear();
+                    $persist = true;
+                }
+
                 if (empty($entities[$type])) {
                     continue;
                 }
