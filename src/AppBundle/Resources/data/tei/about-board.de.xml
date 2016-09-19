@@ -32,18 +32,49 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
     </teiHeader>
     <text>
         <body>
-            <p><hi rendition="#b">Dr. Sylvia Asmus</hi>, Leiterin des Deutschen Exilarchivs 1933-1945, Deutsche Nationalbibliothek, Frankfurt a.M.<lb/></p>
-            <p><hi rendition="#b"><ref target="https://www.uni-goettingen.de/de/prof-dr-hartmut-berghoff/101865.html">Prof. Dr. Hartmut Berghoff</ref></hi>, Professor für Wirtschafts- und Sozialgeschichte an der Universität Göttingen<lb/></p>
-            <p><hi rendition="#b"><ref target="http://www.dubnow.de/institut/mitarbeiter-innen/prof-dr-joerg-deventer-stellvertreter-des-direktors/">Prof. Dr. Jörg Deventer</ref></hi>, stellvertretender Direktor des Simon Dubnow Instituts, Leipzig<lb/></p>
-            <p><hi rendition="#b">Dr. Annette Haller</hi>, Geschäftsführerin der <ref target="http://www.stbib-koeln.de/judaica/index.htm">Germania Judaica e. V.</ref>, Köln<lb/></p>
-            <p><hi rendition="#b"><ref target="https://www.uni-frankfurt.de/43117315/Heuberger">Dr. Rachel Heuberger</ref></hi>, <ref target="http://www.judaica-europeana.eu/">Judaica Europeana</ref>/ Leiterin der <ref target="http://sammlungen.ub.uni-frankfurt.de/judaica">Hebraica- und Judaica-Sammlung</ref> der Universitätsbibliothek Johann Christian Senckenberg<lb/></p>
-            <p><hi rendition="#b">Anke Hönnig</hi>, Referatsleiterin u.a. für „Religionswesen“ im <ref target="http://www.hamburg.de/staatsarchiv/">Staatsarchiv Hamburg</ref><lb /></p>
-            <p><hi rendition="#b"><ref target="https://www.geschichte.hu-berlin.de/de/bereiche-und-lehrstuehle/histfi/personen/2169">Prof. Dr. Rüdiger Hohls</ref></hi>, Mitherausgeber von Clio-online e.V. und H-Soz-Kult<lb/></p>
-            <p><hi rendition="#b"><ref target="http://www.ghi-dc.org/ghi-staff/directors/simone-laessig.html?L=0">Prof. Dr. Simone Lässig</ref></hi>, Direktorin des Direktorin des Deutschen Historischen Instituts in Washington, DC, AG Digitale Geschichtswissenschaft<lb/></p>
-            <p><hi rendition="#b"><ref target="http://www.steinheim-institut.de/wiki/index.php/Mitarbeiter:Harald_Lordick">Harald Lordick</ref></hi>,  Salomon Ludwig Steinheim-Institut für deutsch-jüdische Geschichte, Essen, DARIAH-DE<lb/></p>
-            <p><hi rendition="#b">Dr. Aubrey Pomerance</hi>, Leiter des Archivs des <ref target="http://www.jmberlin.de/main/DE/03b-Akademie/03-Archiv/00-archiv.php">Leo Baeck Instituts, Jüdisches Museum Berlin</ref><lb/></p>
-            <p><hi rendition="#b">Prof. Dr. Reinhard Rürup</hi>, Prof. emer. Technische Universität Berlin<lb/></p>
-            <p><hi rendition="#b"><ref target="https://www.geschichte.uni-hamburg.de/arbeitsbereiche/deutsche-geschichte/personen/schaser.html">Prof. Dr. Angelika Schaser</ref></hi>, Professorin am Historischen Seminar der Universität Hamburg<lb/></p>
+            <p><hi rendition="#b">Dr. Sylvia Asmus</hi>, Leiterin des Deutschen Exilarchivs
+                1933-1945, Deutsche Nationalbibliothek, Frankfurt am Main<lb/></p>
+            <p><hi rendition="#b"><ref
+                        target="https://www.uni-goettingen.de/de/prof-dr-hartmut-berghoff/101865.html"
+                        >Prof. Dr. Hartmut Berghoff</ref></hi>, Professor für Wirtschafts- und
+                Sozialgeschichte an der Universität Göttingen<lb/></p>
+            <p><hi rendition="#b"><ref
+                        target="http://www.dubnow.de/institut/mitarbeiter-innen/prof-dr-joerg-deventer-stellvertreter-des-direktors/"
+                        >Prof. Dr. Jörg Deventer</ref></hi>, stellvertretender Direktor des Simon
+                Dubnow Instituts, Leipzig<lb/></p>
+            <p><hi rendition="#b">Dr. Annette Haller</hi>, Geschäftsführerin der <ref
+                    target="http://www.stbib-koeln.de/judaica/index.htm">Germania Judaica e.
+                    V.</ref>, Köln<lb/></p>
+            <p><hi rendition="#b"><ref target="https://www.uni-frankfurt.de/43117315/Heuberger">Dr.
+                        Rachel Heuberger</ref></hi>, <ref target="http://www.judaica-europeana.eu/"
+                    >Judaica Europeana</ref>/Leiterin der <ref
+                    target="http://sammlungen.ub.uni-frankfurt.de/judaica">Hebraica- und
+                    Judaica-Sammlung</ref> der Universitätsbibliothek J.C. Senckenberg, Frankfurt am
+                Main<lb/></p>
+            <p><hi rendition="#b">Anke Hönnig</hi>, Referatsleiterin u.a. für „Religionswesen“ im
+                    <ref target="http://www.hamburg.de/staatsarchiv/">Staatsarchiv
+                Hamburg</ref><lb/></p>
+            <p><hi rendition="#b"><ref
+                        target="https://www.geschichte.hu-berlin.de/de/bereiche-und-lehrstuehle/histfi/personen/2169"
+                        >Prof. Dr. Rüdiger Hohls</ref></hi>, Mitherausgeber von Clio-online e.V. und
+                H-Soz-Kult<lb/></p>
+            <p><hi rendition="#b"><ref
+                        target="http://www.ghi-dc.org/ghi-staff/directors/simone-laessig.html?L=0"
+                        >Prof. Dr. Simone Lässig</ref></hi>, Direktorin des Deutschen Historischen
+                Instituts in Washington, DC, AG Digitale Geschichtswissenschaft<lb/></p>
+            <p><hi rendition="#b"><ref
+                        target="http://www.steinheim-institut.de/wiki/index.php/Mitarbeiter:Harald_Lordick"
+                        >Harald Lordick</ref></hi>, Salomon Ludwig Steinheim-Institut für
+                deutsch-jüdische Geschichte, Essen, DARIAH-DE<lb/></p>
+            <p><hi rendition="#b">Dr. Aubrey Pomerance</hi>, Leiter des Archivs des <ref
+                    target="http://www.jmberlin.de/main/DE/03b-Akademie/03-Archiv/00-archiv.php">Leo
+                    Baeck Instituts, Jüdisches Museum Berlin</ref><lb/></p>
+            <p><hi rendition="#b">Prof. Dr. Reinhard Rürup</hi>, Prof. emer. für Neuere Geschichte,
+                Technische Universität Berlin<lb/></p>
+            <p><hi rendition="#b"><ref
+                        target="https://www.geschichte.uni-hamburg.de/arbeitsbereiche/deutsche-geschichte/personen/schaser.html"
+                        >Prof. Dr. Angelika Schaser</ref></hi>, Professorin am Historischen Seminar
+                der Universität Hamburg<lb/></p>
         </body>
     </text>
 </TEI>

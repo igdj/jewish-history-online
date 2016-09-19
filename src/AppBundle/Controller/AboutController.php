@@ -18,7 +18,9 @@ class AboutController extends RenderTeiController
         $locale = $this->get('request')->getLocale();
         $fnameTei = $route . '.' . $locale . '.xml';
 
-        $html = $this->renderTei($fnameTei);
+        $params = [ 'lang' => \AppBundle\Utils\Iso639::code1To3($locale) ];
+
+        $html = $this->renderTei($fnameTei, 'dtabf_article-printview.xsl', [ 'params' => $params ]);
 
         if (false === $html) {
             return '<div class="alert alert-warning">'
@@ -35,7 +37,77 @@ class AboutController extends RenderTeiController
     public function aboutAction()
     {
         return $this->render('AppBundle:Default:sitetext-about.html.twig',
-                             [ 'title' => 'About us',
+                             [ 'title' => 'About this edition',
+                               'content' => $this->renderContent() ]);
+    }
+
+    /**
+     * @Route("/about/goals", name="about-goals")
+     */
+    public function goalsAction()
+    {
+        return $this->render('AppBundle:Default:sitetext-about.html.twig',
+                             [ 'title' => 'Goals',
+                               'content' => $this->renderContent() ]);
+    }
+
+    /**
+     * @Route("/about/goals", name="about-goals")
+     */
+    public function keydocumentsAction()
+    {
+        return $this->render('AppBundle:Default:sitetext-about.html.twig',
+                             [ 'title' => 'Key Documents',
+                               'content' => $this->renderContent() ]);
+    }
+
+    /**
+     * @Route("/about/audience", name="about-audience")
+     */
+    public function audienceAction()
+    {
+        return $this->render('AppBundle:Default:sitetext-about.html.twig',
+                             [ 'title' => 'Target Audience',
+                               'content' => $this->renderContent() ]);
+    }
+
+    /**
+     * @Route("/about/usage", name="about-usage")
+     */
+    public function usageAction()
+    {
+        return $this->render('AppBundle:Default:sitetext-about.html.twig',
+                             [ 'title' => 'Structure / How to Use this Edition',
+                               'content' => $this->renderContent() ]);
+    }
+
+    /**
+     * @Route("/about/editorial-model", name="about-editorialmodel")
+     */
+    public function editorialmodelAction()
+    {
+        return $this->render('AppBundle:Default:sitetext-about.html.twig',
+                             [ 'title' => 'Editorial Model',
+                               'content' => $this->renderContent() ]);
+    }
+
+    /**
+     * @Route("/about/edition", name="about-edition")
+     */
+    public function editionAction()
+    {
+        return $this->render('AppBundle:Default:sitetext-about.html.twig',
+                             [ 'title' => 'Edition and Edition Guidelines',
+                               'content' => $this->renderContent() ]);
+    }
+
+    /**
+     * @Route("/about/technical-implementation", name="about-implementation")
+     */
+    public function implementationAction()
+    {
+        return $this->render('AppBundle:Default:sitetext-about.html.twig',
+                             [ 'title' => 'Technical Implementation',
                                'content' => $this->renderContent() ]);
     }
 

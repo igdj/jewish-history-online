@@ -34,13 +34,38 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
         <body>
             <div n="2">
                 <!-- <head>Das Projekt</head> -->
-                <p>Die vom Institut für die Geschichte der deutschen Juden (IGdJ) realisierte Online-Quellenedition wirft am Beispiel von Schlüsseldokumenten thematische Schlaglichter auf zentrale Aspekte der jüdischen Geschichte Hamburgs von der frühen Neuzeit bis in die Gegenwart. Wir verstehen Hamburg als Brennglas für größere Entwicklungen und Fragestellungen der deutsch-jüdischen Geschichte. Die Quellenedition möchte dazu beitragen, das aufgrund von Verfolgung und Migration in alle Welt verstreute jüdische Erbe der Stadt digital wieder zusammenzuführen, zugänglich zu machen und für zukünftige Generationen zu bewahren.<lb/></p>
-                <p>Durch die Präsentation von bislang weniger bekanntem Quellenmaterial sowie die neuartige Anordnung und Aufbereitung sollen Denkanstöße gegeben und neue Fragestellungen angeregt werden. Ausgangspunkt der Argumentation ist die Quelle, um die Auseinandersetzungen über konkrete Deutungen und Einordnungen zu fördern.<lb/></p>
-                
-                <p>Die Quellen werden als Transkript und digitales Faksimile bereitgestellt  und durch Interpretations- und Hintergrundtexte in ihre historischen Kontexte eingebettet. Angereichert werden die Materialein durch Informationen zur Überlieferung, zur Rezeptionsgeschichte und zu wissenschaftlichen Kontroversen. Alle Inhalte werden auf Deutsch und Englisch angeboten. <lb/></p>
-                
-                <p>Die Quellenedition richtet sich an Studierende, Forschende und Lehrende ebenso wie an interessierte Laien. Je nach Informationsbedürfnis werden den Nutzer/innen unterschiedliche Zugänge angeboten. So wird ein Spektrum von eher allgemeinen überblicksartigen bis hin zu eng an der Quelle argumentierenden Texten abgedeckt. Ein Beirat aus renommierte Wissenschaftler/innen der deutsch-jüdischen Geschichte und Expert/innen aus dem Bereich Digitalisierung unterstützt das Projekt inhaltlich.<lb/></p>
-                <p>Die Deutschen Forschungsgemeinschaft fördert die Online-Quellenedition seit Juli 2015. Die Edition stärkt damit das IGdJ ins seiner Rolle als Verbindungsglied zwischen Wissenschaft und interessierter Öffentlichkeit. </p>
+                <p>Die vom Institut für die Geschichte der deutschen Juden (IGdJ) realisierte
+                    Online-Quellenedition wirft am Beispiel von ausgewählten Quellen, sogenannten
+                    <ref target="schluesseldokumente">Schlüsseldokumenten</ref>, thematische Schlaglichter auf zentrale Aspekte der
+                    jüdischen Geschichte Hamburgs von der frühen Neuzeit bis in die Gegenwart. Die
+                    <ref target="redaktionsmodell">Redaktion</ref> versteht Hamburg dabei als Brennglas für größere Entwicklungen und
+                    Fragestellungen der deutsch-jüdischen Geschichte. Die Quellenedition möchte dazu
+                    beitragen, das aufgrund von Verfolgung und Migration in alle Welt verstreute
+                    jüdische Erbe der Stadt digital wieder zusammenzuführen, zugänglich zu machen
+                    und für zukünftige Generationen zu bewahren.<lb/></p>
+                <p>Durch die Präsentation von bislang weniger beachtetem Quellenmaterial sowie die
+                    neuartige Anordnung und Aufbereitung bekannter Archivalien sollen Denkanstöße
+                    gegeben und neue Fragestellungen angeregt werden. Die Quelle steht im
+                    Mittelpunkt, von ihr ausgehend soll die Auseinandersetzung über konkrete
+                    Deutungen und Einordnungen gefördert werden.<lb/></p>
+                <p>Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und
+                    durch Interpretations- und Hintergrundtexte in ihre historischen Kontexte
+                    eingebettet. Angereichert werden die Materialien durch Informationen zur
+                    Überlieferung, zur Rezeptionsgeschichte und zu wissenschaftlichen Kontroversen.
+                    Alle Inhalte werden sowohl auf Deutsch als auch auf Englisch angeboten.
+                    <lb/></p>
+                <p>Die Quellenedition <ref target="zielgruppe">richtet sich an Studierende, Forschende und Lehrende,
+                    teilweise auch an Laien sowie Schülerinnen und Schüler</ref>. Sie deckt dabei ein
+                    <ref target="nutzungshinweise">Spektrum von eher allgemeinen, überblicksartigen bis hin zu eng an der Quelle
+                    argumentierenden Texten ab und bietet verschiedene Zugänge zu den Quellen an –
+                    über einen Zeitstrang, Themenkategorien oder eine Karte</ref>. Ein <ref target="beirat">Beirat</ref> aus
+                    renommierten Wissenschaftlerinnen und Wissenschaftlern der deutsch-jüdischen
+                    Geschichte und Expertinnen und Experten aus dem Bereich Digitalisierung
+                    unterstützt das Projekt.<lb/></p>
+                <p>Die Online-Edition wird seit Juli 2015 für zwei Jahre von der Deutschen
+                    Forschungsgemeinschaft <ref target="mittelgeber">gefördert</ref>. Mit der Edition präsentiert sich das IGdJ
+                    erneut in seiner Rolle als Verbindungsglied zwischen Wissenschaft und
+                    interessierter Öffentlichkeit.</p>
             </div>
         </body>
     </text>

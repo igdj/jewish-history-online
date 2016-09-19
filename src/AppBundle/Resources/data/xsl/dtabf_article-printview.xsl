@@ -84,6 +84,28 @@
     </xsl:choose>
   </xsl:template>
 
+<xsl:template match='tei:ref'>
+  <xsl:choose>
+    <xsl:when test="@target != ''">
+      <xsl:choose>
+        <xsl:when test="@type = 'editorialNote'">
+          <span class="glossary">
+            <xsl:attribute name="data-title"><xsl:value-of select="substring(@target, 2)" /></xsl:attribute>
+            <xsl:apply-templates/>
+          </span>
+        </xsl:when>
+        <xsl:otherwise>
+          <a class="external">
+            <xsl:attribute name="href"><xsl:value-of select="@target" /></xsl:attribute>
+            <xsl:apply-templates/>
+          </a>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:when>
+    <xsl:otherwise><xsl:value-of select="@target" /><xsl:apply-templates/></xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
   <!-- begin footnotes -->
   <xsl:template match='tei:note[@place="foot"]'>
     <xsl:if test="string-length(@prev)=0">

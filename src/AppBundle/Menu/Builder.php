@@ -28,7 +28,28 @@ class Builder implements ContainerAwareInterface
 
         // add menu items
         $menu->addChild('about',
-                        array('label' => $translator->trans('About us'), 'route' => 'about'));
+                        array('label' => $translator->trans('About this edition'), 'route' => 'about'));
+        $menu['about']
+            ->addChild('about-goals',
+                        array('label' => $translator->trans('Goals', [], 'menu'), 'route' => 'about-goals'));
+        $menu['about']
+            ->addChild('about-keydocuments',
+                        array('label' => $translator->trans('Key Documents', [], 'menu'), 'route' => 'about-keydocuments'));
+        $menu['about']
+            ->addChild('about-audience',
+                        array('label' => $translator->trans('Target Audience', [], 'menu'), 'route' => 'about-audience'));
+        $menu['about']
+            ->addChild('about-usage',
+                        array('label' => $translator->trans('How to Use this Edition', [], 'menu'), 'route' => 'about-usage'));
+        $menu['about']
+            ->addChild('about-editorialmodel',
+                        array('label' => $translator->trans('Editorial Model', [], 'menu'), 'route' => 'about-editorialmodel'));
+        $menu['about']
+            ->addChild('about-edition',
+                        array('label' => $translator->trans('Edition and Edition Guidelines', [], 'menu'), 'route' => 'about-edition'));
+        $menu['about']
+            ->addChild('about-implementation',
+                        array('label' => $translator->trans('Technical Implementation', [], 'menu'), 'route' => 'about-implementation'));
         $menu['about']
             ->addChild('about-staff',
                         array('label' => $translator->trans('Staff', [], 'menu'), 'route' => 'about-staff'));
@@ -141,6 +162,13 @@ class Builder implements ContainerAwareInterface
                 $item = $menu->addChild($item);
                 break;
 
+            case 'about-goals':
+            case 'about-keydocuments':
+            case 'about-audience':
+            case 'about-usage':
+            case 'about-editorialmodel':
+            case 'about-edition':
+            case 'about-implementation':
             case 'about-staff':
             case 'about-editors':
             case 'about-board':

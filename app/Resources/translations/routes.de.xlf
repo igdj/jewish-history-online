@@ -1,30 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2016-09-14T22:23:46Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2016-09-20T00:36:50Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
       <trans-unit id="5780daf6db0b013dbf82807c9f85abba683b0820" resname="about">
-        <source>/about</source>
-        <target>/ueber</target>
+        <source>/about/edition</source>
+        <target>/ueber/edition</target>
+      </trans-unit>
+      <trans-unit id="d7ce486468853d85ccd44298c44ad4c658c28faf" resname="about-audience">
+        <source>/about/audience</source>
+        <target>/ueber/zielgruppe</target>
       </trans-unit>
       <trans-unit id="6a9fe8402faeb1f85ebb59a46eff09ba385a128d" resname="about-board">
         <source>/about/board</source>
         <target>/ueber/beirat</target>
       </trans-unit>
+      <trans-unit id="53b3dbec9d162c37d2e170d361344192b7cc4e33" resname="about-edition">
+        <source>/about/edition</source>
+        <target>/ueber/edition</target>
+      </trans-unit>
+      <trans-unit id="a3d3d39a4d33268a03b88b7e0cdf1939fbd2c8ab" resname="about-editorialmodel">
+        <source>/about/editorial-model</source>
+        <target>/ueber/redaktionsmodell</target>
+      </trans-unit>
       <trans-unit id="1d2f96887a3692c00043fc7c72c292ad11cb8c01" resname="about-editors">
         <source>/about/editors</source>
         <target>/ueber/herausgeberinnen</target>
       </trans-unit>
+      <trans-unit id="9ceb34f3fd6a6688234cbd1147460b66754f4045" resname="about-goals">
+        <source>/about/goals</source>
+        <target>/ueber/ziele</target>
+      </trans-unit>
+      <trans-unit id="1785d92adb28793db42343cacf85d10b0fe5919e" resname="about-implementation">
+        <source>/about/technical-implementation</source>
+        <target>/ueber/technische-umsetzung</target>
+      </trans-unit>
+      <trans-unit id="d02a0114e32806760bcc46f6cca668f958034a7d" resname="about-keydocuments">
+        <source>/about/keydocuments</source>
+        <target>/ueber/schluesseldokumente</target>
+      </trans-unit>
       <trans-unit id="4325ad54eb5c30738fd299324a9ed374ea5d84c1" resname="about-sponsors">
         <source>/about/sponsors</source>
-        <target>/about/sponsors</target>
+        <target>/ueber/mittelgeber</target>
       </trans-unit>
       <trans-unit id="dbcd2f2bbc4ebdb5a5e398d36be151bb9d9c8823" resname="about-staff">
         <source>/about/staff</source>
         <target>/ueber/mitarbeiterinnen</target>
+      </trans-unit>
+      <trans-unit id="2b9081eddb0546bac4bee86e76aa0f93ee6c4b48" resname="about-usage">
+        <source>/about/usage</source>
+        <target>/ueber/nutzungshinweise</target>
       </trans-unit>
       <trans-unit id="565cecd7e8f5c6063935b41db41797aa37d53b04" resname="article">
         <source>/article/{slug}</source>

@@ -37,11 +37,11 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
             <div n="2">
                 
                 
-                <p>Ihre Fragen und Anregungen erreichen uns per E-Mail an info@juedische-geschichte-online.net oder über die auf der Mitarbeiter/innen-Seite verlinkten persönlichen Kontaktangaben.<lb/></p>
+                <p>Ihre Fragen und Anregungen erreichen uns per E-Mail an info@juedische-geschichte-online.net oder über die auf der <ref target="ueber/mitarbeiterinnen">Mitarbeiter_innen-Seite</ref> verlinkten persönlichen Kontaktangaben.<lb/></p>
                 
                  
                 <div n="3">
-                    <head>Impressum</head>
+                    <head>Impressum</head><lb/>
                     <p>Institut für die Geschichte der deutschen Juden<lb/>
                         Beim Schlump 83<lb/>
                         20144 Hamburg<lb/></p>
@@ -69,7 +69,7 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
 
 
                 <div n="3">
-                    <head>Haftungshinweis</head>
+                    <head>Haftungshinweis</head><lb/>
                     <p>
                     Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.
                     <lb/></p>

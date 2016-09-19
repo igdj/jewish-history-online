@@ -61,8 +61,10 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
                 <p><hi rendition="#b">Clara Hestermann</hi><lb/></p>
                 <p>Sie studiert an der Universität Hamburg Geschichte und Politikwissenschaften. Ihre Forschungsinteressen sind: Jüdische Geschichte, Europäische Geschichte des 20. Jahrhunderts, Geschichte des Nahen Ostens. <lb/></p>
                 
-                <p><hi rendition="#b">Jan Kawlath</hi><lb/></p>
+                <p><hi rendition="#b">Jan Kawlath, B.A.</hi><lb/></p>
                 <p>Er studiert an der Universität Hamburg Geschichte und Philosophie. Seine Forschungsinteressen sind: deutsche Kolonialgeschichte, Genozidforschung und Postkolonialismus.<lb/></p>
+                <p><hi rendition="#b">Sebastian Merkel, B.A.</hi><lb/></p>
+                <p>Er studiert an der Universität Hamburg im Masterstudiengang Geschichte. Seine Forschungsinteressen sind: Lager- und Gewaltgeschichte des 20. Jahrhundert, Jugend(sub)kulturen und Deutsche Zeitgeschichte.<lb/></p>
             </div>
         </body>
     </text>

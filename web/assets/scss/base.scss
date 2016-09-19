@@ -813,6 +813,21 @@ body[class^="route-about"] {
     #license {
 		display: none;
 	}
+
+	.article > div.dta-list {
+		margin-top: 0;
+	}
+
+	.dta-list-item {
+		display: inline-block;
+		&:before { content: "-"; padding-right:7px; }
+	}
+}
+
+body[class="route-terms"] {
+	#license {
+		margin-top: 1em;
+	}
 }
 
 /* bootstrap panels */
