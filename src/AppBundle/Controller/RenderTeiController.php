@@ -71,6 +71,55 @@ abstract class RenderTeiController extends Controller
         return $crawler->html();
     }
 
+    protected function buildRefLookup($refs, $language)
+    {
+        $refMap = [];
+
+        if (empty($refs)) {
+            return ;
+        }
+
+        // make sure we only pick-up the published ones
+        $query = $this->get('doctrine')
+            ->getManager()
+            ->createQuery("SELECT a.uid, a.articleSection, a.slug FROM AppBundle:Article a"
+                          . " WHERE a.status IN (0,1)"
+                          . " AND a.uid IN (:refs)"
+                          . (!empty($language) ? ' AND a.language=:language' : '')
+                          . " ORDER BY a.name")
+            ->setParameter('refs', $refs, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY)
+            ;
+        if (!empty($language)) {
+            $query->setParameter('language', $language);
+        }
+
+        $result = $query->getResult();
+
+        foreach ($result as $article) {
+            switch ($article['articleSection']) {
+                case 'background':
+                    $route = 'topic';
+                    $params = [ 'slug' => $article['slug'] ];
+                    break;
+
+                case 'article':
+                    $route = 'article';
+                    $params = [ 'slug' => !empty($article['slug']) ? $article['slug'] : $article['uid'] ];
+                    break;
+
+                case 'source':
+                    $route = 'source';
+                    $params = [ 'uid' => $article['uid'] ];
+                    break;
+            }
+            if (!is_null($route)) {
+                $refMap[$article['uid']] = $this->generateUrl($route, $params, true);
+            }
+        }
+
+        return $refMap;
+    }
+
     protected function buildEntityLookup($entities)
     {
         $entitiesByType = [ 'person' => [], 'place' => [], 'organization' => [] ];
@@ -259,6 +308,38 @@ abstract class RenderTeiController extends Controller
         $pdf->Output();
     }
 
+    protected function adjustRefs($html, $refs, $language)
+    {
+        if (empty($refs)) {
+            // nothing to do
+            return $html;
+        }
+
+        $refLookup = $this->buildRefLookup($refs, $language);
+
+        $crawler = new \Symfony\Component\DomCrawler\Crawler();
+        $crawler->addHtmlContent('<body>' . $html . '</body>');
+
+        $crawler->filterXPath("//a[@class='external']")
+            ->each(function ($crawler) use ($refLookup) {
+                foreach ($crawler as $node) {
+                    $href = $node->getAttribute('href');
+
+                    if (preg_match('/^jgo:(article|source)\-(\d+)$/', $href)) {
+                        if (array_key_exists($href, $refLookup)) {
+                            $node->setAttribute('href', $refLookup[$href]);
+                        }
+                        else {
+                            $node->removeAttribute('href');
+                            $node->setAttribute('class', 'externalDisabled');
+                        }
+                    }
+                }
+        });
+
+        return preg_replace('/<\/?body>/', '', $crawler->html());
+    }
+
     protected function extractPartsFromHtml($html)
     {
         $crawler = new \Symfony\Component\DomCrawler\Crawler();
@@ -305,6 +386,14 @@ abstract class RenderTeiController extends Controller
             return $node->attr('data-title');
         }));
 
+        // extract article refs
+        $refs = array_unique($crawler->filterXPath("//a[@class='external']")->each(function ($node, $i) {
+            $href = $node->attr('href');
+            if (preg_match('/^jgo:(article|source)\-(\d+)$/', $node->attr('href'))) {
+                return $node->attr('href');
+            }
+        }));
+
         // try to get bios in the current locale
         $locale = $this->get('translator')->getLocale();
         $author_slugs = [];
@@ -332,6 +421,6 @@ abstract class RenderTeiController extends Controller
             }
         }
 
-        return [ $authors_by_slug, $section_headers, $license, $entities, $glossaryTerms ];
+        return [ $authors_by_slug, $section_headers, $license, $entities, $glossaryTerms, $refs ];
     }
 }

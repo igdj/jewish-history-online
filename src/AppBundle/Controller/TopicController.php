@@ -124,7 +124,8 @@ class TopicController extends RenderTeiController
 
         $html = $this->renderTei($fname, $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl');
 
-        list($authors, $section_headers, $license, $entities, $glossaryTerms) = $this->extractPartsFromHtml($html);
+        list($authors, $section_headers, $license, $entities, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html);
+        $html = $this->adjustRefs($html, $refs, $language);
 
         if ($generatePrintView) {
             $html = $this->removeByCssSelector('<body>' . $html . '</body>',

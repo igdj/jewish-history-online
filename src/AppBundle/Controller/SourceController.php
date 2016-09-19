@@ -45,7 +45,7 @@ class SourceController extends ArticleController
 
         $html = $this->renderTei($fname);
 
-        list($authors, $section_headers, $license, $entities, $glossaryTerms) = $this->extractPartsFromHtml($html);
+        list($authors, $section_headers, $license, $entities, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html);
 
         $sourceDescription = null;
         $related = [];
@@ -53,7 +53,7 @@ class SourceController extends ArticleController
         if (isset($interpretation)) {
             $sourceDescription = [ 'article' => $interpretation,
                                    'html' => $this->renderSourceDescription($interpretation) ];
-            list($dummy, $dummy, $license, $entitiesSourceDescription, $glossaryTermsSourceDescription) = $this->extractPartsFromHtml($sourceDescription['html']);
+            list($dummy, $dummy, $license, $entitiesSourceDescription, $glossaryTermsSourceDescription, $refs) = $this->extractPartsFromHtml($sourceDescription['html']);
 
             $entities = array_merge($entities, $entitiesSourceDescription);
             $glossaryTerms += $glossaryTermsSourceDescription;

@@ -59,7 +59,7 @@ class ArticleController extends RenderTeiController
                                  $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl',
                                  [ 'params' => $params ]);
 
-        list($authors, $section_headers, $license, $entities, $glossaryTerms) = $this->extractPartsFromHtml($html);
+        list($authors, $section_headers, $license, $entities, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html);
 
         $sourceDescription = $this->renderSourceDescription($article);
         if ($generatePrintView) {
@@ -89,7 +89,7 @@ class ArticleController extends RenderTeiController
             return;
         }
 
-        list($dummy, $dummy, $dummy, $entitiesSourceDescription, $glossaryTermsSourceDescription) = $this->extractPartsFromHtml($sourceDescription);
+        list($dummy, $dummy, $dummy, $entitiesSourceDescription, $glossaryTermsSourceDescription, $refs) = $this->extractPartsFromHtml($sourceDescription);
 
         $entities = array_merge($entities, $entitiesSourceDescription);
 

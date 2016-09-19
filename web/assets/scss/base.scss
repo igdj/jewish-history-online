@@ -510,6 +510,11 @@ a, a:visited {
 	color: $color-gray-dark;
 }
 
+a.externalDisabled  {
+	text-decoration: none;
+	color: $color-text;
+}
+
 .hoverable {
 	color: $color-text;
 	position: relative;
