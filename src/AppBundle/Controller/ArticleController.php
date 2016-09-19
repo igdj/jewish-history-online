@@ -44,11 +44,12 @@ class ArticleController extends RenderTeiController
         $fname = $this->buildArticleFname($article);
 
         // localize labels in xslt
+        $language = null;
         $params = [];
         if ($article instanceof \AppBundle\Entity\Article) {
-            $lang = $article->getLanguage();
-            if (!empty($lang)) {
-                $params['lang'] = $lang;
+            $language = $article->getLanguage();
+            if (!empty($language)) {
+                $params['lang'] = $language;
             }
         }
 
@@ -60,6 +61,7 @@ class ArticleController extends RenderTeiController
                                  [ 'params' => $params ]);
 
         list($authors, $section_headers, $license, $entities, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html);
+        $html = $this->adjustRefs($html, $refs, $language);
 
         $sourceDescription = $this->renderSourceDescription($article);
         if ($generatePrintView) {
