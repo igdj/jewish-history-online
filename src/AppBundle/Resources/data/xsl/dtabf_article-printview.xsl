@@ -94,7 +94,7 @@
         <!--<xsl:value-of select="@n"/>-->
         <xsl:number level="any" count='//tei:note[@place="foot" and (text() or *)]' format="[1]"/>
       </a>
-      <xsl:text> </xsl:text>
+      <!--<xsl:text> </xsl:text>-->
     </xsl:if>
   </xsl:template>
 

@@ -426,6 +426,18 @@ header {
 	}
 }
 
+a.img-info-sign {
+	display: inline-block;
+	width: 0.9em;
+	background-image: url('../img/icon/info-sign.png');
+	background-size: contain;
+	background-position: center center;
+	background-repeat: no-repeat;
+	&:hover {
+		text-decoration: none;
+	}
+}
+
 .pdf-link {
 	margin-top: 0;
 	line-height: 28px;

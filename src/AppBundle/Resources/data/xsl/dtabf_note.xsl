@@ -19,7 +19,7 @@
 
 <xsl:template match='tei:note[@type="editorial"]'>
   <xsl:choose>
-    <xsl:when test="@place='foot'"><a class="editorial-marker glyphicon glyphicon-info-sign" href="#{generate-id()}"></a><span id="{generate-id()}" class="editorial foot"><xsl:apply-templates/></span>
+    <xsl:when test="@place='foot'"><a class="editorial-marker img-info-sign" href="#{generate-id()}">&#160;</a><span id="{generate-id()}" class="editorial foot"><xsl:apply-templates/></span>
     </xsl:when>
     <xsl:otherwise>
       <span class="editorial inline"><xsl:apply-templates/></span>
