@@ -247,7 +247,7 @@
                         {% if meta.url is not empty %}
                             <dt>{{ 'URL'|trans }}</dt>
                             <dd>
-                                <a href="{{ meta.url }}" target="_blank">{{ meta.url|prettifyurl }}</a>
+                                <a href="{{ meta.url }}" class="break-word" target="_blank">{{ meta.url|prettifyurl }}</a>
                             </dd>
                         {% endif %}
                         {% if meta.rights is not empty %}

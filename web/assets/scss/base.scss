@@ -438,6 +438,11 @@ a.img-info-sign {
 	}
 }
 
+/* break long links in metadata sidebar */
+a.break-word {
+	word-wrap: break-word;
+}
+
 .pdf-link {
 	margin-top: 0;
 	line-height: 28px;
@@ -557,7 +562,10 @@ a.externalDisabled  {
 	}
 }
 
-
+a.external .hoverable {
+	background: none;
+	color: inherit;
+}
 
 .h1, h1 {
 	font-size: 30px;
