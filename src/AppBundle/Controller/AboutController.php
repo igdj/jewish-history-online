@@ -94,7 +94,7 @@ class AboutController extends RenderTeiController
     /**
      * @Route("/about/edition", name="about-edition")
      */
-    public function editionAction()
+    public function editionguidelinesAction()
     {
         return $this->render('AppBundle:Default:sitetext-about.html.twig',
                              [ 'title' => 'Edition and Edition Guidelines',

@@ -117,7 +117,7 @@ class MicroKernel extends Kernel
         $routes->add('/about/audience', 'AppBundle:About:audience', 'about-audience');
         $routes->add('/about/usage', 'AppBundle:About:usage', 'about-usage');
         $routes->add('/about/editorial-model', 'AppBundle:About:editorialmodel', 'about-editorialmodel');
-        $routes->add('/about/edition', 'AppBundle:About:edition', 'about-edition');
+        $routes->add('/about/edition-guidelines', 'AppBundle:About:editionguidelines', 'about-editionguidelines');
         $routes->add('/about/technical-implementation', 'AppBundle:About:implementation', 'about-implementation');
         $routes->add('/about/about-us', 'AppBundle:About:staff', 'about-staff');
         $routes->add('/about/staff', 'AppBundle:About:staff', 'about-staff');

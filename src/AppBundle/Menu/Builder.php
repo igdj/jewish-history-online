@@ -46,8 +46,8 @@ class Builder implements ContainerAwareInterface
                 ->addChild('about-editorialmodel',
                             array('label' => $translator->trans('Editorial Model', [], 'menu'), 'route' => 'about-editorialmodel'));
             $menu['about']
-                ->addChild('about-edition',
-                            array('label' => $translator->trans('Edition and Edition Guidelines', [], 'menu'), 'route' => 'about-edition'));
+                ->addChild('about-editionguidelines',
+                            array('label' => $translator->trans('Edition and Edition Guidelines', [], 'menu'), 'route' => 'about-editionguidelines'));
             $menu['about']
                 ->addChild('about-implementation',
                             array('label' => $translator->trans('Technical Implementation', [], 'menu'), 'route' => 'about-implementation'));
@@ -174,7 +174,7 @@ class Builder implements ContainerAwareInterface
             case 'about-audience':
             case 'about-usage':
             case 'about-editorialmodel':
-            case 'about-edition':
+            case 'about-editionguidelines':
             case 'about-implementation':
             case 'about-staff':
             case 'about-editors':
