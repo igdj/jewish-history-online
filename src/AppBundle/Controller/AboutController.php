@@ -116,7 +116,7 @@ class AboutController extends RenderTeiController
      */
     public function staffAction()
     {
-        return $this->render('AppBundle:Default:sitetext-about.html.twig',
+        return $this->render('AppBundle:Default:sitetext-about-us.html.twig',
                              [ 'title' => 'Staff',
                                'content' => $this->renderContent() ]);
     }
@@ -126,7 +126,7 @@ class AboutController extends RenderTeiController
      */
     public function editorsAction()
     {
-        return $this->render('AppBundle:Default:sitetext-about.html.twig',
+        return $this->render('AppBundle:Default:sitetext-about-us.html.twig',
                              [
                                'title' => 'Editors',
                                'content' => $this->renderContent(),
@@ -138,7 +138,7 @@ class AboutController extends RenderTeiController
      */
     public function boardAction()
     {
-        return $this->render('AppBundle:Default:sitetext-about.html.twig',
+        return $this->render('AppBundle:Default:sitetext-about-us.html.twig',
                              [ 'title' => 'Advisory Board',
                                'content' => $this->renderContent() ]);
     }
@@ -148,7 +148,7 @@ class AboutController extends RenderTeiController
      */
     public function sponsorsAction()
     {
-        return $this->render('AppBundle:Default:sitetext-about.html.twig',
+        return $this->render('AppBundle:Default:sitetext-about-us.html.twig',
                              [ 'title' => 'Sponsors and Partners',
                                'content' => $this->renderContent() ]);
     }

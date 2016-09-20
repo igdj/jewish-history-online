@@ -27,47 +27,54 @@ class Builder implements ContainerAwareInterface
         }
 
         // add menu items
-        $menu->addChild('about',
-                        array('label' => $translator->trans('About this edition'), 'route' => 'about'));
-        $menu['about']
-            ->addChild('about-goals',
-                        array('label' => $translator->trans('Goals', [], 'menu'), 'route' => 'about-goals'));
-        $menu['about']
-            ->addChild('about-keydocuments',
-                        array('label' => $translator->trans('Key Documents', [], 'menu'), 'route' => 'about-keydocuments'));
-        $menu['about']
-            ->addChild('about-audience',
-                        array('label' => $translator->trans('Target Audience', [], 'menu'), 'route' => 'about-audience'));
-        $menu['about']
-            ->addChild('about-usage',
-                        array('label' => $translator->trans('How to Use this Edition', [], 'menu'), 'route' => 'about-usage'));
-        $menu['about']
-            ->addChild('about-editorialmodel',
-                        array('label' => $translator->trans('Editorial Model', [], 'menu'), 'route' => 'about-editorialmodel'));
-        $menu['about']
-            ->addChild('about-edition',
-                        array('label' => $translator->trans('Edition and Edition Guidelines', [], 'menu'), 'route' => 'about-edition'));
-        $menu['about']
-            ->addChild('about-implementation',
-                        array('label' => $translator->trans('Technical Implementation', [], 'menu'), 'route' => 'about-implementation'));
-        $menu['about']
-            ->addChild('about-staff',
-                        array('label' => $translator->trans('Staff', [], 'menu'), 'route' => 'about-staff'));
-        $menu['about']
-            ->addChild('about-editors',
-                        array('label' => $translator->trans('Editors', [], 'menu'), 'route' => 'about-editors'));
-        $menu['about']
-            ->addChild('about-board',
-                       array('label' => $translator->trans('Advisory Board'), 'route' => 'about-board'));
-        $menu['about']
-            ->addChild('about-sponsors',
-                        array('label' => $translator->trans('Sponsors and Partners'), 'route' => 'about-sponsors'));
+        if (!array_key_exists('part', $options) || 'left' == $options['part']) {
+            $menu->addChild('about',
+                            array('label' => $translator->trans('About this edition'), 'route' => 'about'));
+            $menu['about']
+                ->addChild('about-goals',
+                            array('label' => $translator->trans('Goals', [], 'menu'), 'route' => 'about-goals'));
+            $menu['about']
+                ->addChild('about-keydocuments',
+                            array('label' => $translator->trans('Key Documents', [], 'menu'), 'route' => 'about-keydocuments'));
+            $menu['about']
+                ->addChild('about-audience',
+                            array('label' => $translator->trans('Target Audience', [], 'menu'), 'route' => 'about-audience'));
+            $menu['about']
+                ->addChild('about-usage',
+                            array('label' => $translator->trans('How to Use this Edition', [], 'menu'), 'route' => 'about-usage'));
+            $menu['about']
+                ->addChild('about-editorialmodel',
+                            array('label' => $translator->trans('Editorial Model', [], 'menu'), 'route' => 'about-editorialmodel'));
+            $menu['about']
+                ->addChild('about-edition',
+                            array('label' => $translator->trans('Edition and Edition Guidelines', [], 'menu'), 'route' => 'about-edition'));
+            $menu['about']
+                ->addChild('about-implementation',
+                            array('label' => $translator->trans('Technical Implementation', [], 'menu'), 'route' => 'about-implementation'));
+        }
 
-        $menu->addChild('terms',
-                        array('label' => $translator->trans('Terms and Conditions'), 'route' => 'terms'));
+        if (!array_key_exists('part', $options) || 'right' == $options['part']) {
+            $menu->addChild('about-us',
+                            array('label' => $translator->trans('About us'), 'route' => 'about-staff'));
+            $menu['about-us']
+                ->addChild('about-staff',
+                            array('label' => $translator->trans('Staff', [], 'menu'), 'route' => 'about-staff'));
+            $menu['about-us']
+                ->addChild('about-editors',
+                            array('label' => $translator->trans('Editors', [], 'menu'), 'route' => 'about-editors'));
+            $menu['about-us']
+                ->addChild('about-board',
+                           array('label' => $translator->trans('Advisory Board'), 'route' => 'about-board'));
+            $menu['about-us']
+                ->addChild('about-sponsors',
+                            array('label' => $translator->trans('Sponsors and Partners'), 'route' => 'about-sponsors'));
 
-        $menu->addChild('contact',
-                        array('label' => $translator->trans('Contact'), 'route' => 'contact'));
+            $menu->addChild('terms',
+                            array('label' => $translator->trans('Terms and Conditions'), 'route' => 'terms'));
+
+            $menu->addChild('contact',
+                            array('label' => $translator->trans('Contact'), 'route' => 'contact'));
+        }
 
         return $menu;
     }
