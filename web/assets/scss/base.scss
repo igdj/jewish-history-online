@@ -101,8 +101,14 @@ header {
 
 	#menu-top {
 		li:hover .menu_level_1 {
-			background-color: white;
+			background-color: $color-color-medium;
 			white-space: nowrap;
+			a {
+				color: $color-color-dark;
+			}
+			a:hover {
+				color: white;
+			}
 		}
 	}
 
