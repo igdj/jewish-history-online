@@ -102,7 +102,7 @@ abstract class RenderTeiController extends Controller
                     $params = [ 'slug' => $article['slug'] ];
                     break;
 
-                case 'article':
+                case 'interpretation':
                     $route = 'article';
                     $params = [ 'slug' => !empty($article['slug']) ? $article['slug'] : $article['uid'] ];
                     break;
@@ -111,7 +111,11 @@ abstract class RenderTeiController extends Controller
                     $route = 'source';
                     $params = [ 'uid' => $article['uid'] ];
                     break;
+
+                default:
+                    $route = null;
             }
+            
             if (!is_null($route)) {
                 $refMap[$article['uid']] = $this->generateUrl($route, $params, true);
             }
