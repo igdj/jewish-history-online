@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2016-09-20T22:14:16Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2016-09-22T11:46:31Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -20,7 +20,7 @@
       </trans-unit>
       <trans-unit id="6eb91e11d900e165bc026a89be2a99ddc0183746" resname="about-editionguidelines">
         <source>/about/edition-guidelines</source>
-        <target state="new">/ueber/editionsrichtlinien</target>
+        <target>/ueber/editionsrichtlinien</target>
       </trans-unit>
       <trans-unit id="a3d3d39a4d33268a03b88b7e0cdf1939fbd2c8ab" resname="about-editorialmodel">
         <source>/about/editorial-model</source>
@@ -79,8 +79,8 @@
         <target>/glossar</target>
       </trans-unit>
       <trans-unit id="e83249bd3ba79932e16fb1fb5100dafade9954c2" resname="home">
-        <source>/preview</source>
-        <target>/vorschau</target>
+        <source>/</source>
+        <target>/</target>
       </trans-unit>
       <trans-unit id="25d793dbb8b816a2f81fdd7ee262951bf6cf0b17" resname="imginfo">
         <source>/source/imginfo/{path}</source>

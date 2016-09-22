@@ -110,7 +110,7 @@ class MicroKernel extends Kernel
         $routes->mount('/', $routes->import('@AppBundle/Controller', 'annotation'));
         */
 
-        $routes->add('/preview', 'AppBundle:Default:index', 'home');
+        $routes->add('/', 'AppBundle:Default:index', 'home');
         $routes->add('/about/edition', 'AppBundle:About:about', 'about');
         $routes->add('/about/goals', 'AppBundle:About:goals', 'about-goals');
         $routes->add('/about/keydocuments', 'AppBundle:About:keydocuments', 'about-keydocuments');
