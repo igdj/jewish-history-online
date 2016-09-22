@@ -12,29 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
  */
 class SourceController extends ArticleController
 {
-    protected function adjustMedia($html, $baseUrl)
-    {
-        $crawler = new \Symfony\Component\DomCrawler\Crawler();
-        $crawler->addHtmlContent($html);
-
-        $crawler->filter('audio > source')->each(function ($node, $i) use ($baseUrl) {
-            $src = $node->attr('src');
-            $node->getNode(0)->setAttribute('src', $baseUrl . '/' . $src);
-        });
-
-        $crawler->filter('video > source')->each(function ($node, $i) use ($baseUrl) {
-            $src = $node->attr('src');
-            $node->getNode(0)->setAttribute('src', $baseUrl . '/' . $src);
-        });
-
-        $crawler->filter('img')->each(function ($node, $i) use ($baseUrl) {
-            $src = $node->attr('src');
-            $node->getNode(0)->setAttribute('src', $baseUrl . '/' . $src);
-        });
-
-        return $crawler->html();
-    }
-
     protected function renderSourceViewer($uid, $sourceArticle)
     {
         $fname = $this->buildArticleFname($sourceArticle);

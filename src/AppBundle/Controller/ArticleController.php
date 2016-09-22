@@ -12,6 +12,29 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
  */
 class ArticleController extends RenderTeiController
 {
+    protected function adjustMedia($html, $baseUrl)
+    {
+        $crawler = new \Symfony\Component\DomCrawler\Crawler();
+        $crawler->addHtmlContent($html);
+
+        $crawler->filter('audio > source')->each(function ($node, $i) use ($baseUrl) {
+            $src = $node->attr('src');
+            $node->getNode(0)->setAttribute('src', $baseUrl . '/' . $src);
+        });
+
+        $crawler->filter('video > source')->each(function ($node, $i) use ($baseUrl) {
+            $src = $node->attr('src');
+            $node->getNode(0)->setAttribute('src', $baseUrl . '/' . $src);
+        });
+
+        $crawler->filter('img')->each(function ($node, $i) use ($baseUrl) {
+            $src = $node->attr('src');
+            $node->getNode(0)->setAttribute('src', $baseUrl . '/' . $src);
+        });
+
+        return $crawler->html();
+    }
+
     /*
      * TODO: maybe move into entity
      */
@@ -62,6 +85,10 @@ class ArticleController extends RenderTeiController
 
         list($authors, $section_headers, $license, $entities, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html);
         $html = $this->adjustRefs($html, $refs, $language);
+
+        $html = $this->adjustMedia($html,
+                                               $this->get('request')->getBaseURL()
+                                               . '/viewer');
 
         $sourceDescription = $this->renderSourceDescription($article);
         if ($generatePrintView) {
