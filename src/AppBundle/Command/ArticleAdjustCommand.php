@@ -255,6 +255,9 @@ class ArticleAdjustCommand extends BaseEntityCommand
                         '@ref' => $result['place_identifier'],
                         '@value' => $place->getNameLocalized($locale),
                     ];
+                    if (!empty($result['place_geo'])) {
+                        $bibl['placeName']['@corresp'] = '#' . trim($result['place_geo']);
+                    }
                 }
                 if (!empty($result['indexingdate'])) {
                     $when = $result['indexingdate'];

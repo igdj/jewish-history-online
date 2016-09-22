@@ -173,6 +173,10 @@ class TeiHelper
                     }
                 }
                 $article->contentLocation = $place;
+                $corresp = $placeName['corresp'];
+                if (preg_match('/^\#([\+\-]?\d+\.?\d*)\s*,\s*([\+\-]?\d+\.?\d*)\s*$/', $corresp, $matches)) {
+                    $article->geo = implode(',', [ $matches[1], $matches[2] ]);
+                }
             }
             $orgName = $result[0]->orgName;
             if (!empty($orgName)) {

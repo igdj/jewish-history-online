@@ -90,6 +90,15 @@ class Article implements \JsonSerializable
     protected $contentLocation;
 
     /**
+     * @var string The geo coordinates of the place.
+     *
+     * @Assert\Type(type="string")
+     * @ORM\Column(nullable=true)
+     * @Solr\Field()
+     */
+    protected $geo;
+
+    /**
      *
      * @ORM\OneToMany(targetEntity="ArticlePerson", mappedBy="article", cascade={"persist", "remove"}, orphanRemoval=TRUE)
      */
@@ -408,7 +417,6 @@ class Article implements \JsonSerializable
         return $this->translatedFrom;
     }
 
-
     /**
      * Sets content location.
      *
@@ -431,6 +439,30 @@ class Article implements \JsonSerializable
     public function getContentLocation()
     {
         return $this->contentLocation;
+    }
+
+    /**
+     * Sets geo.
+     *
+     * @param string $geo
+     *
+     * @return $this
+     */
+    public function setGeo($geo)
+    {
+        $this->geo = $geo;
+
+        return $this;
+    }
+
+    /**
+     * Gets geo.
+     *
+     * @return string
+     */
+    public function getGeo()
+    {
+        return $this->geo;
     }
 
     /**
@@ -989,6 +1021,7 @@ class Article implements \JsonSerializable
             'author' => $this->author,
             'translator' => $this->translator,
             'contentLocation' => $this->contentLocation,
+            'geo' => $this->geo,
             'provider' => $this->provider,
             'providerIdno' => $this->providerIdno,
             'dateCreated' => $this->dateCreated,

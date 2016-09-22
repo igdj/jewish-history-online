@@ -82,6 +82,7 @@
                 if (markerPos.hasOwnProperty(geo)) {
                     (function(info) {
                         // anonymous function to create a closure
+                        var markerGeo = geo;
                         var loaded = false;
                         var marker = L.marker(info['latLng'],
                                               { title: info['name'] });
@@ -95,8 +96,8 @@
                                 popup.setContent(header
                                                  + labelLoading);
                                 popup.update();
-                                var urlTemplace = '{{ path('place-map-popup-content', { 'ids' : '{0}' }) }}';
-                                var url = decodeURIComponent(urlTemplace).replace('{0}', info['places']);
+                                var urlTemplace = '{{ path('place-map-popup-content', { 'ids' : '{0}', 'geo' : '{1}' }) }}';
+                                var url = decodeURIComponent(urlTemplace).replace('{0}', info['places']).replace('{1}', markerGeo);
                                 console.log('loading...' + url);
                                 $.get(url).done(function(data) {
                                     popup.setContent(header + data);

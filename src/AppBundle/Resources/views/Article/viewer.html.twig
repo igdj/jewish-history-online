@@ -211,10 +211,14 @@
                                 {{ meta.contentLocation.name }}
                                 {% endif %}
                             </dd>
-                            {% if meta.contentLocation.geo is not empty %}
+                            {% set geo = meta.geo %}
+                            {% if geo is not empty or meta.contentLocation.geo is not empty %}
                             <dt>{{ 'Geo Coordinates'|trans }}</dt>
                             <dd>
-                                {{ meta.contentLocation.geo }}
+                                {% if geo is empty %}
+                                    {% set geo = meta.contentLocation.geo %}
+                                {% endif %}
+                                {{ geo }}
                             </dd>
                             {% endif %}
                         {% endif %}

@@ -20,10 +20,10 @@ class PlaceController extends Controller
                 ->createQueryBuilder('A')
                 ;
 
-        $qb->select('COUNT(DISTINCT A.id) AS number, P.id AS places, P.name, P.geo')
+        $qb->select('COUNT(DISTINCT A.id) AS number, P.id AS places, P.name, COALESCE(A.geo,P.geo) AS geo')
                 ->innerJoin('A.contentLocation', 'P')
-                ->andWhere('P.geo IS NOT NULL')
-                ->groupBy('P.id')
+                ->andWhere('P.geo IS NOT NULL OR A.geo IS NOT NULL')
+                ->groupBy('geo, P.id')
                 ;
 
         $locale = $this->get('request')->getLocale();
@@ -88,7 +88,16 @@ class PlaceController extends Controller
                     ->setParameter('ids', $ids)
                     ;
 
-            $locale = $this->get('request')->getLocale();
+            $request = $this->get('request');
+
+            $geo = $request->get('geo');
+            if (!empty($geo)) {
+                $qb->andWhere('A.geo = :geo OR (A.geo IS NULL AND P.geo = :geo)')
+                    ->setParameter('geo', $geo)
+                    ;
+            }
+
+            $locale = $request->getLocale();
             if (!empty($locale)) {
                 $qb->andWhere('A.language = :lang')
                     ->setParameter('lang', \AppBundle\Utils\Iso639::code1to3($locale))
