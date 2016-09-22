@@ -176,12 +176,18 @@ class Builder implements ContainerAwareInterface
             case 'about-editorialmodel':
             case 'about-editionguidelines':
             case 'about-implementation':
+                $toplevel = $this->topMenu($factory, []);
+                $item = $toplevel['about'];
+                $item->setParent(null);
+                $menu->addChild($item);
+                $item = $item[$current_route];
+                break;
             case 'about-staff':
             case 'about-editors':
             case 'about-board':
             case 'about-sponsors':
                 $toplevel = $this->topMenu($factory, []);
-                $item = $toplevel['about'];
+                $item = $toplevel['about-us'];
                 $item->setParent(null);
                 $menu->addChild($item);
                 $item = $item[$current_route];
