@@ -33,7 +33,7 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
     <text>
         <body>
             <div n="3">
-                <head>Projektmitarbeiter/innen<lb/></head>
+                <head>Projektmitarbeiter/innen</head><lb/>
                 
                 <p><hi rendition="#b"><ref target="http://www.igdj-hh.de/daniel-burckhardt.html">Daniel Burckhardt, M.A.</ref></hi> (Technik)<lb/></p>
                 <p>Er ist seit 2015 wissenschaftlicher Mitarbeiter am Institut für die Geschichte der deutschen Juden. Er hat in Zürich und Berlin studiert und war bisher als wissenschaftlicher Mitarbeiter am Institut für Geschichtswissenschaften der Humboldt-Universität zu Berlin sowie am Zentrum für Zeithistorische Forschung Potsdam tätig. Er ist außerdem Lehrbeauftragter im Public History Master der Freien Universität zu Berlin und Mitglied der Redaktion und Steuerungsgruppe von H-Soz-Kult.</p>
@@ -53,7 +53,7 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
             </div>
 
             <div n="3">
-                <head>Studentische Hilfskräfte<lb/></head>
+                <head>Studentische Hilfskräfte</head><lb/>
                 
                 <p><hi rendition="#b">René Grothkopf</hi><lb/></p>
                 <p>Er studiert an der Universität Hamburg Soziologie und Geschichte. Seine Forschungsinteressen sind: Antisemitismusforschung, Ökonomiekritik und Geschlechterforschung.<lb/></p>

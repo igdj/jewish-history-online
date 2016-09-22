@@ -75,8 +75,16 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
                             target="http://sammlungen.ub.uni-frankfurt.de/cm?lang=de">Compact
                             Memory</ref></hi> und Digitale Sammlungen) <lb/></p>
                 <p><hi rendition="#b"><ref target="http://www.hamburg.de/staatsarchiv/">Staatsarchiv
-                            Hamburg</ref></hi><lb/></p>
+                            Hamburg</ref></hi><lb/></p></div>
+            <div n="2">
+                <head>Design und grafische Umsetzung</head>
+                <lb/>
+                <p>Sandra Morath; edelweiss* büro für grafik und design, Hamburg, <ref
+                        target="http://www.buero-edelweiss.de/">www.buero-edelweiss.de</ref></p>
             </div>
+                
+                
+         
         </body>
     </text>
 </TEI>
