@@ -96,7 +96,7 @@
       </trans-unit>
       <trans-unit id="3dd0557da5c0c1443d8ddd42a7bd8c91ca13e4be" resname="organization-gnd-beacon">
         <source>/organization/gnd/beacon</source>
-        <target>/organization/gnd/beacon</target>
+        <target>/organisation/gnd/beacon</target>
       </trans-unit>
       <trans-unit id="962e9b7257293397ca2d65e822d153e49758bf09" resname="organization-index">
         <source>/organization</source>
