@@ -23,7 +23,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorColumn(name="genre", type="string")
  * @ORM\DiscriminatorMap({"interpretation" = "Article", "source" = "SourceArticle"})
  */
-class Article implements \JsonSerializable
+class Article
+implements \JsonSerializable, OgSerializable
 {
     static function formatDateIncomplete($dateStr)
     {
@@ -1034,6 +1035,23 @@ class Article implements \JsonSerializable
             'description' => $this->description,
             'text' => $this->text,
         ];
+    }
+
+    public function ogSerialize($locale, $baseUrl)
+    {
+        static $sectionMap = [
+            'background' => 'Topics',
+            'interpretation' => 'Interpretations',
+            'source' => 'Sources',
+        ];
+
+        $ret = [
+			'og:type' => 'article',
+            'og:title' => $this->name,
+            'article:section' => $sectionMap[$this->articleSection],
+        ];
+
+        return $ret;
     }
 
     // solr-stuf

@@ -1,6 +1,6 @@
 <!doctype html>
 <html class="no-js" lang="{{ app.request.getLocale() }}"
-      prefix="og: http://ogp.me/ns#">
+      prefix="og: http://ogp.me/ns# profile: http://ogp.me/ns/profile# place: http://ogp.me/ns/place#">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,12 +8,25 @@
         {% if pageTitle is defined %}
             {{ pageTitle }} |
         {% endif %}
-        {{ 'Key Documents of German-Jewish History'|trans }}
+        {{ siteName|trans }}
         </title>
 
-        <!--<link rel="stylesheet" href="{{ app.request.basepath }}/css/normalize.css" />
+		{% if pageMeta is defined and pageMeta.og is defined %}
+		  {% for prop, val in pageMeta.og %}
+			{% if val is iterable %}
+			  {% for single_val in val %}
+		<meta property="{{ prop }}" content="{{ single_val }}">
+			  {% endfor %}
+			{% else %}
+		<meta property="{{ prop }}" content="{{ val }}">
+			{% endif %}
+		  {% endfor %}
+		{% elseif pageTitle is defined %}
+		<meta property="og:title" content="{{ pageTitle }}">
+		{% endif %}
 
-        <script src="{{ app.request.basepath }}/js/modernizr.js"></script>
+        <!--
+		<script src="{{ app.request.basepath }}/js/modernizr.js"></script>
         -->
         <script src="{{ app.request.basepath }}/js/jquery-2.2.3.min.js"></script>
 
@@ -104,7 +117,7 @@
                     </div>
                     <div class="col-sm-12">
                         <h1>
-                            <a href="{{ path('home') }}">{{ 'Key Documents of German-Jewish History'|trans }}</a><br />
+                            <a href="{{ path('home') }}">{{ siteName|trans }}</a><br />
                             <a href="{{ path('home') }}" style="font-size: 14px; font-weight: normal">{{ 'A Digital Source Edition'|trans }}</a>
                         </h1>
 					</div>

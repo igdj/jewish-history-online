@@ -11,6 +11,8 @@ use Symfony\Component\CssSelector\CssSelectorConverter;
 
 abstract class RenderTeiController extends Controller
 {
+    use OgBuilderTrait;
+    
     protected function locateTeiResource($fnameXml)
     {
         $kernel = $this->container->get('kernel');
@@ -115,7 +117,7 @@ abstract class RenderTeiController extends Controller
                 default:
                     $route = null;
             }
-            
+
             if (!is_null($route)) {
                 $refMap[$article['uid']] = $this->generateUrl($route, $params, true);
             }

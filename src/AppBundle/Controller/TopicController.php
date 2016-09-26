@@ -119,8 +119,20 @@ class TopicController extends RenderTeiController
         $generatePrintView = 'topic-background-pdf' == $this->container->get('request')->get('_route');
         $fname = $slug . $fnameAppend . '.xml';
 
-        $teiHelper = new \AppBundle\Utils\TeiHelper();
-        $meta = $teiHelper->analyzeHeader($this->locateTeiResource($fname));
+        $criteria = [ 'slug' => $slug, 'language' => \AppBundle\Utils\Iso639::code1to3($locale) ];
+
+        $article = $this->getDoctrine()
+                ->getRepository('AppBundle:Article')
+                ->findOneBy($criteria);
+        if (isset($article)) {
+            $meta = $article;
+        }
+        else {
+            // fallback to file system
+            $teiHelper = new \AppBundle\Utils\TeiHelper();
+            $meta = $teiHelper->analyzeHeader($this->locateTeiResource($fname));
+        }
+
 
         $html = $this->renderTei($fname, $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl');
 
@@ -203,8 +215,9 @@ class TopicController extends RenderTeiController
                                 'license' => $license,
                                 'entity_lookup' => $entityLookup,
                                 'glossary_lookup' => $glossaryLookup,
-                                'route_params_locale_switch' => $localeSwitch,
                                 'interpretations' => $articles,
+                                'pageMeta' => [ 'og' => $this->buildOg($article, 'topic-background', [ 'slug' => $slug ]) ],
+                                'route_params_locale_switch' => $localeSwitch, // TODO: put into pageMeta
                               ]);
     }
 }

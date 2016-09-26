@@ -54,6 +54,7 @@ class OrganizationController extends Controller
     public function gndBeaconAction()
     {
         $translator = $this->container->get('translator');
+        $twig = $this->container->get('twig');
 
         $personRepo = $this->getDoctrine()
                 ->getRepository('AppBundle:Organization');
@@ -74,7 +75,9 @@ class OrganizationController extends Controller
         $ret .= sprintf('#TARGET: %s/gnd/{ID}',
                         $this->generateUrl('organization-index', [], true))
               . "\n";
-        $ret .= '#NAME: ' . $translator->trans('Key Documents of German-Jewish History')
+
+        $globals = $twig->getGlobals();
+        $ret .= '#NAME: ' . $translator->trans($globals['siteName'])
               . "\n";
         // $ret .= '#MESSAGE: ' . "\n";
 

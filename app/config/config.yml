@@ -18,6 +18,7 @@ framework:
 
 twig:
     globals:
+        siteName: "Key Documents of German-Jewish History"
         slugify: "@cocur_slugify"
         webDir: "%kernel.root_dir%/../web"
         piwikSiteId: "%piwik.site_id%"

@@ -20,7 +20,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="person")
  */
-class Person implements \JsonSerializable
+class Person
+implements \JsonSerializable, OgSerializable
 {
     static function formatDateIncomplete($dateStr)
     {
@@ -915,6 +916,47 @@ class Person implements \JsonSerializable
                  'gnd' => $this->gnd,
                  'slug' => $this->slug,
                  ];
+    }
+
+    /*
+     * See https://developers.facebook.com/docs/reference/opengraph/object-type/profile/
+     *
+     */
+    public function ogSerialize($locale, $baseUrl)
+    {
+        static $genderMap = [ 'F' => 'female', 'M' => 'male' ];
+
+        $ret = [
+			'og:type' => 'profile',
+            'og:title' => $this->getFullname(),
+        ];
+
+        $description = $this->getDescription();
+        if (!empty($description)) {
+            if (is_array($description)) {
+                if (array_key_exists($locale, $description)) {
+                    $ret['og:description'] = $description[$locale];
+                }
+            }
+            else {
+                $ret['og:description'] = $description;
+            }
+        }
+        // TODO: maybe get og:image
+
+        if (!empty($this->givenName)) {
+            $ret['profile:first_name'] = $this->givenName;
+        }
+
+        if (!empty($this->familyName)) {
+            $ret['profile:last_name'] = $this->familyName;
+        }
+
+        if (!is_null($this->gender) && array_key_exists($this->gender, $genderMap)) {
+            $ret['profile:gender'] = $genderMap[$this->gender];
+        }
+
+        return $ret;
     }
 
     // solr-stuff

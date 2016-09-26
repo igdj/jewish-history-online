@@ -68,6 +68,7 @@ class SourceController extends ArticleController
                                     'license' => $license,
                                     'entity_lookup' => $entityLookup,
                                     'glossary_lookup' => $glossaryLookup,
+                                    'pageMeta' => [ 'og' => $this->buildOg($sourceArticle, 'source', [ 'uid' => $article->getUid() ]) ],
                                   ]);
         }
 
@@ -87,6 +88,7 @@ class SourceController extends ArticleController
                                 'license' => $license,
                                 'entity_lookup' => $entityLookup,
                                 'glossary_lookup' => $glossaryLookup,
+                                'pageMeta' => [ 'og' => $this->buildOg($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]) ],
                               ]);
     }
 

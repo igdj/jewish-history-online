@@ -87,8 +87,8 @@ class ArticleController extends RenderTeiController
         $html = $this->adjustRefs($html, $refs, $language);
 
         $html = $this->adjustMedia($html,
-                                               $this->get('request')->getBaseURL()
-                                               . '/viewer');
+                                   $this->get('request')->getBaseURL()
+                                   . '/viewer');
 
         $sourceDescription = $this->renderSourceDescription($article);
         if ($generatePrintView) {
@@ -155,6 +155,7 @@ class ArticleController extends RenderTeiController
                                 'license' => $license,
                                 'entity_lookup' => $entityLookup,
                                 'glossary_lookup' => $glossaryLookup,
+                                'pageMeta' => [ 'og' => $this->buildOg($article, 'article', [ 'slug' => $article->getSlug(true) ]) ],
                                 'route_params_locale_switch' => $localeSwitch,
                               ]);
     }
