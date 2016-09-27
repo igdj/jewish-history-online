@@ -6,56 +6,60 @@
     },
 
     "require": {
-        "symfony/framework-bundle": "*@stable",
-        "symfony/yaml": "*@stable",
-        "sensio/framework-extra-bundle": "*@stable",
-        "symfony/twig-bundle": "*@stable",
-        "symfony/validator": "*@stable",
+        "symfony/framework-bundle": "~2.8",
+        "symfony/yaml": "~2.8",
+        "sensio/framework-extra-bundle": "~3.0",
+        "symfony/twig-bundle": "~2.8",
+        "symfony/validator": "~2.8",
 
-        "symfony/serializer": "*@stable",
-        "symfony/property-access": "*@stable",
+        "symfony/serializer": "~2.8",
+        "symfony/property-access": "~2.8",
 
-        "symfony/console": "*@stable",
+        "symfony/console": "~2.8",
 
-        "symfony/monolog-bundle": "*@stable",
+        "symfony/monolog-bundle": "~2.11",
 
-        "doctrine/doctrine-bundle": "*@stable",
-        "doctrine/orm": "*@stable",
-        "stof/doctrine-extensions-bundle": "*@stable",
+        "doctrine/doctrine-bundle": "~1.6",
+        "doctrine/orm": "~2.5",
+        "stof/doctrine-extensions-bundle": "~1.2",
 
-        "jms/i18n-routing-bundle": "*@stable",
-        "jms/translation-bundle": "*@stable",
+        "jms/i18n-routing-bundle": "~2.0",
+        "jms/translation-bundle": "~1.3",
 
-        "cocur/slugify": "*@stable",
-        "liip/url-auto-converter-bundle": "*@stable",
-        "twig/extensions": "*@stable",
+        "cocur/slugify": "~1.4",
+        "liip/url-auto-converter-bundle": "~1.3",
+        "twig/extensions": "~1.4",
 
-        "symfony/dom-crawler": "*@stable",
-        "symfony/css-selector": "*@stable",
+        "symfony/dom-crawler": "~2.8",
+        "symfony/css-selector": "~2.8",
 
-        "symfony/assetic-bundle": "*@stable",
-        "leafo/scssphp": "*@stable",
-        "knplabs/knp-menu-bundle": "*@stable",
+        "symfony/assetic-bundle": "~2.8",
+        "leafo/scssphp": "~0.6",
+        "knplabs/knp-menu-bundle": "~2.1",
 
-        "symfony/web-profiler-bundle": "*@stable",
-        "symfony/debug-bundle": "*@stable",
+        "symfony/web-profiler-bundle": "~2.8",
+        "symfony/debug-bundle": "~2.8",
 
-        "sabre/xml": "@stable",
-        "html2text/html2text": "@stable",
+        "sabre/xml": "~1.4",
+        "html2text/html2text": "~4.0",
 
-        "semsol/arc2": "@stable",
+        "semsol/arc2": "~2.2",
         "easyrdf/easyrdf": "~0.9",
         "ml/json-ld": "~1.0",
 
-        "ddeboer/data-import": "*@stable",
-        "phpoffice/phpexcel": "*@stable",
+        "ddeboer/data-import": "~0.19",
+        "phpoffice/phpexcel": "~1.8",
 
-        "gmo/iso-639": "*@stable",
+        "gmo/iso-639": "~1.0",
 
         "mpdf/mpdf": "~6.0",
 
         "floriansemm/solr-bundle": "1.4",
-        "knplabs/knp-paginator-bundle": "*@stable"
+        "knplabs/knp-paginator-bundle": "~2.5",
+
+        "symfony/symfony": "~2.8",
+        "presta/sitemap-bundle": "~1.5"
+
     },
 
     "autoload": {

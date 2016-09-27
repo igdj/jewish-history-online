@@ -47,15 +47,16 @@ class MicroKernel extends Kernel
             // converturls filter
             new Liip\UrlAutoConverterBundle\LiipUrlAutoConverterBundle(),
 
+            // solr
+            new FS\SolrBundle\FSSolrBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+
+            // sitemap
+            new Presta\SitemapBundle\PrestaSitemapBundle(),
+
             // own code
             new AppBundle\AppBundle(),
         );
-
-        if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
-            // solr
-            $bundles[] = new FS\SolrBundle\FSSolrBundle();
-            $bundles[] = new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle();
-        }
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
@@ -109,6 +110,9 @@ class MicroKernel extends Kernel
         // Loading annotated routes doesn't seem to work with route translation?!
         $routes->mount('/', $routes->import('@AppBundle/Controller', 'annotation'));
         */
+
+        // exports /sitemap.xml
+        $routes->mount('/', $routes->import('@PrestaSitemapBundle/Resources/config/routing.yml'));
 
         $routes->add('/', 'AppBundle:Default:index', 'home');
         $routes->add('/about/edition', 'AppBundle:About:about', 'about');
