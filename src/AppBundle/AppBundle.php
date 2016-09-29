@@ -11,14 +11,24 @@ use Presta\SitemapBundle\Sitemap\Url\UrlConcrete;
 class AppBundle extends Bundle
 {
     // see http://stackoverflow.com/a/10473026
-    private function startsWith($haystack, $needle) {
+    private function startsWith($haystack, $needle)
+    {
         // search backwards starting from haystack length characters from the end
         return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== false;
     }
 
-    private function endsWith($haystack, $needle) {
+    private function endsWith($haystack, $needle)
+    {
         // search forward starting from end minus needle length characters
         return $needle === "" || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== false);
+    }
+
+    private function addUrlDescription(&$urlDescriptions, $key, $routeLocale, $localeUrlDescription)
+    {
+        if (!array_key_exists($key, $urlDescriptions)) {
+            $urlDescriptions[$key] = [];
+        }
+        $urlDescriptions[$key][$routeLocale] = $localeUrlDescription;
     }
 
     // see https://github.com/prestaconcept/PrestaSitemapBundle/blob/master/Resources/doc/3-Usage-Quick_and_dirty.md
@@ -35,34 +45,40 @@ class AppBundle extends Bundle
             function (SitemapPopulateEvent $event) use ($router, $container) {
                 $locale = $container->get('router.request_context')->getParameter('_locale');
 
+                $urlDescriptions = [];
+
                 foreach ($router->getRouteCollection() as $name => $route) {
                     $defaults = $route->getDefaults();
                     if (!$this->startsWith($defaults['_controller'], 'AppBundle')) {
-                        // skip foreign bundles
+                        // skip routes from other bundles
                         continue;
                     }
                     if (!array_key_exists('_locale', $defaults)) {
                         continue;
                     }
-                    if ($defaults['_locale'] != $locale) {
-                        // TODO: alternate language through GoogleMultilangUrlDecorator
-                        continue;
-                    }
                     $urlset = 'default';
-                    $urls = [];
+                    // name is $locale__RG__$routeName
+                    $parts = explode('__', $name);
+                    $routeName = $parts[count($parts) - 1];
                     if (preg_match('/\{.*?\}/', $route->getPath())) {
                         // handle the ones with parameters
-                        // name is $locale__RG__$routeName
-                        $parts = explode('__', $name);
-                        $routeName = $parts[count($parts) - 1];
+
+                        /*
+                        if ($defaults['_locale'] != $locale) {
+                            continue; // TODO: also generate language variants for these
+                        }
+                        */
+
                         switch ($routeName) {
                             case 'topic-background':
                                 $slugify = $container->get('cocur_slugify');
                                 $translator = $container->get('translator');
 
                                 foreach (\AppBundle\Controller\TopicController::$TOPICS as $topic) {
-                                    $urls[] = $router->generate($name, [ 'slug' => $slugify->slugify($translator->trans($topic)) ],
-                                                                UrlGeneratorInterface::ABSOLUTE_URL);
+                                    $translator->setLocale($defaults['_locale']);
+                                    $url = $router->generate($routeName, [ 'slug' => $slugify->slugify($translator->trans($topic)), '_locale' => $defaults['_locale'] ],
+                                                             UrlGeneratorInterface::ABSOLUTE_URL);
+                                    $this->addUrlDescription($urlDescriptions, $routeName . $topic, $defaults['_locale'], [ 'url' => $url, 'urlset' => $urlset ]);
                                 }
                                 break;
 
@@ -73,7 +89,7 @@ class AppBundle extends Bundle
                                     ->getManager()
                                     ->createQueryBuilder();
 
-                                $qb->select([ 'E'                                             ])
+                                $qb->select([ 'E' ])
                                     ->from('AppBundle:' . ucfirst($routeName), 'E')
                                     ->where('E.status IN (0,1)')
                                     ;
@@ -82,13 +98,14 @@ class AppBundle extends Bundle
                                 foreach ($entities as $entity) {
                                     $gnd = $entity->getGnd();
                                     if (!empty($gnd)) {
-                                        $urls[] = $router->generate($routeName . '-by-gnd', [ 'gnd' => $gnd ],
-                                                                    UrlGeneratorInterface::ABSOLUTE_URL);
+                                        $url = $router->generate($routeName . '-by-gnd', [ 'gnd' => $gnd, '_locale' => $defaults['_locale'] ],
+                                                                 UrlGeneratorInterface::ABSOLUTE_URL);
                                     }
                                     else {
-                                        $urls[] = $router->generate($routeName, [ 'id' => $entity->getId() ],
-                                                                    UrlGeneratorInterface::ABSOLUTE_URL);
+                                        $url = $router->generate($routeName, [ 'id' => $entity->getId(), '_locale' => $defaults['_locale'] ],
+                                                                 UrlGeneratorInterface::ABSOLUTE_URL);
                                     }
+                                    $this->addUrlDescription($urlDescriptions, $routeName . $entity->getId(), $defaults['_locale'], [ 'url' => $url, 'urlset' => $urlset ]);
                                 }
                                 break;
 
@@ -101,13 +118,14 @@ class AppBundle extends Bundle
                                 foreach ($places as $entity) {
                                     $tgn = $entity->getTgn();
                                     if (!empty($tgn)) {
-                                        $urls[] = $router->generate($routeName . '-by-tgn', [ 'tgn' => $tgn ],
-                                                                    UrlGeneratorInterface::ABSOLUTE_URL);
+                                        $url = $router->generate($routeName . '-by-tgn', [ 'tgn' => $tgn ],
+                                                                 UrlGeneratorInterface::ABSOLUTE_URL);
                                     }
                                     else {
-                                        $urls[] = $router->generate($routeName, [ 'id' => $entity->getId() ],
-                                                                    UrlGeneratorInterface::ABSOLUTE_URL);
+                                        $url = $router->generate($routeName, [ 'id' => $entity->getId() ],
+                                                                 UrlGeneratorInterface::ABSOLUTE_URL);
                                     }
+                                    $this->addUrlDescription($urlDescriptions, $routeName  . $entity->getId(), $defaults['_locale'], [ 'url' => $url, 'urlset' => $urlset ]);
                                 }
                                 break;
 
@@ -116,7 +134,7 @@ class AppBundle extends Bundle
                                 $urlset = $routeName;
                                 $criteria = [
                                     'status' => [ 0, 1 ],
-                                    'language' => \AppBundle\Utils\Iso639::code1to3($locale),
+                                    'language' => \AppBundle\Utils\Iso639::code1to3($defaults['_locale']),
                                     'articleSection' => 'article' == $routeName ? 'interpretation' : 'source',
                                 ];
 
@@ -137,13 +155,14 @@ class AppBundle extends Bundle
 
                                 foreach ($qb->getQuery()->getResult() as $article) {
                                     if ('article' == $routeName) {
-                                        $urls[] = $router->generate($routeName, [ 'slug' => $article->getSlug(true) ],
-                                                                    UrlGeneratorInterface::ABSOLUTE_URL);
+                                        $url = $router->generate($routeName, [ 'slug' => $article->getSlug(true), '_locale' => $defaults['_locale'] ],
+                                                                 UrlGeneratorInterface::ABSOLUTE_URL);
                                     }
                                     else {
-                                        $urls[] = $router->generate($routeName, [ 'uid' => $article->getUid() ],
-                                                                    UrlGeneratorInterface::ABSOLUTE_URL);
+                                        $url = $router->generate($routeName, [ 'uid' => $article->getUid(), '_locale' => $defaults['_locale'] ],
+                                                                 UrlGeneratorInterface::ABSOLUTE_URL);
                                     }
+                                    $this->addUrlDescription($urlDescriptions, $article->getUid(), $defaults['_locale'], [ 'url' => $url, 'urlset' => $urlset ]);
                                 }
 
                                 break;
@@ -153,25 +172,38 @@ class AppBundle extends Bundle
                         }
                     }
                     else {
-                        $url = $router->generate($name,[], UrlGeneratorInterface::ABSOLUTE_URL);
+                        $url = $router->generate($routeName, [ '_locale' => $defaults['_locale'] ], UrlGeneratorInterface::ABSOLUTE_URL);
                         if (!$this->endsWith($url, '/beacon')) {
-                            $urls[] = $url;
+                            $this->addUrlDescription($urlDescriptions, $routeName, $defaults['_locale'], [ 'url' => $url, 'urlset' => $urlset ]);
                         }
                     }
 
-                    foreach ($urls as $url) {
-                        //add $urls to the urlset named default
-                        $event->getUrlContainer()->addUrl(
-                            new UrlConcrete(
-                                $url,
-                                // TODO: custom settings for lastMode, changeFreq, weight
-                                new \DateTime(),
-                                UrlConcrete::CHANGEFREQ_WEEKLY,
-                                0.5
-                            ),
-                            $urlset
-                        );
+                }
 
+                foreach ($urlDescriptions as $urlDescription) {
+                    if (array_key_exists($locale, $urlDescription)) {
+                        $localeUrlDescription = $urlDescription[$locale];
+                        $url = new UrlConcrete(
+                                $localeUrlDescription['url']
+                                //,
+                                // TODO: custom settings for lastMode, changeFreq, weight
+                                // new \DateTime(),
+                                // UrlConcrete::CHANGEFREQ_WEEKLY,
+                                // 0.5
+                            );
+
+                        $url = new \Presta\SitemapBundle\Sitemap\Url\GoogleMultilangUrlDecorator($url);
+
+                        // add decorations for alternate language versions
+                        foreach ($urlDescription as $altLocale => $localeUrlDescription) {
+                            if ($altLocale != $locale) {
+                                $url->addLink($localeUrlDescription['url'], $altLocale);
+                            }
+                        }
+
+                        $event->getUrlContainer()->addUrl($url,
+                            $localeUrlDescription['urlset']
+                        );
                     }
                 }
         });
