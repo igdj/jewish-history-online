@@ -227,12 +227,24 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
 
     protected function insertMissingPlace($uri, $additional = [])
     {
+        $em = $this->getContainer()->get('doctrine')->getEntityManager();
         $entity = $this->findPlaceByUri($uri);
         if (!is_null($entity)) {
+            // set gnd if not already set
+            if (preg_match('/^'
+                                       . preg_quote('http://d-nb.info/gnd/', '/')
+                                       . '(\d+[\-]?[\dxX]?)$/', $additional['gnd'], $matches))
+            {
+                $gnd = $entity->getGnd();
+                if (empty($gnd)) {
+                    $entity->setGnd($matches[1]);
+                    $em->persist($entity);
+                    $em->flush();
+                }
+            }
             return 0;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getEntityManager();
         $entity = new \AppBundle\Entity\Place();
         $condition = $this->buildPlaceConditionByUri($uri);
         foreach ($condition as $prefix => $value) {

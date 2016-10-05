@@ -231,6 +231,13 @@ class EntityEnhanceCommand extends ContainerAwareCommand
                         }
                         else if (!empty($placeInfo['gnd'])) {
                             $places = $em->getRepository('AppBundle:Place')->findByGnd($placeInfo['gnd']);
+                            if (empty($places)) {
+                                // try to lookup by name
+                                $places = $em->getRepository('AppBundle:Place')->findByName($placeInfo['name']);
+                                if (count($places) > 1) {
+                                    $places[] = []; // skip if there are multiple matches
+                                } 
+                            }
                         }
                         else {
                             continue;

@@ -9,7 +9,7 @@
     <script>
         var service = new SeeAlsoCollection();
         service.services = {
-            'pndaks' : new SeeAlsoService('http://beacon.findbuch.de/seealso/pnd-aks/-dewp@wd/-lemo@ap')
+            'pndaks' : new SeeAlsoService('http://beacon.findbuch.de/seealso/pnd-aks/-dewp@wd/-lemo@ap/-jgo-hsd-personen')
         };
         service.views = {
             'seealso-ul' : new SeeAlsoUL({
@@ -49,7 +49,7 @@
                 <dd>
                     {{ person.deathDate|dateincomplete -}}
                     {% if deathPlace is not empty %}{% if person.deathDate is not empty %}{{- ',' }}{% endif %}
-                        {% if deathPlace.id is not empty %}
+                        {% if deathPlace is not empty %}
                             <a href="{% if deathPlace.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : deathPlace.tgn }) }}{% else %}{{ path('place', { 'id' : deathPlace.id }) }}{% endif %}">
                             {{ deathPlace['name'] }}
                             </a>
