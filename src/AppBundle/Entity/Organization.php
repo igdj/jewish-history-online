@@ -20,7 +20,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="organization")
  */
-class Organization implements \JsonSerializable
+class Organization
+implements \JsonSerializable, JsonLdSerializable
 {
     static function formatDateIncomplete($dateStr)
     {
@@ -295,6 +296,22 @@ class Organization implements \JsonSerializable
         return $this->description;
     }
 
+    public function getDescriptionLocalized($locale)
+    {
+        if (empty($this->description)) {
+            return;
+        }
+
+        if (is_array($this->description)) {
+            if (array_key_exists($locale, $this->description)) {
+                return $this->description[$locale];
+            }
+        }
+        else {
+            return $this->description;
+        }
+    }
+
     /**
      * Sets dissolutionDate.
      *
@@ -547,6 +564,51 @@ class Organization implements \JsonSerializable
                  'gnd' => $this->gnd,
                  ];
     }
+
+    public function jsonLdSerialize($locale, $omitContext = false)
+    {
+        $ret = [
+            '@context' => 'http://schema.org',
+            '@type' => 'Organization',
+            'name' => $this->getNameLocalized($locale),
+        ];
+        if ($omitContext) {
+            unset($ret['@context']);
+        }
+
+        foreach ([ 'founding', 'dissolution'] as $lifespan) {
+            $property = $lifespan . 'Date';
+            if (!empty($this->$property)) {
+                $ret[$property] = \AppBundle\Utils\JsonLd::formatDate8601($this->$property);
+            }
+
+            if ('founding' == $lifespan) {
+                $property = $lifespan . 'Location';
+                if (!is_null($this->$property)) {
+                    $ret[$property] = $this->$property->jsonLdSerialize($locale, true);
+                }
+            }
+        }
+
+        $description = $this->getDescriptionLocalized($locale);
+        if (!empty($description)) {
+            $ret['description'] = $description;
+        }
+
+        foreach ([ 'url' ] as $property) {
+            if (!empty($this->$property)) {
+                $ret[$property] = $this->$property;
+
+            }
+        }
+
+        if (!empty($this->gnd)) {
+            $ret['sameAs'] = 'http://d-nb.info/gnd/' . $this->gnd;
+        }
+
+        return $ret;
+    }
+
 
     // solr-stuff
     public function indexHandler()

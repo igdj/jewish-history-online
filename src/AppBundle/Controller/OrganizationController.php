@@ -48,6 +48,9 @@ class OrganizationController extends Controller
                              [
                                 'pageTitle' => $organization->getNameLocalized($this->get('request')->getLocale()),
                                 'organization' => $organization,
+                                'pageMeta' => [
+                                    'jsonLd' => $organization->jsonLdSerialize($this->getRequest()->getLocale()),
+                                ],
                               ]);
     }
 

@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorMap({"interpretation" = "Article", "source" = "SourceArticle"})
  */
 class Article
-implements \JsonSerializable, OgSerializable
+implements \JsonSerializable, JsonLdSerializable, OgSerializable
 {
     static function formatDateIncomplete($dateStr)
     {
@@ -1035,6 +1035,49 @@ implements \JsonSerializable, OgSerializable
             'description' => $this->description,
             'text' => $this->text,
         ];
+    }
+
+    public function jsonLdSerialize($locale, $omitContext = false)
+    {
+        $ret = [
+            '@context' => 'http://schema.org',
+            '@type' => 'CreativeWork', // we don't use Article for now since this requires image
+            'name' => $this->name,
+            'headline' => $this->name,
+        ];
+        if ($omitContext) {
+            unset($ret['@context']);
+        }
+
+        if (!is_null($this->datePublished)) {
+            $ret['datePublished'] = \AppBundle\Utils\JsonLd::formatDate8601($this->datePublished);
+            if (!is_null($this->dateModified)) {
+                $dateModified = \AppBundle\Utils\JsonLd::formatDate8601($this->dateModified);
+                if ($dateModified != $ret['datePublished']) {
+                    $ret['dateModified'] = $dateModified;
+                }
+            }
+        }
+
+        if (!is_null($this->author)) {
+            $authors = [];
+            foreach ($this->author as $author) {
+                $authors[] = $author->jsonLdSerialize($locale, true);
+            }
+            if (count($authors) > 0) {
+                $ret['author'] = (1 == count($authors)) ? $authors[0] : $authors;
+            }
+        }
+
+        if (!is_null($this->translator)) {
+            $ret['translator'] = $this->translator->jsonLdSerialize($locale, true);
+        }
+
+        if (!empty($this->license)) {
+            $ret['license'] = $this->license;
+        }
+
+        return $ret;
     }
 
     public function ogSerialize($locale, $baseUrl)

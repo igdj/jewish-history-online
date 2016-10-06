@@ -155,7 +155,10 @@ class ArticleController extends RenderTeiController
                                 'license' => $license,
                                 'entity_lookup' => $entityLookup,
                                 'glossary_lookup' => $glossaryLookup,
-                                'pageMeta' => [ 'og' => $this->buildOg($article, 'article', [ 'slug' => $article->getSlug(true) ]) ],
+                                'pageMeta' => [
+                                    'jsonLd' => $article->jsonLdSerialize($this->getRequest()->getLocale()),
+                                    'og' => $this->buildOg($article, 'article', [ 'slug' => $article->getSlug(true) ]),
+                                ],
                                 'route_params_locale_switch' => $localeSwitch,
                               ]);
     }

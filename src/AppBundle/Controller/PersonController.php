@@ -67,7 +67,10 @@ class PersonController extends Controller
                              [
                                 'pageTitle' => $person->getFullname(true), // TODO: lifespan in brackets
                                 'person' => $person,
-                                'pageMeta' => [ 'og' => $this->buildOg($person, $routeName, $routeParams) ],
+                                'pageMeta' => [
+                                    'jsonLd' => $person->jsonLdSerialize($this->getRequest()->getLocale()),
+                                    'og' => $this->buildOg($person, $routeName, $routeParams),
+                                ],
                               ]);
     }
 

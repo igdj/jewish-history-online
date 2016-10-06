@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="person")
  */
 class Person
-implements \JsonSerializable, OgSerializable
+implements \JsonSerializable, JsonLdSerializable, OgSerializable
 {
     static function formatDateIncomplete($dateStr)
     {
@@ -146,6 +146,7 @@ implements \JsonSerializable, OgSerializable
      */
     protected $deathPlace;
     /**
+     * TODO: rename to honorificPrefix
      * @var string
      *
      * @Assert\Type(type="string")
@@ -153,6 +154,7 @@ implements \JsonSerializable, OgSerializable
      */
     protected $honoricPrefix;
     /**
+     * TODO: rename to honorificSuffice
      * @var string
      *
      * @Assert\Type(type="string")
@@ -392,6 +394,22 @@ implements \JsonSerializable, OgSerializable
     public function getDescription()
     {
         return $this->description;
+    }
+
+    public function getDescriptionLocalized($locale)
+    {
+        if (empty($this->description)) {
+            return;
+        }
+
+        if (is_array($this->description)) {
+            if (array_key_exists($locale, $this->description)) {
+                return $this->description[$locale];
+            }
+        }
+        else {
+            return $this->description;
+        }
     }
 
     /**
@@ -918,6 +936,60 @@ implements \JsonSerializable, OgSerializable
                  ];
     }
 
+    public function jsonLdSerialize($locale, $omitContext = false)
+    {
+        static $genderMap = [
+            'F' => 'http://schema.org/Female',
+            'M' => 'http://schema.org/Male',
+        ];
+
+        $ret = [
+            '@context' => 'http://schema.org',
+            '@type' => 'Person',
+            'name' => $this->getFullname(true),
+        ];
+        if ($omitContext) {
+            unset($ret['@context']);
+        }
+
+        foreach ([ 'birth', 'death'] as $lifespan) {
+            $property = $lifespan . 'Date';
+            if (!empty($this->$property)) {
+                $ret[$property] = \AppBundle\Utils\JsonLd::formatDate8601($this->$property);
+            }
+
+            $property = $lifespan . 'Place';
+            if (!is_null($this->$property)) {
+                $ret[$property] = $this->$property->jsonLdSerialize($locale, true);
+            }
+        }
+
+        $description = $this->getDescriptionLocalized($locale);
+        if (!empty($description)) {
+            $ret['description'] = $description;
+        }
+
+        foreach ([ 'givenName', 'familyName', 'url' ] as $property) {
+            if (!empty($this->$property)) {
+                $ret[$property] = $this->$property;
+
+            }
+        }
+        if (!empty($this->honoricPrefix)) {
+            $ret['honorificPrefix'] = $this->honoricPrefix;
+        }
+
+        if (!is_null($this->gender) && array_key_exists($this->gender, $genderMap)) {
+            $ret['gender'] = $genderMap[$this->gender];
+        }
+
+        if (!empty($this->gnd)) {
+            $ret['sameAs'] = 'http://d-nb.info/gnd/' . $this->gnd;
+        }
+
+        return $ret;
+    }
+
     /*
      * See https://developers.facebook.com/docs/reference/opengraph/object-type/profile/
      *
@@ -931,16 +1003,9 @@ implements \JsonSerializable, OgSerializable
             'og:title' => $this->getFullname(),
         ];
 
-        $description = $this->getDescription();
+        $description = $this->getDescriptionLocalized($locale);
         if (!empty($description)) {
-            if (is_array($description)) {
-                if (array_key_exists($locale, $description)) {
-                    $ret['og:description'] = $description[$locale];
-                }
-            }
-            else {
-                $ret['og:description'] = $description;
-            }
+            $ret['og:description'] = $description;
         }
         // TODO: maybe get og:image
 

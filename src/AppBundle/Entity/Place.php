@@ -20,7 +20,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="place")
  */
-class Place implements \JsonSerializable
+class Place
+implements \JsonSerializable, JsonLdSerializable
 {
     static $zoomLevelByType = [
         'neighborhood' => 12,
@@ -582,6 +583,45 @@ class Place implements \JsonSerializable
                  'tgn' => $this->tgn,
                  'gnd' => $this->gnd,
                  ];
+    }
+
+    public function jsonLdSerialize($locale, $omitContext = false)
+    {
+        $ret = [
+            '@context' => 'http://schema.org',
+            '@type' => 'Place',
+            'name' => $this->getNameLocalized($locale),
+        ];
+
+        if ($omitContext) {
+            unset($ret['@context']);
+        }
+
+        if (!(empty($this->geo) || false === strpos($this->geo, ','))) {
+            list($lat, $long) = explode(',', $this->geo, 2);
+            $ret['geo'] = [
+                '@type' => 'GeoCoordinates',
+                'latitude' =>  $lat,
+                'longitude' => $long,
+            ];
+        }
+
+        if (!is_null($this->parent)) {
+            $ret['containedInPlace'] = $this->parent->jsonLdSerialize($locale, true);
+        }
+
+        $sameAs = [];
+        if (!empty($this->tgn)) {
+            $sameAs[] = 'http://vocab.getty.edu/tgn/' . $this->tgn;
+        }
+        if (!empty($this->gnd)) {
+            $sameAs[] = 'http://d-nb.info/gnd/' . $this->gnd;
+        }
+        if (count($sameAs) > 0) {
+            $ret['sameAs'] = (1 == count($sameAs)) ? $sameAs[0] : $sameAs;
+        }
+
+        return $ret;
     }
 
     // solr-stuff

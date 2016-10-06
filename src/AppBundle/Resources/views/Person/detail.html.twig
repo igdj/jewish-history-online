@@ -49,7 +49,7 @@
                 <dd>
                     {{ person.deathDate|dateincomplete -}}
                     {% if deathPlace is not empty %}{% if person.deathDate is not empty %}{{- ',' }}{% endif %}
-                        {% if deathPlace is not empty %}
+                        {% if deathPlace.id is not empty %}
                             <a href="{% if deathPlace.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : deathPlace.tgn }) }}{% else %}{{ path('place', { 'id' : deathPlace.id }) }}{% endif %}">
                             {{ deathPlace['name'] }}
                             </a>

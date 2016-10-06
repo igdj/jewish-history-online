@@ -39,4 +39,23 @@ class SourceArticle extends Article
     {
         return self::buildDateBucket($this->dateCreated);
     }
+
+    public function jsonLdSerialize($locale, $omitContext = false)
+    {
+        $ret = parent::jsonLdSerialize($locale, $omitContext);
+        if (!empty($this->creator)) {
+            $ret['creator'] = $this->creator;
+        }
+        if (!empty($this->dateCreated)) {
+            $ret['dateCreated'] = \AppBundle\Utils\JsonLd::formatDate8601($this->dateCreated);
+        }
+        if (isset($this->contentLocation)) {
+            $ret['contentLocation'] = $this->contentLocation->jsonLdSerialize($locale, true);
+        }
+        if (isset($this->provider)) {
+            $ret['provider'] = $this->provider->jsonLdSerialize($locale, true);
+        }
+        return $ret;
+    }
+
 }

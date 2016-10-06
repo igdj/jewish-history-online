@@ -163,6 +163,9 @@ class PlaceController extends Controller
                              [
                                 'pageTitle' => $place->getNameLocalized($this->get('request')->getLocale()),
                                 'place' => $place,
+                                'pageMeta' => [
+                                    'jsonLd' => $place->jsonLdSerialize($this->getRequest()->getLocale()),
+                                ],
                              ]);
     }
 

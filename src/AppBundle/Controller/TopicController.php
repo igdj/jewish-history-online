@@ -216,7 +216,10 @@ class TopicController extends RenderTeiController
                                 'entity_lookup' => $entityLookup,
                                 'glossary_lookup' => $glossaryLookup,
                                 'interpretations' => $articles,
-                                'pageMeta' => [ 'og' => $this->buildOg($article, 'topic-background', [ 'slug' => $slug ]) ],
+                                'pageMeta' => [
+                                    'jsonLd' => $article->jsonLdSerialize($this->getRequest()->getLocale()),
+                                    'og' => $this->buildOg($article, 'topic-background', [ 'slug' => $slug ])
+                                ],
                                 'route_params_locale_switch' => $localeSwitch, // TODO: put into pageMeta
                               ]);
     }

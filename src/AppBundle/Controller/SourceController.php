@@ -68,7 +68,10 @@ class SourceController extends ArticleController
                                     'license' => $license,
                                     'entity_lookup' => $entityLookup,
                                     'glossary_lookup' => $glossaryLookup,
-                                    'pageMeta' => [ 'og' => $this->buildOg($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]) ],
+                                    'pageMeta' => [
+                                        'jsonLd' => $sourceArticle->jsonLdSerialize($this->getRequest()->getLocale()),
+                                        'og' => $this->buildOg($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]),
+                                    ],
                                   ]);
         }
 
@@ -88,7 +91,10 @@ class SourceController extends ArticleController
                                 'license' => $license,
                                 'entity_lookup' => $entityLookup,
                                 'glossary_lookup' => $glossaryLookup,
-                                'pageMeta' => [ 'og' => $this->buildOg($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]) ],
+                                'pageMeta' => [
+                                    'jsonLd' => $sourceArticle->jsonLdSerialize($this->getRequest()->getLocale()),
+                                    'og' => $this->buildOg($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]),
+                                ],
                               ]);
     }
 
