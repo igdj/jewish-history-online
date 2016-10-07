@@ -230,10 +230,11 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine')->getEntityManager();
         $entity = $this->findPlaceByUri($uri);
         if (!is_null($entity)) {
-            // set gnd if not already set
-            if (preg_match('/^'
-                                       . preg_quote('http://d-nb.info/gnd/', '/')
-                                       . '(\d+[\-]?[\dxX]?)$/', $additional['gnd'], $matches))
+            // set gnd if given and not already set
+            if (!empty($additional['gnd'])
+                && preg_match('/^'
+                              . preg_quote('http://d-nb.info/gnd/', '/')
+                              . '(\d+[\-]?[\dxX]?)$/', $additional['gnd'], $matches))
             {
                 $gnd = $entity->getGnd();
                 if (empty($gnd)) {
