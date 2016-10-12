@@ -103,7 +103,7 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
                     break;
 
                 default:
-                    die('TODO: handle field ' . $field);
+                    die('TODO: handle field ' . $field . ' for ' . $value);
             }
         }
         $em->persist($person);

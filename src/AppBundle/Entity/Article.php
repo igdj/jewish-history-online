@@ -201,7 +201,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
      *
      * @Assert\Type(type="string")
      * @Assert\NotNull
-     * @ORM\Column
+     * @ORM\Column(length=512)
      * @Solr\Field(type="string")
      */
     protected $name;
@@ -1111,7 +1111,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
     */
     public function shouldBeIndexed()
     {
-        return $this->status >= 0;
+        return $this->status == 1; // explicit publishing needed
     }
 
 }

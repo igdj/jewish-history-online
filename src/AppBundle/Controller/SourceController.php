@@ -48,7 +48,9 @@ class SourceController extends ArticleController
         $parts = explode('.', $fnameMets);
         $path = $parts[0];
 
-        if (empty($firstFacs) && in_array($sourceArticle->getSourceType(), [ 'Audio', 'Video', 'Bild', 'Image', 'Objekt', 'Object' ])) {
+        if (empty($firstFacs)
+            && in_array($sourceArticle->getSourceType(), [ 'Audio', 'Video', 'Bild', 'Image', 'Objekt', 'Object' ]))
+        {
             $html = $this->adjustMedia($html,
                                        $this->get('request')->getBaseURL()
                                        . '/viewer/' . $path);

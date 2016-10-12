@@ -15,7 +15,7 @@ class DateController extends Controller
      */
     public function chronologyAction()
     {
-        $criteria = [ 'status' => [ 0, 1 ] ];
+        $criteria = [ 'status' => [ 1 ] ];
 
         $locale = $this->get('request')->getLocale();
         if (!empty($locale)) {

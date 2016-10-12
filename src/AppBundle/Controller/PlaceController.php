@@ -22,7 +22,7 @@ class PlaceController extends Controller
 
         $qb->select('COUNT(DISTINCT A.id) AS number, P.id AS places, P.name, COALESCE(A.geo,P.geo) AS geo')
                 ->innerJoin('A.contentLocation', 'P')
-                ->andWhere('P.geo IS NOT NULL OR A.geo IS NOT NULL')
+                ->andWhere('A.status IN (1) AND (P.geo IS NOT NULL OR A.geo IS NOT NULL)')
                 ->groupBy('geo, P.id')
                 ;
 

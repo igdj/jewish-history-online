@@ -133,7 +133,7 @@ class AppBundle extends Bundle
                             case 'article':
                                 $urlset = $routeName;
                                 $criteria = [
-                                    'status' => [ 0, 1 ],
+                                    'status' => [ 1 ], // explicit publishing needed
                                     'language' => \AppBundle\Utils\Iso639::code1to3($defaults['_locale']),
                                     'articleSection' => 'article' == $routeName ? 'interpretation' : 'source',
                                 ];

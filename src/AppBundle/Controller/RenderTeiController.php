@@ -12,7 +12,7 @@ use Symfony\Component\CssSelector\CssSelectorConverter;
 abstract class RenderTeiController extends Controller
 {
     use OgBuilderTrait;
-    
+
     protected function locateTeiResource($fnameXml)
     {
         $kernel = $this->container->get('kernel');
@@ -85,7 +85,7 @@ abstract class RenderTeiController extends Controller
         $query = $this->get('doctrine')
             ->getManager()
             ->createQuery("SELECT a.uid, a.articleSection, a.slug FROM AppBundle:Article a"
-                          . " WHERE a.status IN (0,1)"
+                          . " WHERE a.status IN (1)"
                           . " AND a.uid IN (:refs)"
                           . (!empty($language) ? ' AND a.language=:language' : '')
                           . " ORDER BY a.name")

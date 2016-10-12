@@ -192,7 +192,7 @@ class TopicController extends RenderTeiController
         $query = $this->get('doctrine')
             ->getManager()
             ->createQuery("SELECT a FROM AppBundle:Article a"
-                          . " WHERE a.keywords LIKE :topic AND a.articleSection <> 'background'"
+                          . " WHERE a.status IN(1) AND a.keywords LIKE :topic AND a.articleSection <> 'background'"
                           . (!empty($language) ? ' AND a.language=:language' : '')
                           . " ORDER BY a.name")
             ->setParameter('topic', '%' . $topics[$slug] . '%')

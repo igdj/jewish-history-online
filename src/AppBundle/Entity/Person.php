@@ -910,15 +910,18 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
 
     public function getArticles($lang = null)
     {
-        if (is_null($lang) || is_null($this->articles)) {
+        if (is_null($this->articles)) {
             return $this->articles;
         }
 
-        $langCode3 = \AppBundle\Utils\Iso639::code1to3($lang);
+        $langCode3 = is_null($lang)
+            ? null
+            : \AppBundle\Utils\Iso639::code1to3($lang);
 
         return $this->articles->filter(
             function($entity) use ($langCode3) {
-               return $entity->getLanguage() == $langCode3;
+               return 1 == $entity->getStatus()
+                && (is_null($langCode3) || $entity->getLanguage() == $langCode3);
             }
         );
     }
