@@ -22,9 +22,24 @@ class ArticleController extends RenderTeiController
             $node->getNode(0)->setAttribute('src', $baseUrl . '/' . $src);
         });
 
+        // for https://github.com/iainhouston/bootstrap3_player
+        $crawler->filter('audio')->each(function ($node, $i) use ($baseUrl) {
+            $poster = $node->attr('data-info-album-art');
+            if (!is_null($poster)) {
+                $node->getNode(0)->setAttribute('data-info-album-art', $baseUrl . '/' . $poster);
+            }
+        });
+
         $crawler->filter('video > source')->each(function ($node, $i) use ($baseUrl) {
             $src = $node->attr('src');
             $node->getNode(0)->setAttribute('src', $baseUrl . '/' . $src);
+        });
+
+        $crawler->filter('video')->each(function ($node, $i) use ($baseUrl) {
+            $poster = $node->attr('poster');
+            if (!is_null($poster)) {
+                $node->getNode(0)->setAttribute('poster', $baseUrl . '/' . $poster);
+            }
         });
 
         $crawler->filter('img')->each(function ($node, $i) use ($baseUrl) {
@@ -139,6 +154,10 @@ class ArticleController extends RenderTeiController
                 $localeSwitch[\AppBundle\Utils\Iso639::code3to1($translation->getLanguage())]
                     = [ 'slug' => $translation->getSlug(true) ];
             }
+        }
+
+        if (in_array($this->container->get('request')->get('_route'), [ 'article-jsonld' ])) {
+            return new JsonLdResponse($article->jsonLdSerialize($this->getRequest()->getLocale()));
         }
 
         return $this->render('AppBundle:Article:article.html.twig',

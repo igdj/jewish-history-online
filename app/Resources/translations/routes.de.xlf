@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2016-09-22T11:46:31Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2016-10-19T16:19:41Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
+      <trans-unit id="acf77afa5a58e1b5a8a0ade29cf324f88435cd4c" resname="PrestaSitemapBundle_index">
+        <source>/sitemap.{_format}</source>
+        <target>/sitemap.{_format}</target>
+      </trans-unit>
+      <trans-unit id="6b672d8bf10805d0c6121b40fedbb2492e4e1425" resname="PrestaSitemapBundle_section">
+        <source>/sitemap.{name}.{_format}</source>
+        <target>/sitemap.{name}.{_format}</target>
+      </trans-unit>
       <trans-unit id="5780daf6db0b013dbf82807c9f85abba683b0820" resname="about">
         <source>/about/edition</source>
         <target>/ueber/edition</target>
@@ -58,6 +66,10 @@
         <source>/article/{slug}</source>
         <target>/beitrag/{slug}</target>
       </trans-unit>
+      <trans-unit id="7a5f5b0e455460a3dc2928516c871ff1509dc2b1" resname="article-jsonld">
+        <source>/article/{slug}.jsonld</source>
+        <target state="new">/beitrag/{slug}.jsonld</target>
+      </trans-unit>
       <trans-unit id="49d68eebf12335dc304162bc32bd219f7bb060d2" resname="article-pdf">
         <source>/article/{slug}.pdf</source>
         <target>/beitrag/{slug}.pdf</target>
@@ -94,6 +106,10 @@
         <source>/organization/gnd/{gnd}</source>
         <target>/organisation/gnd/{gnd}</target>
       </trans-unit>
+      <trans-unit id="a850ba2a6ca55f22172c178f017a66ee59291fbb" resname="organization-by-gnd-jsonld">
+        <source>/organization/gnd/{gnd}.jsonld</source>
+        <target>/organisation/gnd/{gnd}.jsonld</target>
+      </trans-unit>
       <trans-unit id="3dd0557da5c0c1443d8ddd42a7bd8c91ca13e4be" resname="organization-gnd-beacon">
         <source>/organization/gnd/beacon</source>
         <target>/organisation/gnd/beacon</target>
@@ -101,6 +117,10 @@
       <trans-unit id="962e9b7257293397ca2d65e822d153e49758bf09" resname="organization-index">
         <source>/organization</source>
         <target>/organisation</target>
+      </trans-unit>
+      <trans-unit id="c48e699f8240a0af0a795371b70fec321d039d96" resname="organization-jsonld">
+        <source>/organization/{id}.jsonld</source>
+        <target>/organisation/{id}.jsonld</target>
       </trans-unit>
       <trans-unit id="d39a47507bbe27c2a7948861847f3607eda8e1be" resname="person">
         <source>/person/{id}</source>
@@ -110,6 +130,10 @@
         <source>/person/gnd/{gnd}</source>
         <target>/person/gnd/{gnd}</target>
       </trans-unit>
+      <trans-unit id="37ae3a2b975d5f1e9aea11650a1dac45326a65af" resname="person-by-gnd-jsonld">
+        <source>/person/gnd/{gnd}.jsonld</source>
+        <target>/person/gnd/{gnd}.jsonld</target>
+      </trans-unit>
       <trans-unit id="6007191513c806f499122915873026637df3c9b1" resname="person-gnd-beacon">
         <source>/person/gnd/beacon</source>
         <target>/person/gnd/beacon</target>
@@ -117,6 +141,10 @@
       <trans-unit id="3cc9ceefcb5a007d97352c78bde75d274ff13a90" resname="person-index">
         <source>/person</source>
         <target>/person</target>
+      </trans-unit>
+      <trans-unit id="18afd51c929e5c59be7ad8e990a0abc62c8d8776" resname="person-jsonld">
+        <source>/person/{id}.jsonld</source>
+        <target>/person/{id}.jsonld</target>
       </trans-unit>
       <trans-unit id="9da8f1fa7d3a9fd015ae3c831a765e25ae03e4d7" resname="place">
         <source>/place/{id}</source>
@@ -126,9 +154,17 @@
         <source>/place/tgn/{tgn}</source>
         <target>/ort/tgn/{tgn}</target>
       </trans-unit>
+      <trans-unit id="a7b02de6253e9a8b8a19dee44a4264d7d8b39be8" resname="place-by-tgn-jsonld">
+        <source>/place/tgn/{tgn}.jsonld</source>
+        <target>/ort/tgn/{tgn}.jsonld</target>
+      </trans-unit>
       <trans-unit id="2c068a9a93fa4aca584b7f7457966fd6184dfb1e" resname="place-index">
         <source>/place</source>
         <target>/ort</target>
+      </trans-unit>
+      <trans-unit id="d542a123eb2c2159f2c0d4ef77165bb095b8b2cf" resname="place-jsonld">
+        <source>/place/{id}.jsonld</source>
+        <target>/ort/{id}.jsonld</target>
       </trans-unit>
       <trans-unit id="e1d22397063d584d3caac2c99abb7812695b9167" resname="place-map">
         <source>/map</source>
@@ -145,6 +181,10 @@
       <trans-unit id="828d338a9b04221c9cbe286f50cd389f68de4ecf" resname="source">
         <source>/source/{uid}</source>
         <target>/quelle/{uid}</target>
+      </trans-unit>
+      <trans-unit id="bdf6a48d85794eee850d4a07e462466ebca51a17" resname="source-jsonld">
+        <source>/source/{uid}.jsonld</source>
+        <target state="new">/quelle/{uid}.jsonld</target>
       </trans-unit>
       <trans-unit id="e05e7bf953c24ee7391d7bc744869c9f769e23d4" resname="tei2html">
         <source>/source/tei2html/{path}</source>

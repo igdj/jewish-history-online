@@ -41,6 +41,10 @@ class SourceController extends ArticleController
                          [ 'dateCreated' => 'ASC', 'name' => 'ASC']);
         }
 
+        if (in_array($this->container->get('request')->get('_route'), [ 'source-jsonld' ])) {
+            return new JsonLdResponse($sourceArticle->jsonLdSerialize($this->getRequest()->getLocale()));
+        }
+
         $entityLookup = $this->buildEntityLookup($entities);
         $glossaryLookup = $this->buildGlossaryLookup($glossaryTerms);
 

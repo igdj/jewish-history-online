@@ -146,7 +146,6 @@ class PlaceController extends Controller
         }
         else if (!empty($tgn)) {
             $place = $placeRepo->findOneByTgn($tgn);
-
         }
         /*
         else if (!empty($gnd)) {
@@ -157,6 +156,10 @@ class PlaceController extends Controller
 
         if (!isset($place) /* || $place->getStatus() < 0 */) {
             return $this->redirectToRoute('place-index');
+        }
+
+        if (in_array($this->container->get('request')->get('_route'), [ 'place-jsonld', 'place-by-tgn-jsonld' ])) {
+            return new JsonLdResponse($place->jsonLdSerialize($this->getRequest()->getLocale()));
         }
 
         return $this->render('AppBundle:Place:detail.html.twig',

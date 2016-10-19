@@ -37,11 +37,14 @@ class OrganizationController extends Controller
         }
         else if (!empty($gnd)) {
             $organization = $organizationRepo->findOneByGnd($gnd);
-
         }
 
         if (!isset($organization) || $organization->getStatus() < 0) {
             return $this->redirectToRoute('organization-index');
+        }
+
+        if (in_array($this->container->get('request')->get('_route'), [ 'organization-jsonld', 'organization-by-gnd-jsonld' ])) {
+            return new JsonLdResponse($organization->jsonLdSerialize($this->getRequest()->getLocale()));
         }
 
         return $this->render('AppBundle:Organization:detail.html.twig',

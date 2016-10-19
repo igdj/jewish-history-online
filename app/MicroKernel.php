@@ -147,8 +147,10 @@ class MicroKernel extends Kernel
             [ 'slug' => '[^\.]+' ]
         );
         $routes->addRoute($articleRoute, 'article');
+        $routes->add('/article/{slug}.jsonld', 'AppBundle:Article:article', 'article-jsonld');
         $routes->add('/article/{slug}.pdf', 'AppBundle:Article:article', 'article-pdf');
 
+        $routes->add('/source/{uid}.jsonld', 'AppBundle:Source:sourceViewer', 'source-jsonld');
         $routes->add('/source/{uid}', 'AppBundle:Source:sourceViewer', 'source');
 
         $routes->add('/map', 'AppBundle:Place:map', 'place-map');
@@ -157,17 +159,24 @@ class MicroKernel extends Kernel
         $routes->add('/chronology', 'AppBundle:Date:chronology', 'date-chronology');
 
         $routes->add('/person', 'AppBundle:Person:index', 'person-index');
+        $routes->add('/person/{id}.jsonld', 'AppBundle:Person:detail', 'person-jsonld');
         $routes->add('/person/{id}', 'AppBundle:Person:detail', 'person');
         $routes->add('/person/gnd/beacon', 'AppBundle:Person:gndBeacon', 'person-gnd-beacon');
+        $routes->add('/person/gnd/{gnd}.jsonld', 'AppBundle:Person:detail', 'person-by-gnd-jsonld');
         $routes->add('/person/gnd/{gnd}', 'AppBundle:Person:detail', 'person-by-gnd');
 
         $routes->add('/place', 'AppBundle:Place:index', 'place-index');
+        $routes->add('/place/{id}.jsonld', 'AppBundle:Place:detail', 'place-jsonld');
         $routes->add('/place/{id}', 'AppBundle:Place:detail', 'place');
+        $routes->add('/place/tgn/{tgn}.jsonld', 'AppBundle:Place:detail', 'place-by-tgn-jsonld');
         $routes->add('/place/tgn/{tgn}', 'AppBundle:Place:detail', 'place-by-tgn');
 
         $routes->add('/organization', 'AppBundle:Organization:index', 'organization-index');
+        $routes->add('/organization/{id}.jsonld', 'AppBundle:Organization:detail', 'organization-jsonld');
         $routes->add('/organization/{id}', 'AppBundle:Organization:detail', 'organization');
         $routes->add('/organization/gnd/beacon', 'AppBundle:Organization:gndBeacon', 'organization-gnd-beacon');
+
+        $routes->add('/organization/gnd/{gnd}.jsonld', 'AppBundle:Organization:detail', 'organization-by-gnd-jsonld');
         $routes->add('/organization/gnd/{gnd}', 'AppBundle:Organization:detail', 'organization-by-gnd');
 
         $routes->add('/glossary', 'AppBundle:Glossary:index', 'glossary-index');

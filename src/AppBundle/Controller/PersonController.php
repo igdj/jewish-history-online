@@ -63,6 +63,10 @@ class PersonController extends Controller
             $routeParams = [ 'gnd' => $gnd ];
         }
 
+        if (in_array($this->container->get('request')->get('_route'), [ 'person-jsonld', 'person-by-gnd-jsonld' ])) {
+            return new JsonLdResponse($person->jsonLdSerialize($this->getRequest()->getLocale()));
+        }
+
         return $this->render('AppBundle:Person:detail.html.twig',
                              [
                                 'pageTitle' => $person->getFullname(true), // TODO: lifespan in brackets
