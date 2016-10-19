@@ -13,3 +13,5 @@
 2013616-X||http://www.dasjuedischehamburg.de/inhalt/institut-f%C3%BCr-die-geschichte-der-deutschen-juden
 2036212-2||http://www.dasjuedischehamburg.de/inhalt/j%C3%BCdische-gemeinde-1945-1989
 4667496-2||http://www.dasjuedischehamburg.de/inhalt/talmud-tora-schule-ttr
+4784201-5||http://www.dasjuedischehamburg.de/inhalt/israelitische-freischule
+
