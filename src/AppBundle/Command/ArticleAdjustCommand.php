@@ -137,6 +137,9 @@ class ArticleAdjustCommand extends BaseEntityCommand
                         case 'liedtke-rainer':
                             $responsible = [ $translator->trans('Organizations and Institutions') ];
                             break;
+                        case 'lohmann-ingrid':
+                            $responsible = [ $translator->trans('Education and Learning') ];
+                            break;
                         case 'meyer-beate':
                             $responsible = [ $translator->trans('Memory and Remembrance') ];
                             break;
@@ -196,8 +199,12 @@ class ArticleAdjustCommand extends BaseEntityCommand
                                 ];
                             break;
 
+                        case 'restricted':
+                            $data['license'] = [ '' => $translator->trans('license.restricted') ];
+                            break;
+
                         default:
-                            die('TODO: handle ' . $data['license']);
+                            die('TODO: handle ' . $result['license']);
                     }
                 }
                 break;
