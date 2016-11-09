@@ -25,6 +25,11 @@ class JsonLd
             return $date->format('Y-m-d');
         }
 
+        if (preg_match('/^\d{4}$/', $date)) {
+            // just a year
+            return $date;
+        }
+
         $ret = [];
         $parts = date_parse($date);
         foreach ([ 'year', 'month', 'day' ] as $part) {

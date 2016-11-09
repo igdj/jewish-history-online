@@ -1174,6 +1174,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
                 break;
 
             case 'bookSection':
+            case 'encyclopediaArticle':
                 $type = 'Chapter'; // see https://bib.schema.org/Chapter
                 break;
 
@@ -1191,26 +1192,163 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
 
             case 'letter':
             case 'document':
-            case 'encyclopediaArticle':
             case 'report':
             case 'interview':
             case 'presentation':
                 $type = 'CreativeWork';
+                break;
+
+            // just for building isPartOf
+            case 'issue':
+                $type = 'PublicationIssue';
+                break;
+            case 'journal':
+                $type = 'Periodical';
                 break;
         }
 
         $ret = [
             '@context' => 'http://schema.org',
             '@type' => $type,
-            'name' => $this->name,
         ];
+        if ($type == 'PublicationIssue') {
+            // issues on't have a name, but might have an issue-number
+            if (!empty($this->volume)) {
+                $ret['issueNumber'] = $this->volume;
+            }
+            $parent = clone $this;
+            $parent->setItemType('journal');
+            $ret['isPartOf'] = $parent->jsonLdSerialize($parent);
+        }
+        else {
+            $ret['name'] = $this->name;
+        }
         if ($omitContext) {
             unset($ret['@context']);
         }
 
-        if (!is_null($this->datePublished)) {
+        if (!empty($this->creators)) {
+            $target = [];
+            foreach ($this->creators as $creator) {
+                if (array_key_exists('creatorType', $creator) && in_array($creator['creatorType'], [ 'author', 'editor', 'translator' ])) {
+                    if ('author' == $creator['creatorType']
+                        && in_array($type, [ 'PublicationIssue', 'Periodical' ]))
+                    {
+                        continue;
+                    }
+                    else if ('editor' == $creator['creatorType'] && in_array($type, [ 'Chapter' ])) {
+                        continue;
+                    }
+                    if (!empty($creator['firstName'])) {
+                        // we have a person
+                        $person = new Person();
+                        if (!empty($creator['firstName'])) {
+                            $person->setGivenName($creator['firstName']);
+                        }
+                        if (!empty($creator['lastName'])) {
+                            $person->setFamilyName($creator['lastName']);
+                        }
+                        if (!array_key_exists($creator['creatorType'], $target)) {
+                            $target[$creator['creatorType']] = [];
+                        }
+                        $target[$creator['creatorType']][] = $person->jsonLdSerialize($locale, true);
+                    }
+                }
+            }
+            foreach ($target as $key => $values) {
+                $numValues = count($values);
+                if (1 == $numValues) {
+                    $ret[$key] = $values[0];
+                }
+                else if ($numValues > 1) {
+                    $ret[$key] = $values;
+                }
+            }
+        }
+
+        if (in_array($type, [ 'Book', 'ScholarlyArticle', 'WebPage' ])) {
+            foreach ([ 'url' ] as $property) {
+                if (!empty($this->$property)) {
+                    $ret[$property] = $this->$property;
+                }
+            }
+            if (!empty($this->doi)) {
+                $ret['sameAs'] = 'http://dx.doi.org/' . $this->doi;
+            }
+        }
+
+        if (in_array($type, [ 'Book' ])) {
+            $isbns = $this->getIsbnListNormalized(false);
+            $numIsbns = count($isbns);
+            if (1 == $numIsbns) {
+                $ret['isbn'] = $isbns[0];
+            }
+            else if ($numIsbns > 1) {
+                $ret['isbn'] = $isbns;
+            }
+            if (!empty($this->numberOfPages) && preg_match('/^\d+$/', $this->numberOfPages)) {
+                $ret['numberOfPages'] = (int)$this->numberOfPages;
+            }
+        }
+        else if (in_array($type, [ 'ScholarlyArticle', 'Chapter' ])) {
+            foreach ([ 'pagination' ] as $property) {
+                if (!empty($this->$property)) {
+                    $ret[$property] = $this->$property;
+                }
+            }
+            if (!empty($this->containerName)) {
+                $parentItemType = null;
+                switch ($type) {
+                    case 'ScholarlyArticle':
+                        $parentItemType = 'issue';
+                        break;
+                    case 'Chapter':
+                        $parentItemType = 'book';
+                        break;
+                }
+                if (!is_null($parentItemType)) {
+                    $parent = clone $this;
+                    $parent->setItemType($parentItemType);
+                    $parent->setName($this->containerName);
+                    if ('Chapter' == $type && !empty($this->creators)) {
+                        $creatorsParent = [];
+                        foreach ($this->creators as $creator) {
+                            if (!in_array($creator['creatorType'], [ 'author', 'translator'])) {
+                                $creatorsParent[] = $creator;
+                            }
+                        }
+                        $parent->setCreators($creatorsParent);
+                    }
+                    $ret['isPartOf'] = $parent->jsonLdSerialize($locale, true);
+                }
+            }
+        }
+
+        if (in_array($type, [ 'Periodical', 'Book' ])) {
+            foreach ([ 'issn' ] as $property) {
+                if (!empty($this->$property)) {
+                    $ret[$property] = $this->$property;
+                }
+            }
+            if (!empty($this->publisher)) {
+                $publisher = new Organization();
+                $publisher->setName($this->publisher);
+                $ret['publisher'] = $publisher->jsonLdSerialize($locale, true);
+                if (!empty($this->publicationLocation)) {
+                    $location = new Place();
+                    $location->setName($this->publicationLocation);
+                    $ret['publisher']['location'] = $location->jsonLdSerialize($locale, true);
+                }
+            }
+
+        }
+
+        if (!is_null($this->datePublished)
+            && !in_array($type, [ 'ScholarlyArticle', 'Chapter', 'Periodical' ]))
+        {
             $ret['datePublished'] = \AppBundle\Utils\JsonLd::formatDate8601($this->datePublished);
         }
+
         /*
         if (!is_null($this->dateModified)) {
             $dateModified = \AppBundle\Utils\JsonLd::formatDate8601($this->dateModified);
@@ -1226,6 +1364,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
         $type = null;
         switch ($this->itemType) {
             case 'book':
+                $isbns = $this->getIsbnListNormalized(false);
                 $type = 'books.book';
                 break;
         }
@@ -1237,7 +1376,13 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
 			'og:type' => $type,
             'og:title' => $this->name,
         ];
-        // TODO: isbn, author - https://developers.facebook.com/docs/reference/opengraph/object-type/books.book/
+
+        $isbns = $this->getIsbnListNormalized(false);
+        if (empty($isbns)) {
+            // 'books:isbn' is required
+            return;
+        }
+        $ret['books:isbn'] = $isbns[0];
 
         return $ret;
     }
