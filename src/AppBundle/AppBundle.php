@@ -63,12 +63,6 @@ class AppBundle extends Bundle
                     if (preg_match('/\{.*?\}/', $route->getPath())) {
                         // handle the ones with parameters
 
-                        /*
-                        if ($defaults['_locale'] != $locale) {
-                            continue; // TODO: also generate language variants for these
-                        }
-                        */
-
                         switch ($routeName) {
                             case 'topic-background':
                                 $slugify = $container->get('cocur_slugify');
@@ -118,14 +112,33 @@ class AppBundle extends Bundle
                                 foreach ($places as $entity) {
                                     $tgn = $entity->getTgn();
                                     if (!empty($tgn)) {
-                                        $url = $router->generate($routeName . '-by-tgn', [ 'tgn' => $tgn ],
+                                        $url = $router->generate($routeName . '-by-tgn', [ 'tgn' => $tgn, '_locale' => $defaults['_locale'] ],
                                                                  UrlGeneratorInterface::ABSOLUTE_URL);
                                     }
                                     else {
-                                        $url = $router->generate($routeName, [ 'id' => $entity->getId() ],
+                                        $url = $router->generate($routeName, [ 'id' => $entity->getId(), '_locale' => $defaults['_locale'] ],
                                                                  UrlGeneratorInterface::ABSOLUTE_URL);
                                     }
                                     $this->addUrlDescription($urlDescriptions, $routeName  . $entity->getId(), $defaults['_locale'], [ 'url' => $url, 'urlset' => $urlset ]);
+                                }
+                                break;
+
+                            case 'bibliography':
+                                $urlset = $routeName;
+                                $qb = $container->get('doctrine')
+                                    ->getManager()
+                                    ->createQueryBuilder();
+
+                                $qb->select([ 'B' ])
+                                    ->from('AppBundle:Bibitem', 'B')
+                                    ->where('B.status IN (0,1)')
+                                    ;
+                                $query = $qb->getQuery();
+                                $bibitems = $query->getResult();
+                                foreach ($bibitems as $bibitem) {
+                                    $url = $router->generate($routeName, [ 'slug' => $bibitem->getSlug(), '_locale' => $defaults['_locale'] ],
+                                                             UrlGeneratorInterface::ABSOLUTE_URL);
+                                    $this->addUrlDescription($urlDescriptions, $routeName  . $bibitem->getId(), $defaults['_locale'], [ 'url' => $url, 'urlset' => $urlset ]);
                                 }
                                 break;
 
