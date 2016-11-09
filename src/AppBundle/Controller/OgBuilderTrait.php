@@ -65,9 +65,12 @@ trait OgBuilderTrait
 		$baseUri = $this->getRequest()->getUriForPath('/');
 
         if ($entity instanceof \AppBundle\Entity\OgSerializable) {
-            $og = array_merge($og, $entity->ogSerialize($this->getRequest()->getLocale(), $baseUri));
-			if (array_key_exists('article:section', $og)) {
-				$og['article:section'] = $translator->trans($og['article:section']);
+			$ogEntity = $entity->ogSerialize($this->getRequest()->getLocale(), $baseUri);
+			if (isset($ogEntity)) {
+	            $og = array_merge($og, $ogEntity);
+				if (array_key_exists('article:section', $og)) {
+					$og['article:section'] = $translator->trans($og['article:section']);
+				}
 			}
         }
 

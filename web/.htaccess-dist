@@ -17,6 +17,10 @@ DirectoryIndex app.php
     Options -MultiViews
 </IfModule>
 
+# APP_ENVIRONMENT is assumed to be 'dev' if not explicitely set
+# SetEnv APP_ENVIRONMENT prod
+# SetEnv APP_DEBUG true
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
 

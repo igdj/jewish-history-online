@@ -1,11 +1,11 @@
-{% macro head(entity_lookup, glossary_lookup) %}
+{% macro head(entity_lookup, bibitem_lookup, glossary_lookup) %}
     {#
     <link rel="stylesheet" type="text/css" href="{{ app.request.basepath }}/vendor/tooltipster-master/css/tooltipster.css" />
     <script type="text/javascript" src="{{ app.request.basepath }}/vendor/tooltipster-master/js/jquery.tooltipster.min.js"></script>
     #}
     <script>
     var entityLookup = {{ entity_lookup|json_encode|raw }};
-
+    var bibitemLookup = {{ bibitem_lookup|json_encode|raw }};
     var glossaryLookup = {{ glossary_lookup|json_encode|raw }};
 
     function buildGlossaryInfo($el) {
@@ -106,7 +106,7 @@
                   window.location = info.url;
                   return false;
                 });
-                console.log( index + ": " + $el.text() + JSON.stringify(info));
+                // console.log( index + ": " + $el.text() + JSON.stringify(info));
                 if (info.blurb != null) {
                     $el.tooltip({
                         title: info.blurb + ' <a href="' + info.url + '">{{ '...read on'|trans }}</a>',
@@ -118,10 +118,33 @@
         });
     }
 
+    function initBibitem(selector) {
+        // link bibitems
+        var selector_full = '.dta-bibl';
+        if ('' !== selector) {
+            selector_full = selector + ' ' + selector_full;
+        }
+
+        var url = {{ path('bibliography-index')|json_encode|raw }};
+        $( selector_full ).each(function( index ) {
+            var $el = $( this );
+            var corresp = $el.data('corresp');
+            var info = bibitemLookup[corresp];
+            if (info != null && info.slug != null) {
+                $el.addClass('hoverable');
+                $el.click(function() {
+                  window.location = url + '/' + info.slug;
+                  return false;
+                });
+            }
+        });
+    }
+
     function initEntityGlossaryNote(selector) {
         initNotes(selector);
         initGlossary(selector);
         initEntityRef(selector);
+        initBibitem(selector);
     }
 
     </script>

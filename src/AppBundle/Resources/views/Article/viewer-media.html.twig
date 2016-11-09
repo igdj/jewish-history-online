@@ -7,22 +7,22 @@
     {# TODO: move to some shared style-sheet #}
     <style>
     .article img.img-responsive {
-			max-height: 800;
-			width: auto;
+        max-height: 800;
+        width: auto;
     }
     </style>
 
     {# <script src="{{ app.request.basepath }}/js/screenfull.min.js"></script> #}
 
-    {{ entityLookup.head(entity_lookup, glossary_lookup) }}
+    {{ entityLookup.head(entity_lookup, bibitem_lookup, glossary_lookup) }}
 
     <script>
         $( document ).ready(function() {
-	        initEntityGlossaryNote('.article');
+            initEntityGlossaryNote('.article');
             initEntityGlossaryNote('.source-description');
         });
     </script>
-
+    <link href="{{ app.request.basepath }}/vendor/bootstrap3_player/bootstrap3_player.css" rel="stylesheet">
 
 {% endblock %}
 
@@ -32,6 +32,7 @@
         <div id="image-viewer-container" class="col-xs-12 col-md-9">
             <div id="media-viewer">
                 {{ html|raw }}
+                <script src="{{ app.request.basepath }}/vendor/bootstrap3_player/bootstrap3_player.js"></script>
             </div>
 
             {% if description is not null %}

@@ -136,7 +136,7 @@ class TopicController extends RenderTeiController
 
         $html = $this->renderTei($fname, $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl');
 
-        list($authors, $section_headers, $license, $entities, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html);
+        list($authors, $section_headers, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html);
         $html = $this->adjustRefs($html, $refs, $language);
 
         if ($generatePrintView) {
@@ -214,6 +214,7 @@ class TopicController extends RenderTeiController
                                 'section_headers' => $section_headers,
                                 'license' => $license,
                                 'entity_lookup' => $entityLookup,
+                                'bibitem_lookup' => $bibitemLookup,
                                 'glossary_lookup' => $glossaryLookup,
                                 'interpretations' => $articles,
                                 'pageMeta' => [

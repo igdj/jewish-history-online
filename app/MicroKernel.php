@@ -9,6 +9,27 @@ use Symfony\Component\Routing\RouteCollectionBuilder;
 // see https://github.com/ikoene/symfony-micro
 class MicroKernel extends Kernel
 {
+    /*
+     * Set an Environment Variable in Apache Configuration
+     *   SetEnv APP_ENVIRONMENT prod
+     * for production setting instead of having www/app.php and ww/app_dev.php
+     * This approach is described int
+     *   https://www.pmg.com/blog/symfony-no-app-dev/
+     */
+    public static function fromEnvironment()
+    {
+        $env = getenv('APP_ENVIRONMENT');
+        if (false === $env) {
+            $env = 'dev';
+            $debug = true;
+        }
+        else {
+            $debug = filter_var(getenv('APP_DEBUG'), FILTER_VALIDATE_BOOLEAN);
+        }
+
+        return new self($env, $debug);
+    }
+
     use MicroKernelTrait;
 
     /*
@@ -106,6 +127,7 @@ class MicroKernel extends Kernel
                 $routes->import('@TwigBundle/Resources/config/routing/errors.xml')
             ); */
         }
+
         /*
         // Loading annotated routes doesn't seem to work with route translation?!
         $routes->mount('/', $routes->import('@AppBundle/Controller', 'annotation'));
@@ -175,9 +197,14 @@ class MicroKernel extends Kernel
         $routes->add('/organization/{id}.jsonld', 'AppBundle:Organization:detail', 'organization-jsonld');
         $routes->add('/organization/{id}', 'AppBundle:Organization:detail', 'organization');
         $routes->add('/organization/gnd/beacon', 'AppBundle:Organization:gndBeacon', 'organization-gnd-beacon');
-
         $routes->add('/organization/gnd/{gnd}.jsonld', 'AppBundle:Organization:detail', 'organization-by-gnd-jsonld');
         $routes->add('/organization/gnd/{gnd}', 'AppBundle:Organization:detail', 'organization-by-gnd');
+
+        $routes->add('/bibliography', 'AppBundle:Bibliography:index', 'bibliography-index');
+        $routes->add('/bibliography/unapi', 'AppBundle:Bibliography:unapi', 'bibliography-unapi');
+        $routes->add('/bibliography/{slug}.ris', 'AppBundle:Bibliography:detail', 'bibliography-ris');
+        $routes->add('/bibliography/{slug}.jsonld', 'AppBundle:Bibliography:detail', 'bibliography-jsonld');
+        $routes->add('/bibliography/{slug}', 'AppBundle:Bibliography:detail', 'bibliography');
 
         $routes->add('/glossary', 'AppBundle:Glossary:index', 'glossary-index');
         $routes->add('/glossary/{slug}', 'AppBundle:Glossary:detail', 'glossary');

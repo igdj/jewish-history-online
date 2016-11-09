@@ -1,12 +1,13 @@
 {# app/Resources/TwigBundle/views/Exception/error404.html.twig #}
-{# TODO: for localizing, see http://donna-oberes.blogspot.de/2014/01/symfony-internalizationlocalization-and.html #}
+{# guide for localizing as described in
+   http://donna-oberes.blogspot.de/2014/01/symfony-internalizationlocalization-and.html
+#}
 {% extends 'AppBundle:Default:base.html.twig' %}
 
 {% block body %}
-    <h1>Page not found</h1>
+    <h1>{{ 'Page not found'|trans }}</h1>
 
     <p>
-        The requested page couldn't be located. Checkout for any URL
-        misspelling or <a href="{{ path('home') }}">return to the homepage</a>.
+        {{ 'error.404.description'|trans({'%url%': path('home') })|raw }}
     </p>
 {% endblock %}

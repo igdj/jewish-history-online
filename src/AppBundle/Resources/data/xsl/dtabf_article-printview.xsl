@@ -48,14 +48,24 @@
         <xsl:apply-templates select='//tei:fw[@place="bottom" and (text() or *)]' mode="signatures"/>
       </div>
 
-      <xsl:if test="./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence">
-        <div id="license">
-          <xsl:if test="./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence/@target">
-            <xsl:attribute name="data-target"><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence/@target" /></xsl:attribute>
+      <xsl:choose>
+        <xsl:when test="./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence">
+          <div id="license">
+            <xsl:if test="./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence/@target">
+              <xsl:attribute name="data-target"><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence/@target" /></xsl:attribute>
+            </xsl:if>
+            <xsl:apply-templates select="./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence" />
+          </div>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:if test="./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability">
+            <div id="license">
+              <xsl:apply-templates select="./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability" />
+            </div>
           </xsl:if>
-          <xsl:apply-templates select="./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence" />
-        </div>
-      </xsl:if>
+        </xsl:otherwise>
+      </xsl:choose>
+
   </xsl:template>
 
   <!-- put expansions in brackets for print -->

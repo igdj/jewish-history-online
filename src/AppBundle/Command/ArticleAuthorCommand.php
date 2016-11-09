@@ -1,6 +1,6 @@
 <?php
 
-// src/AppBundle/Command/GreetCommand.php
+// src/AppBundle/Command/ArticleAuthorCommand.php
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -73,7 +73,7 @@ class ArticleAuthorCommand extends BaseEntityCommand
         echo json_encode($persons, JSON_PRETTY_PRINT);
 
         if ($input->getOption('insert-missing') || $input->getOption('update')) {
-            $em = $this->getContainer()->get('doctrine')->getEntityManager();
+            $em = $this->getContainer()->get('doctrine')->getManager();
             foreach ($persons as $author) {
                 $slug = $author->getSlug();
                 if (empty($slug)) {
@@ -152,7 +152,7 @@ class ArticleAuthorCommand extends BaseEntityCommand
 
     protected function findPersonBySlug($slug)
     {
-        $em = $this->getContainer()->get('doctrine')->getEntityManager();
+        $em = $this->getContainer()->get('doctrine')->getManager();
         return $em->getRepository('AppBundle\Entity\Person')->findOneBySlug($slug);
     }
 

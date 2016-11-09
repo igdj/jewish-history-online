@@ -134,4 +134,15 @@
     </xsl:choose>
   </xsl:template>
 
+  <xsl:template match="tei:bibl">
+    <span>
+      <xsl:if test="@corresp">
+        <xsl:attribute name="data-corresp" select="@corresp" />
+      </xsl:if>
+      <xsl:call-template name="applyRendition">
+        <xsl:with-param name="class" select="'dta-bibl'"/>
+      </xsl:call-template>
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
 </xsl:stylesheet>

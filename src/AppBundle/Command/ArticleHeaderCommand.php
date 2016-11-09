@@ -1,6 +1,6 @@
 <?php
 
-// src/AppBundle/Command/GreetCommand.php
+// src/AppBundle/Command/ArticleHeaderCommand.php
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -82,7 +82,7 @@ class ArticleHeaderCommand extends ContainerAwareCommand
             return 1;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getEntityManager();
+        $em = $this->getContainer()->get('doctrine')->getManager();
 
         $entity = $em->getRepository('AppBundle\Entity\Article')
             ->findOneBy([

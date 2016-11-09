@@ -49,6 +49,8 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFilter('lookupLocalizedTopic', array($this, 'lookupLocalizedTopicFilter')),
             new \Twig_SimpleFilter('glossaryAddRefLink', array($this, 'glossaryAddRefLinkFilter'),
                                    array('is_safe' => array('html'))),
+            new \Twig_SimpleFilter('renderCitation', array($this, 'renderCitation'),
+                                   array('is_safe' => array('html'))),
         );
     }
 
@@ -119,6 +121,17 @@ class AppExtension extends \Twig_Extension
                                                   . '</a>';
                                              },
                                              $description);
+    }
+
+    public function renderCitation($encoded)
+    {
+        $locale = $this->getLocale();
+
+        $path = __DIR__ . '/../Resources/data/csl/jgo-infoclio-de.csl.xml';
+
+        $citeProc = new \AcademicPuma\CiteProc\CiteProc(file_get_contents($path),
+                                                        $locale);
+        return $citeProc->render(json_decode($encoded));
     }
 
     public function placeTypeLabelFilter($placeType, $count = 1, $locale = null)

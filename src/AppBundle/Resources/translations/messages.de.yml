@@ -1,3 +1,4 @@
+Key Documents of German-Jewish History: Hamburger Schlüsseldokumente zur deutsch-jüdischen Geschichte
 Staff:                              Mitarbeiterinnen und Mitarbeiter
 Editors:                            Herausgeberinnen und Herausgeber
 Goals:                              Ziele
@@ -78,9 +79,15 @@ person.oneormany:                   "Person|Personen"
 place.oneormany:                    "Ort|Orte"
 sourcearticle.oneormany:            "Quelle|Quellen"
 article.oneormany:                  "Beitrag|Beiträge"
+bibitem.oneormany:                  "Bibliografie"
 epoch.century:                      "%century%. Jahrhundert"
 epoch.decade:                       "%epoch%er-Jahre"
 Image:                              Bild
 Object:                             Objekt
 Previous:                           Zurück
 Next:                               Weiter
+#
+Page not found:                     Seite nicht gefunden
+error.404.description:              >
+    Diese Seite wurde nicht gefunden. Bitte prüfen Sie die Adresse
+    oder gehen Sie <a href="%url%">zurück zur Startseite</a>.

@@ -199,7 +199,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
 
     use ArticleReferencesTrait;
 
-   /**
+    /**
      * @ORM\OneToMany(targetEntity="ArticlePerson", mappedBy="person", cascade={"persist", "remove"}, orphanRemoval=TRUE)
      */
     protected $articleReferences;

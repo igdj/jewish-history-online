@@ -4,9 +4,65 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9ec60fc3b5e22ba790fda2d1b22cf388",
-    "content-hash": "c9ee2eefc78e02c562825f6c2cde3ea1",
+    "hash": "3e83890348f4066319870cd520e3132b",
+    "content-hash": "4c0fc00ea227778da87a8cce56eebf58",
     "packages": [
+        {
+            "name": "academicpuma/locales",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/seboettg/locales.git",
+                "reference": "e5985dbc979f6a285e74006466daab40fd53573f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/seboettg/locales/zipball/e5985dbc979f6a285e74006466daab40fd53573f",
+                "reference": "e5985dbc979f6a285e74006466daab40fd53573f",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Creative Commons Attribution-ShareAlike 3.0 License"
+            ],
+            "authors": [
+                {
+                    "name": "seboettg",
+                    "email": "boettger@cs.uni-kassel.de"
+                }
+            ],
+            "description": "Citation Style Language (CSL) Locales Repository",
+            "time": "2015-09-08 14:33:33"
+        },
+        {
+            "name": "academicpuma/styles",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/seboettg/styles.git",
+                "reference": "24a0ab9277d3cc7d344e621721b2f4c2ed2f2ecc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/seboettg/styles/zipball/24a0ab9277d3cc7d344e621721b2f4c2ed2f2ecc",
+                "reference": "24a0ab9277d3cc7d344e621721b2f4c2ed2f2ecc",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Creative Commons Attribution-ShareAlike 3.0 License"
+            ],
+            "authors": [
+                {
+                    "name": "seboettg",
+                    "email": "boettger@cs.uni-kassel.de"
+                }
+            ],
+            "description": "Citation Style Language (CSL) Stylesheet Repository",
+            "time": "2015-09-08 14:22:08"
+        },
         {
             "name": "behat/transliterator",
             "version": "v1.1.0",
@@ -112,16 +168,16 @@
         },
         {
             "name": "ddeboer/data-import",
-            "version": "0.19.1",
+            "version": "0.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ddeboer/data-import.git",
-                "reference": "9fb9571370a8a0dd57a1c2bd3ef6f8dc00388291"
+                "reference": "8fe7e731bb52df0298707eb8fb8b9b8098395437"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ddeboer/data-import/zipball/9fb9571370a8a0dd57a1c2bd3ef6f8dc00388291",
-                "reference": "9fb9571370a8a0dd57a1c2bd3ef6f8dc00388291",
+                "url": "https://api.github.com/repos/ddeboer/data-import/zipball/8fe7e731bb52df0298707eb8fb8b9b8098395437",
+                "reference": "8fe7e731bb52df0298707eb8fb8b9b8098395437",
                 "shasum": ""
             },
             "require": {
@@ -137,9 +193,9 @@
                 "henrikbjorn/phpspec-code-coverage": "~1.0",
                 "phpoffice/phpexcel": "*",
                 "phpspec/phpspec": "~2.1",
-                "symfony/console": "~2.5.0",
+                "symfony/console": "~2.8|~3.0",
                 "symfony/property-access": "~2.5",
-                "symfony/validator": "~2.3.0"
+                "symfony/validator": "~2.8|~3.0"
             },
             "suggest": {
                 "doctrine/dbal": "If you want to use the DbalReader",
@@ -180,7 +236,7 @@
                 "export",
                 "import"
             ],
-            "time": "2016-06-09 14:20:13"
+            "time": "2016-06-23 06:26:02"
         },
         {
             "name": "doctrine/annotations",
@@ -1013,6 +1069,53 @@
             "time": "2015-02-27 09:45:49"
         },
         {
+            "name": "fale/isbn",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Fale/isbn.git",
+                "reference": "f0777e84ad432fdf2eda7a71ed4e98886f8c16b4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Fale/isbn/zipball/f0777e84ad432fdf2eda7a71ed4e98886f8c16b4",
+                "reference": "f0777e84ad432fdf2eda7a71ed4e98886f8c16b4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Isbn": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "AGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Fabio Alessandro Locati",
+                    "email": "fabiolocati@gmail.com",
+                    "homepage": "http://fabiolocati.com",
+                    "role": "lead"
+                }
+            ],
+            "description": "ISBN library",
+            "homepage": "http://github.com/fale/isbn",
+            "keywords": [
+                "ISBN",
+                "ISBN-10",
+                "ISBN-13"
+            ],
+            "time": "2015-10-03 11:18:48"
+        },
+        {
             "name": "floriansemm/solr-bundle",
             "version": "1.4",
             "target-dir": "FS/SolrBundle",
@@ -1068,16 +1171,16 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v2.4.23",
+            "version": "v2.4.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "c2f308fab900090c6c0f5b6f72f34a37b4dd2d84"
+                "reference": "a7f7243a19f79a99ac83a3570444d8795f665eef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/c2f308fab900090c6c0f5b6f72f34a37b4dd2d84",
-                "reference": "c2f308fab900090c6c0f5b6f72f34a37b4dd2d84",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/a7f7243a19f79a99ac83a3570444d8795f665eef",
+                "reference": "a7f7243a19f79a99ac83a3570444d8795f665eef",
                 "shasum": ""
             },
             "require": {
@@ -1143,7 +1246,58 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2016-09-22 13:45:22"
+            "time": "2016-10-11 18:03:37"
+        },
+        {
+            "name": "geissler/converter",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/geissler/converter.git",
+                "reference": "1ef278f898b7ccf38514032afaef4074cbdac668"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/geissler/converter/zipball/1ef278f898b7ccf38514032afaef4074cbdac668",
+                "reference": "1ef278f898b7ccf38514032afaef4074cbdac668",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "technosophos/libris": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Geissler": "src/"
+                },
+                "files": [
+                    "library/bibtexParse/PARSEENTRIES.php",
+                    "library/bibtexParse/PARSECREATORS.php",
+                    "library/bibtexParse/PARSEMONTH.php",
+                    "library/bibtexParse/PARSEPAGE.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Geißler",
+                    "email": "benjamin.geissler@gmail.com"
+                }
+            ],
+            "description": "A small library to convert different bibliography formats into each other",
+            "homepage": "https://github.com/geissler/converter",
+            "keywords": [
+                "Bibliography",
+                "RIS",
+                "bibtex",
+                "csl",
+                "endnote"
+            ],
+            "time": "2013-06-09 20:29:15"
         },
         {
             "name": "gmo/iso-639",
@@ -1368,17 +1522,17 @@
         },
         {
             "name": "jms/translation-bundle",
-            "version": "1.3.1",
+            "version": "dev-master",
             "target-dir": "JMS/TranslationBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSTranslationBundle.git",
-                "reference": "e79fe1cd77e7749223c870bdae0bd400c21a102d"
+                "reference": "06da85e0778bef3d58e026f17defcf65a1d3c02e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSTranslationBundle/zipball/e79fe1cd77e7749223c870bdae0bd400c21a102d",
-                "reference": "e79fe1cd77e7749223c870bdae0bd400c21a102d",
+                "url": "https://api.github.com/repos/schmittjoh/JMSTranslationBundle/zipball/06da85e0778bef3d58e026f17defcf65a1d3c02e",
+                "reference": "06da85e0778bef3d58e026f17defcf65a1d3c02e",
                 "shasum": ""
             },
             "require": {
@@ -1434,7 +1588,7 @@
                 "ui",
                 "webinterface"
             ],
-            "time": "2016-08-13 23:17:44"
+            "time": "2016-10-11 15:07:43"
         },
         {
             "name": "knplabs/knp-components",
@@ -1823,16 +1977,16 @@
         },
         {
             "name": "liip/url-auto-converter-bundle",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipUrlAutoConverterBundle.git",
-                "reference": "536dd001fc2d1d6fd257551fd77247f9fb271404"
+                "reference": "a8cbdaf30b553a971be78d180994be2f013adf25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipUrlAutoConverterBundle/zipball/536dd001fc2d1d6fd257551fd77247f9fb271404",
-                "reference": "536dd001fc2d1d6fd257551fd77247f9fb271404",
+                "url": "https://api.github.com/repos/liip/LiipUrlAutoConverterBundle/zipball/a8cbdaf30b553a971be78d180994be2f013adf25",
+                "reference": "a8cbdaf30b553a971be78d180994be2f013adf25",
                 "shasum": ""
             },
             "require": {
@@ -1873,7 +2027,7 @@
             "keywords": [
                 "url"
             ],
-            "time": "2015-12-11 12:29:22"
+            "time": "2016-10-24 08:27:31"
         },
         {
             "name": "ml/iri",
@@ -1924,17 +2078,17 @@
         },
         {
             "name": "ml/json-ld",
-            "version": "1.0.5",
+            "version": "1.0.7",
             "target-dir": "ML/JsonLD",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lanthaler/JsonLD.git",
-                "reference": "2f7f00a9daed844289135cc1cc99a75fc72a5438"
+                "reference": "f9dfe184f0da9ce0e0ffdddabf6d93d01787ac91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lanthaler/JsonLD/zipball/2f7f00a9daed844289135cc1cc99a75fc72a5438",
-                "reference": "2f7f00a9daed844289135cc1cc99a75fc72a5438",
+                "url": "https://api.github.com/repos/lanthaler/JsonLD/zipball/f9dfe184f0da9ce0e0ffdddabf6d93d01787ac91",
+                "reference": "f9dfe184f0da9ce0e0ffdddabf6d93d01787ac91",
                 "shasum": ""
             },
             "require": {
@@ -1969,7 +2123,7 @@
                 "JSON-LD",
                 "jsonld"
             ],
-            "time": "2016-01-17 17:39:22"
+            "time": "2016-10-10 08:57:56"
         },
         {
             "name": "monolog/monolog",
@@ -2153,16 +2307,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.2",
+            "version": "v2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "088c04e2f261c33bed6ca5245491cfca69195ccf"
+                "reference": "a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/088c04e2f261c33bed6ca5245491cfca69195ccf",
-                "reference": "088c04e2f261c33bed6ca5245491cfca69195ccf",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e",
+                "reference": "a9b97968bcde1c4de2a5ec6cbd06a0f6c919b46e",
                 "shasum": ""
             },
             "require": {
@@ -2197,7 +2351,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-04-03 06:00:07"
+            "time": "2016-11-07 23:38:38"
         },
         {
             "name": "phpoffice/phpexcel",
@@ -2319,16 +2473,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "5277094ed527a1c4477177d102fe4c53551953e0"
+                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/5277094ed527a1c4477177d102fe4c53551953e0",
-                "reference": "5277094ed527a1c4477177d102fe4c53551953e0",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
                 "shasum": ""
             },
             "require": {
@@ -2362,20 +2516,20 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-09-19 16:02:08"
+            "time": "2016-10-10 12:19:37"
         },
         {
             "name": "sabre/uri",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fruux/sabre-uri.git",
-                "reference": "9012116434d84ef6e5e37a89dfdbfbe2204a8704"
+                "reference": "258b72540fe3f2c0bb395cb40e56f9ae409f93b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-uri/zipball/9012116434d84ef6e5e37a89dfdbfbe2204a8704",
-                "reference": "9012116434d84ef6e5e37a89dfdbfbe2204a8704",
+                "url": "https://api.github.com/repos/fruux/sabre-uri/zipball/258b72540fe3f2c0bb395cb40e56f9ae409f93b5",
+                "reference": "258b72540fe3f2c0bb395cb40e56f9ae409f93b5",
                 "shasum": ""
             },
             "require": {
@@ -2383,7 +2537,7 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "*",
-                "sabre/cs": "~0.0.1"
+                "sabre/cs": "~1.0.0"
             },
             "type": "library",
             "autoload": {
@@ -2413,7 +2567,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2016-03-08 02:29:27"
+            "time": "2016-10-27 04:56:33"
         },
         {
             "name": "sabre/xml",
@@ -2479,17 +2633,60 @@
             "time": "2016-05-19 21:56:49"
         },
         {
-            "name": "semsol/arc2",
-            "version": "2.2.6",
+            "name": "seboettg/citeproc-php",
+            "version": "dev-name-as-sort-order-fix",
             "source": {
                 "type": "git",
-                "url": "https://github.com/semsol/arc2.git",
-                "reference": "75158bd470e264439dd6773b75f023becdeb78c4"
+                "url": "https://github.com/burki/citeproc-php.git",
+                "reference": "bf446dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/semsol/arc2/zipball/75158bd470e264439dd6773b75f023becdeb78c4",
-                "reference": "75158bd470e264439dd6773b75f023becdeb78c4",
+                "url": "https://api.github.com/repos/burki/citeproc-php/zipball/bf446dc",
+                "reference": "bf446dc",
+                "shasum": ""
+            },
+            "require": {
+                "academicpuma/locales": ">=1.0",
+                "academicpuma/styles": ">=1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*",
+                "phpunit/phpunit-skeleton-generator": "2.0.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AcademicPuma\\CiteProc\\": "src/"
+                }
+            },
+            "license": [
+                "GPL v3"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Böttger",
+                    "email": "boettger@cs.uni-kassel.de"
+                }
+            ],
+            "description": "This is an effort to implement a full-featured standalone CSL processor in PHP. The code based on the implementation of Ron Jerome.",
+            "support": {
+                "source": "https://github.com/burki/citeproc-php/tree/name-as-sort-order-fix"
+            },
+            "time": "2016-11-07 16:38:05"
+        },
+        {
+            "name": "semsol/arc2",
+            "version": "2.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/semsol/arc2.git",
+                "reference": "1cba0487e764b4d7e22913e995f7525192a226c5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/semsol/arc2/zipball/1cba0487e764b4d7e22913e995f7525192a226c5",
+                "reference": "1cba0487e764b4d7e22913e995f7525192a226c5",
                 "shasum": ""
             },
             "require": {
@@ -2520,7 +2717,7 @@
                 "RDF",
                 "sparql"
             ],
-            "time": "2015-11-24 06:22:45"
+            "time": "2016-10-07 13:56:26"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -2635,16 +2832,16 @@
         },
         {
             "name": "solarium/solarium",
-            "version": "3.6.0",
+            "version": "3.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/solariumphp/solarium.git",
-                "reference": "b945cbe4e8f96b639d82c4d1e2cae4ef3ab6fce5"
+                "reference": "0acdb2838ae551fe87e4e334e449a468973839f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/solariumphp/solarium/zipball/b945cbe4e8f96b639d82c4d1e2cae4ef3ab6fce5",
-                "reference": "b945cbe4e8f96b639d82c4d1e2cae4ef3ab6fce5",
+                "url": "https://api.github.com/repos/solariumphp/solarium/zipball/0acdb2838ae551fe87e4e334e449a468973839f2",
+                "reference": "0acdb2838ae551fe87e4e334e449a468973839f2",
                 "shasum": ""
             },
             "require": {
@@ -2656,6 +2853,9 @@
                 "satooshi/php-coveralls": "~1.0",
                 "squizlabs/php_codesniffer": "~1.4",
                 "zendframework/zendframework1": "~1.12"
+            },
+            "suggest": {
+                "minimalcode/search": "Query builder compatible with Solarium, allows simplified solr-query handling"
             },
             "type": "library",
             "extra": {
@@ -2685,7 +2885,7 @@
                 "search",
                 "solr"
             ],
-            "time": "2016-05-03 07:08:49"
+            "time": "2016-10-28 08:50:36"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -2820,16 +3020,16 @@
         },
         {
             "name": "symfony/monolog-bundle",
-            "version": "2.11.1",
+            "version": "2.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/monolog-bundle.git",
-                "reference": "e7caf4936c7be82bc6d68df87f1d23a0d5bf6e00"
+                "reference": "6acef3bd201c4f35e42e52dedf1fe088f30e07e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/e7caf4936c7be82bc6d68df87f1d23a0d5bf6e00",
-                "reference": "e7caf4936c7be82bc6d68df87f1d23a0d5bf6e00",
+                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/6acef3bd201c4f35e42e52dedf1fe088f30e07e8",
+                "reference": "6acef3bd201c4f35e42e52dedf1fe088f30e07e8",
                 "shasum": ""
             },
             "require": {
@@ -2876,7 +3076,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2016-04-13 16:21:01"
+            "time": "2016-11-06 18:54:50"
         },
         {
             "name": "symfony/polyfill-apcu",
@@ -3392,16 +3592,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.12",
+            "version": "v2.8.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "6a5bc3257b60098c28fc1bbcacd52000dd2801d1"
+                "reference": "d04e2eb13ae63068fc8862530b403756e3702896"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/6a5bc3257b60098c28fc1bbcacd52000dd2801d1",
-                "reference": "6a5bc3257b60098c28fc1bbcacd52000dd2801d1",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/d04e2eb13ae63068fc8862530b403756e3702896",
+                "reference": "d04e2eb13ae63068fc8862530b403756e3702896",
                 "shasum": ""
             },
             "require": {
@@ -3417,7 +3617,7 @@
                 "symfony/polyfill-php70": "~1.0",
                 "symfony/polyfill-util": "~1.0",
                 "symfony/security-acl": "~2.7|~3.0.0",
-                "twig/twig": "~1.26|~2.0"
+                "twig/twig": "~1.27|~2.0"
             },
             "conflict": {
                 "phpdocumentor/reflection": "<1.0.7"
@@ -3523,20 +3723,63 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2016-10-03 18:44:12"
+            "time": "2016-10-27 02:18:45"
         },
         {
-            "name": "twig/extensions",
-            "version": "v1.4.0",
+            "name": "technosophos/LibRIS",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/twigphp/Twig-extensions.git",
-                "reference": "531eaf4b9ab778b1d7cdd10d40fc6aa74729dfee"
+                "url": "https://github.com/technosophos/LibRIS.git",
+                "reference": "5b6628ece0e57e90bd54f3b2d8de922dc4cc662c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig-extensions/zipball/531eaf4b9ab778b1d7cdd10d40fc6aa74729dfee",
-                "reference": "531eaf4b9ab778b1d7cdd10d40fc6aa74729dfee",
+                "url": "https://api.github.com/repos/technosophos/LibRIS/zipball/5b6628ece0e57e90bd54f3b2d8de922dc4cc662c",
+                "reference": "5b6628ece0e57e90bd54f3b2d8de922dc4cc662c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "LibRIS": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT or GPLv2"
+            ],
+            "authors": [
+                {
+                    "name": "M Butcher",
+                    "homepage": "http://technosophos.com"
+                }
+            ],
+            "description": "An RIS parser. RIS is a format for reference metadata.",
+            "homepage": "https://github.com/technosophos/LibRIS",
+            "keywords": [
+                "Bibliography",
+                "File parser",
+                "RIS",
+                "Reference"
+            ],
+            "time": "2012-03-14 16:36:15"
+        },
+        {
+            "name": "twig/extensions",
+            "version": "v1.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twigphp/Twig-extensions.git",
+                "reference": "f0bb8431c8691f5a39f1017d9a5967a082bf01ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twigphp/Twig-extensions/zipball/f0bb8431c8691f5a39f1017d9a5967a082bf01ff",
+                "reference": "f0bb8431c8691f5a39f1017d9a5967a082bf01ff",
                 "shasum": ""
             },
             "require": {
@@ -3575,20 +3818,20 @@
                 "i18n",
                 "text"
             ],
-            "time": "2016-09-22 16:50:57"
+            "time": "2016-10-25 17:34:14"
         },
         {
             "name": "twig/twig",
-            "version": "v1.26.0",
+            "version": "v1.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "81c2b5fd36581370c7731387f05dcdb577050513"
+                "reference": "3c6c0033fd3b5679c6e1cb60f4f9766c2b424d97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/81c2b5fd36581370c7731387f05dcdb577050513",
-                "reference": "81c2b5fd36581370c7731387f05dcdb577050513",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3c6c0033fd3b5679c6e1cb60f4f9766c2b424d97",
+                "reference": "3c6c0033fd3b5679c6e1cb60f4f9766c2b424d97",
                 "shasum": ""
             },
             "require": {
@@ -3601,7 +3844,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.26-dev"
+                    "dev-master": "1.27-dev"
                 }
             },
             "autoload": {
@@ -3636,13 +3879,18 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-10-02 16:19:13"
+            "time": "2016-10-25 19:17:17"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "jms/translation-bundle": 20,
+        "seboettg/citeproc-php": 20,
+        "technosophos/libris": 20,
+        "geissler/converter": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

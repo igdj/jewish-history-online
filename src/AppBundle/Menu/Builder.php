@@ -111,6 +111,9 @@ class Builder implements ContainerAwareInterface
             ->addChild('organization-index',
                         array('label' => $translator->trans('Organizations'), 'route' => 'organization-index'));
         $menu['_lookup']
+            ->addChild('bibliography-index',
+                        array('label' => $translator->trans('Bibliography'), 'route' => 'bibliography-index'));
+        $menu['_lookup']
             ->addChild('glossary-index',
                         array('label' => $translator->trans('Glossary'), 'route' => 'glossary-index'));
 
@@ -209,6 +212,7 @@ class Builder implements ContainerAwareInterface
             case 'person-index':
             case 'place-index':
             case 'organization-index':
+            case 'bibliography-index':
             case 'glossary-index':
                 $item = $menu['_lookup'][$current_route];
                 break;
@@ -231,12 +235,19 @@ class Builder implements ContainerAwareInterface
                 $item = $item->addChild($current_route, array('label' => 'Detail', 'uri' => '#'));
                 break;
 
+            case 'bibliography':
+                $item = $menu['_lookup']['bibliography-index'];
+                $item = $item->addChild($current_route, array('label' => 'Detail', 'uri' => '#'));
+                break;
+
             case 'search-index':
                 $item = $menu->addChild($current_route, array('label' => 'Search'));
                 break;
 
            default:
-                var_dump($current_route);
+                if (!is_null($current_route)) {
+                    var_dump($current_route);
+                }
         }
         if (isset($item)) {
             $item->setCurrent(true);

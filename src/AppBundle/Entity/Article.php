@@ -118,6 +118,12 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
     protected $placeReferences;
 
     /**
+     *
+     * @ORM\OneToMany(targetEntity="ArticleBibitem", mappedBy="article", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+     */
+    protected $bibitemReferences;
+
+    /**
      * @var string The creator/author of this CreativeWork.
      * @ORM\Column(type="string", nullable=true)
      *
@@ -258,6 +264,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
         $this->personReferences = new ArrayCollection();
         $this->placeReferences = new ArrayCollection();
         $this->organizationReferences = new ArrayCollection();
+        $this->bibitemReferences = new ArrayCollection();
     }
 
     /**
@@ -1008,6 +1015,26 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
     public function getPlaceReferences()
     {
         return $this->placeReferences;
+    }
+
+    public function addBibitemReference(ArticleEntity $entityReference)
+    {
+        $entityId = $entityReference->getEntity()->getId();
+        if (!$this->bibitemReferences->exists(
+            function ($key, $element) use ($entityId) {
+                return $element->getEntity()->getId() == $entityId;
+            }))
+        {
+            $this->bibitemReferences->add($entityReference);
+            $entityReference->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function getBibitemReferences()
+    {
+        return $this->bibitemReferences;
     }
 
     public function jsonSerialize()

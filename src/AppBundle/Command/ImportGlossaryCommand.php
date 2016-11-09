@@ -1,6 +1,6 @@
 <?php
 
-// src/AppBundle/Command/GreetCommand.php
+// src/AppBundle/Command/ImportGlossaryCommand.php
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -39,7 +39,7 @@ class ImportGlossaryCommand extends ContainerAwareCommand
         $reader->setHeaderRowNumber(0);
         $count = 0;
 
-        $entityManager = $this->getContainer()->get('doctrine')->getEntityManager();
+        $entityManager = $this->getContainer()->get('doctrine')->getManager();
         $termRepository = $entityManager->getRepository('AppBundle:GlossaryTerm');
         $slugify = $this->getContainer()->get('cocur_slugify');
 

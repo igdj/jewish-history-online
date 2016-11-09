@@ -248,7 +248,6 @@ abstract class RenderTeiController extends Controller
                         }
                     }
                     break;
-
             }
         }
 
@@ -387,6 +386,29 @@ abstract class RenderTeiController extends Controller
             return $entity;
         });
 
+        // extract bibitem
+        $bibitems = array_filter(array_unique($crawler->filterXPath("//span[@class='dta-bibl']")->each(function ($node, $i) {
+            return trim($node->attr('data-corresp'));
+        })));
+        $bibitems_by_corresp = [];
+        if (!empty($bibitems)) {
+            $slugify = $this->get('cocur_slugify');
+            foreach ($bibitems as $corresp) {
+                $bibitems_map[$corresp] =  \AppBundle\Entity\Bibitem::slugifyCorresp($slugify, $corresp);
+            }
+            $query = $this->get('doctrine')
+                ->getManager()
+                ->createQuery('SELECT b.slug FROM AppBundle:Bibitem b WHERE b.slug IN (:slugs) AND b.status >= 0')
+                ->setParameter('slugs', array_values($bibitems_map));
+
+            foreach ($query->getResult() as $bibitem) {
+                $corresps = array_keys($bibitems_map, $bibitem['slug']);
+                foreach ($corresps as $corresp) {
+                    $bibitems_by_corresp[$corresp] = $bibitem;
+                }
+            }
+        }
+
         // extract glossary terms
         $glossaryTerms = array_unique($crawler->filterXPath("//span[@class='glossary']")->each(function ($node, $i) {
             return $node->attr('data-title');
@@ -427,6 +449,6 @@ abstract class RenderTeiController extends Controller
             }
         }
 
-        return [ $authors_by_slug, $section_headers, $license, $entities, $glossaryTerms, $refs ];
+        return [ $authors_by_slug, $section_headers, $license, $entities, $bibitems_by_corresp, $glossaryTerms, $refs ];
     }
 }

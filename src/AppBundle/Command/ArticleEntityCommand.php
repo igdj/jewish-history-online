@@ -1,6 +1,6 @@
 <?php
 
-// src/AppBundle/Command/GreetCommand.php
+// src/AppBundle/Command/ArticleEntityCommand.php
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -95,7 +95,7 @@ class ArticleEntityCommand extends BaseEntityCommand
                 return 1;
             }
 
-            $em = $this->getContainer()->get('doctrine')->getEntityManager();
+            $em = $this->getContainer()->get('doctrine')->getManager();
 
             $uid = $article->uid; $language = $article->language;
             $article = $em->getRepository('AppBundle\Entity\Article')

@@ -1,6 +1,6 @@
 <?php
 
-// src/AppBundle/Command/GreetCommand.php
+// src/AppBundle/Command/BaseEntityCommand.php
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -48,7 +48,7 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
             return -1;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getEntityManager();
+        $em = $this->getContainer()->get('doctrine')->getManager();
         return $em->getRepository('AppBundle\Entity\Person')->findOneBy($condition);
     }
 
@@ -59,7 +59,7 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
             return 0;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getEntityManager();
+        $em = $this->getContainer()->get('doctrine')->getManager();
         $person = new \AppBundle\Entity\Person();
         $condition = $this->buildPersonConditionByUri($uri);
         foreach ($condition as $field => $value) {
@@ -134,7 +134,7 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
             return -1;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getEntityManager();
+        $em = $this->getContainer()->get('doctrine')->getManager();
         return $em->getRepository('AppBundle\Entity\Organization')->findOneBy($condition);
     }
 
@@ -145,7 +145,7 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
             return 0;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getEntityManager();
+        $em = $this->getContainer()->get('doctrine')->getManager();
         $organization = new \AppBundle\Entity\Organization();
         $condition = $this->buildOrganizationConditionByUri($uri);
         foreach ($condition as $field => $value) {
@@ -221,13 +221,13 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
             return;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getEntityManager();
+        $em = $this->getContainer()->get('doctrine')->getManager();
         return $em->getRepository('AppBundle\Entity\Place')->findOneBy($condition);
     }
 
     protected function insertMissingPlace($uri, $additional = [])
     {
-        $em = $this->getContainer()->get('doctrine')->getEntityManager();
+        $em = $this->getContainer()->get('doctrine')->getManager();
         $entity = $this->findPlaceByUri($uri);
         if (!is_null($entity)) {
             // set gnd if given and not already set

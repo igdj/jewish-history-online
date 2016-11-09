@@ -75,14 +75,14 @@
     <p>The online edition receives funding from the Deutsche Forschungsgemeinschaft for a two-year period that began in July 2015. With this edition the IGdJ once again fulfils its role as an institution serving as link between scholarship and the interested public.</p>
 
 {% else %}
-    <p>Die vom Institut für die Geschichte der deutschen Juden (IGdJ) realisierte Online-Quellenedition wirft am Beispiel von ausgewählten Quellen, sogenannten Schlüsseldokumenten, thematische Schlaglichter auf zentrale Aspekte der jüdischen Geschichte Hamburgs von der frühen Neuzeit bis in die Gegenwart. Die Redaktion versteht Hamburg dabei als Brennglas für größere Entwicklungen und Fragestellungen der deutsch-jüdischen Geschichte. Die Quellenedition möchte dazu beitragen, das aufgrund von Verfolgung und Migration in alle Welt verstreute jüdische Erbe der Stadt digital wieder zusammenzuführen, zugänglich zu machen und für zukünftige Generationen zu bewahren.</p>
+    <p>Die vom Institut für die Geschichte der deutschen Juden (IGdJ) realisierte Online-Quellenedition wirft am Beispiel von ausgewählten Quellen, sogenannten <a href="{{ path('about-keydocuments') }}">Schlüsseldokumenten</a>, thematische Schlaglichter auf zentrale Aspekte der jüdischen Geschichte Hamburgs von der frühen Neuzeit bis in die Gegenwart. Die Redaktion versteht Hamburg dabei als Brennglas für größere Entwicklungen und Fragestellungen der deutsch-jüdischen Geschichte. Die Quellenedition möchte dazu beitragen, das aufgrund von Verfolgung und Migration in alle Welt verstreute jüdische Erbe der Stadt digital wieder zusammenzuführen, zugänglich zu machen und für zukünftige Generationen zu bewahren.</p>
 
     <p>Durch die Präsentation von bislang weniger beachtetem Quellenmaterial sowie die neuartige Anordnung und Aufbereitung bekannter Archivalien sollen Denkanstöße gegeben und neue Fragestellungen angeregt werden. Die Quelle steht im Mittelpunkt, von ihr ausgehend soll die Auseinandersetzung über konkrete Deutungen und Einordnungen gefördert werden.<br />
 Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und durch Interpretations- und Hintergrundtexte in ihre historischen Kontexte eingebettet. Angereichert werden die Materialien durch Informationen zur Überlieferung, zur Rezeptionsgeschichte und zu wissenschaftlichen Kontroversen. Alle Inhalte werden sowohl auf Deutsch als auch auf Englisch angeboten.</p>
 
-    <p>Die Quellenedition richtet sich an Studierende, Forschende und Lehrende, teilweise auch an Laien sowie Schülerinnen und Schüler. Sie deckt dabei ein Spektrum von eher allgemeinen, überblicksartigen bis hin zu eng an der Quelle argumentierenden Texten ab und bietet verschiedene Zugänge zu den Quellen an – über einen Zeitstrang, Themenkategorien oder eine Karte. Ein Beirat aus renommierten Wissenschaftlerinnen und Wissenschaftlern der deutsch-jüdischen Geschichte und Expertinnen und Experten aus dem Bereich Digitalisierung unterstützt das Projekt.</p>
+    <p>Die Quellenedition <a href="{{ path('about-audience') }}">richtet sich an Studierende, Forschende und Lehrende, teilweise auch an Laien sowie Schülerinnen und Schüler</a>. Sie deckt dabei ein Spektrum von eher allgemeinen, überblicksartigen bis hin zu eng an der Quelle argumentierenden Texten ab und bietet verschiedene Zugänge zu den Quellen an – über einen <a href="{{ path('date-chronology') }}">Zeitstrahl</a>, <a href="{{ path('topic-index') }}">Themenkategorien</a> oder eine <a href="{{ path('place-map') }}">Karte</a>. Ein <a href="{{ path('about-board') }}">Beirat</a> aus renommierten Wissenschaftlerinnen und Wissenschaftlern der deutsch-jüdischen Geschichte und Expertinnen und Experten aus dem Bereich Digitalisierung unterstützt das Projekt.</p>
 
-    <p>Die Online-Edition wird seit Juli 2015 für zwei Jahre von der Deutschen Forschungsgemeinschaft gefördert. Mit der Edition präsentiert sich das IGdJ erneut in seiner Rolle als Verbindungsglied zwischen Wissenschaft und interessierter Öffentlichkeit.</p>
+    <p>Die Online-Edition wird seit Juli 2015 für zwei Jahre von der <a href="http://dfg.de/">Deutschen Forschungsgemeinschaft</a> gefördert. Mit der Edition präsentiert sich das IGdJ erneut in seiner Rolle als Verbindungsglied zwischen Wissenschaft und interessierter Öffentlichkeit.</p>
 {% endif %}
             </div>
         </div>
@@ -91,19 +91,19 @@ Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und du
             <div class="container-fluid box">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
-                        <h4>{{ 'Featured Document'|trans }}</h4>
+                        <h4>{{ 'Source of the Month'|trans }}</h4>
                     </div>
                 </div>
                 <div class="row box-color-content-inverse">
                     <div class="col-xs-4">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-15' }) }}"><img src="{{ app.request.basepath }}/img/mockup/schaechten_thumbnail.jpg" style="width: 100%; height: auto" /></a>
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-89' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00089/thumb.jpg" style="width: 100%; height: auto" /></a>
                     </div>
                     <div class="col-xs-8">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-15' }) }}">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-89' }) }}">
                         {% if 'en' == app.request.locale %}
-                        <b>Letter from the Deputation of Commerce, Shipping, and Trade to the Administration of Abattoirs and Livestock Markets</b>, Hamburg, February 4, 1930
+                        <b>Rachel Dror discusses her experiences during and after the pogroms in Hamburg</b>, November 1938
                         {% else %}
-                        <b>Schreiben der Deputation für Handel, Schifffahrt und Gewerbe an Schlachthof und Viehmarktverwaltung</b>, Hamburg, 4.2.1930
+                        <b>Interview mit Rachel Dror zu ihren Erfahrungen während und nach der Pogromnacht in Hamburg</b>, November 1938
                         {% endif %}
                         </a>
                     </div>

@@ -6,9 +6,9 @@ framework:
         enabled: false # true by default
         only_exceptions: false
 
-web_profiler:
-    toolbar: true
-    intercept_redirects: false
+#web_profiler:
+#    toolbar: false
+#    intercept_redirects: false
 
 monolog:
     handlers:

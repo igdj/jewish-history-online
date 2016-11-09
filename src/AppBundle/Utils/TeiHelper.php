@@ -67,6 +67,27 @@ class TeiHelper
         return $fnameFacs;
     }
 
+    public function getFirstFigureFacs($fname)
+    {
+        $xml = $this->loadXml($fname);
+        if (false === $xml) {
+            return false;
+        }
+
+        $fnameFacs = '';
+
+        $result = $xml->xpath('/tei:TEI/tei:text//tei:figure');
+        foreach ($result as $element) {
+            $facs = $element['facs'];
+            if (!empty($facs)) {
+                $fnameFacs = $facs;
+                break; // we only care about the first one
+            }
+        }
+
+        return $fnameFacs;
+    }
+
     public function analyzeHeader($fname)
     {
         $xml = $this->loadXml($fname);
@@ -139,6 +160,7 @@ class TeiHelper
             $article->license = (string)$result[0]['target'];
         }
         else {
+            $article->license = null;
             $result = $header->xpath('./tei:fileDesc/tei:publicationStmt/tei:availability/tei:p');
             if (!empty($result)) {
                 $article->rights = (string)$result[0];
@@ -648,7 +670,6 @@ class TeiHelper
     }
     */
 
-
     public function extractEntities($fname)
     {
         $input = file_get_contents($fname);
@@ -743,6 +764,43 @@ class TeiHelper
         return $additional;
     }
 
+    public function extractBibitems($fname, $slugify = null)
+    {
+        $input = file_get_contents($fname);
+        $reader = new CollectingReader();
+
+        $reader->elementMap = [
+            '{http://www.tei-c.org/ns/1.0}bibl' => '\\AppBundle\\Utils\\CollectingReader::collectElement',
+        ];
+
+        $items = [];
+        try {
+            $reader->xml($input);
+            $output = $reader->parse();
+            foreach ($output as $item) {
+                if (empty($item['attributes']['corresp'])) {
+                  continue;
+                }
+                $key = trim($item['attributes']['corresp']);
+                if (!is_null($slugify)) {
+                    $key = \AppBundle\Entity\Bibitem::slugifyCorresp($slugify, $key);
+                }
+
+                if (!empty($key)) {
+                    if (!isset($items[$key])) {
+                        $items[$key] = 0;
+                    }
+                    ++$items[$key];
+                }
+            }
+        }
+        catch (\Exception $e) {
+            var_dump($e);
+            return false;
+        }
+
+        return $items;
+    }
 }
 
 class CollectingReader extends \Sabre\Xml\Reader

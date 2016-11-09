@@ -23,14 +23,23 @@
     <div class="article">
       <xsl:apply-templates/>
     </div>
-    <xsl:if test="./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence">
-      <div id="license">
-        <xsl:if test="./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence/@target">
-          <xsl:attribute name="data-target"><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence/@target" /></xsl:attribute>
+    <xsl:choose>
+      <xsl:when test="./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence">
+        <div id="license">
+          <xsl:if test="./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence/@target">
+            <xsl:attribute name="data-target"><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence/@target" /></xsl:attribute>
+          </xsl:if>
+          <xsl:apply-templates select="./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence" />
+        </div>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:if test="./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability">
+          <div id="license">
+            <xsl:apply-templates select="./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability" />
+          </div>
         </xsl:if>
-        <xsl:apply-templates select="./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence" />
-      </div>
-    </xsl:if>
+      </xsl:otherwise>
+    </xsl:choose>
 </xsl:template>
 
 <xsl:template match='tei:note[@type="editorial"]'>
@@ -212,17 +221,31 @@
     <xsl:when test="tei:media/@mimeType='audio/mpeg'">
       <!-- custom code for audio/video -->
       <audio controls="controls">
+        <xsl:if test="@facs">
+            <xsl:attribute name="class">bootstrap3</xsl:attribute>
+            <xsl:attribute name="data-info-album-art"><xsl:value-of select='@facs' /></xsl:attribute>
+            <xsl:if test="tei:figDesc">
+                <xsl:attribute name="data-info-album-art-caption">
+                    <xsl:apply-templates select="tei:figDesc" mode="figdesc"/>
+                </xsl:attribute>
+            </xsl:if>
+        </xsl:if>
         <source>
           <xsl:attribute name="src"><xsl:value-of select='tei:media/@url' /></xsl:attribute>
           <xsl:attribute name="type"><xsl:value-of select='tei:media/@mimeType' /></xsl:attribute>
         </source>
       </audio>
-      <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if>
+      <xsl:if test="not(@facs)">
+        <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if>
+      </xsl:if>
     </xsl:when>
     <xsl:when test="tei:media/@mimeType='video/mp4'">
       <!-- custom code for audio/video -->
       <div class="embed-responsive embed-responsive-16by9">
       <video controls="controls" preload="none" class="embed-responsive-item">
+        <xsl:if test="@facs">
+          <xsl:attribute name="poster"><xsl:value-of select='@facs' /></xsl:attribute>
+        </xsl:if>
         <source>
           <xsl:attribute name="src"><xsl:value-of select='tei:media/@url' /></xsl:attribute>
           <xsl:attribute name="type"><xsl:value-of select='tei:media/@mimeType' /></xsl:attribute>

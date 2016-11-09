@@ -4,10 +4,16 @@ services:
         class: Twig_Extensions_Extension_Text
         tags:
             - { name: twig.extension }
-            
+
+    # language-specific layout in 404
+    app.language.kernel_request_listener:
+        class: AppBundle\EventListener\LanguageListener
+        tags:
+          - { name: kernel.event_listener, event: kernel.exception, method: setLocale }
+
     app.twig_extension:
         class: AppBundle\Twig\AppExtension
-        arguments: [@translator, @cocur_slugify]
+        arguments: [ @translator, @cocur_slugify ]
         public: false
         tags:
             - { name: twig.extension }
@@ -19,4 +25,4 @@ services:
     app.xslt:
         class:        AppBundle\Utils\Xsl\XsltProcessor
         calls:        
-            - [setAdapter, ['@app.xslt_adapter']] 
+            - [ setAdapter, [ '@app.xslt_adapter' ]] 

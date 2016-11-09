@@ -23,7 +23,7 @@ class DateController extends Controller
         }
 
         $queryBuilder = $this->getDoctrine()
-                ->getEntityManager()
+                ->getManager()
                 ->createQueryBuilder()
                 ->select('S, A')
                 ->from('AppBundle:SourceArticle', 'S')

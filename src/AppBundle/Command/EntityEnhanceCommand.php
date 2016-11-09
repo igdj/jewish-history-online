@@ -16,11 +16,11 @@ class EntityEnhanceCommand extends ContainerAwareCommand
     {
         $this
             ->setName('entity:enhance')
-            ->setDescription('Enhance Person/Place/Organization Entities')
+            ->setDescription('Enhance Person/Place/Organization/Bibitem Entities')
             ->addArgument(
                 'type',
                 InputArgument::REQUIRED,
-                'which entities do you want to enhance (person / place / organization)'
+                'which entities do you want to enhance (person / place / organization / bibitem)'
             )
             ;
     }
@@ -42,6 +42,10 @@ class EntityEnhanceCommand extends ContainerAwareCommand
 
             case 'country':
                 return $this->enhanceCountry();
+                break;
+
+            case 'bibitem':
+                return $this->enhanceBibitem();
                 break;
 
             default:
@@ -149,7 +153,7 @@ class EntityEnhanceCommand extends ContainerAwareCommand
         // currently beacon, entityfacts and wikidata
         $gndBeacon = $this->loadGndBeacon();
 
-        $em = $this->getContainer()->get('doctrine')->getEntityManager();
+        $em = $this->getContainer()->get('doctrine')->getManager();
         $personRepository = $em->getRepository('AppBundle:Person');
         $persons = $personRepository->findBy([ 'status' => [0, 1] ]);
         foreach ($persons as $person) {
@@ -236,7 +240,7 @@ class EntityEnhanceCommand extends ContainerAwareCommand
                                 $places = $em->getRepository('AppBundle:Place')->findByName($placeInfo['name']);
                                 if (count($places) > 1) {
                                     $places[] = []; // skip if there are multiple matches
-                                } 
+                                }
                             }
                         }
                         else {
@@ -288,7 +292,7 @@ class EntityEnhanceCommand extends ContainerAwareCommand
         // currently only geonames
         // TODO: maybe get outlines
         // http://www.geonames.org/servlet/geonames?&srv=780&geonameId=2921044&type=json
-        $em = $this->getContainer()->get('doctrine')->getEntityManager();
+        $em = $this->getContainer()->get('doctrine')->getManager();
         $placeRepository = $em->getRepository('AppBundle:Place');
         /*
         foreach ($placeRepository->findAll() as $place) {
@@ -432,7 +436,7 @@ class EntityEnhanceCommand extends ContainerAwareCommand
         // currently beacon
         $gndBeacon = $this->loadGndBeacon([ 'dasjuedischehamburg' => 'BEACON-GND-ORG-dasjuedischehamburg.txt' ]);
 
-        $em = $this->getContainer()->get('doctrine')->getEntityManager();
+        $em = $this->getContainer()->get('doctrine')->getManager();
         $organizationRepository = $em->getRepository('AppBundle:Organization');
         /*
         foreach ($organizationRepository->findAll() as $organization) {
@@ -464,7 +468,7 @@ class EntityEnhanceCommand extends ContainerAwareCommand
 
         // currently only homepages
         /*
-        $em = $this->getContainer()->get('doctrine')->getEntityManager();
+        $em = $this->getContainer()->get('doctrine')->getManager();
         $organizationRepository = $em->getRepository('AppBundle:Organization');
         $organizations = $organizationRepository->findBy([ 'url' => null ]);
         foreach ($organizations as $organization) {
@@ -527,7 +531,7 @@ class EntityEnhanceCommand extends ContainerAwareCommand
             $info_by_geonames[$info['geonameId']] = $info;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getEntityManager();
+        $em = $this->getContainer()->get('doctrine')->getManager();
 
         $placeRepository = $em->getRepository('AppBundle:Place');
         foreach ([ 'nation' ] as $type) {
@@ -574,6 +578,63 @@ class EntityEnhanceCommand extends ContainerAwareCommand
                     $em->persist($country);
                     $em->flush();
                 }
+            }
+        }
+    }
+
+    protected function enhanceBibitem()
+    {
+        // currently googleapis.com/books
+        $googleapisKey = '';
+        if ($this->getContainer()->hasParameter('googleapis.key')) {
+            $googleapisKey = $this->getContainer()->getParameter('googleapis.key');
+        }
+
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        $bibitemRepository = $em->getRepository('AppBundle:Bibitem');
+        $items = $bibitemRepository->findBy([ 'status' => [0, 1] ]);
+        foreach ($items as $item) {
+            $persist = false;
+            $isbns = $item->getIsbnListNormalized(false);
+            if (empty($isbns)) {
+                continue;
+            }
+            $additional = $item->getAdditional();
+            if (is_null($additional) || !array_key_exists('googleapis-books', $additional)) {
+                $url = sprintf('https://www.googleapis.com/books/v1/volumes?q=isbn:%s&key=%s',
+                               $isbns[0],
+                               $googleapisKey);
+                // var_dump($url);
+                $result = $this->executeJsonQuery($url,
+                                                  array('Accept' => 'application/json',
+                                                        // 'Accept-Language' => $locale, // date-format!
+                                                        ));
+                if (false !== $result && $result['totalItems'] > 0) {
+                    $resultItem = $result['items'][0];
+                    if (!empty($resultItem['selfLink'])) {
+                        $result = $this->executeJsonQuery($resultItem['selfLink'],
+                                                          array('Accept' => 'application/json',
+                                                                // 'Accept-Language' => $locale, // date-format!
+                                                                ));
+                        if (false !== $result) {
+                            $resultItem = $result;
+                        }
+                    }
+
+                    if (is_null($additional)) {
+                        $additional = [];
+                    }
+
+                    $additional['googleapis-books'] = $resultItem;
+                    $item->setAdditional($additional);
+
+                    $persist = true;
+                }
+            }
+
+            if ($persist) {
+                $em->persist($item);
+                $em->flush();
             }
         }
     }

@@ -2,6 +2,8 @@
     {% import _self as searchHelper %}
     {% if result.entity_s == 'article' %}
         {{ searchHelper.display_article_result(result) }}
+    {% elseif result.entity_s == 'bibitem' %}
+        {{ searchHelper.display_bibitem_result(result) }}
     {% else %}
         {{ searchHelper.display_other_result(result) }}
     {% endif %}
@@ -24,6 +26,9 @@
         {% else %}
             {% set params = { 'slug' : result.uid_s } %}
         {% endif %}
+    {% elseif parts[0] == 'bibitem' %}
+        {% set route = 'bibliography'  %}
+        {% set params = { 'slug' : result.slug_s } %}
     {% else %}
         {% set route = parts[0]  %}
         {% set params = { 'id' : parts[1] } %}
@@ -39,5 +44,11 @@
 {% macro display_article_result(result) %}
     {% import _self as searchHelper %}
     <h4><a href="{{ searchHelper.build_result_path(result) }}">{{ result.name_order_s }}</a></h4>
+    {{ result.author_ss|join(', ') }}
+{% endmacro %}
+
+{% macro display_bibitem_result(result) %}
+    {% import _self as searchHelper %}
+    <h4><a href="{{ searchHelper.build_result_path(result) }}">{{ result.additional_s|renderCitation }}</a></h4>
     {{ result.author_ss|join(', ') }}
 {% endmacro %}

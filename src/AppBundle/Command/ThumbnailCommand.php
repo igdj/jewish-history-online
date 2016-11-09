@@ -78,72 +78,84 @@ class ThumbnailCommand extends ContainerAwareCommand
             return 1;
         }
 
-        $facsimile = $teiHelper->getFirstPbFacs($fname);
-
-        if (empty($facsimile)) {
-            switch ($article->sourceType) {
-                case 'Text':
-                    $facsimile = false; // no alternative
-                    break;
-
-                default:
-                    die('TODO: handle ' . $article->sourceType);
-                    $facsimile = false;
-            }
-
-        }
-
-        if (false === $facsimile) {
-            return 2;
-        }
-
         $baseDir = realpath($this->getContainer()->get('kernel')->getRootDir() . '/..');
 
         $DERIVATE = preg_replace('/\.(de|en)$/', '', pathinfo($fname, PATHINFO_FILENAME));
-        $srcPath = sprintf('src/AppBundle/Resources/data/img/%s', $DERIVATE);
 
-        $srcDir = realpath($baseDir . '/' . $srcPath);
-        if (empty($srcDir)) {
-            $output->writeln(sprintf('<error>%s does not exist</error>', $srcPath));
-            return 1;
-        }
-
-        $fnameSrc = false;
         $convert_args = [];
-        foreach ([ '.jpg', '.png', '.pdf' ] as $extension) {
-            $fnameFull = $srcDir . '/' . $facsimile . $extension;
-            $file = new \Symfony\Component\HttpFoundation\File\File($fnameFull);
 
-            if ($file->isFile()) {
-                $fnameSrc = $file->getFilename();
-                if ('.pdf' == $extension) {
-                    $convert_args[] = '-density 400';
-                }
-                break;
+        $facsimile = $teiHelper->getFirstPbFacs($fname);
+
+        if (!empty($facsimile)) {
+            $srcPath = sprintf('src/AppBundle/Resources/data/img/%s', $DERIVATE);
+
+            $srcDir = realpath($baseDir . '/' . $srcPath);
+            if (empty($srcDir)) {
+                $output->writeln(sprintf('<error>%s does not exist</error>', $srcPath));
+                return 1;
             }
+
+            $fnameSrc = false;
+            foreach ([ '.jpg', '.png', '.pdf' ] as $extension) {
+                $fnameFull = $srcDir . '/' . $facsimile . $extension;
+                $file = new \Symfony\Component\HttpFoundation\File\File($fnameFull);
+
+                if ($file->isFile()) {
+                    $fnameSrc = $file->getFilename();
+                    if ('.pdf' == $extension) {
+                        $convert_args[] = '-density 400';
+                    }
+                    break;
+                }
+            }
+
+            if (false == $fnameSrc) {
+                $output->writeln(sprintf('<error>%s.{jpg|png|pdf} does not exist</error>', $srcDir . '/' . $facsimile));
+                return 1;
+            }
+
+            $targetPath = sprintf('web/viewer/%s', $DERIVATE);
+            if (!is_dir($baseDir . '/' . $targetPath)) {
+                mkdir($baseDir . '/' . $targetPath);
+            }
+            $targetDir = realpath($baseDir . '/' . $targetPath);
+            if (empty($targetDir)) {
+                $output->writeln(sprintf('<error>%s could not be created</error>', $targetPath));
+                return 1;
+            }
+
+
+            $fnameFull = realpath($srcDir . '/' . $fnameSrc);
+            if (!file_exists($fnameFull)) {
+                $output->writeln(sprintf('<error>%s does not exist</error>', $fnameFull));
+                return 1;
+            }
+
+        }
+        else {
+            switch ($article->sourceType) {
+                case 'Text':
+                    return 2;
+                    break;
+
+                default:
+                    $figureFacs = $teiHelper->getFirstFigureFacs($fname);
+                    if (empty($figureFacs)) {
+                        return 2;
+                    }
+
+                    $targetDir = realpath($baseDir . '/' . sprintf('web/viewer/%s', $DERIVATE));
+
+                    $fnameFull = $targetDir . '/' . $figureFacs;
+
+                    if (!file_exists($fnameFull)) {
+                        $output->writeln(sprintf('<error>%s does not exist</error>', $fnameFull));
+                        return 1;
+                    }
+            }
+
         }
 
-        if (false == $fnameSrc) {
-            $output->writeln(sprintf('<error>%s.{jpg|png|pdf} does not exist</error>', $srcDir . '/' . $facsimile));
-            return 1;
-        }
-
-        $targetPath = sprintf('web/viewer/%s', $DERIVATE);
-        if (!is_dir($baseDir . '/' . $targetPath)) {
-            mkdir($baseDir . '/' . $targetPath);
-        }
-        $targetDir = realpath($baseDir . '/' . $targetPath);
-        if (empty($targetDir)) {
-            $output->writeln(sprintf('<error>%s could not be created</error>', $targetPath));
-            return 1;
-        }
-
-
-        $fnameFull = realpath($srcDir . '/' . $fnameSrc);
-        if (!file_exists($fnameFull)) {
-            $output->writeln(sprintf('<error>%s does not exist</error>', $fnameFull));
-            return 1;
-        }
         $fnameThumb = $targetDir . DIRECTORY_SEPARATOR . 'thumb.jpg';
         $geom = sprintf('-geometry %dx', self::$widthScaled);
 
