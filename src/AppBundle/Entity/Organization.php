@@ -150,6 +150,11 @@ implements \JsonSerializable, JsonLdSerializable
     protected $gnd;
 
     /**
+     * @ORM\OneToMany(targetEntity="Article", mappedBy="provider")
+     */
+    protected $providerOf;
+
+    /**
     * @ORM\Column(type="json_array", nullable=true)
     */
     protected $additional;
@@ -168,8 +173,6 @@ implements \JsonSerializable, JsonLdSerializable
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Organization", mappedBy="precedingOrganization")
      */
     protected $succeedingOrganization;
-
-    use ArticleReferencesTrait;
 
     /**
      * @ORM\OneToMany(targetEntity="ArticleOrganization", mappedBy="organization", cascade={"persist", "remove"}, orphanRemoval=TRUE)
@@ -484,6 +487,34 @@ implements \JsonSerializable, JsonLdSerializable
         return $this->succeedingOrganization;
     }
 
+    /* instead of
+     *   use ArticleReferencesTrait;
+     * override since we want to avoid duplicates with getProviderOf
+     */
+    public function getArticleReferences($lang = null, $skipProviderOf = true)
+    {
+        if (is_null($this->articleReferences)) {
+            return [];
+        }
+
+        $langCode3 = is_null($lang) ? null : \AppBundle\Utils\Iso639::code1to3($lang);
+
+        return $this->articleReferences->filter(
+            function ($entity) use ($langCode3, $skipProviderOf) {
+                $ret = 1 == $entity->getArticle()->getStatus()
+                     && (is_null($langCode3) || $entity->getArticle()->getLanguage() == $langCode3);
+
+                if ($ret && $skipProviderOf && !is_null($this->providerOf)) {
+                    // only return if not in providerOf
+                    $ret = !$this->providerOf->contains($entity->getArticle());
+                }
+
+                return $ret;
+            }
+        )->toArray();
+    }
+
+
     /**
      * Sets gnd.
      *
@@ -506,6 +537,28 @@ implements \JsonSerializable, JsonLdSerializable
     public function getGnd()
     {
         return $this->gnd;
+    }
+
+    /**
+     * Gets providerOf.
+     *
+     */
+    public function getProviderOf($lang = null)
+    {
+        if (is_null($this->providerOf)) {
+            return $this->providerOf;
+        }
+
+        $langCode3 = is_null($lang)
+            ? null
+            : \AppBundle\Utils\Iso639::code1to3($lang);
+
+        return $this->providerOf->filter(
+            function($entity) use ($langCode3) {
+               return 1 == $entity->getStatus()
+                && (is_null($langCode3) || $entity->getLanguage() == $langCode3);
+            }
+        );
     }
 
     /**

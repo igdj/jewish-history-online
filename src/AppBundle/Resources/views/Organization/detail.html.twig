@@ -61,6 +61,16 @@
 
             <p>{{ organization.description[app.request.locale]|nl2br  }}</p>
 
+            {% set sources = organization.providerOf(app.request.locale) %}
+            {% if sources is not empty %}
+                <h3>{{ 'source.oneormany'|transchoice(sources|length) }}</h3>
+                <ul>
+                    {% for article in sources %}
+                    <li>{{ helper.article_linked(article) }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
             {{ helper.list_entity_mentioned_in(organization.articleReferences(app.request.locale)) }}
         </div>
 

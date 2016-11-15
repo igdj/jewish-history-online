@@ -173,7 +173,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
     /**
      * @var Organization Holding institution.
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Organization")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Organization", inversedBy="providerOf")
      */
     protected $provider;
     /**
