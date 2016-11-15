@@ -20,7 +20,8 @@ class AboutController extends RenderTeiController
 
         $params = [ 'lang' => \AppBundle\Utils\Iso639::code1To3($locale) ];
 
-        $html = $this->renderTei($fnameTei, 'dtabf_article-printview.xsl', [ 'params' => $params ]);
+        $html = $this->renderTei($fnameTei, 'dtabf_article-printview.xsl',
+                                 [ 'params' => $params ]);
 
         if (false === $html) {
             return '<div class="alert alert-warning">'
@@ -31,14 +32,33 @@ class AboutController extends RenderTeiController
         return $html;
     }
 
+    protected function renderTitleContent($title, $template)
+    {
+        $translator = $this->get('translator');
+
+        return $this->render($template,
+                             [
+                               'pageTitle' => $translator->trans($title),
+                               'title' => $title,
+                               'content' => $this->renderContent() ]);
+    }
+
+    protected function renderAbout($title)
+    {
+        return $this->renderTitleContent($title, 'AppBundle:Default:sitetext-about.html.twig');
+    }
+
+    protected function renderAboutUs($title)
+    {
+        return $this->renderTitleContent($title, 'AppBundle:Default:sitetext-about-us.html.twig');
+    }
+
     /**
      * @Route("/about")
      */
     public function aboutAction()
     {
-        return $this->render('AppBundle:Default:sitetext-about.html.twig',
-                             [ 'title' => 'About this edition',
-                               'content' => $this->renderContent() ]);
+        return $this->renderAbout('About this edition');
     }
 
     /**
@@ -46,9 +66,7 @@ class AboutController extends RenderTeiController
      */
     public function goalsAction()
     {
-        return $this->render('AppBundle:Default:sitetext-about.html.twig',
-                             [ 'title' => 'Goals',
-                               'content' => $this->renderContent() ]);
+        return $this->renderAbout('Goals');
     }
 
     /**
@@ -56,9 +74,7 @@ class AboutController extends RenderTeiController
      */
     public function keydocumentsAction()
     {
-        return $this->render('AppBundle:Default:sitetext-about.html.twig',
-                             [ 'title' => 'Key Documents',
-                               'content' => $this->renderContent() ]);
+        return $this->renderAbout('Key Documents');
     }
 
     /**
@@ -66,9 +82,7 @@ class AboutController extends RenderTeiController
      */
     public function audienceAction()
     {
-        return $this->render('AppBundle:Default:sitetext-about.html.twig',
-                             [ 'title' => 'Target Audience',
-                               'content' => $this->renderContent() ]);
+        return $this->renderAbout('Target Audience');
     }
 
     /**
@@ -76,9 +90,7 @@ class AboutController extends RenderTeiController
      */
     public function usageAction()
     {
-        return $this->render('AppBundle:Default:sitetext-about.html.twig',
-                             [ 'title' => 'Structure / How to Use this Edition',
-                               'content' => $this->renderContent() ]);
+        return $this->renderAbout('Structure / How to Use this Edition');
     }
 
     /**
@@ -86,9 +98,7 @@ class AboutController extends RenderTeiController
      */
     public function editorialmodelAction()
     {
-        return $this->render('AppBundle:Default:sitetext-about.html.twig',
-                             [ 'title' => 'Editorial Model',
-                               'content' => $this->renderContent() ]);
+        return $this->renderAbout('Editorial Model');
     }
 
     /**
@@ -96,9 +106,7 @@ class AboutController extends RenderTeiController
      */
     public function editionguidelinesAction()
     {
-        return $this->render('AppBundle:Default:sitetext-about.html.twig',
-                             [ 'title' => 'Edition and Edition Guidelines',
-                               'content' => $this->renderContent() ]);
+        return $this->renderAbout('Edition and Edition Guidelines');
     }
 
     /**
@@ -106,9 +114,7 @@ class AboutController extends RenderTeiController
      */
     public function implementationAction()
     {
-        return $this->render('AppBundle:Default:sitetext-about.html.twig',
-                             [ 'title' => 'Technical Implementation',
-                               'content' => $this->renderContent() ]);
+        return $this->renderAbout('Technical Implementation');
     }
 
     /**
@@ -116,9 +122,7 @@ class AboutController extends RenderTeiController
      */
     public function staffAction()
     {
-        return $this->render('AppBundle:Default:sitetext-about-us.html.twig',
-                             [ 'title' => 'Staff',
-                               'content' => $this->renderContent() ]);
+        return $this->renderAboutUs('Staff');
     }
 
     /**
@@ -126,11 +130,7 @@ class AboutController extends RenderTeiController
      */
     public function editorsAction()
     {
-        return $this->render('AppBundle:Default:sitetext-about-us.html.twig',
-                             [
-                               'title' => 'Editors',
-                               'content' => $this->renderContent(),
-                             ]);
+        return $this->renderAboutUs('Editors');
     }
 
     /**
@@ -138,9 +138,7 @@ class AboutController extends RenderTeiController
      */
     public function boardAction()
     {
-        return $this->render('AppBundle:Default:sitetext-about-us.html.twig',
-                             [ 'title' => 'Advisory Board',
-                               'content' => $this->renderContent() ]);
+        return $this->renderAboutUs('Advisory Board');
     }
 
     /**
@@ -148,19 +146,7 @@ class AboutController extends RenderTeiController
      */
     public function sponsorsAction()
     {
-        return $this->render('AppBundle:Default:sitetext-about-us.html.twig',
-                             [ 'title' => 'Sponsors and Partners',
-                               'content' => $this->renderContent() ]);
-    }
-
-    /**
-     * @Route("/contact")
-     */
-    public function contactAction()
-    {
-        return $this->render('AppBundle:Default:sitetext.html.twig',
-                             [ 'title' => 'Contact',
-                               'content' => $this->renderContent() ]);
+        return $this->renderAboutUs('Sponsors and Partners');
     }
 
     /**
@@ -168,9 +154,14 @@ class AboutController extends RenderTeiController
      */
     public function termsAction()
     {
-        return $this->render('AppBundle:Default:sitetext.html.twig',
-                             [ 'title' => 'Terms and Conditions',
-                               'content' => $this->renderContent() ]);
+        return $this->renderTitleContent('Terms and Conditions', 'AppBundle:Default:sitetext.html.twig');
     }
 
+    /**
+     * @Route("/contact")
+     */
+    public function contactAction()
+    {
+        return $this->renderTitleContent('Contact', 'AppBundle:Default:sitetext.html.twig');
+    }
 }
