@@ -1,5 +1,6 @@
 <?php
 
+// src/AppBundle/Command/EntityEnhanceCommand.php
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -121,7 +122,7 @@ class EntityEnhanceCommand extends ContainerAwareCommand
             $info = [];
 
             $fnameFull = $this->getContainer()->get('kernel')->getRootDir()
-                   . '/Resources/data/' . $fname;
+                       . '/Resources/data/' . $fname;
             $lines = file($fnameFull);
             foreach ($lines as $line) {
                 if (empty($line)) {
@@ -143,7 +144,6 @@ class EntityEnhanceCommand extends ContainerAwareCommand
                 }
             }
         }
-
 
         return $gndBeacon;
     }
@@ -191,10 +191,10 @@ class EntityEnhanceCommand extends ContainerAwareCommand
                 $entityfacts = $person->getEntityfacts($locale, true);
                 if (is_null($entityfacts)) {
                     $url = sprintf('http://hub.culturegraph.org/entityfacts/%s', $gnd);
-                    $result = $this->executeJsonQuery($url,
-                                                      array('Accept' => 'application/json',
-                                                            'Accept-Language' => $locale, // date-format!
-                                                            ));
+                    $result = $this->executeJsonQuery($url, [
+                        'Accept' => 'application/json',
+                        'Accept-Language' => $locale, // date-format!
+                    ]);
                     if (false !== $result) {
                         $person->setEntityfacts($result, $locale);
                         $entityfacts = $person->getEntityfacts($locale, true);
@@ -294,14 +294,7 @@ class EntityEnhanceCommand extends ContainerAwareCommand
         // http://www.geonames.org/servlet/geonames?&srv=780&geonameId=2921044&type=json
         $em = $this->getContainer()->get('doctrine')->getManager();
         $placeRepository = $em->getRepository('AppBundle:Place');
-        /*
-        foreach ($placeRepository->findAll() as $place) {
-            $place->setAlternateName($place->getAlternateName());
-            $em->persist($place);
-        }
-        $em->flush();
-        return;
-        */
+
         foreach ([ 'nation', 'country',
                   'state', 'metropolitan area',
                   'inhabited place', 'neighborhood' ] as $type) {
@@ -605,17 +598,17 @@ class EntityEnhanceCommand extends ContainerAwareCommand
                                $isbns[0],
                                $googleapisKey);
                 // var_dump($url);
-                $result = $this->executeJsonQuery($url,
-                                                  array('Accept' => 'application/json',
-                                                        // 'Accept-Language' => $locale, // date-format!
-                                                        ));
+                $result = $this->executeJsonQuery($url, [
+                    'Accept' => 'application/json',
+                    // 'Accept-Language' => $locale, // date-format!
+                ]);
                 if (false !== $result && $result['totalItems'] > 0) {
                     $resultItem = $result['items'][0];
                     if (!empty($resultItem['selfLink'])) {
-                        $result = $this->executeJsonQuery($resultItem['selfLink'],
-                                                          array('Accept' => 'application/json',
-                                                                // 'Accept-Language' => $locale, // date-format!
-                                                                ));
+                        $result = $this->executeJsonQuery($resultItem['selfLink'], [
+                            'Accept' => 'application/json',
+                            // 'Accept-Language' => $locale, // date-format!
+                        ]);
                         if (false !== $result) {
                             $resultItem = $result;
                         }

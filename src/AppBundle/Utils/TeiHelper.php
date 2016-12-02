@@ -80,8 +80,28 @@ class TeiHelper
         foreach ($result as $element) {
             $facs = $element['facs'];
             if (!empty($facs)) {
-                $fnameFacs = $facs;
+                $fnameFacs = (string)$facs;
                 break; // we only care about the first one
+            }
+        }
+
+        return $fnameFacs;
+    }
+
+    public function getFigureFacs($fname)
+    {
+        $xml = $this->loadXml($fname);
+        if (false === $xml) {
+            return false;
+        }
+
+        $fnameFacs = [];
+
+        $result = $xml->xpath('/tei:TEI/tei:text//tei:figure');
+        foreach ($result as $element) {
+            $facs = $element['facs'];
+            if (!empty($facs)) {
+                $fnameFacs[] = (string)$facs;
             }
         }
 

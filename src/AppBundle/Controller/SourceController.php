@@ -28,8 +28,10 @@ class SourceController extends ArticleController
         $related = [];
         $interpretation = $sourceArticle->getIsPartOf();
         if (isset($interpretation)) {
-            $sourceDescription = [ 'article' => $interpretation,
-                                   'html' => $this->renderSourceDescription($interpretation) ];
+            $sourceDescription = [
+                'article' => $interpretation,
+                'html' => $this->renderSourceDescription($interpretation),
+            ];
             list($dummy, $dummy, $license, $entitiesSourceDescription, $bibitemLookup, $glossaryTermsSourceDescription, $refs) = $this->extractPartsFromHtml($sourceDescription['html']);
 
             $entities = array_merge($entities, $entitiesSourceDescription);
@@ -53,7 +55,8 @@ class SourceController extends ArticleController
         $path = $parts[0];
 
         if (empty($firstFacs)
-            && in_array($sourceArticle->getSourceType(), [ 'Audio', 'Video', 'Bild', 'Image', 'Objekt', 'Object' ]))
+            && in_array($sourceArticle->getSourceType(),
+                        [ 'Audio', 'Video', 'Bild', 'Image', 'Objekt', 'Object' ]))
         {
             $html = $this->adjustMedia($html,
                                        $this->get('request')->getBaseURL()
@@ -124,6 +127,243 @@ class SourceController extends ArticleController
         }
 
         return $this->renderSourceViewer($uid, $article);
+    }
+
+    protected function buildFolderName($uid)
+    {
+        if (!preg_match('/(source)\-(\d+)/', $uid, $matches)) {
+            return false;
+        }
+
+        return sprintf('%s-%05d', $matches[1], $matches[2]);
+    }
+
+    static function mb_wordwrap($str, $width = 75, $break = "\n", $cut = false) {
+        $lines = explode($break, $str);
+        foreach ($lines as &$line) {
+            $line = rtrim($line);
+            if (mb_strlen($line) <= $width)
+                continue;
+            $words = explode(' ', $line);
+            $line = '';
+            $actual = '';
+            foreach ($words as $word) {
+                if (mb_strlen($actual.$word) <= $width)
+                    $actual .= $word.' ';
+                else {
+                    if ($actual != '')
+                        $line .= rtrim($actual).$break;
+                    $actual = $word;
+                    if ($cut) {
+                        while (mb_strlen($actual) > $width) {
+                            $line .= mb_substr($actual, 0, $width).$break;
+                            $actual = mb_substr($actual, $width);
+                        }
+                    }
+                    $actual .= ' ';
+                }
+            }
+            $line .= trim($actual);
+        }
+        return implode($break, $lines);
+    }
+
+    protected function renderReadme($uid)
+    {
+        $fs = new \Symfony\Component\Filesystem\Filesystem();
+
+        $result = $this->getDoctrine()
+                ->getRepository('AppBundle:SourceArticle')
+                ->findByUid($uid);
+
+        $ret = [];
+
+        $translator = $this->container->get('translator');
+
+        $defaultLocale = $translator->getLocale();
+
+        foreach ($result as $sourceArticle) {
+            $locale = \AppBundle\Utils\Iso639::code3to1($sourceArticle->getLanguage());
+            if (in_array($locale, [ 'en', 'de' ])) {
+                $translator->setLocale($locale);
+                $content = $this->renderView('AppBundle:Article:readme-' . $locale . '.txt.twig',
+                                         [ 'meta' => $sourceArticle ]);
+                $tempnam = $fs->tempnam(sys_get_temp_dir(), 'readme-' . $locale);
+                file_put_contents($tempnam,
+                                  str_replace("\n", "\r\n",
+                                              self::mb_wordwrap($content)));
+                $ret[$translator->trans('README.txt')] = $tempnam;
+            }
+        }
+
+        $translator->setLocale($defaultLocale);
+
+        return $ret;
+    }
+
+    protected function buildImgSrcPath($relPath)
+    {
+        $imgDir = 'src/AppBundle/Resources/data/img/';
+        $srcPath = $imgDir . $relPath;
+
+        $baseDir = realpath($this->get('kernel')->getRootDir() . '/..');
+
+        $srcPathFull = realpath($baseDir . '/' . $srcPath);
+
+        return $srcPathFull;
+    }
+
+    protected function buildDownloadFiles($uid, $sourceArticle)
+    {
+        $dir = $this->buildFolderName($uid);
+        if (false === $dir) {
+            return false;
+        }
+
+        $files = [];
+        $srcDir = $this->buildImgSrcPath($dir);
+        if (empty($srcDir)) {
+            return $files;
+        }
+
+        foreach (new \GlobIterator($srcDir . '/f*.jpg') as $file) {
+            if ($file->isFile()) {
+                $files[$file->getFilename()] = $file->getPathname();
+            }
+        }
+
+        if (empty($files) && 'Text' != $sourceArticle->getSourceType()) {
+            $teiHelper = new \AppBundle\Utils\TeiHelper();
+            $fname = $this->buildArticleFname($sourceArticle);
+            $figures = $teiHelper->getFigureFacs($this->locateTeiResource($fname));
+            if (false !== $figures) {
+                foreach ($figures as $figure) {
+                    $file = new \SplFileInfo($srcDir . '/' . $figure);
+                    if ($file->isFile()) {
+                        $files[$file->getFilename()] = $file->getPathname();
+                    }
+                }
+            }
+        }
+
+        return $files;
+    }
+
+    protected function generateZip($uid, $files)
+    {
+        $dir = $this->buildFolderName($uid);
+        if (false === $dir) {
+            return false;
+        }
+
+        $relPath = sprintf('viewer/%s', $dir);
+        $baseDir = realpath($this->get('kernel')->getRootDir() . '/..');
+        $dstPath = $baseDir . '/web/' . $relPath;
+
+        if (!file_exists($dstPath)) {
+            return false;
+        }
+
+        $fnameZip = $dir . '.zip';
+        $fullnameZip = $dstPath . '/' . $fnameZip;
+        $urlZip = $this->get('router')->getContext()->getBaseUrl()
+                . '/' . $relPath . '/' . $fnameZip;
+
+        $flags = \ZipArchive::CREATE;
+        if (file_exists($fullnameZip)) {
+            $regenerate = false; // TODO: check if we need to regenerate
+            if (!$regenerate) {
+                return $urlZip;
+            }
+            $flags |= \ZipArchive::OVERWRITE;
+        }
+
+        $zip = new \ZipArchive();
+        $res = $zip->open($fullnameZip, $flags);
+        if ($res !== true) {
+            return false;
+        }
+
+        $footer = $this->buildImgSrcPath('footer-download.png');
+        $imagickProcessor = $this->container->get('app.imagemagick');
+
+        $fs = new \Symfony\Component\Filesystem\Filesystem();
+        $tempfiles = [];
+        foreach ($files as $localfname => $fname) {
+            if (in_array($localfname, [ 'README.txt', 'LIESMICH.txt' ])) {
+                $tempfiles[] = $localfname;
+            }
+            if (!empty($footer) && preg_match('/(\.(jpg|png))$/i', $fname, $matches)) {
+                $res = @getimagesize($fname);
+                if (!empty($res) && $res[0] > 0) {
+                    $tempnam = $fs->tempnam(sys_get_temp_dir(), 'tmp');
+                    rename($tempnam, $tempnam .= $matches[1]);
+                    $convertArgs = [
+                        '-append',
+                        sprintf('-resize %dx', $res[0]),
+                        $imagickProcessor->escapeshellarg($fname),
+                        $imagickProcessor->escapeshellarg($footer),
+                        $tempnam,
+                    ];
+                    if (0 == $imagickProcessor->convert($convertArgs)) {
+                        $tempfiles[] = $fname = $tempnam;
+                    }
+                }
+            }
+
+            $zip->addFile($fname, $localfname);
+        }
+        $zip->close();
+
+        foreach ($tempfiles as $tempfile) {
+            if (file_exists($tempfile)) {
+                @unlink($tempfile);
+            }
+        }
+
+        return $urlZip;
+    }
+
+    public function downloadAction($uid)
+    {
+        $criteria = [ 'uid' => $uid ];
+        $locale = $this->get('request')->getLocale();
+        if (!empty($locale)) {
+            $criteria['language'] = \AppBundle\Utils\Iso639::code1to3($locale);
+        }
+
+        $article = $this->getDoctrine()
+                ->getRepository('AppBundle:SourceArticle')
+                ->findOneBy($criteria);
+
+        if (!$article) {
+            throw $this->createNotFoundException('This source does not exist');
+        }
+
+        $files = false;
+        // check if we are allowed to download
+        if ($article->licenseAllowsDownload()) {
+            $files = $this->buildDownloadFiles($uid, $article);
+        }
+
+        if (false === $files) {
+            // no download
+            return new \Symfony\Component\HttpFoundation\RedirectResponse($this->generateUrl('source', [ 'uid' => $uid ]));
+        }
+
+        // generate README.txt / LIESMICH.txt
+        $readme = $this->renderReadme($uid);
+        if (false !== $readme) {
+            $files = array_merge($files, $readme);
+        }
+
+        $urlZip = $this->generateZip($uid, $files);
+        if (false === $files) {
+            // something went wrong
+            return new \Symfony\Component\HttpFoundation\RedirectResponse($this->generateUrl('source', [ 'uid' => $uid ]));
+        }
+
+        return new \Symfony\Component\HttpFoundation\RedirectResponse($urlZip);
     }
 
     public function tei2htmlAction($path)

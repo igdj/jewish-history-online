@@ -77,8 +77,8 @@
 
   <!-- add shared overrides and extensions to the dtabf-base rules -->
   <xsl:template match="tei:sic">
-    <xsl:apply-templates/> [sic]
-  </xsl:template>
+    <xsl:apply-templates/> [sic]<!--
+--></xsl:template>
 
   <xsl:template match='tei:persName'>
     <xsl:call-template name="entity-ref">

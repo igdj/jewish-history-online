@@ -284,14 +284,14 @@
       </xsl:element>
     </xsl:when>
     <xsl:otherwise>
-      <xsl:element name="span">
+      <xsl:element name="div">
         <xsl:attribute name="class">ph dta-figure</xsl:attribute>
         <xsl:attribute name="type"><xsl:value-of select="count(preceding::tei:figure)+1"/></xsl:attribute>
         <xsl:if test="@facs">
           <xsl:element name="img">
             <xsl:attribute name="class">img-responsive</xsl:attribute>
             <xsl:attribute name="src"><xsl:value-of select="@facs"/></xsl:attribute>
-          </xsl:element><br />
+          </xsl:element><!--<br />-->
         </xsl:if>
         <!--[<xsl:choose>
           <xsl:when test="@type='notatedMusic'">Musik</xsl:when>

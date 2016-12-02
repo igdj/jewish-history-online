@@ -303,10 +303,13 @@ class GeographicalData
                     $values['type'] = 'neighborhood';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300387337':
+                    $values['type'] = 'urban district';
+                    break;
+                
                 case 'http://vocab.getty.edu/aat/300387340':
                     $values['type'] = 'city district'; // Ortsteile
                     break;
-
 
                 case 'http://vocab.getty.edu/aat/300025950':
                     $values['type'] = 'association'; // Verbuende wie Commonwealth

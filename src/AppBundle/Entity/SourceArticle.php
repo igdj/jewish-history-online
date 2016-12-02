@@ -40,6 +40,22 @@ class SourceArticle extends Article
         return self::buildDateBucket($this->dateCreated);
     }
 
+    public function licenseAllowsDownload()
+    {
+        // check if we are allowed to download
+        $license = $this->getLicense();
+        if (!empty($license)
+            && in_array($license, [
+                '#personal-use',
+                '#public-domain',
+                'http://creativecommons.org/licenses/by-nc-nd/4.0/']))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     public function jsonLdSerialize($locale, $omitContext = false)
     {
         $ret = parent::jsonLdSerialize($locale, $omitContext);

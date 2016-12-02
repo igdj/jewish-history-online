@@ -173,6 +173,7 @@ class MicroKernel extends Kernel
         $routes->add('/article/{slug}.pdf', 'AppBundle:Article:article', 'article-pdf');
 
         $routes->add('/source/{uid}.jsonld', 'AppBundle:Source:sourceViewer', 'source-jsonld');
+        $routes->add('/source/{uid}.zip', 'AppBundle:Source:download', 'source-download');
         $routes->add('/source/{uid}', 'AppBundle:Source:sourceViewer', 'source');
 
         $routes->add('/map', 'AppBundle:Place:map', 'place-map');

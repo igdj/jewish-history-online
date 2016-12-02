@@ -119,6 +119,10 @@
     }
 
     function initBibitem(selector) {
+        if (bibitemLookup === null) {
+            return;
+        }
+        
         // link bibitems
         var selector_full = '.dta-bibl';
         if ('' !== selector) {

@@ -13,7 +13,6 @@ use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 class ThumbnailCommand extends ContainerAwareCommand
 {
-    protected $UPLOAD_PATH2MAGICK = 'C:/Progra~1/ImageMagick-6.9.1-Q16/';
     static $widthScaled = 293;
 
     protected function configure()
@@ -27,28 +26,6 @@ class ThumbnailCommand extends ContainerAwareCommand
                 'TEI file'
             )
         ;
-    }
-
-    /* move the following shared methods to common base */
-    protected function convertExec($arguments)
-    {
-        if ($this->getContainer()->hasParameter('imagemagick.path2bin')) {
-            $this->UPLOAD_PATH2MAGICK = $this->getContainer()->getParameter('imagemagick.path2bin');
-        }
-
-        $cmd = $this->UPLOAD_PATH2MAGICK . 'convert '
-             . join(' ', $arguments);
-        $ret = exec($cmd, $lines, $retval);
-        return $ret;
-    }
-
-    function convertEscapeshellarg($arg)
-    {
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            // escapeshellarg strips % from windows
-            return '"' . addcslashes($arg, '\\"') . '"';
-        }
-        return escapeshellarg($arg);
     }
 
     protected function registerXpathNamespaces($xml)
@@ -82,7 +59,7 @@ class ThumbnailCommand extends ContainerAwareCommand
 
         $DERIVATE = preg_replace('/\.(de|en)$/', '', pathinfo($fname, PATHINFO_FILENAME));
 
-        $convert_args = [];
+        $convertArgs = [];
 
         $facsimile = $teiHelper->getFirstPbFacs($fname);
 
@@ -103,7 +80,7 @@ class ThumbnailCommand extends ContainerAwareCommand
                 if ($file->isFile()) {
                     $fnameSrc = $file->getFilename();
                     if ('.pdf' == $extension) {
-                        $convert_args[] = '-density 400';
+                        $convertArgs[] = '-density 400';
                     }
                     break;
                 }
@@ -133,7 +110,7 @@ class ThumbnailCommand extends ContainerAwareCommand
 
         }
         else {
-            switch ($article->sourceType) {
+            switch ($article->getSourceType()) {
                 case 'Text':
                     return 2;
                     break;
@@ -159,11 +136,14 @@ class ThumbnailCommand extends ContainerAwareCommand
         $fnameThumb = $targetDir . DIRECTORY_SEPARATOR . 'thumb.jpg';
         $geom = sprintf('-geometry %dx', self::$widthScaled);
 
+        $imagickProcessor = $this->getContainer()->get('app.imagemagick');
 
-        $convert_args = array_merge($convert_args,
-                                    [ $this->convertEscapeshellarg($fnameFull),
-                                     $geom,
-                                     $this->convertEscapeshellarg($fnameThumb) ]);
-        $this->convertExec($convert_args);
+        $convertArgs = array_merge($convertArgs, [
+            $imagickProcessor->escapeshellarg($fnameFull),
+            $geom,
+            $imagickProcessor->escapeshellarg($fnameThumb)
+        ]);
+
+        $imagickProcessor->convert($convertArgs);
     }
 }

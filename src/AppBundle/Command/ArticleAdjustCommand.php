@@ -100,8 +100,8 @@ class ArticleAdjustCommand extends BaseEntityCommand
                 if (!empty($result['section'])) {
                     $sql = "SELECT name FROM Term WHERE id IN (?) AND status <> -1";
                     $stmt = $conn->executeQuery($sql,
-                                             [ explode(',', $result['section']) ],
-                                             array(\Doctrine\DBAL\Connection::PARAM_INT_ARRAY));
+                                                [ explode(',', $result['section']) ],
+                                                [ \Doctrine\DBAL\Connection::PARAM_INT_ARRAY ]);
                     // TODO: set primary topic according to editor
                     $terms = $stmt->fetchAll();
 
@@ -294,11 +294,46 @@ class ArticleAdjustCommand extends BaseEntityCommand
                 }
                 $data['bibl'] = $bibl;
 
+                $licenseKey = ''; // restricted
+                $licenseAttribution = null;
+
+                if (!empty($result['license'])) {
+                    switch ($result['license']) {
+                        case 'CC BY-NC-ND':
+                            $licenseKey = 'http://creativecommons.org/licenses/by-nc-nd/4.0/';
+                            $licenseAttribution = $translator->trans('license.by-nc-nd');
+                            break;
+
+                        case 'restricted':
+                            ;
+                            break;
+
+                        case 'PD':
+                            $licenseKey = '#public-domain';
+                            $licenseAttribution = $translator->trans('license.public-domain');
+                            break;
+
+                        case 'regular':
+                            $licenseKey = '#personal-use';
+                            $licenseAttribution = $translator->trans('license.personal-use');
+                            break;
+
+                        default:
+                            die('TODO: handle ' . $result['license']);
+                    }
+                }
+
                 if (!empty($result['attribution'])) {
                     $attribution = json_decode($result['attribution'], true);
                     if (false !== $attribution && !empty($attribution[$locale])) {
-                        $data['license'] = [ '' => $attribution[$locale] ];
+                        $licenseAttribution = $attribution[$locale];
                     }
+                }
+
+                if ('' !== $licenseKey || !is_null($licenseAttribution)) {
+                    $data['license'] = [
+                        $licenseKey => $licenseAttribution,
+                    ];
                 }
                 break;
 
@@ -331,9 +366,9 @@ class ArticleAdjustCommand extends BaseEntityCommand
             die('TODO: determine uid/langCode1 from teiHeader');
         }
         $data = [
-                    'uid' => $uid,
-                    'lang' => \AppBundle\Utils\Iso639::code1To3($langCode1),
-                ];
+            'uid' => $uid,
+            'lang' => \AppBundle\Utils\Iso639::code1To3($langCode1),
+        ];
 
         // set the publisher - needs to be localized
         $translator = $this->getContainer()->get('translator');

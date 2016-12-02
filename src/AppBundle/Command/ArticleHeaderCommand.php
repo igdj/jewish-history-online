@@ -126,7 +126,7 @@ class ArticleHeaderCommand extends ContainerAwareCommand
         $normalizer->setIgnoredAttributes($ignoredAttributes);
         $serializer = new Serializer([ $normalizer ], [ new JsonEncoder() ]);
 
-        $serializer->deserialize(json_encode($article), get_class($entity), 'json', array('object_to_populate' => $entity));
+        $serializer->deserialize(json_encode($article), get_class($entity), 'json', [ 'object_to_populate' => $entity ]);
         foreach ($ignoredAttributes as $attribute) {
             if (!isset($article->$attribute)) {
                 continue;

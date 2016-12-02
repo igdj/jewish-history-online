@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2016-11-08T14:03:17Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2016-11-30T17:32:46Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -78,21 +78,9 @@
         <source>/bibliography/{slug}</source>
         <target>/bibliografie/{slug}</target>
       </trans-unit>
-      <trans-unit id="f7a125bc3b7f9e09481b5813f32f2f726d6dbb64" resname="bibliography-by-gnd-jsonld">
-        <source>/bibliography/isbn/{isbn}.jsonld</source>
-        <target>/bibliografie/isbn/{isbn}.jsonld</target>
-      </trans-unit>
-      <trans-unit id="ae3f5dbc3027a9155cb99192add16c75f508bce8" resname="bibliography-by-isbn">
-        <source>/bibliography/isbn/{isbn}</source>
-        <target>/bibliografie/isbn/{isbn}</target>
-      </trans-unit>
       <trans-unit id="b5eaaebd137fcbdb054988d35fead774bcf6df0d" resname="bibliography-index">
         <source>/bibliography</source>
         <target>/bibliografie</target>
-      </trans-unit>
-      <trans-unit id="31beb2ee6f05a21a32437e7bca5b5ab287fc3dd4" resname="bibliography-isbn-beacon">
-        <source>/bibliography/isbn/beacon</source>
-        <target>/bibliografie/isbn/beacon</target>
       </trans-unit>
       <trans-unit id="c4c6677ea81bcaead346e8fc3dff02164383daa2" resname="bibliography-jsonld">
         <source>/bibliography/{slug}.jsonld</source>
@@ -100,11 +88,11 @@
       </trans-unit>
       <trans-unit id="28fa7bb166913f5a5973f09682b8a1946a3ded45" resname="bibliography-ris">
         <source>/bibliography/{slug}.ris</source>
-        <target state="new">/bibliografie/{slug}.ris</target>
+        <target>/bibliografie/{slug}.ris</target>
       </trans-unit>
       <trans-unit id="d54b8060693138510660a839859c2a13aabdfbe2" resname="bibliography-unapi">
         <source>/bibliography/unapi</source>
-        <target state="new">/bibliografie/unapi</target>
+        <target>/bibliografie/unapi</target>
       </trans-unit>
       <trans-unit id="1a73af9e7ae00182733b2292511b814be66f065f" resname="contact">
         <source>/contact</source>
@@ -213,6 +201,10 @@
       <trans-unit id="828d338a9b04221c9cbe286f50cd389f68de4ecf" resname="source">
         <source>/source/{uid}</source>
         <target>/quelle/{uid}</target>
+      </trans-unit>
+      <trans-unit id="bdc91185659b38c2059877c59f81d9a04d8f7d09" resname="source-download">
+        <source>/source/{uid}.zip</source>
+        <target>/quelle/{uid}.zip</target>
       </trans-unit>
       <trans-unit id="bdf6a48d85794eee850d4a07e462466ebca51a17" resname="source-jsonld">
         <source>/source/{uid}.jsonld</source>

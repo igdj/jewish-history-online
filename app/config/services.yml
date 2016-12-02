@@ -17,7 +17,15 @@ services:
         public: false
         tags:
             - { name: twig.extension }
-            
+        
+    # currently only native ZipArchive (setCompression only PHP >= 7)    
+    app.zip:
+        class:        AppBundle\Utils\Zip\ZipArchive
+
+    app.imagemagick:
+        class:        AppBundle\Utils\ImageMagick\ImageMagickProcessor
+        arguments:    [ "%app.imagemagick.processor.arguments%" ]
+        
     app.xslt_adapter:
         class:        "%app.xslt.adapter.class%"
         arguments:    [ "%app.xslt.adapter.arguments%" ]

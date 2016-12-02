@@ -34,11 +34,8 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
     </teiHeader>
     <text>
         <body>
-            <div n="2">
-                
-                
-                <p>Ihre Fragen und Anregungen erreichen uns per E-Mail an info@juedische-geschichte-online.net oder über die auf der <ref target="ueber/mitarbeiterinnen">Mitarbeiter_innen-Seite</ref> verlinkten persönlichen Kontaktangaben.<lb/></p>
-                
+            <div n="2"> 
+                <p>Ihre Fragen und Anregungen erreichen uns per E-Mail an <ref target="mailto:info@juedische-geschichte-online.net">info@juedische-geschichte-online.net</ref> oder über die auf der <ref target="ueber/mitarbeiterinnen">Mitarbeiter_innen-Seite</ref> verlinkten persönlichen Kontaktangaben.<lb/></p>
                  
                 <div n="3">
                     <head>Impressum</head><lb/>
@@ -49,8 +46,8 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
                     <p>              
                         Tel. +49 40 – 42 838-2617<lb/>
                         Fax +49 40 – 44 808-66<lb/>
-                        E-Mail: IGdJ@public.uni-hamburg.de<lb/>
-                    Internet: http://www.igdj-hh.de</p>      
+                        E-Mail: kontakt@igdj-hh.de<lb/>
+                        Internet: <ref target="http://www.igdj-hh.de/">www.igdj-hh.de</ref></p>      
                     
                     <p>Das Institut ist eine Stiftung bürgerlichen Rechts in der Trägerschaft der
                         Freien Hansestadt Hamburg.</p>

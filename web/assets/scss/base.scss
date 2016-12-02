@@ -310,9 +310,9 @@ header {
         .stage .c   { font-style:italic; font-size:.9em }
         div.stage   { margin-bottom:.5em }
 
-        div.dta-figure { font-size:.9em; margin-top:1em; margin-bottom:1em }
+        div.dta-figure { /* font-size:.9em; */ margin-top:1rem; margin-bottom:0.8rem }
         div.dta-figure p { margin-left:1em; display:inline }
-        .dta-figure img {  }
+        .dta-figure img { margin-bottom:0.2rem }
 
         .titlepart           { font-size:1em }
         .titlepart-main      { margin-bottom:1em; font-size:1.6em }
