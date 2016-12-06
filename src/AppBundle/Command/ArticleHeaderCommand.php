@@ -41,6 +41,12 @@ class ArticleHeaderCommand extends ContainerAwareCommand
                 InputOption::VALUE_NONE,
                 'If set, an existing article will be updated'
             )
+            ->addOption(
+                'publish',
+                null,
+                InputOption::VALUE_NONE,
+                'If set, an existing article will be set to published'
+            )
         ;
     }
 
@@ -68,19 +74,6 @@ class ArticleHeaderCommand extends ContainerAwareCommand
         }
 
         echo json_encode($article, JSON_PRETTY_PRINT);
-
-        if (!($input->getOption('insert-missing') || $input->getOption('update'))) {
-            return 0; // done
-        }
-
-        if (empty($article->uid)) {
-            $output->writeln(sprintf('<error>no uid found in %s</error>', $fname));
-            return 1;
-        }
-        if (empty($article->language)) {
-            $output->writeln(sprintf('<error>no language found in %s</error>', $fname));
-            return 1;
-        }
 
         $em = $this->getContainer()->get('doctrine')->getManager();
 
@@ -114,9 +107,41 @@ class ArticleHeaderCommand extends ContainerAwareCommand
                 return 1;
             }
         }
-        else if (!$input->getOption('update')) {
+        else if ($input->getOption('insert-missing')) {
             $output->writeln(sprintf('<info>entry for uid %s already exists</info>', $article->uid));
             return 0;
+        }
+
+        if ($input->getOption('publish')) {
+            $entity->setStatus(1);
+            $em->persist($entity);
+
+            // set the (non-deleted)sources belonging to this article to publish as well
+            $sourceArticles = $em->getRepository('AppBundle:Article')
+                ->findBy([ 'isPartOf' => $entity  ],
+                         [ 'dateCreated' => 'ASC', 'name' => 'ASC']);
+
+            foreach ($sourceArticles as $sourceArticle) {
+                if (0 == $sourceArticle->getStatus()) {
+                    $sourceArticle->setStatus(1);
+                    $em->persist($sourceArticle);
+                }
+            }
+
+            $em->flush();
+        }
+
+        if (!($input->getOption('insert-missing') || $input->getOption('update'))) {
+            return 0; // done
+        }
+
+        if (empty($article->uid)) {
+            $output->writeln(sprintf('<error>no uid found in %s</error>', $fname));
+            return 1;
+        }
+        if (empty($article->language)) {
+            $output->writeln(sprintf('<error>no language found in %s</error>', $fname));
+            return 1;
         }
 
         // TODO: pack the following into custom hydrator
