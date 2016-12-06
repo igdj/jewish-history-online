@@ -160,7 +160,9 @@
         </xsl:if>
         [<xsl:choose>
           <xsl:when test="@type='notatedMusic'">Musik</xsl:when>
-          <xsl:otherwise>Abbildung</xsl:otherwise>
+          <xsl:otherwise><xsl:call-template name="translate">
+              <xsl:with-param name="label" select="'Abbildung'" />
+    </xsl:call-template></xsl:otherwise>
         </xsl:choose>
         <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if>]
         <xsl:apply-templates/>
@@ -177,7 +179,9 @@
         </xsl:if>
         [<xsl:choose>
           <xsl:when test="@type='notatedMusic'">Musik</xsl:when>
-          <xsl:otherwise>Abbildung</xsl:otherwise>
+          <xsl:otherwise><xsl:call-template name="translate">
+              <xsl:with-param name="label" select="'Abbildung'" />
+    </xsl:call-template></xsl:otherwise>
         </xsl:choose>
         <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if>]
         <xsl:apply-templates/>
