@@ -178,6 +178,10 @@ class TeiHelper
         $result = $header->xpath('./tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence');
         if (!empty($result)) {
             $article->license = (string)$result[0]['target'];
+            $result = $header->xpath('./tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence/tei:p');
+            if (!empty($result)) {
+                $article->rights = (string)$result[0];
+            }
         }
         else {
             $article->license = null;
@@ -462,7 +466,6 @@ class TeiHelper
             }
         }
 
-
         if (!empty($data['translator'])) {
                 $this->addDescendants($header, 'tei:fileDesc/tei:titleStmt/tei:editor[@role="translator"]',
                                      [
@@ -576,6 +579,7 @@ class TeiHelper
                                             $child->addAttribute('tei:type', 'main');
                                             $child->addAttribute('tei:corresp', $corresp);
                                         }
+
                                         return $self;
                                     },
                                   ]);
