@@ -1,8 +1,9 @@
 {% extends 'AppBundle:Default:base.html.twig' %}
 {% block contenttop %}
 {% embed 'AppBundle:Default:contenttop_skeleton.html.twig' %}
+
 {% block carousel %}
-   <div class="row">
+    <div class="row">
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel"   data-interval="10000">
             <!-- Indicators
             <ol class="carousel-indicators">
@@ -54,10 +55,9 @@
         </div><!-- .carousel -->
     </div>
 {% endblock %}
-{#% block breadcrumb %}{% endblock %#}
+
 {% endembed %}
 {% endblock %}
-
 
 {% block body %}
     <div class="row">
@@ -88,6 +88,7 @@ Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und du
         </div>
 
         <div class="col-sm-4 sidebar">
+            <!--
             <div class="container-fluid box">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
@@ -104,6 +105,29 @@ Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und du
                         <b>Rachel Dror discusses her experiences during and after the pogroms in Hamburg</b>, November 1938
                         {% else %}
                         <b>Interview mit Rachel Dror zu ihren Erfahrungen während und nach der Pogromnacht in Hamburg</b>, November 1938
+                        {% endif %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        -->
+
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>{{ 'New Source'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse">
+                    <div class="col-xs-4">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-156' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00156/thumb.jpg" style="width: 100%; height: auto" /></a>
+                    </div>
+                    <div class="col-xs-8">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-156' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Anita Rée, “Weiße Bäume in Positano” [White Trees in Positano]</b>, 1925
+                        {% else %}
+                        <b>Anita Rée, Weiße Bäume in Positano</b>, 1925
                         {% endif %}
                         </a>
                     </div>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2016-11-30T17:32:46Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2016-12-06T13:57:44Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -160,8 +160,6 @@
       <trans-unit id="b226aad69c677d3aad539e7365be2e847cced54c" resname="F d, Y">
         <source>F d, Y</source>
         <target>d.m.Y</target>
-        <jms:reference-file line="35">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\readme-de.txt.twig\</jms:reference-file>
-        <jms:reference-file line="35">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\readme-en.txt.twig\</jms:reference-file>
         <jms:reference-file line="129">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
         <jms:reference-file line="62">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
       </trans-unit>
@@ -192,7 +190,7 @@
       <trans-unit id="6d79d21dc398598c8c28e7d8ebf3f1cb823ab0d6" resname="Guide to the Digital Source Edition">
         <source>Guide to the Digital Source Edition</source>
         <target>Begleitbroschüre zur Online-Quellenedition</target>
-        <jms:reference-file line="116">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
+        <jms:reference-file line="140">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="96de6a349142be3b38059b73c133f2346e8db0ab" resname="Holding Institution">
         <source>Holding Institution</source>
@@ -275,6 +273,11 @@
         <target>Migration</target>
         <jms:reference-file line="123">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
+      <trans-unit id="24e20d3f49c6fca95941bcf34bdc0b18bda40655" resname="New Source">
+        <source>New Source</source>
+        <target state="new">Neue Quelle</target>
+        <jms:reference-file line="118">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
+      </trans-unit>
       <trans-unit id="b2a35c2b4b4e06249eff799c40dd80f0a45e24b3" resname="No glossary terms were found">
         <source>No glossary terms were found</source>
         <target>Es wurden keine Glossarbegriffe gefunden</target>
@@ -324,8 +327,8 @@
       </trans-unit>
       <trans-unit id="fda3484edf8db0684440157ce0b110d784d42704" resname="README.txt">
         <source>README.txt</source>
-        <target state="new">LIESMICH.txt</target>
-        <jms:reference-file line="194">\..\..\..\..\..\..\./src\AppBundle\Controller\SourceController.php\</jms:reference-file>
+        <target>LIESMICH.txt</target>
+        <jms:reference-file line="195">\..\..\..\..\..\..\./src\AppBundle\Controller\SourceController.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="1de9b5aa8ef2a69cf3b723e9f4dded03396a160c" resname="Read on">
         <source>Read on</source>
@@ -422,7 +425,7 @@
       <trans-unit id="2939084f8a4a6faab3b0b24d3ad83716d4a01b92" resname="Source of the Month">
         <source>Source of the Month</source>
         <target>Quelle des Monats</target>
-        <jms:reference-file line="94">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
+        <jms:reference-file line="95">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="d71af9c76a7b8c80409506e5b29a12d967c36636" resname="Sponsors and Partners">
         <source>Sponsors and Partners</source>
