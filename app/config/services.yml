@@ -18,10 +18,6 @@ services:
         tags:
             - { name: twig.extension }
         
-    # currently only native ZipArchive (setCompression only PHP >= 7)    
-    app.zip:
-        class:        AppBundle\Utils\Zip\ZipArchive
-
     app.imagemagick:
         class:        AppBundle\Utils\ImageMagick\ImageMagickProcessor
         arguments:    [ "%app.imagemagick.processor.arguments%" ]
