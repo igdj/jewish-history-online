@@ -142,6 +142,7 @@
 
 {% macro source_sidebar(meta, description, interpretations, related) %}
     {% import _self as helper %}
+    {% import 'AppBundle:Shared:map-leaflet.html.twig' as map %}
             <div class="container-fluid box">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
@@ -179,7 +180,44 @@
                                 {% if geo is empty %}
                                     {% set geo = meta.contentLocation.geo %}
                                 {% endif %}
-                                {{ geo }}
+                                <a href="#" style="word-wrap: break-word" id="mapToggle" title="{{ 'Show Map'|trans }}" onclick="toggleMap(); return false">{{ geo }}</a>
+                                <div id="map" style="display: none; width: 100%; height: 240px"></div>
+                                <script>
+                                    var loaded = false;
+
+                                    function adjustMapSize() {
+                                        /*
+                                        $('#map').height(function(index, height) {
+                                            return window.innerHeight - $(this).offset().top;
+                                        });
+                                        */
+                                    }
+
+                                    function toggleMap() {
+                                        $('#map').toggle();
+
+                                        if (!loaded) {
+                                            $( window ).resize(adjustMapSize);
+                                            adjustMapSize();
+
+                                            var map = L.map('map');
+
+                                            L.marker([ {{ geo }} ]).addTo(map);
+                                            map.setView([{{ geo }}], 11);
+
+                                            {{ map.addTileLayer() }}
+
+                                            loaded = true;
+                                        }
+
+                                        var isHidden = $( '#map' ).is( ":hidden" );
+                                        $('#mapToggle').attr('title',
+                                                             isHidden
+                                                             ? {{ 'Show Map'|trans|json_encode|raw }}
+                                                             : {{ 'Hide Map'|trans|json_encode|raw }});
+                                    }
+                                </script>
+
                             </dd>
                             {% endif %}
                         {% endif %}

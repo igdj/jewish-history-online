@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2016-12-06T13:57:44Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2016-12-06T16:40:13Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -97,12 +97,12 @@
         <target>Verfasser</target>
         <jms:reference-file line="8">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\readme-de.txt.twig\</jms:reference-file>
         <jms:reference-file line="8">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\readme-en.txt.twig\</jms:reference-file>
-        <jms:reference-file line="191">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
+        <jms:reference-file line="229">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="eb9a4bc1c0c153e4e4b042a79113b815b7e3021d" resname="Date">
         <source>Date</source>
         <target>Datum</target>
-        <jms:reference-file line="155">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
+        <jms:reference-file line="156">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="88796547e574b1346b3f3c63fce6354c38eb56a0" resname="Demographics and Social Structure">
         <source>Demographics and Social Structure</source>
@@ -135,12 +135,12 @@
       <trans-unit id="a479c9c34e878d07b4d67a73a48f432ad7dc53c8" resname="Download">
         <source>Download</source>
         <target>Herunterladen</target>
-        <jms:reference-file line="225">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
+        <jms:reference-file line="263">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="f9bdba98e9d3a472873a2d6e98f62c79d35cc42b" resname="Download for scholarly or private use">
         <source>Download for scholarly or private use</source>
         <target>Quelle für wissenschaftliche oder private Zwecke herunterladen</target>
-        <jms:reference-file line="228">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
+        <jms:reference-file line="266">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="3b361d851268fb12ca7570b2a4655ef249efbe52" resname="Economy and Occupational Composition">
         <source>Economy and Occupational Composition</source>
@@ -155,7 +155,7 @@
       <trans-unit id="5678489184de27a0fbf7bf33023aded4af57df35" resname="Exit Fullscreen Mode">
         <source>Exit Fullscreen Mode</source>
         <target>Vollbildmodus verlassen</target>
-        <jms:reference-file line="34">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\viewer.html.twig\</jms:reference-file>
+        <jms:reference-file line="37">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\viewer.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="b226aad69c677d3aad539e7365be2e847cced54c" resname="F d, Y">
         <source>F d, Y</source>
@@ -178,7 +178,7 @@
       <trans-unit id="814f2d6fe75152ba8e7ae7454b387cc6841356c4" resname="Geo Coordinates">
         <source>Geo Coordinates</source>
         <target>Geo-Koordinaten</target>
-        <jms:reference-file line="177">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
+        <jms:reference-file line="178">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="7427cf697be16a4ec1d916910128a59d920125e7" resname="Glossary">
         <source>Glossary</source>
@@ -192,12 +192,17 @@
         <target>Begleitbroschüre zur Online-Quellenedition</target>
         <jms:reference-file line="140">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
       </trans-unit>
+      <trans-unit id="2bb85f0a8dbe6f36708aa5fed8239b1b375c4369" resname="Hide Map">
+        <source>Hide Map</source>
+        <target state="new">Karte ausblenden</target>
+        <jms:reference-file line="217">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
+      </trans-unit>
       <trans-unit id="96de6a349142be3b38059b73c133f2346e8db0ab" resname="Holding Institution">
         <source>Holding Institution</source>
         <target>Bewahrende Institution</target>
         <jms:reference-file line="11">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\readme-de.txt.twig\</jms:reference-file>
         <jms:reference-file line="11">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\readme-en.txt.twig\</jms:reference-file>
-        <jms:reference-file line="197">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
+        <jms:reference-file line="235">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="70f8bb9a8a5393ef080507a89e4b98d139000d65" resname="Home">
         <source>Home</source>
@@ -275,7 +280,7 @@
       </trans-unit>
       <trans-unit id="24e20d3f49c6fca95941bcf34bdc0b18bda40655" resname="New Source">
         <source>New Source</source>
-        <target state="new">Neue Quelle</target>
+        <target>Neue Quelle</target>
         <jms:reference-file line="118">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="b2a35c2b4b4e06249eff799c40dd80f0a45e24b3" resname="No glossary terms were found">
@@ -305,7 +310,7 @@
       <trans-unit id="c32a0147f2e47a52e082fe2dd4b6aaa36084a4cb" resname="Place">
         <source>Place</source>
         <target>Ort</target>
-        <jms:reference-file line="165">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
+        <jms:reference-file line="166">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="0cd3597453ab504a3dbeec3289e21abe922d223a" resname="Places">
         <source>Places</source>
@@ -340,7 +345,7 @@
         <target>Empfohlene Zitation</target>
         <jms:reference-file line="32">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\readme-de.txt.twig\</jms:reference-file>
         <jms:reference-file line="126">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
-        <jms:reference-file line="235">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
+        <jms:reference-file line="273">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="d14ac01fca3f261bfcdfa98ca0ce98d2d96ba604" resname="Recommended Citation and License Statement">
         <source>Recommended Citation and License Statement</source>
@@ -359,7 +364,7 @@
         <target>Rechtenachweis</target>
         <jms:reference-file line="20">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\readme-de.txt.twig\</jms:reference-file>
         <jms:reference-file line="20">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\readme-en.txt.twig\</jms:reference-file>
-        <jms:reference-file line="219">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
+        <jms:reference-file line="257">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="da0f3e5b26896228d59d696d23b312da5ea1a054" resname="Scholarship">
         <source>Scholarship</source>
@@ -385,6 +390,12 @@
         <jms:reference-file line="40">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Search\index.html.twig\</jms:reference-file>
         <jms:reference-file line="51">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Search\index.html.twig\</jms:reference-file>
       </trans-unit>
+      <trans-unit id="1a0d4b514b3e6b95da4aecd1f0f57821eec4ff33" resname="Show Map">
+        <source>Show Map</source>
+        <target state="new">Karte einblenden</target>
+        <jms:reference-file line="183">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
+        <jms:reference-file line="216">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
+      </trans-unit>
       <trans-unit id="1e9fb49e4cdeaed616421eaf60900518333504c3" resname="Show Source">
         <source>Show Source</source>
         <target>Quelle anzeigen</target>
@@ -395,7 +406,7 @@
         <target>Signatur</target>
         <jms:reference-file line="13">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\readme-de.txt.twig\</jms:reference-file>
         <jms:reference-file line="13">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\readme-en.txt.twig\</jms:reference-file>
-        <jms:reference-file line="206">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
+        <jms:reference-file line="244">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="f1f4a2d21b837d5497595ff66188fc7f16081a98" resname="Social Issues and Welfare">
         <source>Social Issues and Welfare</source>
@@ -408,19 +419,19 @@
         <jms:reference-file line="229">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
         <jms:reference-file line="209">\..\..\..\..\..\..\./src\AppBundle\Menu\Builder.php\</jms:reference-file>
         <jms:reference-file line="61">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\article.html.twig\</jms:reference-file>
-        <jms:reference-file line="148">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
+        <jms:reference-file line="149">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="366ea33cb40167102931845e9d1d9d1fcf384c6a" resname="Source Description">
         <source>Source Description</source>
         <target>Quellenbeschreibung</target>
         <jms:reference-file line="38">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\article.html.twig\</jms:reference-file>
         <jms:reference-file line="121">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
-        <jms:reference-file line="233">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
+        <jms:reference-file line="271">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="f7d8c9b283c81dd633f1aee6af966b8793e99883" resname="Source Type">
         <source>Source Type</source>
         <target>Quellenart</target>
-        <jms:reference-file line="187">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
+        <jms:reference-file line="225">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="2939084f8a4a6faab3b0b24d3ad83716d4a01b92" resname="Source of the Month">
         <source>Source of the Month</source>
@@ -461,12 +472,12 @@
         <target>URL</target>
         <jms:reference-file line="17">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\readme-de.txt.twig\</jms:reference-file>
         <jms:reference-file line="17">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\readme-en.txt.twig\</jms:reference-file>
-        <jms:reference-file line="213">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
+        <jms:reference-file line="251">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="02a46dd8b4f86ba87d571007f77a384df3bbb4eb" resname="View Fullscreen">
         <source>View Fullscreen</source>
         <target>Im Vollbildmodus anzeigen</target>
-        <jms:reference-file line="39">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\viewer.html.twig\</jms:reference-file>
+        <jms:reference-file line="42">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\viewer.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="ca4f9dcf204e2037bfe5884867bead98bd9cbaf8" resname="Welcome">
         <source>Welcome</source>
@@ -477,7 +488,7 @@
       <trans-unit id="8a4096f53e694a6f123cf72de73b8ec8b654a21b" resname="additionalsource.oneormany">
         <source>additionalsource.oneormany</source>
         <target>Weitere Quelle|Weitere Quellen</target>
-        <jms:reference-file line="262">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
+        <jms:reference-file line="300">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="6a5ed7a63a0fb8accd2fb3c1c8dfe583404305bf" resname="article.oneormany">
         <source>article.oneormany</source>
@@ -514,7 +525,7 @@
       <trans-unit id="0363581f59629db6c48f4f030f5ed7ea74e0a3a4" resname="interpretation.oneormany">
         <source>interpretation.oneormany</source>
         <target>Interpretation|Interpretationen</target>
-        <jms:reference-file line="245">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
+        <jms:reference-file line="283">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
         <jms:reference-file line="101">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Topic\background.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="98c3779109f14746d0072d67f89da51920f50b4d" resname="license.by-nc-nd">
