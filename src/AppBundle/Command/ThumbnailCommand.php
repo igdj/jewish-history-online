@@ -110,7 +110,7 @@ class ThumbnailCommand extends ContainerAwareCommand
 
         }
         else {
-            switch ($article->getSourceType()) {
+            switch ($article->sourceType) {
                 case 'Text':
                     return 2;
                     break;
