@@ -8,9 +8,9 @@ $color-color-dark: #070E44;
 $color-color-medium: #99A0B4;
 
 $color-color-topic: #970376;
-$color-color-map: #F29B00;
-$color-color-chronology: #3B97D7;
-$color-color-lookup: #9C9C9C;
+$color-color-map: #f29000;
+$color-color-chronology: #3da2da;
+$color-color-lookup: #9B9B9B;
 
 /* $color-gray-dark: #9B9B9B; */
 $color-gray-dark: #8E8E8E;
@@ -134,9 +134,8 @@ header {
 
         #menu-item-topic {
             a {
-                background: url("../img/icon/topic.svg") no-repeat;
-                background-size: auto 50%;
-                background-position: right 12px center;
+                background: url("../img/icon/menu-topic.svg") no-repeat;
+                background-position: right 6px center;
                 display: inline-block;
                 background-color: $color-color-topic;
             }
@@ -148,9 +147,8 @@ header {
 
         #menu-item-map {
             a {
-                background: url("../img/icon/map.svg") no-repeat;
-                background-position: right 13px top -15px;
-                background-size: auto 130%;
+                background: url("../img/icon/menu-map.svg") no-repeat;
+                background-position: right 6px center;
                 padding-right: 33px;
 
                 display: inline-block;
@@ -163,9 +161,8 @@ header {
         }
         #menu-item-chronology {
             a {
-                background: url("../img/icon/chronology.svg") no-repeat;
-                background-position: right 12px top -8px;
-                background-size: auto 105%;
+                background: url("../img/icon/menu-chronology.svg") no-repeat;
+                background-position: right 6px center;
                 display: inline-block;
                 background-color: $color-color-chronology;
             }
@@ -177,9 +174,8 @@ header {
 
         #menu-item-lookup {
             > a {
-                background: url("../img/icon/lookup.svg") no-repeat;
-                background-position: right 9px top 6px;
-                background-size: auto 59%;
+                background: url("../img/icon/menu-lookup.svg") no-repeat;
+                background-position: right 6px center;
             }
 
             a {
