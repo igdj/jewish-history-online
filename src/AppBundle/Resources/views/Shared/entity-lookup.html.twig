@@ -1,8 +1,4 @@
 {% macro head(entity_lookup, bibitem_lookup, glossary_lookup) %}
-    {#
-    <link rel="stylesheet" type="text/css" href="{{ app.request.basepath }}/vendor/tooltipster-master/css/tooltipster.css" />
-    <script type="text/javascript" src="{{ app.request.basepath }}/vendor/tooltipster-master/js/jquery.tooltipster.min.js"></script>
-    #}
     <script>
     var entityLookup = {{ entity_lookup|json_encode|raw }};
     var bibitemLookup = {{ bibitem_lookup|json_encode|raw }};
@@ -58,12 +54,6 @@
 
     function initNote(element) {
         var id_sel = $( element ).attr('href');
-        {#
-        $(this).tooltipster({
-          content: $('<span>' + $(id_sel).html() + '</span>'),
-          interactive: true
-        });
-        #}
         // console.log('Note ' + $( id_sel ).html());
         $( element ).tooltip({
             title: $( id_sel ).html(),
@@ -122,7 +112,7 @@
         if (bibitemLookup === null) {
             return;
         }
-        
+
         // link bibitems
         var selector_full = '.dta-bibl';
         if ('' !== selector) {

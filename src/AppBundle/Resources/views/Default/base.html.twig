@@ -38,15 +38,10 @@
         <script src="{{ app.request.basepath }}/js/jquery-2.2.3.min.js"></script>
 
         <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{{ app.request.basepath }}/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css">
 
         <!-- Latest compiled and minified JavaScript -->
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
-        <!-- Optional theme -->
-        <!--
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
-        -->
+        <script src="{{ app.request.basepath }}/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
         {% stylesheets filter="scssphp" output="css/app.css"
             "assets/scss/base.scss"
@@ -75,23 +70,23 @@
 
         <script>
         $(document).ready(function(){
-             $(window).scroll(function () {
+            $(window).scroll(function () {
                     if ($(this).scrollTop() > 50) {
                         $('#back-to-top').fadeIn();
                     } else {
                         $('#back-to-top').fadeOut();
                     }
-                });
-                // scroll body to 0px on click
-                $('#back-to-top').click(function () {
-                    // $('#back-to-top').tooltip('hide');
-                    $('body,html').animate({
-                        scrollTop: 0
-                    }, 800);
-                    return false;
-                });
+            });
+            // scroll body to 0px on click
+            $('#back-to-top').click(function () {
+                // $('#back-to-top').tooltip('hide');
+                $('body,html').animate({
+                    scrollTop: 0
+                }, 800);
+                return false;
+            });
 
-                // $('#back-to-top').tooltip('show');
+            // $('#back-to-top').tooltip('show');
         });
         </script>
     </head>
