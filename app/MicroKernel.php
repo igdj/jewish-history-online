@@ -153,6 +153,8 @@ class MicroKernel extends Kernel
         $routes->add('/contact', 'AppBundle:About:contact', 'contact');
         $routes->add('/terms', 'AppBundle:About:terms', 'terms');
 
+        $routes->add('/about/cfp', 'AppBundle:About:cfp', 'about-cfp');
+
         $routes->add('/topic', 'AppBundle:Topic:index', 'topic-index');
 
         $topicBackgroundRoute = new \Symfony\Component\Routing\Route(

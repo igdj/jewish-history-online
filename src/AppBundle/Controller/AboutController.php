@@ -150,6 +150,14 @@ class AboutController extends RenderTeiController
     }
 
     /**
+     * @Route("/about/cfp", name="about-cfp")
+     */
+    public function cfpAction()
+    {
+        return $this->renderAboutUs('Call for Papers');
+    }
+
+    /**
      * @Route("/terms")
      */
     public function termsAction()

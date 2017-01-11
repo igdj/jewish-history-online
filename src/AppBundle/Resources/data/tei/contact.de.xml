@@ -46,7 +46,7 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
                     <p>              
                         Tel. +49 40 – 42 838-2617<lb/>
                         Fax +49 40 – 44 808-66<lb/>
-                        E-Mail: kontakt@igdj-hh.de<lb/>
+                        E-Mail: <ref target="mailto:kontakt@igdj-hh.de">kontakt@igdj-hh.de</ref><lb/>
                         Internet: <ref target="http://www.igdj-hh.de/">www.igdj-hh.de</ref></p>      
                     
                     <p>Das Institut ist eine Stiftung bürgerlichen Rechts in der Trägerschaft der
