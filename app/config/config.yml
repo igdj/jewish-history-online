@@ -57,6 +57,7 @@ doctrine:
                     collate: '%database.charset%_unicode_ci'
                     engine:  MyISAM     # InnoDB
     orm:
+        # TODO: set a cache, see http://www.craftitonline.com/2015/04/doctrine-file-system-caching-with-doctrine-cache-bundle/
         connection: default        
         auto_generate_proxy_classes: '%kernel.debug%'
         auto_mapping: true 

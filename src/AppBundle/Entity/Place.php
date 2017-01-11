@@ -519,15 +519,17 @@ implements \JsonSerializable, JsonLdSerializable
             $ret[$type][] = $child;
         }
         $typeWeights = [
-                         'nation' => 0,
-                         'state' => 2,
-                         'former primary political entity' => 5,
-                         'general region' => 10,
-                         'community' => 10,
-                         'historical region' => 11,
-                         'inhabited place' => 15,
-                         'archipelago' => 20,
-                         ];
+            'continent' => -10,
+            'nation' => 0,
+            'dependent state' => 1,
+            'former primary political entity' => 2,
+            'state' => 3,
+            'general region' => 5,
+            'community' => 10,
+            'historical region' => 11,
+            'inhabited place' => 15,
+            'archipelago' => 20,
+        ];
         uksort($ret, function($typeA, $typeB) use ($typeWeights) {
             if ($typeA == $typeB) {
                 return 0;

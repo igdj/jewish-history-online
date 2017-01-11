@@ -274,7 +274,9 @@ class EntityEnhanceCommand extends ContainerAwareCommand
                             $persist = true;
                         }
                         else {
-                            echo sprintf('Lookup TGN for gnd:%s: %s', $placeInfo['gnd'], $placeInfo['name']) . "\n";
+                            echo sprintf("Lookup TGN: %s\thttp://d-nb.info/gnd/%s",
+                                         $placeInfo['name'], $placeInfo['gnd'])
+                              . "\n";
                         }
 
                     }

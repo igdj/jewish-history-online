@@ -57,6 +57,7 @@ class ImportEntityCommand extends BaseEntityCommand
             $entities['place'][$row['tgn']] = $row;
         }
         foreach ([ 'person', 'place', 'organization' ] as $type) {
+            // currently only place
             if (empty($entities[$type])) {
                 continue;
             }

@@ -210,6 +210,10 @@ class GeographicalData
                     $values['type'] = 'autonomous republic';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300387176':
+                    $values['type'] = 'dependent state';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300000776':
                     $values['type'] = 'state';
                     break;
@@ -217,7 +221,6 @@ class GeographicalData
                 case 'http://vocab.getty.edu/aat/300000769':
                     $values['type'] = 'canton';
                     break;
-
 
                 case 'http://vocab.getty.edu/aat/300235093':
                     $values['type'] = 'governorate';
@@ -306,13 +309,21 @@ class GeographicalData
                 case 'http://vocab.getty.edu/aat/300387337':
                     $values['type'] = 'urban district';
                     break;
-                
+
                 case 'http://vocab.getty.edu/aat/300387340':
                     $values['type'] = 'city district'; // Ortsteile
                     break;
 
+                case 'http://vocab.getty.edu/aat/300387071':
+                    $values['type'] = 'unitary authority';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300025950':
                     $values['type'] = 'association'; // Verbuende wie Commonwealth
+                    break;
+
+                case 'http://vocab.getty.edu/aat/300000833':
+                    $values['type'] = 'historic site';
                     break;
 
                 case 'http://vocab.getty.edu/aat/300386698':

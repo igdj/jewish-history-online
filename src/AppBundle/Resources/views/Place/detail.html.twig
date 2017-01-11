@@ -42,8 +42,8 @@
         </div>
 
         <div class="col-sm-4 sidebar">
-            {% set geo = place.geo %}
-            {% if geo is not empty %}
+			{#{ dump(place.additional )}#}
+            {% if place.geo is not empty or place.additional.boundary is not empty %}
             <div id="map" class="col-sm-12" style="width: 100%; min-height: 360px"></div>
             <script>
             function adjustMapSize() {
@@ -59,18 +59,30 @@
 
             var map = L.map('map');
 
+			var bounds = null;
             {% if place.additional.bounds is not empty %}
-            map.fitBounds({{ place.additional.bounds|json_encode|raw }});
-            {% else %}
+				bounds = {{ place.additional.bounds|json_encode|raw }};
+            {% elseif place.geo is not null %}
                 {% if place.showCenterMarker %}
-                    L.marker([ {{ geo }} ]).addTo(map);
-                    map.setView([{{ geo }}], {{ place.defaultZoomlevel }});
+                    L.marker([ {{ place.geo }} ]).addTo(map);
+                    map.setView([{{ place.geo }}], {{ place.defaultZoomlevel }});
                 {% else %}
-                    map.setView([{{ geo }}], 3);
+                    map.setView([{{ place.geo }}], 3);
                 {% endif %}
             {% endif %}
 
             {{ map.addTileLayer() }}
+
+            {% if place.additional.boundary is not empty %}
+                var boundary = {{ place.additional.boundary|json_encode|raw }};
+                var geojsonLayer = L.geoJSON(boundary).addTo(map);
+				if (bounds == null) {
+					bounds = geojsonLayer.getBounds();
+				}
+            {% endif %}
+            if (bounds != null) {
+	            map.fitBounds(bounds);
+			}
             </script>
             {% endif %}
         </div>

@@ -30,3 +30,7 @@ services:
         class:        AppBundle\Utils\Xsl\XsltProcessor
         calls:        
             - [ setAdapter, [ '@app.xslt_adapter' ]] 
+
+    app.simplify_geojson:
+        class:        AppBundle\Utils\SimplifyGeojsonProcessor
+        arguments:    [ "%app.simplify_geojson.processor.arguments%" ]

@@ -9,6 +9,9 @@
         {
             "url": "https://github.com/burki/citeproc-php.git",
             "type": "vcs"
+        }, {
+            "url": "https://github.com/burki/converter.git",
+            "type": "vcs"
         }
     ],
 
