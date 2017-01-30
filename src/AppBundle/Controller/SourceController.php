@@ -54,57 +54,59 @@ class SourceController extends ArticleController
         $parts = explode('.', $fnameMets);
         $path = $parts[0];
 
-        if (empty($firstFacs)
-            && in_array($sourceArticle->getSourceType(),
-                        [ 'Audio', 'Video', 'Bild', 'Image', 'Objekt', 'Object' ]))
+        if (in_array($sourceArticle->getSourceType(), [ 'Transkript', 'Transcript' ])
+            || (empty($firstFacs)
+                && in_array($sourceArticle->getSourceType(),
+                        [ 'Audio', 'Video',
+                          'Bild', 'Image',
+                          'Objekt', 'Object',
+                          ])))
         {
             $html = $this->adjustMedia($html,
                                        $this->get('request')->getBaseURL()
                                        . '/viewer/' . $path);
 
-            return $this->render('AppBundle:Article:viewer-media.html.twig',
-                                 [
-                                    'article' => $sourceArticle,
-                                    'html' => $html,
-                                    'meta' => $meta,
-                                    'description' => $sourceDescription,
-                                    'name' => $sourceArticle->getName(),
-                                    'pageTitle' => $sourceArticle->getName(),
-                                    'interpretations' => [ $interpretation ],
-                                    'related' => $related,
-                                    'uid' => $uid,
-                                    'path' => $path,
-                                    'license' => $license,
-                                    'entity_lookup' => $entityLookup,
-                                    'glossary_lookup' => $glossaryLookup,
-                                    'pageMeta' => [
-                                        'jsonLd' => $sourceArticle->jsonLdSerialize($this->getRequest()->getLocale()),
-                                        'og' => $this->buildOg($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]),
-                                    ],
-                                  ]);
+            return $this->render('AppBundle:Article:viewer-media.html.twig', [
+                'article' => $sourceArticle,
+                'html' => $html,
+                'meta' => $meta,
+                'description' => $sourceDescription,
+                'name' => $sourceArticle->getName(),
+                'pageTitle' => $sourceArticle->getName(),
+                'interpretations' => [ $interpretation ],
+                'related' => $related,
+                'uid' => $uid,
+                'path' => $path,
+                'license' => $license,
+                'entity_lookup' => $entityLookup,
+                'glossary_lookup' => $glossaryLookup,
+                'pageMeta' => [
+                    'jsonLd' => $sourceArticle->jsonLdSerialize($this->getRequest()->getLocale()),
+                    'og' => $this->buildOg($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]),
+                ],
+            ]);
         }
 
-        return $this->render('AppBundle:Article:viewer.html.twig',
-                             [
-                                'article' => $sourceArticle,
-                                'meta' => $meta,
-                                'description' => $sourceDescription,
-                                'name' => $sourceArticle->getName(),
-                                'pageTitle' => $sourceArticle->getName(),
-                                'interpretations' => [ $interpretation ],
-                                'related' => $related,
-                                'uid' => $uid,
-                                'path' => $path,
-                                'mets' => $fnameMets,
-                                'firstFacs' => !empty($firstFacs) ? $firstFacs : 'f0001',
-                                'license' => $license,
-                                'entity_lookup' => $entityLookup,
-                                'glossary_lookup' => $glossaryLookup,
-                                'pageMeta' => [
-                                    'jsonLd' => $sourceArticle->jsonLdSerialize($this->getRequest()->getLocale()),
-                                    'og' => $this->buildOg($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]),
-                                ],
-                              ]);
+        return $this->render('AppBundle:Article:viewer.html.twig', [
+            'article' => $sourceArticle,
+            'meta' => $meta,
+            'description' => $sourceDescription,
+            'name' => $sourceArticle->getName(),
+            'pageTitle' => $sourceArticle->getName(),
+            'interpretations' => [ $interpretation ],
+            'related' => $related,
+            'uid' => $uid,
+            'path' => $path,
+            'mets' => $fnameMets,
+            'firstFacs' => !empty($firstFacs) ? $firstFacs : 'f0001',
+            'license' => $license,
+            'entity_lookup' => $entityLookup,
+            'glossary_lookup' => $glossaryLookup,
+            'pageMeta' => [
+                'jsonLd' => $sourceArticle->jsonLdSerialize($this->getRequest()->getLocale()),
+                'og' => $this->buildOg($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]),
+            ],
+        ]);
     }
 
     /**

@@ -92,6 +92,7 @@ bibitem.oneormany:                  "Bibliografie"
 epoch.century:                      "%century%. Jahrhundert"
 epoch.decade:                       "%epoch%er-Jahre"
 Image:                              Bild
+Transcript:                         Transkript
 Object:                             Objekt
 Previous:                           Zurück
 Next:                               Weiter

@@ -218,9 +218,15 @@ class ArticleAdjustCommand extends BaseEntityCommand
                     case 'Text':
                         $type = $result['type_name'];
                         break;
+
                     case 'Bild':
                         $type = 'Image';
                         break;
+
+                    case 'Transkript':
+                        $type = 'Transcript';
+                        break;
+
                     case 'Objekt':
                         $type = 'Object';
                         break;

@@ -304,4 +304,22 @@
   </xsl:choose>
 </xsl:template>
 
+<!-- copied from dtabf_base.xsl to act as in dtabf_viewer.xsl -->
+<xsl:template match='tei:pb'>
+  <xsl:variable name="thisSite" select="."/>
+  <xsl:if test="preceding::tei:note[@place='foot'][./preceding::tei:pb[. is $thisSite/preceding::tei:pb[1]]]">
+    <span style="display:block; margin-left:1em">
+      <xsl:for-each select="preceding::tei:note[@place='foot' and string-length(@prev) > 0][./preceding::tei:pb[. is $thisSite/preceding::tei:pb[1]]]">
+        <xsl:apply-templates select="." mode="footnotes"/>
+      </xsl:for-each>
+      <xsl:for-each select="preceding::tei:note[@place='foot' and string-length(@prev) = 0][./preceding::tei:pb[. is $thisSite/preceding::tei:pb[1]]]">
+        <xsl:apply-templates select="." mode="footnotes"/>
+      </xsl:for-each>
+    </span>
+  </xsl:if>
+  <span class="dta-pb" style="padding-left:15em">|<xsl:value-of select="@facs"/><xsl:if test="@n"> : <xsl:value-of select="@n"/></xsl:if>|</span>
+  <br />
+</xsl:template>
+
+
 </xsl:stylesheet>
