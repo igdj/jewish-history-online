@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2017-01-11T10:55:51Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2017-01-30T09:29:35Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -66,6 +66,11 @@
         <source>Born</source>
         <target>Geboren</target>
         <jms:reference-file line="32">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Person\detail.html.twig\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="93ce30937fa156e9b77d7a07161546f24199cc8f" resname="Call for Papers">
+        <source>Call for Papers</source>
+        <target state="new">Call for Papers</target>
+        <jms:reference-file line="138">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="070374ff80947b819eb8815e8d492bf0a862577e" resname="Chronology">
         <source>Chronology</source>
@@ -190,7 +195,7 @@
       <trans-unit id="6d79d21dc398598c8c28e7d8ebf3f1cb823ab0d6" resname="Guide to the Digital Source Edition">
         <source>Guide to the Digital Source Edition</source>
         <target>Begleitbroschüre zur Online-Quellenedition</target>
-        <jms:reference-file line="138">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
+        <jms:reference-file line="163">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="2bb85f0a8dbe6f36708aa5fed8239b1b375c4369" resname="Hide Map">
         <source>Hide Map</source>

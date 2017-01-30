@@ -100,7 +100,7 @@ abstract class RenderTeiController extends Controller
         foreach ($result as $article) {
             switch ($article['articleSection']) {
                 case 'background':
-                    $route = 'topic';
+                    $route = 'topic-background';
                     $params = [ 'slug' => $article['slug'] ];
                     break;
 
