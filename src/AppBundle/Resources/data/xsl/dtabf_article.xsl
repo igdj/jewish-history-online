@@ -52,6 +52,10 @@
   </xsl:choose>
 </xsl:template>
 
+<xsl:template match='tei:note[@place="foot" and @type="editorial"]' mode="footnotes">
+<!-- we show these inline -->
+</xsl:template>
+
   <xsl:template match="tei:choice">
     <xsl:choose>
       <xsl:when test="./tei:reg">
@@ -70,7 +74,9 @@
       </xsl:when>
       <xsl:when test="./tei:corr">
         <xsl:element name="span">
-          <xsl:attribute name="title">Schreibfehler: <xsl:apply-templates select="tei:sic" mode="choice"/></xsl:attribute>
+          <xsl:attribute name="title"><xsl:call-template name="translate">
+              <xsl:with-param name="label" select="'Schreibfehler'" />
+            </xsl:call-template>: <xsl:apply-templates select="tei:sic" mode="choice"/></xsl:attribute>
           <xsl:attribute name="class">dta-corr</xsl:attribute>
           <xsl:apply-templates select="tei:corr" mode="choice"/>
         </xsl:element>

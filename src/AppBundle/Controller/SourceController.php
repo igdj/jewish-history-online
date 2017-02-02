@@ -20,7 +20,12 @@ class SourceController extends ArticleController
         $meta = $sourceArticle; // $teiHelper->analyzeHeader($this->locateTeiResource($fname));
         $firstFacs = $teiHelper->getFirstPbFacs($this->locateTeiResource($fname));
 
-        $html = $this->renderTei($fname);
+        $params = [
+            'params' => [
+                'lang' => \AppBundle\Utils\Iso639::code1To3($this->getRequest()->getLocale()), // localize labels in xslt
+            ],
+        ];
+        $html = $this->renderTei($fname, 'dtabf_article.xsl', $params);
 
         list($authors, $section_headers, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html);
 
@@ -410,7 +415,7 @@ class SourceController extends ArticleController
                     $pagesDirUri = 'file:///' . str_replace('\\', '/', $pagesDir);
                     // we have to split the source file to pages
                     $res = $this->renderTei($fname, 'split-pages.xsl',
-                                            [ 'params' => [ 'outdir' => $pagesDirUri ]]);
+                                            [ 'params' => [ 'outdir' => $pagesDirUri ] ]);
                 }
 
                 $params = [
