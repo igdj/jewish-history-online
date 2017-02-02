@@ -1041,6 +1041,9 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
             if (preg_match('/, <span class="citeproc\-in">/', $ret, $matches)) {
                 $ret = preg_replace('/, (<span class="citeproc\-in">)/', '\1', $ret);
             }
+            else if (preg_match('/, <span class="citeproc\-volumes">/', $ret, $matches)) {
+                $ret = preg_replace('/, (<span class="citeproc\-volumes">)/', '\1', $ret);
+            }
             else if (preg_match('/, <span class="citeproc\-place">/', $ret, $matches)) {
                 $ret = preg_replace('/, (<span class="citeproc\-place">)/', '\1', $ret);
             }

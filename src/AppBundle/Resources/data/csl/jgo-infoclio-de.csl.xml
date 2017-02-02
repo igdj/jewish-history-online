@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<style xmlns="http://purl.org/net/xbiblio/csl" class="note" default-locale="de" version="1.0" name-delimiter="/">
+<style xmlns="http://purl.org/net/xbiblio/csl" class="note" default-locale="de" version="1.0" name-delimiter=" / ">
   <info>
     <title>Jewish History Online</title>
     <id>http://www.zotero.org/styles/jewisch-history-online</id>
@@ -41,6 +41,7 @@
       <term name="interviewer" form="verb">Interview geführt von</term>
       <term name="accessed">Stand</term>
       <term name="letter">Schreiben</term>
+      <term name="volume" form="short">Bd.</term>
       <term name="number-of-volumes" form="short">Bd.</term>
       <term name="no date" form="short">o. D.</term>
     </terms>
@@ -243,14 +244,18 @@
       <if type="book chapter                 entry-encyclopedia entry-dictionary                 song motion_picture" match="any">
         <group delimiter=" / ">
           <group delimiter="&#160;">
-            <label variable="volume" form="short"/>
+            <text term="volume" form="short"/>
             <number variable="volume"/>
           </group>
           <group delimiter="&#160;">
-            <number variable="number-of-volumes"/>
             <choose>
-              <if variable="volume" match="none">
-                <label variable="number-of-volumes" form="short"/>
+              <if variable="number-of-volumes">
+                <number variable="number-of-volumes"/>
+                <choose>
+                  <if variable="volume" match="none">
+                    <text term="number-of-volumes" form="short" prefix="&#160;"/>
+                  </if>
+                </choose>
               </if>
             </choose>
           </group>
