@@ -53,7 +53,6 @@ class EntityEnhanceCommand extends ContainerAwareCommand
                 $output->writeln(sprintf('<error>invalid type: %s</error>',
                                          $input->getArgument('type')));
                 return 1;
-
         }
     }
 
@@ -278,7 +277,6 @@ class EntityEnhanceCommand extends ContainerAwareCommand
                                          $placeInfo['name'], $placeInfo['gnd'])
                               . "\n";
                         }
-
                     }
                 }
             }
