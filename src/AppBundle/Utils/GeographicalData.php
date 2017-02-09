@@ -198,6 +198,10 @@ class GeographicalData
                     $values['type'] = 'bay';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300008707':
+                    $values['type'] = 'river';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300128207':
                     $values['type'] = 'nation';
                     break;
@@ -268,6 +272,10 @@ class GeographicalData
 
                 case 'http://vocab.getty.edu/aat/300387069':
                     $values['type'] = 'autonomous city';
+                    break;
+
+                case 'http://vocab.getty.edu/aat/300387068':
+                    $values['type'] = 'independent city';
                     break;
 
                 case 'http://vocab.getty.edu/aat/300387113':
