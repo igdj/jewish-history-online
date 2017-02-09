@@ -31,11 +31,10 @@ class PersonController extends Controller
         $query = $qb->getQuery();
         $persons = $query->getResult();
 
-        return $this->render('AppBundle:Person:index.html.twig',
-                             [
-                                'pageTitle' => $this->get('translator')->trans('Persons'),
-                                'persons' => $persons,
-                            ]);
+        return $this->render('AppBundle:Person:index.html.twig', [
+            'pageTitle' => $this->get('translator')->trans('Persons'),
+            'persons' => $persons,
+        ]);
     }
 
     public function detailAction($id = null, $gnd = null)
@@ -67,15 +66,14 @@ class PersonController extends Controller
             return new JsonLdResponse($person->jsonLdSerialize($this->getRequest()->getLocale()));
         }
 
-        return $this->render('AppBundle:Person:detail.html.twig',
-                             [
-                                'pageTitle' => $person->getFullname(true), // TODO: lifespan in brackets
-                                'person' => $person,
-                                'pageMeta' => [
-                                    'jsonLd' => $person->jsonLdSerialize($this->getRequest()->getLocale()),
-                                    'og' => $this->buildOg($person, $routeName, $routeParams),
-                                ],
-                              ]);
+        return $this->render('AppBundle:Person:detail.html.twig', [
+            'pageTitle' => $person->getFullname(true), // TODO: lifespan in brackets
+            'person' => $person,
+            'pageMeta' => [
+                'jsonLd' => $person->jsonLdSerialize($this->getRequest()->getLocale()),
+                'og' => $this->buildOg($person, $routeName, $routeParams),
+            ],
+        ]);
     }
 
     public function gndBeaconAction()
@@ -115,5 +113,4 @@ class PersonController extends Controller
         return new \Symfony\Component\HttpFoundation\Response($ret, \Symfony\Component\HttpFoundation\Response::HTTP_OK,
                                                               [ 'Content-Type' => 'text/plain; charset=UTF-8' ]);
     }
-
 }
