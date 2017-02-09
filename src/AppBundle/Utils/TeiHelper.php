@@ -160,6 +160,7 @@ class TeiHelper
                 case 'firstPublication':
                     $article->datePublished = new \DateTime((string)$element);
                     break;
+
                 case 'publication':
                     $article->dateModified = new \DateTime((string)$element);
                     break;
@@ -169,7 +170,7 @@ class TeiHelper
             $article->datePublished = $article->dateModified;
         }
         if (!empty($article->datePublished) && !empty($article->dateModified)
-            && $article->datePublished->format("Y-m-d") == $article->dateModified->format("Y-m-d"))
+            && $article->datePublished->format('Y-m-d') == $article->dateModified->format("Y-m-d"))
         {
             unset($article->dateModified);
         }
@@ -273,18 +274,21 @@ class TeiHelper
                         case 'Source':
                             $article->genre = 'source';
                             break;
+
                         case 'Interpretation':
                         case 'Interpretationstext':
                         case 'Article':
                         case 'Beitrag':
                             $article->genre = 'interpretation';
                             break;
+
                         case 'Introduction':
                         case 'Einführung':
                         case 'Übersichtstext':
                         case 'Hintergrundtext':
                             $article->genre = 'background';
                             break;
+
                         default:
                             // var_dump($label);
                     }
@@ -298,6 +302,7 @@ class TeiHelper
                     if (!empty($label)) {
                         $article->translatedFrom = $label;
                     }
+                    break;
 
             }
         }

@@ -109,9 +109,9 @@ class MetsCommand extends ContainerAwareCommand
 
         // TODO: allow to set a more complex structure
         $FILE_GROUPS = [
-                        'MASTER',
-                        'TRANSCRIPTION',
-                        ];
+            'MASTER',
+            'TRANSCRIPTION',
+        ];
 
         if (!empty($article->translatedFrom) && $article->translatedFrom != $article->language) {
             $FILE_GROUPS[] = 'TRANSLATION';
@@ -121,11 +121,11 @@ class MetsCommand extends ContainerAwareCommand
         $LOGICAL_LABEL = $article->name;
         $LOGICAL_STRUCTURE = [
             'content' => [
-                           'TYPE' => 'content',
-                           'LABEL' => $translator->trans($LOGICAL_TYPE),
-                           'ORDER' => 1,
-                           'physical_start' => 1,
-                           ],
+                'TYPE' => 'content',
+                'LABEL' => $translator->trans($LOGICAL_TYPE),
+                'ORDER' => 1,
+                'physical_start' => 1,
+            ],
         ];
 
         $xw = new \xmlWriter();

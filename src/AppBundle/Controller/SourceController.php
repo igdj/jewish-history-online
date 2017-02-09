@@ -61,11 +61,11 @@ class SourceController extends ArticleController
 
         if (in_array($sourceArticle->getSourceType(), [ 'Transkript', 'Transcript' ])
             || (empty($firstFacs)
-                && in_array($sourceArticle->getSourceType(),
-                        [ 'Audio', 'Video',
-                          'Bild', 'Image',
-                          'Objekt', 'Object',
-                          ])))
+                && in_array($sourceArticle->getSourceType(), [
+                        'Audio', 'Video',
+                        'Bild', 'Image',
+                        'Objekt', 'Object',
+                    ])))
         {
             $html = $this->adjustMedia($html,
                                        $this->get('request')->getBaseURL()
@@ -155,11 +155,13 @@ class SourceController extends ArticleController
             $line = '';
             $actual = '';
             foreach ($words as $word) {
-                if (mb_strlen($actual.$word) <= $width)
+                if (mb_strlen($actual.$word) <= $width) {
                     $actual .= $word.' ';
+                }
                 else {
-                    if ($actual != '')
+                    if ($actual != '') {
                         $line .= rtrim($actual).$break;
+                    }
                     $actual = $word;
                     if ($cut) {
                         while (mb_strlen($actual) > $width) {
@@ -378,7 +380,7 @@ class SourceController extends ArticleController
         $parts = explode('/', $path, 2);
         $lang = 'de';
 
-        if (preg_match('/^tei\/(translation|transcription)\.(de|en)\/(page\-(\d+)(\.xml))$/', $parts[1], $matches)) {
+        if (preg_match('/^tei\/(translation|transcription)\.(de|en|yi)\/(page\-(\d+)(\.xml))$/', $parts[1], $matches)) {
             $lang = $matches[2];
             $page = $matches[3];
         }
@@ -430,7 +432,6 @@ class SourceController extends ArticleController
                                              $params);
                 }
             }
-
         }
 
         return new Response($html);
@@ -472,5 +473,4 @@ EOX
 
         return $response;
     }
-
 }
