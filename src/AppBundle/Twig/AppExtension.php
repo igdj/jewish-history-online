@@ -27,6 +27,10 @@ class AppExtension extends \Twig_Extension
     {
         $this->translator = $translator;
         $this->slugifyer = $slugifyer;
+        if (!is_null($slugifyer)) {
+            // this should be set in bundlesetup
+            $slugifyer->addRule('Ṿ', 'V');
+        }
     }
 
     public function getFunctions()
@@ -78,12 +82,11 @@ class AppExtension extends \Twig_Extension
             $locale = $this->getLocale();
         }
 
-        return $this->translator->trans($class,
-                                 [
-                                   '%epoch%' => $epoch,
-                                   '%century%' => intval($epoch / 100) + 1,
-                                   '%decade%' => $epoch % 100,
-                                 ]);
+        return $this->translator->trans($class, [
+            '%epoch%' => $epoch,
+            '%century%' => intval($epoch / 100) + 1,
+            '%decade%' => $epoch % 100,
+        ]);
     }
 
     public function prettifyurlFilter($url)
@@ -111,16 +114,16 @@ class AppExtension extends \Twig_Extension
         $slugifyer = $this->slugifyer;
 
         return preg_replace_callback('/\[\[(.*?)\]\]/',
-                                             function ($matches) use ($slugifyer) {
-                                                $slug = $label = $matches[1];
-                                                if (!is_null($slugifyer)) {
-                                                    $slug = $slugifyer->slugify($slug);
-                                                }
-                                                return '→ <a href="#' . rawurlencode($slug) . '">'
-                                                  . $label
-                                                  . '</a>';
-                                             },
-                                             $description);
+                    function ($matches) use ($slugifyer) {
+                       $slug = $label = $matches[1];
+                       if (!is_null($slugifyer)) {
+                           $slug = $slugifyer->slugify($slug);
+                       }
+                       return '→ <a href="#' . rawurlencode($slug) . '">'
+                         . $label
+                         . '</a>';
+                    },
+                    $description);
     }
 
     public function renderCitation($encoded)
