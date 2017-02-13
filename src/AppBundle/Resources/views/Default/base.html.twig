@@ -22,6 +22,9 @@
         <meta property="{{ prop }}" content="{{ val }}">
                     {% endif %}
                 {% endfor %}
+                {% if pageMeta.og['og:url'] is defined %}
+        <link rel="canonical" href="{{ pageMeta.og['og:url'] }}">
+                {% endif %}
             {% endif %}
             {% if pageMeta.jsonLd is defined %}
         <script type="application/ld+json">
