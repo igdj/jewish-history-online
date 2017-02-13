@@ -112,18 +112,17 @@ class ArticleController extends RenderTeiController
 
             $templating = $this->container->get('templating');
 
-            $html = $templating->render('AppBundle:Article:article-printview.html.twig',
-                                 [
-                                    'article' => $article,
-                                    'meta' => $meta,
-                                    'source_description' => $sourceDescription,
-                                    'name' => $article->getName(),
-                                    'html' => preg_replace('/<\/?body>/', '', $html),
-                                    'authors' => $authors,
-                                    'section_headers' => $section_headers,
-                                    'license' => $license,
-                                  ]);
-            // return new Response($html);
+            $html = $templating->render('AppBundle:Article:article-printview.html.twig', [
+                'article' => $article,
+                'meta' => $meta,
+                'source_description' => $sourceDescription,
+                'name' => $article->getName(),
+                'html' => preg_replace('/<\/?body>/', '', $html),
+                'authors' => $authors,
+                'section_headers' => $section_headers,
+                'license' => $license,
+            ]);
+            // return new Response($html); // just for debugging
             $pdfGenerator = new \AppBundle\Utils\PdfGenerator();
             $fnameLogo = $this->get('kernel')->getRootDir() . '/../web/img/icon/icons_wide.png';
             $pdfGenerator->logo_top = file_get_contents($fnameLogo);
@@ -160,27 +159,26 @@ class ArticleController extends RenderTeiController
             return new JsonLdResponse($article->jsonLdSerialize($this->getRequest()->getLocale()));
         }
 
-        return $this->render('AppBundle:Article:article.html.twig',
-                             [
-                                'article' => $article,
-                                'meta' => $meta,
-                                'source_description' => $sourceDescription,
-                                'related' => $related,
-                                'name' => $article->getName(),
-                                'pageTitle' => $article->getName(), // TODO: append authors in brackets
-                                'html' => $html,
-                                'authors' => $authors,
-                                'section_headers' => $section_headers,
-                                'license' => $license,
-                                'entity_lookup' => $entityLookup,
-                                'bibitem_lookup' => $bibitemLookup,
-                                'glossary_lookup' => $glossaryLookup,
-                                'pageMeta' => [
-                                    'jsonLd' => $article->jsonLdSerialize($this->getRequest()->getLocale()),
-                                    'og' => $this->buildOg($article, 'article', [ 'slug' => $article->getSlug(true) ]),
-                                ],
-                                'route_params_locale_switch' => $localeSwitch,
-                              ]);
+        return $this->render('AppBundle:Article:article.html.twig', [
+            'article' => $article,
+            'meta' => $meta,
+            'source_description' => $sourceDescription,
+            'related' => $related,
+            'name' => $article->getName(),
+            'pageTitle' => $article->getName(), // TODO: append authors in brackets
+            'html' => $html,
+            'authors' => $authors,
+            'section_headers' => $section_headers,
+            'license' => $license,
+            'entity_lookup' => $entityLookup,
+            'bibitem_lookup' => $bibitemLookup,
+            'glossary_lookup' => $glossaryLookup,
+            'pageMeta' => [
+                'jsonLd' => $article->jsonLdSerialize($this->getRequest()->getLocale()),
+                'og' => $this->buildOg($article, 'article', [ 'slug' => $article->getSlug(true) ]),
+            ],
+            'route_params_locale_switch' => $localeSwitch,
+        ]);
     }
 
     /**
