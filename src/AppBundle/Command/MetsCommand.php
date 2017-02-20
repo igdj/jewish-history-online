@@ -113,8 +113,13 @@ class MetsCommand extends ContainerAwareCommand
             'TRANSCRIPTION',
         ];
 
+        $translations = [];
         if (!empty($article->translatedFrom) && $article->translatedFrom != $article->language) {
             $FILE_GROUPS[] = 'TRANSLATION';
+            if ($article->translatedFrom == 'yid') {
+                $translations[] = 'yl'; // yivo-transcript in latin letters
+            }
+            $translations[] = \AppBundle\Utils\Iso639::code3to1($article->language);
         }
 
         $LOGICAL_TYPE = 'Source';
@@ -154,14 +159,13 @@ class MetsCommand extends ContainerAwareCommand
             $xw->writeAttribute('USE', $group);
             foreach ($PAGES as $page_def) {
                 $page = $page_def['counter'];
+                $hrefs = [];
                 if ('MASTER' == $group) {
                     $mime = 'image/jpeg';
-                    $href = sprintf('%s.jpg', $page_def['facs']);
+                    $hrefs[] = sprintf('%s.jpg', $page_def['facs']);
                 }
                 else {
                     $mime = 'text/xml';
-
-                    $langCode3 = $article->language;
 
                     if ('TRANSLATION' == $group) {
                         /*
@@ -171,41 +175,49 @@ class MetsCommand extends ContainerAwareCommand
                             return href.split("/")[1].split(".")[1];
                         };
                         */
-                        $href = sprintf('tei/translation.%s/page-%d.xml',
-                                        \AppBundle\Utils\Iso639::code3to1($langCode3),
-                                        $page);
+                        foreach ($translations as $code1) {
+                            $hrefs[] = sprintf('tei/translation.%s/page-%d.xml',
+                                              $code1, $page);
+
+                        }
                     }
                     else {
                         // language of the transcription
-                        if (!empty($article->translatedFrom)) {
-                            $langCode3 = $article->translatedFrom;
-                        }
-                        else {
+                        if (!empty($translations) && empty($article->translatedFrom)) {
                             die('translationFrom is not set');
                         }
 
-                        $href = sprintf('tei/transcription.%s/page-%d.xml',
-                                        \AppBundle\Utils\Iso639::code3to1($langCode3),
-                                        $page);
+                        $langTranscription = !empty($article->translatedFrom)
+                            ? $article->translatedFrom : $article->language;
+
+                        $hrefs[] = sprintf('tei/transcription.%s/page-%d.xml',
+                                           \AppBundle\Utils\Iso639::code3to1($langTranscription),
+                                           $page);
                     }
                 }
-                $id = sprintf('%s_%s', strtolower($group), md5($href));
-                if (!array_key_exists($page, $fileids_by_page)) {
-                    $fileids_by_page[$page] = [];
+
+                foreach ($hrefs as $href) {
+                    $id = sprintf('%s_%s', strtolower($group), md5($href));
+                    if (!array_key_exists($page, $fileids_by_page)) {
+                        $fileids_by_page[$page] = [];
+                    }
+                    if (!array_key_exists($group, $fileids_by_page[$page])) {
+                        $fileids_by_page[$page][$group] = [];
+                    }
+                    $fileids_by_page[$page][$group][] = $id;
+                    $xw->startElement('mets:file');
+                    $xw->writeAttribute('ID', $id);
+                    $xw->writeAttribute('MIMETYPE', $mime);
+
+                    $xw->startElement('mets:FLocat');
+                    $xw->writeAttribute('LOCTYPE', 'URL');
+                    $xw->writeAttributeNs('xlink', 'href',
+                                          'http://www.w3.org/1999/xlink',
+                                          $href);
+                    $xw->endElement(); // </mets:FLocat>
+
+                    $xw->endElement(); // </mets:file>
                 }
-                $fileids_by_page[$page][$group] = $id;
-                $xw->startElement('mets:file');
-                $xw->writeAttribute('ID', $id);
-                $xw->writeAttribute('MIMETYPE', $mime);
-
-                $xw->startElement('mets:FLocat');
-                $xw->writeAttribute('LOCTYPE', 'URL');
-                $xw->writeAttributeNs('xlink', 'href',
-                                      'http://www.w3.org/1999/xlink',
-                                      $href);
-                $xw->endElement(); // </mets:FLocat>
-
-                $xw->endElement(); // </mets:file>
             }
             $xw->endElement(); // </mets:fileGrp>
         }
@@ -220,7 +232,7 @@ class MetsCommand extends ContainerAwareCommand
                 $xw->startElement('mets:div');
                 $xw->writeAttribute('ID', 'phys_dmd_' . $ID);
                 $xw->writeAttribute('TYPE', 'physSequence');
-                foreach ($fileids_by_page as $order => $fileids) {
+                foreach ($fileids_by_page as $order => $fileidsByGroup) {
                     $xw->startElement('mets:div');
                     $xw->writeAttribute('ID', 'phys_dmd_' . $ID . '_' . $order);
                     $xw->writeAttribute('TYPE', 'page');
@@ -232,10 +244,12 @@ class MetsCommand extends ContainerAwareCommand
                         }
                     }
 
-                    foreach ($fileids as $fileid) {
-                        $xw->startElement('mets:fptr');
-                        $xw->writeAttribute('FILEID', $fileid);
-                        $xw->endElement(); // </mets:fptr>
+                    foreach ($fileidsByGroup as $fileids) {
+                        foreach ($fileids as $fileid) {
+                            $xw->startElement('mets:fptr');
+                            $xw->writeAttribute('FILEID', $fileid);
+                            $xw->endElement(); // </mets:fptr>
+                        }
                     }
 
                     $xw->endElement(); // </mets:div>

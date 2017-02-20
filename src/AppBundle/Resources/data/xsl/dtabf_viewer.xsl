@@ -36,6 +36,38 @@
     <script>initEntityGlossaryNote('#<xsl:value-of select="generate-id()" />')</script>
 </xsl:template>
 
+<!-- add support for @dir -->
+<xsl:template match='tei:p'>
+  <xsl:choose>
+    <xsl:when test="ancestor::tei:sp and name(preceding-sibling::*[2]) != 'p'">
+      <span class="dta-in-sp"><xsl:apply-templates/></span>
+    </xsl:when>
+    <xsl:when test="ancestor::tei:sp and local-name(preceding-sibling::node()[1]) != 'lb' and local-name(preceding-sibling::node()[1]) != 'pb'">
+      <span class="dta-in-sp"><xsl:apply-templates/></span>
+    </xsl:when>
+    <xsl:when test="ancestor::tei:sp and local-name(preceding-sibling::node()[1]) = 'lb'">
+      <p class="dta-p-in-sp-really"><xsl:apply-templates/></p>
+    </xsl:when>
+    <xsl:when test="@rendition">
+      <p>
+        <xsl:call-template name="applyRendition"/>
+        <xsl:apply-templates/>
+      </p>
+    </xsl:when>
+    <xsl:when test="@prev">
+      <p class="dta-no-indent"><xsl:apply-templates/></p>
+    </xsl:when>
+    <xsl:otherwise>
+      <p class="dta-p">
+        <xsl:if test="@dir">
+          <xsl:attribute name="dir"><xsl:value-of select="@dir"/></xsl:attribute>
+        </xsl:if>
+        <xsl:apply-templates/>
+      </p>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
 <xsl:template match='tei:ref'>
   <xsl:choose>
     <xsl:when test="@target">

@@ -448,7 +448,7 @@ a.img-info-sign {
 }
 
 /* break long links in metadata sidebar */
-a.break-word {
+a.break-word, .sidebar dd a {
     word-wrap: break-word;
 }
 

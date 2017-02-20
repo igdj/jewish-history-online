@@ -32,7 +32,15 @@ class Iso639
     public static function code1To3($code1)
     {
         $languages = self::getLanguages();
-        return $languages->findByCode1($code1)->code3();
+        $scriptAppend = '';
+        if ('yl' == $code1) {
+            // yl is our custom two-letter placeholder for yi-Latn
+            $code1 = 'yi';
+            $append = '-Latn';
+        }
+        return $languages->findByCode1($code1)
+            ->code3()
+            . $scriptAppend;
     }
 
     /**

@@ -256,7 +256,7 @@
                         {% if meta.rights is not empty %}
                             <dt>{{ 'Rights Statements'|trans }}</dt>
                             <dd>
-                                {{ meta.rights  }}
+                                {{ meta.rights|converturls|nl2br  }}
                             </dd>
                         {% endif %}
                         {% if meta.licenseAllowsDownload()  %}

@@ -368,7 +368,7 @@ class ArticleAdjustCommand extends BaseEntityCommand
             $uid = sprintf('jgo:%s-%d', $matches[1], $matches[2]);
             $langCode1 = $matches[3];
         }
-        else if (preg_match('/(source)\-(\d+)\.(yi)\.(xml|tei)$/', $fname, $matches)) {
+        else if (preg_match('/(source)\-(\d+)\.(yi|yl)\.(xml|tei)$/', $fname, $matches)) {
             $uid = sprintf('jgo:%s-%d', $matches[1], $matches[2]);
             $langCode1 = $matches[3];
         }
