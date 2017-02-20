@@ -185,8 +185,7 @@ class EntityEnhanceCommand extends ContainerAwareCommand
                 }
             }
 
-            foreach ([ 'de', /* en */] as $locale) {
-                // en currently not working
+            foreach ([ 'de', 'en' ] as $locale) {
                 $entityfacts = $person->getEntityfacts($locale, true);
                 if (is_null($entityfacts)) {
                     $url = sprintf('http://hub.culturegraph.org/entityfacts/%s', $gnd);
@@ -223,6 +222,43 @@ class EntityEnhanceCommand extends ContainerAwareCommand
 
                     // try to set birth/death place
                     foreach ([ 'birth', 'death' ] as $property) {
+                        if ('en' == $locale) {
+                            // we use english locale because of date format
+                            
+                            $key = 'dateOf' . ucfirst($property);
+                            if (!empty($entityfacts[$key])) {
+                                $method = 'get' . ucfirst($property) . 'Date';
+                                $date = $person->$method();
+                                if (empty($date)) {
+                                    $value = $entityfacts[$key];
+                                    if (preg_match('/^\d{4}$/', $value)) {
+                                        $value .= '-00-00';
+                                    }
+                                    else {
+                                        $date = \DateTime::createFromFormat('F d, Y', $value);
+                                        unset($value);
+                                        if (isset($date)) {
+                                            $res = \DateTime::getLastErrors();
+                                            if (0 == $res['warning_count'] && 0 == $res['error_count']) {
+                                                $date_str = $date->format('Y-m-d');
+                                                if ('0000-00-00' !== $date_str) {
+                                                    $value = $date_str;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (isset($value)) {
+                                        var_dump($entityfacts['preferredName']);
+                                        var_dump($property);
+                                        var_dump($value);
+                                        $method = 'set' . ucfirst($property) . 'Date';
+                                        $person->$method($value);
+                                        $persist = true;                                        
+                                    }
+                                }                 
+                            }
+                        }
+                        
                         $method = 'get' . ucfirst($property) . 'PlaceInfo';
                         $placeInfo = $person->$method($locale);
                         if (is_null($placeInfo) || !empty($placeInfo['tgn'])) {

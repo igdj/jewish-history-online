@@ -79,9 +79,9 @@ class ArticleHeaderCommand extends ContainerAwareCommand
 
         $entity = $em->getRepository('AppBundle\Entity\Article')
             ->findOneBy([
-                         'uid' => $article->uid,
-                         'language' => $article->language,
-                         ]);
+                'uid' => $article->uid,
+                'language' => $article->language,
+            ]);
         if (is_null($entity)) {
             if ($input->getOption('insert-missing')) {
                 switch ($article->genre) {
@@ -152,6 +152,7 @@ class ArticleHeaderCommand extends ContainerAwareCommand
         $serializer = new Serializer([ $normalizer ], [ new JsonEncoder() ]);
 
         $serializer->deserialize(json_encode($article), get_class($entity), 'json', [ 'object_to_populate' => $entity ]);
+        
         foreach ($ignoredAttributes as $attribute) {
             if (!isset($article->$attribute)) {
                 continue;
@@ -197,9 +198,9 @@ class ArticleHeaderCommand extends ContainerAwareCommand
                 case 'isPartOf';
                     $repoClass = 'Article';
                     $criteria = [
-                                  'uid' => $related->getUid(),
-                                  'language' => $entity->getLanguage(),
-                                  ];
+                        'uid' => $related->getUid(),
+                        'language' => $entity->getLanguage(),
+                    ];
                     break;
             }
 

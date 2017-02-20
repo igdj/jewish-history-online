@@ -235,10 +235,18 @@ class SourceController extends ArticleController
             return $files;
         }
 
-        foreach (new \GlobIterator($srcDir . '/f*.jpg') as $file) {
-            if ($file->isFile()) {
-                $files[$file->getFilename()] = $file->getPathname();
-            }
+        $iterators = [ new \GlobIterator($srcDir . '/f*.jpg') ];
+        
+        if ('Audio' == $sourceArticle->getSourceType()) {
+            $iterators[] = new \GlobIterator($srcDir . '/m*.mp3');            
+        }
+        
+        foreach ($iterators as $iterator) {
+            foreach ($iterator as $file) {
+                if ($file->isFile()) {
+                    $files[$file->getFilename()] = $file->getPathname();
+                }
+            }            
         }
 
         if (empty($files) && 'Text' != $sourceArticle->getSourceType()) {
@@ -355,7 +363,7 @@ class SourceController extends ArticleController
             $files = $this->buildDownloadFiles($uid, $article);
         }
 
-        if (false === $files) {
+        if (false === $files || empty($files)) {
             // no download
             return new \Symfony\Component\HttpFoundation\RedirectResponse($this->generateUrl('source', [ 'uid' => $uid ]));
         }

@@ -224,6 +224,9 @@ class TeiHelper
                 if (preg_match('/^\#([\+\-]?\d+\.?\d*)\s*,\s*([\+\-]?\d+\.?\d*)\s*$/', $corresp, $matches)) {
                     $article->geo = implode(',', [ $matches[1], $matches[2] ]);
                 }
+                else {
+                    $article->geo = null;
+                }
             }
             $orgName = $result[0]->orgName;
             if (!empty($orgName)) {

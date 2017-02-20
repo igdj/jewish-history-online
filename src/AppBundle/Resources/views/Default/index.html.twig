@@ -113,7 +113,31 @@ Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und du
             <div class="container-fluid box top-buffer">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
-                        <h4>{{ 'New Source'|trans }}</h4>
+                        <h4>{{ 'New Sources'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse">
+                    <div class="col-xs-4">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-141' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00141/thumb.jpg" style="width: 100%; height: auto" /></a>
+                    </div>
+                    <div class="col-xs-8">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-141' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Memorandum by the Superior School Authority – School Administration</b>, November 24, 1938
+                        {% else %}
+                        <b>Aktenvermerk der Oberschulbehörde - Schulverwaltung</b>, 24.11.1938
+                        {% endif %}
+                        </a>
+
+                        <p>
+                        <a href="{{ path('article', { 'slug' : 'jgo:article-178' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Source Interpretation</b> by Christiane Pritzlaff
+                        {% else %}
+                        <b>Interpretation</b> von Christiane Pritzlaff
+                        {% endif %}
+                        </a>
+                        </p>
                     </div>
                 </div>
                 <div class="row box-color-content-inverse">
@@ -128,6 +152,16 @@ Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und du
                         <b>Nachruf auf Aby Warburg im Hamburger Fremdenblatt</b>, 28.10.1929
                         {% endif %}
                         </a>
+
+                        <p>
+                        <a href="{{ path('article', { 'slug' : 'jgo:article-25' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Source Interpretation</b> by Emily J. Levine
+                        {% else %}
+                        <b>Interpretation</b> von Emily J. Levine
+                        {% endif %}
+                        </a>
+                        </p>
                     </div>
                 </div>
             </div>

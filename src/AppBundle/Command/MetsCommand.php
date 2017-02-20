@@ -180,6 +180,9 @@ class MetsCommand extends ContainerAwareCommand
                         if (!empty($article->translatedFrom)) {
                             $langCode3 = $article->translatedFrom;
                         }
+                        else {
+                            die('translationFrom is not set');
+                        }
 
                         $href = sprintf('tei/transcription.%s/page-%d.xml',
                                         \AppBundle\Utils\Iso639::code3to1($langCode3),
