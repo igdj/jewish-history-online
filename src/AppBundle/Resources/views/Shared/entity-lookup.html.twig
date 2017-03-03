@@ -9,8 +9,10 @@
         var term = $el.data('title');
         if (term in glossaryLookup) {
             var url_detail = url + '#' + glossaryLookup[term].slug;
-            return { "url" :  url_detail,
-                     "title" : glossaryLookup[term].headline };
+            return {
+                "url" :  url_detail,
+                "title" : glossaryLookup[term].headline
+            };
         }
         return null;
     }
@@ -139,7 +141,12 @@
         initGlossary(selector);
         initEntityRef(selector);
         initBibitem(selector);
-    }
 
+        // tooltips on links
+        $( '.setTooltip' ).each(function ( index ) {
+            var $el = $( this );
+            $el.tooltip();
+        });
+    }
     </script>
 {% endmacro %}

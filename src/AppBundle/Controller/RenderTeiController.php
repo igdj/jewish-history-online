@@ -84,7 +84,8 @@ abstract class RenderTeiController extends Controller
         // make sure we only pick-up the published ones
         $query = $this->get('doctrine')
             ->getManager()
-            ->createQuery("SELECT a.uid, a.articleSection, a.slug FROM AppBundle:Article a"
+            ->createQuery("SELECT a"
+                          . " FROM AppBundle:Article a"
                           . " WHERE a.status IN (1)"
                           . " AND a.uid IN (:refs)"
                           . (!empty($language) ? ' AND a.language=:language' : '')
@@ -97,21 +98,26 @@ abstract class RenderTeiController extends Controller
 
         $result = $query->getResult();
 
+        $translator = $this->get('translator');
         foreach ($result as $article) {
-            switch ($article['articleSection']) {
+            $prefix = null;
+            switch ($article->getArticleSection()) {
                 case 'background':
+                    $prefix = $translator->trans('Topic');
                     $route = 'topic-background';
-                    $params = [ 'slug' => $article['slug'] ];
+                    $params = [ 'slug' => $article->getSlug() ];
                     break;
 
                 case 'interpretation':
+                    $prefix = $translator->trans('Interpretation');
                     $route = 'article';
-                    $params = [ 'slug' => !empty($article['slug']) ? $article['slug'] : $article['uid'] ];
+                    $params = [ 'slug' => $article->getSlug(true) ];
                     break;
 
                 case 'source':
+                    $prefix = $translator->trans('Source');
                     $route = 'source';
-                    $params = [ 'uid' => $article['uid'] ];
+                    $params = [ 'uid' => $article->getUid() ];
                     break;
 
                 default:
@@ -119,7 +125,20 @@ abstract class RenderTeiController extends Controller
             }
 
             if (!is_null($route)) {
-                $refMap[$article['uid']] = $this->generateUrl($route, $params, true);
+                $entry = [
+                    'href' => $this->generateUrl($route, $params, true),
+                ];
+                if (!empty($prefix)) {
+                    $entry['headline'] = $prefix . ': ' . $article->getName();
+                    if (count($article->getAuthor()) > 0) {
+                        $authors = [];
+                        foreach ($article->getAuthor() as $author) {
+                            $authors[] = $author->getFullname(true);
+                        }
+                        $entry['headline'] .= ' (' . implode(', ', $authors) . ')';
+                    }
+                }
+                $refMap[$article->getUid()] = $entry;
             }
         }
 
@@ -267,7 +286,7 @@ abstract class RenderTeiController extends Controller
 
         $termsBySlug = [];
 
-        foreach( $this->getDoctrine()
+        foreach ($this->getDoctrine()
                 ->getRepository('AppBundle:GlossaryTerm')
                 ->findBy([ 'status' => [ 0, 1 ],
                            'language' => $language,
@@ -286,8 +305,10 @@ abstract class RenderTeiController extends Controller
                 $headline = $term->getHeadline();
                 $headline = str_replace(']]', '', $headline);
                 $headline = str_replace('[[', '→', $headline);
-                $glossaryLookup[$glossaryTerm] = [ 'slug' => $term->getSlug(),
-                                                   'headline' => $headline];
+                $glossaryLookup[$glossaryTerm] = [
+                    'slug' => $term->getSlug(),
+                    'headline' => $headline,
+                ];
             }
         }
 
@@ -332,7 +353,12 @@ abstract class RenderTeiController extends Controller
 
                     if (preg_match('/^jgo:(article|source)\-(\d+)$/', $href)) {
                         if (array_key_exists($href, $refLookup)) {
-                            $node->setAttribute('href', $refLookup[$href]);
+                            $info = $refLookup[$href];
+                            $node->setAttribute('href', $refLookup[$href]['href']);
+                            if (!empty($info['headline'])) {
+                                $node->setAttribute('title', $refLookup[$href]['headline']);
+                                $node->setAttribute('class', 'setTooltip');
+                            }
                         }
                         else {
                             $node->removeAttribute('href');
