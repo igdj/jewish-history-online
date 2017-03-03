@@ -1,6 +1,6 @@
 <?php
 
-// src/AppBundle/Command/GreetCommand.php
+// src/AppBundle/Command/ArticleAdjustCommand.php
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -372,7 +372,7 @@ class ArticleAdjustCommand extends BaseEntityCommand
             $uid = sprintf('jgo:%s-%d', $matches[1], $matches[2]);
             $langCode1 = $matches[3];
         }
-        
+
         if (empty($uid) || empty($langCode1)) {
             die('TODO: determine uid/langCode1 from teiHeader');
         }

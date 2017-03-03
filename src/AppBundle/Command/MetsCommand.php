@@ -1,6 +1,6 @@
 <?php
 
-// src/AppBundle/Command/GreetCommand.php
+// src/AppBundle/Command/MetsCommand.php
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
