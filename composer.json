@@ -12,6 +12,9 @@
         }, {
             "url": "https://github.com/burki/converter.git",
             "type": "vcs"
+        }, {
+            "url": "https://github.com/burki/fluidxml.git",
+            "type": "vcs"
         }
     ],
 
@@ -50,6 +53,8 @@
         "fale/isbn": "3.*",
         "technosophos/libris": "dev-master",
         "geissler/converter": "dev-master",
+        "servo/fluidxml": "dev-master",
+        "nategood/httpful": "*",
 
         "ddeboer/data-import": "0.20.*",
         "phpoffice/phpexcel": "1.8.*",

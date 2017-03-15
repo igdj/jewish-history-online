@@ -96,14 +96,14 @@ Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und du
                 </div>
                 <div class="row box-color-content-inverse">
                     <div class="col-xs-4">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-126' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00126/thumb.jpg" style="width: 100%; height: auto" /></a>
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-84' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00084/thumb.jpg" style="width: 100%; height: auto" /></a>
                     </div>
                     <div class="col-xs-8">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-126' }) }}">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-84' }) }}">
                         {% if 'en' == app.request.locale %}
-                        <b>Hannah Arendt, Jewish Cultural Reconstruction Field Reports, 1948–1951, Field Report No. 18, February 15 – March 10 1950</b>
+                        <b>Letter from Jacob H. Schiff (New York) to Max Warburg (Hamburg)</b>, January 28, 1915
                         {% else %}
-                        <b>Hannah Arendt, Jewish Cultural Reconstruction Field Reports, 1948-1951, Tätigkeitsbericht Nr. 18, 15. Februar - 10. März 1950</b>
+                        <b>Schreiben von Jacob H. Schiff (New York) an Max Warburg (Hamburg)</b>, 28.1.1915
                         {% endif %}
                         </a>
                     </div>
@@ -114,6 +114,30 @@ Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und du
                 <div class="row box-color-title">
                     <div class="col-sm-12">
                         <h4>{{ 'New Sources'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse">
+                    <div class="col-xs-4">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-154' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00154/thumb.jpg" style="width: 100%; height: auto" /></a>
+                    </div>
+                    <div class="col-xs-8">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-154' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Ludolf Holst, On the Relationship of the Jews to the Christians in Commercial Towns</b>, Leipzig 1818
+                        {% else %}
+                        <b>Ludolf Holst, Über das Verhältnis der Juden zu den Christen in den Handelsstädten</b>, Leipzig 1818
+                        {% endif %}
+                        </a>
+
+                        <p>
+                        <a href="{{ path('article', { 'slug' : 'jgo:article-190' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Source Interpretation</b> by Moshe Zimmermann
+                        {% else %}
+                        <b>Interpretation</b> von Moshe Zimmermann
+                        {% endif %}
+                        </a>
+                        </p>
                     </div>
                 </div>
                 <div class="row box-color-content-inverse">
@@ -134,31 +158,7 @@ Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und du
                         {% if 'en' == app.request.locale %}
                         <b>Source Interpretation</b> by Ina Lorenz
                         {% else %}
-                        <b>Interpretation</b> von Ina Lorenz 
-                        {% endif %}
-                        </a>
-                        </p>
-                    </div>
-                </div>
-                <div class="row box-color-content-inverse">
-                    <div class="col-xs-4">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-8' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00008/thumb.jpg" style="width: 100%; height: auto" /></a>
-                    </div>
-                    <div class="col-xs-8">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-8' }) }}">
-                        {% if 'en' == app.request.locale %}
-                        <b>Letter by Walter A. Berendsohn to Karl Ludwig Schneider</b>, September 1, 1965
-                        {% else %}
-                        <b>Schreiben von Walter A. Berendsohn an Karl Ludwig Schneider</b>, 1.9.1965
-                        {% endif %}
-                        </a>
-
-                        <p>
-                        <a href="{{ path('article', { 'slug' : 'jgo:article-10' }) }}">
-                        {% if 'en' == app.request.locale %}
-                        <b>Source Interpretation</b> by Andreas Marquet 
-                        {% else %}
-                        <b>Interpretation</b> von Andreas Marquet 
+                        <b>Interpretation</b> von Ina Lorenz
                         {% endif %}
                         </a>
                         </p>

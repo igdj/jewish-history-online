@@ -243,6 +243,14 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
      */
     protected $uid;
     /**
+     * @var string
+     *
+     * @Assert\Type(type="string")
+     * @ORM\Column(nullable=true)
+     * @Solr\Field(type="string")
+     */
+    protected $doi;
+    /**
      * @var string URL of the item.
      *
      * @Assert\Url
@@ -906,6 +914,30 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
     }
 
     /**
+     * Sets doi.
+     *
+     * @param string $doi
+     *
+     * @return $this
+     */
+    public function setDoi($doi)
+    {
+        $this->doi = $doi;
+
+        return $this;
+    }
+
+    /**
+     * Gets doi.
+     *
+     * @return string
+     */
+    public function getDoi()
+    {
+        return $this->doi;
+    }
+
+    /**
      * Sets url.
      *
      * @param string $url
@@ -1037,6 +1069,28 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
         return $this->bibitemReferences;
     }
 
+    public function getVersion()
+    {
+        return '1.0'; // TODO: add versioning support for updated articles
+    }
+
+    protected function buildDoiVersionAppendix()
+    {
+        // format is v1, v1-1, v1-2, v2, v2-1 and so on
+        return 'v' . rtrim(str_replace('.', '-', $this->getVersion()), '-0');
+    }
+
+    /*
+     * 10.5072 is the test prefix
+     */
+    public function buildDoi($prefix = '10.5072')
+    {
+        $locale = \AppBundle\Utils\Iso639::code3To1($this->getLanguage());
+
+        return $prefix . '/' . $this->getUid()
+            . '.' . $locale . '.' . $this->buildDoiVersionAppendix();
+    }
+
     public function jsonSerialize()
     {
         return [
@@ -1116,7 +1170,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
         ];
 
         $ret = [
-			'og:type' => 'article',
+	    'og:type' => 'article',
             'og:title' => $this->name,
             'article:section' => $sectionMap[$this->articleSection],
         ];

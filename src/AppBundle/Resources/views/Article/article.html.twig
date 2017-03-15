@@ -16,7 +16,7 @@
     $(function () {
         initEntityGlossaryNote('.source-description');
         initEntityGlossaryNote('.article');
-    })
+    });
     </script>
 {% endblock %}
 
@@ -128,31 +128,6 @@
                 </div>
             </div>
             {% endif %}
-
-            {#
-            <div class="container-fluid box top-buffer">
-                <div class="row box-color-title">
-                    <div class="col-sm-12">
-                        <h4>{{ 'Content'|trans }}</h4>
-                    </div>
-                </div>
-                <div class="row box-color-content">
-                    <div class="col-sm-12">
-                    {% if section_headers is not empty %}
-                        {% for header in section_headers %}
-                            <p><a href="#{{ header['id'] }}">{{ header['text'] }}</a></p>
-                        {% endfor %}
-                        <hr />
-                    {% endif %}
-                    {% if authors is not empty %}
-                        <p><a href="#author">{{ 'author.oneormany'|transchoice(authors|length) }}</a></p>
-                    {% endif %}
-                        <p><a href="#citation">{{ 'Recommended Citation and License Statement'|trans }}</a></p>
-                    </div>
-                </div>
-            </div>
-            #}
         </div>
-
     </div>
 {% endblock %}
