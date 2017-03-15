@@ -298,6 +298,10 @@ class GeographicalData
                     $values['type'] = 'former administrative divisions';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300167671':
+                    $values['type'] = 'deserted settlement';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300387064':
                     $values['type'] = 'province'; // first level subdivisions (political entities)
                     break;
