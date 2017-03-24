@@ -1194,5 +1194,4 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
     {
         return $this->status == 1; // explicit publishing needed
     }
-
 }

@@ -73,5 +73,4 @@ class SourceArticle extends Article
         }
         return $ret;
     }
-
 }

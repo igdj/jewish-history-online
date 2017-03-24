@@ -215,6 +215,9 @@ class ArticleDoiCommand extends ContainerAwareCommand
                         ->addChild('creatorName', $creator)
                     ;
             }
+            else {
+                die('TODO: either creators or contributors is mandatory');
+            }
         }
         else {
             $routeKey = 'slug';
@@ -258,17 +261,34 @@ class ArticleDoiCommand extends ContainerAwareCommand
             $root->addChild('publicationYear', $now->format('Y'));
         }
 
-        // TODO: adjust for different types of sources
-        /*
-        Controlled List Values for resourceTypeGeneral:
-        Audiovisual -> Video
-        Image
-        PhysicalObject
-        Sound
-        Text
-        Other
-        */
-        $root->addChild('resourceType', 'Article', [ 'resourceTypeGeneral' => 'Text' ]);
+        if ('source' == $entity->getGenre()) {
+            // TODO: adjust for different types of sources
+            /*
+            Controlled List Values for resourceTypeGeneral:
+            Audiovisual -> Video
+            Image
+            PhysicalObject
+            Sound
+            Text
+            Other
+            */
+            switch ($entity->getSourceType()) {
+                case 'Object':
+                case 'Objekt':
+                    $root->addChild('resourceType', 'Object', [ 'resourceTypeGeneral' => 'PhysicalObject' ]);
+                    break;
+
+                case 'Text':
+                    $root->addChild('resourceType', 'Source', [ 'resourceTypeGeneral' => 'Text' ]);
+                    break;
+
+                default:
+                    die('TODO: Handle sourceType: ' . $entity->getSourceType());
+            }
+        }
+        else {
+           $root->addChild('resourceType', 'Article', [ 'resourceTypeGeneral' => 'Text' ]);
+        }
 
         $router = $this->getContainer()->get('router');
 
