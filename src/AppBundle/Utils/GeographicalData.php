@@ -186,6 +186,10 @@ class GeographicalData
                     $values['type'] = 'island';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300386853':
+                    $values['type'] = 'island group';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300008791':
                     $values['type'] = 'peninsula';
                     break;
