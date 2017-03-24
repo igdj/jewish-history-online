@@ -99,7 +99,7 @@
       </trans-unit>
       <trans-unit id="817b79b0af2db11da9523bd5738397ebf823132b" resname="Creator">
         <source>Creator</source>
-        <target>Verfasser</target>
+        <target>Urheber</target>
         <jms:reference-file line="8">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\readme-de.txt.twig\</jms:reference-file>
         <jms:reference-file line="8">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\readme-en.txt.twig\</jms:reference-file>
         <jms:reference-file line="229">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
