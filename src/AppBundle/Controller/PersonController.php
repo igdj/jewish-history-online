@@ -17,22 +17,34 @@ class PersonController extends Controller
      */
     public function indexAction()
     {
+        $route = $this->get('request')->get('_route');
+        $authorsOnly = 'about-authors' == $route;
+
         $qb = $this->getDoctrine()
                 ->getManager()
                 ->createQueryBuilder();
 
-        $qb->select([ 'P',
-                     "CONCAT(COALESCE(P.familyName,P.givenName), ' ', P.givenName) HIDDEN nameSort"
-                     ])
+        $qb->select([
+                'P',
+                "CONCAT(COALESCE(P.familyName,P.givenName), ' ', P.givenName) HIDDEN nameSort"
+            ])
             ->from('AppBundle:Person', 'P')
             ->where('P.status IN (0,1)')
             ->orderBy('nameSort')
             ;
-        $query = $qb->getQuery();
-        $persons = $query->getResult();
+
+        if ($authorsOnly) {
+            // limit to authors: Person with published Article
+            $qb->distinct()
+                ->innerJoin('P.articles', 'A')
+                ->andWhere('A.status IN (1)')
+                ;
+        }
+
+        $persons = $qb->getQuery()->getResult();
 
         return $this->render('AppBundle:Person:index.html.twig', [
-            'pageTitle' => $this->get('translator')->trans('Persons'),
+            'pageTitle' => $this->get('translator')->trans($authorsOnly ? 'Authors' : 'Persons'),
             'persons' => $persons,
         ]);
     }

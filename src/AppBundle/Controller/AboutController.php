@@ -20,8 +20,7 @@ class AboutController extends RenderTeiController
 
         $params = [ 'lang' => \AppBundle\Utils\Iso639::code1To3($locale) ];
 
-        $html = $this->renderTei($fnameTei, 'dtabf_article-printview.xsl',
-                                 [ 'params' => $params ]);
+        $html = $this->renderTei($fnameTei, 'dtabf_article-printview.xsl', [ 'params' => $params ]);
 
         if (false === $html) {
             return '<div class="alert alert-warning">'
@@ -36,11 +35,11 @@ class AboutController extends RenderTeiController
     {
         $translator = $this->get('translator');
 
-        return $this->render($template,
-                             [
-                               'pageTitle' => $translator->trans($title),
-                               'title' => $title,
-                               'content' => $this->renderContent() ]);
+        return $this->render($template, [
+            'pageTitle' => $translator->trans($title),
+            'title' => $title,
+            'content' => $this->renderContent(),
+        ]);
     }
 
     protected function renderAbout($title)
