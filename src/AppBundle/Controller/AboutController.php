@@ -153,7 +153,7 @@ class AboutController extends RenderTeiController
      */
     public function cfpAction()
     {
-        return $this->renderAboutUs('Call for Papers');
+        return $this->renderAboutUs('Become an Author');
     }
 
     /**
