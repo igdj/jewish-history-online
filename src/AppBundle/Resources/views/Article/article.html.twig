@@ -93,11 +93,17 @@
                 </div>
 
                 <div class="row box-color-content-inverse">
-                    <div class="col-sm-12">
                     {% for source in related %}
+                    <div class="col-sm-4">
+                        {% set thumb = "/viewer/source-%05d/thumb.jpg"|format(source.uid|replace({'jgo:source-' : ''})) %}
+                        {% if file_exists(webDir ~ thumb) %}
+                            <a href="{{ path('source', { 'uid' : source.uid }) }}"><img src="{{ app.request.basepath }}{{ thumb }}" alt="" style="width: 100%; height: auto;"></a>
+                        {% endif %}
+                        </div>
+                        <div class="col-sm-8">
                         <p>{{ helper.article_linked(source) }}</p>
-                    {% endfor %}
                     </div>
+                    {% endfor %}
                 </div>
             </div>
             {% endif %}
@@ -115,10 +121,10 @@
                     {% set img_slug = slugify.slugify(topic|lookupLocalizedTopic) %}
                     {% set slug = slugify.slugify(topic) %}
                     {% if loop.first %}
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <a href="{{ path('topic-background', { 'slug' : slug }) }}"><img src="{{ asset('img/topic/' ~ img_slug ~ '.jpg') }}" style="width: 100%; height: auto" /></a>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-8">
                     {% endif %}
                             <p><a href="{{ path('topic-background', { 'slug' : slug }) }}">{{ topic }}</a></p>
                     {% if loop.last %}

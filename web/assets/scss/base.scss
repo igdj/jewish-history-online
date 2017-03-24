@@ -27,6 +27,26 @@ body {
     font-family: $font-stack-sans;
 }
 
+/* sticky footer, see https://gist.github.com/seyDoggy/e919a429b2459aedf509 */
+html,body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    display: table;
+}
+
+.container.wrapper {
+    height: auto;
+    margin-bottom: 20px;
+}
+
+footer {
+    display: table-row;
+    height: 1px;
+}
+
 header {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
