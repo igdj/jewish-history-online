@@ -40,12 +40,9 @@ class DateController extends Controller
 
         $result = $queryBuilder->getQuery()->getResult();
 
-        return $this->render('AppBundle:Date:chronology.html.twig',
-                             [
-                                'pageTitle' =>  $this->get('translator')
-                                                    ->trans('Chronology'),
-                                'articles' => $result,
-                              ]);
+        return $this->render('AppBundle:Date:chronology.html.twig', [
+            'pageTitle' =>  $this->get('translator')->trans('Chronology'),
+            'articles' => $result,
+        ]);
     }
-
 }

@@ -59,11 +59,10 @@ class PlaceController extends Controller
             }
         }
 
-        return $this->render('AppBundle:Place:map.html.twig',
-                             [
-                              'pageTitle' => $this->get('translator')->trans('Map'),
-                              'markers' => $markers,
-                              ]);
+        return $this->render('AppBundle:Place:map.html.twig', [
+            'pageTitle' => $this->get('translator')->trans('Map'),
+            'markers' => $markers,
+        ]);
     }
 
     /**
@@ -84,7 +83,7 @@ class PlaceController extends Controller
             $qb->select('A.uid, A.name')
                     ->distinct()
                     ->innerJoin('A.contentLocation', 'P')
-                    ->andWhere('P.id IN (:ids)')
+                    ->andWhere('A.status IN (1) AND P.id IN (:ids)')
                     ->setParameter('ids', $ids)
                     ;
 
@@ -112,11 +111,10 @@ class PlaceController extends Controller
                     ->getResult();
                     ;
         }
-        return $this->render('AppBundle:Place:map-popup-content.html.twig',
-                             [
-                                'articles' => $articles,
-                             ]);
 
+        return $this->render('AppBundle:Place:map-popup-content.html.twig', [
+            'articles' => $articles,
+        ]);
     }
 
     /**
@@ -129,11 +127,10 @@ class PlaceController extends Controller
                 ->findBy([ 'type' => 'inhabited place' ],
                          [ 'name' => 'ASC' ]);
 
-        return $this->render('AppBundle:Place:index.html.twig',
-                             [
-                                'pageTitle' => $this->get('translator')->trans('Places'),
-                                'places' => $places,
-                             ]);
+        return $this->render('AppBundle:Place:index.html.twig', [
+            'pageTitle' => $this->get('translator')->trans('Places'),
+            'places' => $places,
+        ]);
     }
 
     public function detailAction($id = null, $tgn = null)
@@ -162,13 +159,12 @@ class PlaceController extends Controller
             return new JsonLdResponse($place->jsonLdSerialize($this->getRequest()->getLocale()));
         }
 
-        return $this->render('AppBundle:Place:detail.html.twig',
-                             [
-                                'pageTitle' => $place->getNameLocalized($this->get('request')->getLocale()),
-                                'place' => $place,
-                                'pageMeta' => [
-                                    'jsonLd' => $place->jsonLdSerialize($this->getRequest()->getLocale()),
-                                ],
-                             ]);
+        return $this->render('AppBundle:Place:detail.html.twig', [
+            'pageTitle' => $place->getNameLocalized($this->get('request')->getLocale()),
+            'place' => $place,
+            'pageMeta' => [
+                'jsonLd' => $place->jsonLdSerialize($this->getRequest()->getLocale()),
+            ],
+        ]);
     }
 }

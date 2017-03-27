@@ -42,12 +42,11 @@ class BibliographyController extends Controller
         $query = $qb->getQuery();
         $items = $query->getResult();
 
-        return $this->render('AppBundle:Bibliography:index.html.twig',
-                             [
-                                'pageTitle' => $this->get('translator')->trans('Bibliography'),
-                                'items' => $items,
-                                'citeProc' => $this->instantiateCiteProc(),
-                            ]);
+        return $this->render('AppBundle:Bibliography:index.html.twig', [
+            'pageTitle' => $this->get('translator')->trans('Bibliography'),
+            'items' => $items,
+            'citeProc' => $this->instantiateCiteProc(),
+        ]);
     }
 
     private function buildRisResponse($bibitem)
@@ -98,17 +97,16 @@ class BibliographyController extends Controller
             return $this->buildRisResponse($bibitem);
         }
 
-        return $this->render('AppBundle:Bibliography:detail.html.twig',
-                             [
-                                'pageTitle' => $bibitem->getName(true), //
-                                'bibitem' => $bibitem,
-                                'citeProc' => $this->instantiateCiteProc(),
-                                'pageMeta' => [
-                                    'jsonLd' =>
-                                    $bibitem->jsonLdSerialize($this->getRequest()->getLocale()),
-                                    'og' => $this->buildOg($bibitem, $routeName, $routeParams),
-                                ],
-                              ]);
+        return $this->render('AppBundle:Bibliography:detail.html.twig', [
+            'pageTitle' => $bibitem->getName(true), //
+            'bibitem' => $bibitem,
+            'citeProc' => $this->instantiateCiteProc(),
+            'pageMeta' => [
+                'jsonLd' =>
+                $bibitem->jsonLdSerialize($this->getRequest()->getLocale()),
+                'og' => $this->buildOg($bibitem, $routeName, $routeParams),
+            ],
+        ]);
     }
 
     public function unapiAction()
@@ -186,5 +184,4 @@ class BibliographyController extends Controller
                                                               [ 'Content-Type' => 'text/plain; charset=UTF-8' ]);
     }
     */
-
 }

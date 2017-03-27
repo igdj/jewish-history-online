@@ -92,11 +92,11 @@ class TopicController extends RenderTeiController
                 $topicsDescription[$slug]['article'] = $articleSlug;
             }
         }
-        return $this->render('AppBundle:Topic:index.html.twig',
-                             [
-                                'pageTitle' => $this->get('translator')->trans('Topics'),
-                                'topics' => $topicsDescription,
-                             ]);
+
+        return $this->render('AppBundle:Topic:index.html.twig', [
+            'pageTitle' => $this->get('translator')->trans('Topics'),
+            'topics' => $topicsDescription,
+        ]);
     }
 
     /**
@@ -132,7 +132,6 @@ class TopicController extends RenderTeiController
             $teiHelper = new \AppBundle\Utils\TeiHelper();
             $meta = $teiHelper->analyzeHeader($this->locateTeiResource($fname));
         }
-
 
         $html = $this->renderTei($fname, $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl');
 
@@ -203,25 +202,24 @@ class TopicController extends RenderTeiController
 
         $articles = $query->getResult();
 
-        return $this->render('AppBundle:Topic:background.html.twig',
-                             [
-                                'slug' => $slug,
-                                'name' => $topics[$slug],
-                                'pageTitle' => $topics[$slug], // TODO: Prepend Einfuehrung, append authors in brackets
-                                'html' => $html,
-                                'meta' => $meta,
-                                'authors' => $authors,
-                                'section_headers' => $section_headers,
-                                'license' => $license,
-                                'entity_lookup' => $entityLookup,
-                                'bibitem_lookup' => $bibitemLookup,
-                                'glossary_lookup' => $glossaryLookup,
-                                'interpretations' => $articles,
-                                'pageMeta' => [
-                                    'jsonLd' => $article->jsonLdSerialize($this->getRequest()->getLocale()),
-                                    'og' => $this->buildOg($article, 'topic-background', [ 'slug' => $slug ])
-                                ],
-                                'route_params_locale_switch' => $localeSwitch, // TODO: put into pageMeta
-                              ]);
+        return $this->render('AppBundle:Topic:background.html.twig', [
+            'slug' => $slug,
+            'name' => $topics[$slug],
+            'pageTitle' => $topics[$slug], // TODO: Prepend Einfuehrung, append authors in brackets
+            'html' => $html,
+            'meta' => $meta,
+            'authors' => $authors,
+            'section_headers' => $section_headers,
+            'license' => $license,
+            'entity_lookup' => $entityLookup,
+            'bibitem_lookup' => $bibitemLookup,
+            'glossary_lookup' => $glossaryLookup,
+            'interpretations' => $articles,
+            'pageMeta' => [
+                'jsonLd' => $article->jsonLdSerialize($this->getRequest()->getLocale()),
+                'og' => $this->buildOg($article, 'topic-background', [ 'slug' => $slug ])
+            ],
+            'route_params_locale_switch' => $localeSwitch, // TODO: put into pageMeta
+        ]);
     }
 }

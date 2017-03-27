@@ -141,14 +141,12 @@ class SearchController extends Controller
             }
         }
 
-        return $this->render('AppBundle:Search:index.html.twig',
-                             [
-                                'pageTitle' => $this->get('translator')->trans('Search'),
-                                'results' => $results,
-                                'meta' => $meta,
-                                'pagination' => $pagination,
-                                'highlighting' => isset($resultset) ? $resultset->getHighlighting() : null,
-                             ]);
+        return $this->render('AppBundle:Search:index.html.twig', [
+            'pageTitle' => $this->get('translator')->trans('Search'),
+            'results' => $results,
+            'meta' => $meta,
+            'pagination' => $pagination,
+            'highlighting' => isset($resultset) ? $resultset->getHighlighting() : null,
+        ]);
     }
-
 }

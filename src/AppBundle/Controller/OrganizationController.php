@@ -20,11 +20,10 @@ class OrganizationController extends Controller
                 ->findBy([ 'status' => [ 0, 1 ] ],
                          [ 'name' => 'ASC' ]);
 
-        return $this->render('AppBundle:Organization:index.html.twig',
-                             [
-                                'pageTitle' => $this->get('translator')->trans('Organizations'),
-                                'organizations' => $organizations,
-                             ]);
+        return $this->render('AppBundle:Organization:index.html.twig', [
+            'pageTitle' => $this->get('translator')->trans('Organizations'),
+            'organizations' => $organizations,
+        ]);
     }
 
     public function detailAction($id = null, $gnd = null)
@@ -47,14 +46,13 @@ class OrganizationController extends Controller
             return new JsonLdResponse($organization->jsonLdSerialize($this->getRequest()->getLocale()));
         }
 
-        return $this->render('AppBundle:Organization:detail.html.twig',
-                             [
-                                'pageTitle' => $organization->getNameLocalized($this->get('request')->getLocale()),
-                                'organization' => $organization,
-                                'pageMeta' => [
-                                    'jsonLd' => $organization->jsonLdSerialize($this->getRequest()->getLocale()),
-                                ],
-                              ]);
+        return $this->render('AppBundle:Organization:detail.html.twig', [
+            'pageTitle' => $organization->getNameLocalized($this->get('request')->getLocale()),
+            'organization' => $organization,
+            'pageMeta' => [
+                'jsonLd' => $organization->jsonLdSerialize($this->getRequest()->getLocale()),
+            ],
+        ]);
     }
 
     public function gndBeaconAction()
@@ -94,5 +92,4 @@ class OrganizationController extends Controller
         return new \Symfony\Component\HttpFoundation\Response($ret, \Symfony\Component\HttpFoundation\Response::HTTP_OK,
                                                               [ 'Content-Type' => 'text/plain; charset=UTF-8' ]);
     }
-
 }
