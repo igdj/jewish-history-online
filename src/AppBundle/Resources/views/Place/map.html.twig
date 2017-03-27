@@ -45,8 +45,10 @@
 
             var map = L.map('map');
 
-            map.fitBounds([ [ 47.3024876979, 5.98865807458 ],
-                            [ 54.983104153, 15.0169958839 ] ]);
+            map.fitBounds([
+                [ 34.05,-118.2333 ], // LA, Sonderling
+                [ 59.35,17.9167 ]    // Stockholm, Berendsohn
+            ]);
 
             {{ map.addTileLayer() }}
 
@@ -69,8 +71,6 @@
                     }
 
                     return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
-
-    //				return L.divIcon({ html: n, className: 'mycluster', iconSize: L.point(40, 40) });
                 },
                 // spiderfyOnMaxZoom: false, showCoverageOnHover: false, zoomToBoundsOnClick: false,
                 disableClusteringAtZoom: 17
@@ -84,8 +84,7 @@
                         // anonymous function to create a closure
                         var markerGeo = geo;
                         var loaded = false;
-                        var marker = L.marker(info['latLng'],
-                                              { title: info['name'] });
+                        var marker = L.marker(info['latLng'], { title: info['name'] });
                         marker.number = info['number'];
                         marker.bindPopup(labelLoading, { maxHeight: 160 });
                         marker.on('click', function(e) {

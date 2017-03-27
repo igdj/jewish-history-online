@@ -1,26 +1,13 @@
 {% macro head() %}
-    {#<link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet-0.7.7/leaflet.css" />
-    <script src="{{ app.request.basepath }}/vendor/leaflet-0.7.7/leaflet.js"></script>
-
-	<!-- NOTE: starting with Leaflet 1.0, L.Label is added to Leaflet core as L.Tooltip -->
-    <link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet.label/leaflet.label.css" />
-    <script src="{{ app.request.basepath }}/vendor/leaflet.label/leaflet.label.js"></script>
-	#}
-	<link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet-1.0.2/leaflet.css" />
-	<script src="{{ app.request.basepath }}/vendor/leaflet-1.0.2/leaflet.js"></script>
+	<link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet-1.0.3/leaflet.css" />
+	<script src="{{ app.request.basepath }}/vendor/leaflet-1.0.3/leaflet.js"></script>
 {% endmacro %}
 
 {% macro head_markercluster() %}
-	{#
-	<link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet-0.7.7-markercluster/MarkerCluster.css" />
-	<link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet-0.7.7-markercluster/MarkerCluster.Default.css" />
-	<script src="{{ app.request.basepath }}/vendor/leaflet-0.7.7-markercluster/leaflet.markercluster-src.js"></script>
-	#}
-	<link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet.markercluster-1.0.0/MarkerCluster.css" />
-	<link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet.markercluster-1.0.0/MarkerCluster.Default.css" />
-	<script src="{{ app.request.basepath }}/vendor/leaflet.markercluster-1.0.0/leaflet.markercluster-src.js"></script>
+	<link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet.markercluster-1.0.4/MarkerCluster.css" />
+	<link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet.markercluster-1.0.4/MarkerCluster.Default.css" />
+	<script src="{{ app.request.basepath }}/vendor/leaflet.markercluster-1.0.4/leaflet.markercluster.js"></script>
 {% endmacro %}
-
 
 {% macro addTileLayer(maxZoom) %}
             if (true) {

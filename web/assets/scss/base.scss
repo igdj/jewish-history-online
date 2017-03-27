@@ -913,5 +913,11 @@ body[class="route-terms"] {
 
 .tooltip.in {
     opacity: 1;
-    filter:alpha(opacity=100);
+    filter: alpha(opacity=100);
+}
+
+/* leaflet map */
+.leaflet-container {
+    font-family: $font-stack-sans !important;
+    font-size: 13px !important;
 }
