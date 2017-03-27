@@ -7,112 +7,119 @@
 {% endblock %}
 
 {% block body %}
-<div class="row">
-    <!--
-    <div class="col-sm-3">
-        {{ 'Filter Results'|trans }}
+    <h1>{{ 'Map' | trans }}</h1>
+    <ul class="list-inline switch">
+        <li id="switch-place-map"><a href="{{ path('place-map') }}">{{ 'Sources by primary Place'|trans }}</a></li>
+        <li id="switch-place-map-mentioned"><a href="{{ path('place-map-mentioned') }}">{{ 'All Places mentioned'|trans }}</a></li>
+    </ul>
+    <div class="row">
+        <!--
+        <div class="col-sm-3">
+            {{ 'Filter Results'|trans }}
 
-        <div class="container-fluid">
-            <div class="row box-color-title">
-                {{ 'Chronology'|trans|upper }}
+            <div class="container-fluid">
+                <div class="row box-color-title">
+                    {{ 'Chronology'|trans|upper }}
+                </div>
+                <div class="row box-color-title">
+                    {{ 'Topics'|trans|upper }}
+                </div>
+                <div class="row box-color-title">
+                    {{ 'Type of Material'|trans|upper }}
+                </div>
             </div>
-            <div class="row box-color-title">
-                {{ 'Topics'|trans|upper }}
-            </div>
-            <div class="row box-color-title">
-                {{ 'Type of Material'|trans|upper }}
-            </div>
-        </div>
-    </div>-->
-    <div class="col-sm-12">
-        <div id="map-container">
-            <div id="map" style="width: 100%; min-height: 480px"></div>
-            <script>
-            function escapeHtml(text) {
-                return $('<div/>').text(text).html();
-            }
-
-            function adjustMapSize() {
-                /*
-                $('#map').height(function(index, height) {
-                    return window.innerHeight - $(this).offset().top;
-                });
-                */
-            }
-
-            $( window ).resize(adjustMapSize);
-            adjustMapSize();
-
-            var map = L.map('map');
-
-            map.fitBounds([
-                [ 34.05,-118.2333 ], // LA, Sonderling
-                [ 59.35,17.9167 ]    // Stockholm, Berendsohn
-            ]);
-
-            {{ map.addTileLayer() }}
-
-            var markers = L.markerClusterGroup({
-                iconCreateFunction: function (cluster) {
-                    // var childCount = cluster.getChildCount();
-                    var markers = cluster.getAllChildMarkers();
-                    var n = 0;
-                    for (var i = 0; i < markers.length; i++) {
-                        n += markers[i].number;
-                    }
-                    var childCount = n;
-                    var c = ' marker-cluster-';
-                    if (childCount < 10) {
-                        c += 'small';
-                    } else if (childCount < 100) {
-                        c += 'medium';
-                    } else {
-                        c += 'large';
-                    }
-
-                    return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
-                },
-                // spiderfyOnMaxZoom: false, showCoverageOnHover: false, zoomToBoundsOnClick: false,
-                disableClusteringAtZoom: 17
-            });
-
-            var labelLoading = "{{ 'Loading...'|trans }}";
-            var markerPos = {{ markers|json_encode|raw }};
-            for (var geo in markerPos) {
-                if (markerPos.hasOwnProperty(geo)) {
-                    (function(info) {
-                        // anonymous function to create a closure
-                        var markerGeo = geo;
-                        var loaded = false;
-                        var marker = L.marker(info['latLng'], { title: info['name'] });
-                        marker.number = info['number'];
-                        marker.bindPopup(labelLoading, { maxHeight: 160 });
-                        marker.on('click', function(e) {
-                            var popup = e.target.getPopup();
-                            if (!loaded) {
-                                loaded = true;
-                                var header = '<b>' + escapeHtml(info['name']) + '</b><br />';
-                                popup.setContent(header
-                                                 + labelLoading);
-                                popup.update();
-                                var urlTemplace = '{{ path('place-map-popup-content', { 'ids' : '{0}', 'geo' : '{1}' }) }}';
-                                var url = decodeURIComponent(urlTemplace).replace('{0}', info['places']).replace('{1}', markerGeo);
-                                console.log('loading...' + url);
-                                $.get(url).done(function(data) {
-                                    popup.setContent(header + data);
-                                    popup.update();
-                                });
-                            }
-                        });
-
-                        markers.addLayer(marker);
-                    })(markerPos[geo]);
+        </div>-->
+        <div class="col-sm-12">
+            <div id="map-container">
+                <div id="map" style="width: 100%; min-height: 480px"></div>
+                <script>
+                function escapeHtml(text) {
+                    return $('<div/>').text(text).html();
                 }
-            }
 
-            map.addLayer(markers);
-            </script>
+                function adjustMapSize() {
+                    /*
+                    $('#map').height(function(index, height) {
+                        return window.innerHeight - $(this).offset().top;
+                    });
+                    */
+                }
+
+                $( window ).resize(adjustMapSize);
+                adjustMapSize();
+
+                var map = L.map('map');
+
+                map.fitBounds({{ bounds|json_encode|raw }});
+
+                {{ map.addTileLayer() }}
+
+                var markers = L.markerClusterGroup({
+                    iconCreateFunction: function (cluster) {
+                        // var childCount = cluster.getChildCount();
+                        var markers = cluster.getAllChildMarkers();
+                        var n = 0;
+                        for (var i = 0; i < markers.length; i++) {
+                            n += markers[i].number;
+                        }
+                        var childCount = n;
+                        var c = ' marker-cluster-';
+                        if (childCount < 10) {
+                            c += 'small';
+                        } else if (childCount < 100) {
+                            c += 'medium';
+                        } else {
+                            c += 'large';
+                        }
+
+                        return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
+                    },
+                    // spiderfyOnMaxZoom: false, showCoverageOnHover: false, zoomToBoundsOnClick: false,
+                    disableClusteringAtZoom: 17
+                });
+
+                var labelLoading = "{{ 'Loading...'|trans }}";
+                var markerPos = {{ markers|json_encode|raw }};
+                var urlTemplatePlace = '{{ path('place-by-tgn', { 'tgn' : '{0}' }) }}';
+
+                for (var geo in markerPos) {
+                    if (markerPos.hasOwnProperty(geo)) {
+                        (function(info) {
+                            // anonymous function to create a closure
+                            var markerGeo = geo;
+                            var loaded = false;
+                            var marker = L.marker(info['latLng'], { title: info['name'] });
+                            marker.number = info['number'];
+                            marker.bindPopup(labelLoading, { maxHeight: 160 });
+                            marker.on('click', function(e) {
+                                var popup = e.target.getPopup();
+                                if (!loaded) {
+                                    loaded = true;
+                                    var name = escapeHtml(info['name']);
+                                    if (null != info['tgn']) {
+                                        var url = decodeURIComponent(urlTemplatePlace).replace('{0}', info['tgn']);
+                                        name = '<a href="' + url + '">' + name + '</a>';
+                                    }
+                                    var header = '<b>' + name + '</b><br />';
+                                    popup.setContent(header + labelLoading);
+                                    popup.update();
+                                    var urlTemplate = '{{ path('place-map-popup-content', { 'ids' : '{0}', 'geo' : '{1}', 'caller' : app.request.attributes.get('_route') })|raw }}';
+                                    var url = decodeURIComponent(urlTemplate).replace('{0}', info['places']).replace('{1}', markerGeo);
+                                    $.get(url).done(function(data) {
+                                        popup.setContent(header + data);
+                                        popup.update();
+                                    });
+                                }
+                            });
+
+                            markers.addLayer(marker);
+                        })(markerPos[geo]);
+                    }
+                }
+
+                map.addLayer(markers);
+                </script>
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}

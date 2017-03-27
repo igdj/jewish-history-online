@@ -251,6 +251,10 @@ class Builder implements ContainerAwareInterface
                 $item = $item->addChild($current_route, [ 'label' => 'Detail', 'uri' => '#' ]);
                 break;
 
+            case 'place-map-mentioned':
+                $item = $menu->addChild($current_route, [ 'label' => 'Map' ]);
+                break;
+
             case 'place':
             case 'place-by-tgn':
                 $item = $menu['_lookup']['place-index'];

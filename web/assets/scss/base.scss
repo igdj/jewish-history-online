@@ -834,6 +834,24 @@ footer {
     }
 }
 
+body.route-place-map-mentioned #switch-place-map-mentioned,
+body.route-place-map #switch-place-map {
+    /* active switch */
+    font-weight: bold;
+}
+
+.list-inline.switch {
+    li {
+        padding-right: 0;
+    }
+    li + li {
+        padding-left: 0;
+    }
+    li + li::before {
+        content: "\00a0\00a0|\00a0\00a0";
+    }
+}
+
 .route-bibliography {
     .csl-bib-body > div {
         text-indent: 0 !important;
