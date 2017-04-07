@@ -32,7 +32,7 @@
     <category citation-format="note"/>
     <category field="history"/>
     <category field="social_science"/>
-    <updated>2016-11-07T02:32:01+00:00</updated>
+    <updated>2017-04-07T02:32:01+00:00</updated>
     <rights license="http://creativecommons.org/licenses/by-sa/3.0/">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>
   </info>
   <locale xml:lang="de">
@@ -45,6 +45,14 @@
       <term name="number-of-volumes" form="short">Bd.</term>
       <term name="no date" form="short">o. D.</term>
     </terms>
+
+    <!-- this seems to be picked up in xml:lang="en" as well, so set in academicpuma/locales/locales-de-DE.xml instead
+    <date form="text">
+      <date-part name="day" suffix=". "/>
+      <date-part name="month" suffix=" "/>
+      <date-part name="year"/>
+    </date>
+    -->
   </locale>
   <citation>
     <layout suffix="." delimiter="&#160;; ">
@@ -79,7 +87,7 @@
   <macro name="complete-reference">
     <group delimiter=". ">
       <group delimiter=", ">
-        <group delimiter=": ">
+        <group delimiter=", "><!-- after creator, changed from ": " -->
           <text macro="creator"/>
           <group delimiter=", ">
             <text macro="title"/>
@@ -230,7 +238,7 @@
           <number variable="volume"/>
           <number variable="issue" prefix="(" suffix=")"/>
           <if variable="issued">
-            <date variable="issued" form="numeric" date-parts="year-month-day" prefix="(" suffix=")"/>
+            <date variable="issued" form="numeric" date-parts="day-month-year" prefix="(" suffix=")"/>
           </if>
         </group>
       </if>
@@ -356,7 +364,7 @@
       <else-if type="article-journal article-newspaper article-magazine                      graphic entry-encyclopedia entry-dictionary                      report speech interview                      manuscript personal_communication" match="any">
         <choose>
           <if variable="issued">
-            <date variable="issued" form="numeric" date-parts="year-month-day"/>
+            <date variable="issued" form="numeric" date-parts="day-month-year"/>
           </if>
           <else>
             <text term="no date" form="short"/>
@@ -370,7 +378,7 @@
       <else-if type="article-newspaper article-magazine graphic entry-encyclopedia entry-dictionary                      report speech interview                      manuscript personal_communication" match="any">
         <choose>
           <if variable="issued">
-            <date variable="issued" form="numeric" date-parts="year-month-day"/>
+            <date variable="issued" form="text" />
           </if>
           <else>
             <text term="no date" form="short"/>
@@ -378,7 +386,7 @@
         </choose>
       </else-if>
       <else>
-        <date variable="issued" form="numeric" date-parts="year-month-day"/>
+        <date variable="issued" form="text" />
       </else>
     </choose>
   </macro>
@@ -473,7 +481,7 @@
       <text variable="URL" prefix="&amp;lt;" suffix="&amp;gt;"/>
       <group delimiter=": ">
         <text term="accessed"/>
-        <date variable="accessed" form="numeric" date-parts="year-month-day"/>
+        <date variable="accessed" form="numeric" date-parts="day-month-year"/>
       </group>
     </group>
   </macro>

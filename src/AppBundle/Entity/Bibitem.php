@@ -1047,6 +1047,9 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
             else if (preg_match('/, <span class="citeproc\-place">/', $ret, $matches)) {
                 $ret = preg_replace('/, (<span class="citeproc\-place">)/', '\1', $ret);
             }
+            else if (preg_match('/, <span class="citeproc\-date">/', $ret, $matches)) {
+                $ret = preg_replace('/, (<span class="citeproc\-date">)/', '\1', $ret);
+            }
             $ret = preg_replace_callback('/(<span class="citeproc\-URL">&lt;)(.*?)(&gt;)/',
                 function ($matches) {
                     return $matches[1]
@@ -1075,6 +1078,85 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
             $title = implode('. ', [ $titleParts[0], self::mb_ucfirst($titleParts[1]) ]);
         }
         return $title;
+    }
+
+    private function parseLocalizedDate($dateStr, $locale = 'de_DE', $pattern = 'dd. MMMM yyyy')
+    {
+        if (function_exists('intl_is_failure')) {
+            // modern method
+            $formatter = new \IntlDateFormatter($locale, \IntlDateFormatter::FULL, \IntlDateFormatter::FULL);
+            $formatter->setPattern($pattern);
+            $dateObj = \DateTime::createFromFormat('U', $formatter->parse($dateStr));
+            if (false !== $dateObj) {
+                return [
+                    'year' => (int)$dateObj->format('Y'),
+                    'month' =>  (int)$dateObj->format('m'),
+                    'day' => (int)$dateObj->format('d'),
+                ];
+            }
+        }
+
+        // longer but probably more robust
+        static $monthNamesLocalized = [];
+
+        if ('en_US' != $locale) {
+            // replace localized month-names with english once
+
+            if (!array_key_exists('en_US', $monthNamesLocalized)) {
+                $months = [];
+                $currentLocale = setlocale(LC_TIME, 'en_US');
+                for ($month = 0; $month < 12; $month++) {
+                    $months[] =  strftime('%B', mktime(0, 0, 0, $month + 1));
+                }
+                $monthNamesLocalized['en_US'] = $months;
+                setlocale(LC_TIME, $currentLocale);
+            }
+
+            if (!array_key_exists($locale, $monthNamesLocalized)) {
+                $months = [];
+                $currentLocale = setlocale(LC_TIME, $locale . '.utf8');
+                for ($month = 0; $month < 12; $month++) {
+                    $months[] = strftime('%B', mktime(0, 0, 0, $month + 1));
+                }
+                $monthNamesLocalized[$locale] = $months;
+                setlocale(LC_TIME, $currentLocale);
+            }
+
+            $dateStr = str_replace($monthNamesLocalized[$locale], $monthNamesLocalized['en_US'], $dateStr);
+        }
+
+        return date_parse($dateStr);
+    }
+
+    private function buildDateParts($dateStr)
+    {
+        $parts = [];
+
+        if ('' === $dateStr) {
+            $parts[] = $dateStr;
+            return $parts;
+        }
+
+        if (!filter_var($dateStr, FILTER_VALIDATE_INT) === false) {
+            $parts[] = (int)$dateStr;
+            return $parts;
+        }
+
+        $date = $this->parseLocalizedDate($dateStr, 'de_DE');
+        if (false === $date) {
+            // failed
+            $parts[] = $dateStr;
+            return $parts;
+        }
+
+        foreach ([ 'year', 'month', 'day' ] as $key) {
+            if (empty($date[$key])) {
+                return $parts;
+            }
+            $parts[] = $date[$key];
+        }
+
+        return $parts;
     }
 
     /*
@@ -1117,7 +1199,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
             'publisher-place' => $this->publicationLocation,
             'publisher' => $this->publisher,
             'issued' => [
-                "date-parts" => [ [ $this->datePublished ] ],
+                "date-parts" => [ $this->buildDateParts($this->datePublished) ],
                 "literal" => $this->datePublished,
             ],
             'page' => $this->pagination,
