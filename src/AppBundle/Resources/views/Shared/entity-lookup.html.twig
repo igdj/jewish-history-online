@@ -8,10 +8,11 @@
         var url = {{ path('glossary-index')|json_encode|raw }};
         var term = $el.data('title');
         if (term in glossaryLookup) {
-            var url_detail = url + '#' + glossaryLookup[term].slug;
+            var info = glossaryLookup[term];
+            var url_detail = url + '#' + info.slug;
             return {
                 "url" :  url_detail,
-                "title" : glossaryLookup[term].headline
+                "title" : info.name + ': ' + info.headline
             };
         }
         return null;

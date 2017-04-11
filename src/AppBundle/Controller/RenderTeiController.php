@@ -275,6 +275,12 @@ abstract class RenderTeiController extends Controller
 
     protected function buildGlossaryLookup($glossaryTerms)
     {
+        $glossaryLookup = [];
+
+        if (empty($glossaryTerms)) {
+            return $glossaryLookup;
+        }
+
         $language = \AppBundle\Utils\Iso639::code1to3($this->container->get('request')->getLocale());
 
         $slugify = $this->container->get('cocur_slugify');
@@ -286,17 +292,17 @@ abstract class RenderTeiController extends Controller
 
         $termsBySlug = [];
 
+        // TODO: only query for $slugs
         foreach ($this->getDoctrine()
                 ->getRepository('AppBundle:GlossaryTerm')
-                ->findBy([ 'status' => [ 0, 1 ],
-                           'language' => $language,
-                           'slug' => $slugs ])
-                as $term)
+                ->findBy([
+                   'status' => [ 0, 1 ],
+                   'language' => $language,
+                   'slug' => $slugs,
+                ]) as $term)
         {
             $termsBySlug[$term->getSlug()] = $term;
         }
-
-        $glossaryLookup = [];
 
         foreach ($glossaryTerms as $glossaryTerm) {
             $slug = $slugify->slugify($glossaryTerm);
@@ -307,6 +313,7 @@ abstract class RenderTeiController extends Controller
                 $headline = str_replace('[[', '→', $headline);
                 $glossaryLookup[$glossaryTerm] = [
                     'slug' => $term->getSlug(),
+                    'name' => $term->getName(),
                     'headline' => $headline,
                 ];
             }

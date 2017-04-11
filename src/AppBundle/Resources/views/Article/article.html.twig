@@ -92,19 +92,19 @@
                     </div>
                 </div>
 
+                {% for source in related %}
                 <div class="row box-color-content-inverse">
-                    {% for source in related %}
                     <div class="col-sm-4">
                         {% set thumb = "/viewer/source-%05d/thumb.jpg"|format(source.uid|replace({'jgo:source-' : ''})) %}
                         {% if file_exists(webDir ~ thumb) %}
                             <a href="{{ path('source', { 'uid' : source.uid }) }}"><img src="{{ app.request.basepath }}{{ thumb }}" alt="" style="width: 100%; height: auto;"></a>
                         {% endif %}
-                        </div>
-                        <div class="col-sm-8">
+                    </div>
+                    <div class="col-sm-8">
                         <p>{{ helper.article_linked(source) }}</p>
                     </div>
-                    {% endfor %}
                 </div>
+               {% endfor %}
             </div>
             {% endif %}
 

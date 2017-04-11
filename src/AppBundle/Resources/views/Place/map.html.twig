@@ -13,22 +13,6 @@
         <li id="switch-place-map-mentioned"><a href="{{ path('place-map-mentioned') }}">{{ 'All Places mentioned'|trans }}</a></li>
     </ul>
     <div class="row">
-        <!--
-        <div class="col-sm-3">
-            {{ 'Filter Results'|trans }}
-
-            <div class="container-fluid">
-                <div class="row box-color-title">
-                    {{ 'Chronology'|trans|upper }}
-                </div>
-                <div class="row box-color-title">
-                    {{ 'Topics'|trans|upper }}
-                </div>
-                <div class="row box-color-title">
-                    {{ 'Type of Material'|trans|upper }}
-                </div>
-            </div>
-        </div>-->
         <div class="col-sm-12">
             <div id="map-container">
                 <div id="map" style="width: 100%; min-height: 480px"></div>
@@ -72,7 +56,11 @@
                             c += 'large';
                         }
 
-                        return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
+                        return new L.DivIcon({
+                            html: '<div><span>' + childCount + '</span></div>',
+                            className: 'marker-cluster' + c,
+                            iconSize: new L.Point(40, 40)
+                        });
                     },
                     // spiderfyOnMaxZoom: false, showCoverageOnHover: false, zoomToBoundsOnClick: false,
                     disableClusteringAtZoom: 17

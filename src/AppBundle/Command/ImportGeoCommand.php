@@ -121,7 +121,7 @@ class ImportGeoCommand extends BaseEntityCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $dir = $this->getContainer()->get('kernel')->getRootDir()
-             . '/Resources/data/geo/';
+             . '/Resources/data/geo';
 
         $fs = new Filesystem();
 
@@ -153,5 +153,4 @@ class ImportGeoCommand extends BaseEntityCommand
             gc_collect_cycles();
         }
     }
-
 }

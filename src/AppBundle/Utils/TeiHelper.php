@@ -521,30 +521,29 @@ class TeiHelper
             }
 
             if (!empty($data['license'])) {
-                $this->addDescendants($header, 'tei:fileDesc/tei:publicationStmt/tei:availability',
-                                     [
-                                        'tei:availability' => function ($parent, $name) use ($data) {
-                                            $self = $parent->addChild($name);
-                                            $targets = array_keys($data['license']);
-                                            if (!empty($targets)) {
-                                                $target = $targets[0];
-                                                if (!empty($target)) {
-                                                    $self = $self->addChild('tei:licence');
-                                                    $self->addAttribute('tei:target', $target);
-                                                    $this->addChildStructure($self, [ 'p' => $data['license'][$target] ], 'tei:');
-                                                }
-                                                else {
-                                                    $availability = $data['license'][$target];
-                                                    if (!empty($availability)) {
-                                                        /* $self = $self->addChild('tei:licence');
-                                                        $self->addAttribute('tei:target', '#'); */
-                                                        $this->addChildStructure($self, [ 'p' => $availability ], 'tei:');
-                                                    }
-                                                }
-                                            }
-                                            return $self;
-                                        },
-                                      ]);
+                $this->addDescendants($header, 'tei:fileDesc/tei:publicationStmt/tei:availability', [
+                    'tei:availability' => function ($parent, $name) use ($data) {
+                        $self = $parent->addChild($name);
+                        $targets = array_keys($data['license']);
+                        if (!empty($targets)) {
+                            $target = $targets[0];
+                            if (!empty($target)) {
+                                $self = $self->addChild('tei:licence');
+                                $self->addAttribute('tei:target', $target);
+                                $this->addChildStructure($self, [ 'p' => $data['license'][$target] ], 'tei:');
+                            }
+                            else {
+                                $availability = $data['license'][$target];
+                                if (!empty($availability)) {
+                                    /* $self = $self->addChild('tei:licence');
+                                    $self->addAttribute('tei:target', '#'); */
+                                    $this->addChildStructure($self, [ 'p' => $availability ], 'tei:');
+                                }
+                            }
+                        }
+                        return $self;
+                    },
+                ]);
             }
             if (!empty($data['uid'])) {
                 $this->addDescendants($header, 'tei:fileDesc/tei:publicationStmt/tei:idno/tei:idno[@type="DTAID"]',
