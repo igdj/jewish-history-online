@@ -96,16 +96,26 @@ Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und du
                 </div>
                 <div class="row box-color-content-inverse">
                     <div class="col-xs-4">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-84' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00084/thumb.jpg" style="width: 100%; height: auto" /></a>
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-138' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00138/thumb.jpg" style="width: 100%; height: auto" /></a>
                     </div>
                     <div class="col-xs-8">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-84' }) }}">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-138' }) }}">
                         {% if 'en' == app.request.locale %}
-                        <b>Letter from Jacob H. Schiff (New York) to Max Warburg (Hamburg)</b>, January 28, 1915
+                        <b>Poster Stamps Printed by the Deutscher Schutz- und Trutzbund, Hamburg</b>, before 1922
                         {% else %}
-                        <b>Schreiben von Jacob H. Schiff (New York) an Max Warburg (Hamburg)</b>, 28.1.1915
+                        <b>Deutscher Schutz- und Trutzbund, Klebemarken</b>, Hamburg, vor 1922
                         {% endif %}
                         </a>
+                        <p>
+                        <a href="{{ path('article', { 'slug' : 'jgo:article-112' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Source Interpretation</b> by
+                        {% else %}
+                        <b>Interpretation</b> von
+                        {% endif %}
+                        Martin Ulmer 
+                        </a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -114,6 +124,31 @@ Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und du
                 <div class="row box-color-title">
                     <div class="col-sm-12">
                         <h4>{{ 'New Sources'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse">
+                    <div class="col-sm-4">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-148' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00148/thumb.jpg" style="width: 100%; height: auto" /></a>
+                    </div>
+                    <div class="col-sm-8">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-148' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Letter to the Board of the German-Israelite Congregation in Hamburg Regarding the Adoption of Fixed Family Names</b>, Hamburg, May 4, 1848
+                        {% else %}
+                        <b>Schreiben an den Vorstand der Deutsch-Israelitischen Gemeinde in Hamburg betr. Annahme fester Familiennamen</b>, Hamburg, 4.5.1848
+                        {% endif %}
+                        </a>
+
+                        <p>
+                        <a href="{{ path('article', { 'slug' : 'jgo:article-194' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Source Interpretation</b> by
+                        {% else %}
+                        <b>Interpretation</b> von
+                        {% endif %}
+                        Johannes Czakai
+                        </a>
+                        </p>
                     </div>
                 </div>
                 <div class="row box-color-content-inverse">
@@ -160,30 +195,6 @@ Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und du
                         <b>Source Interpretation</b> by Helga Krohn
                         {% else %}
                         <b>Interpretation</b> von Helga Krohn
-                        {% endif %}
-                        </a>
-                        </p>
-                    </div>
-                </div>
-                <div class="row box-color-content-inverse">
-                    <div class="col-sm-4">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-25' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00025/thumb.jpg" style="width: 100%; height: auto" /></a>
-                    </div>
-                    <div class="col-sm-8">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-25' }) }}">
-                        {% if 'en' == app.request.locale %}
-                        <b>Funerary Monument to Dr. Gabriel Riesser (1806–1863) at Ohlsdorf Cemetery</b>, Hamburg (1865)
-                        {% else %}
-                        <b>Grabdenkmal von Dr. Gabriel Riesser (1806–1863) auf dem Friedhof Ohlsdorf</b>, Hamburg (1865)
-                        {% endif %}
-                        </a>
-
-                        <p>
-                        <a href="{{ path('article', { 'slug' : 'jgo:article-26' }) }}">
-                        {% if 'en' == app.request.locale %}
-                        <b>Source Interpretation</b> by Annabelle Lienhart
-                        {% else %}
-                        <b>Interpretation</b> von Annabelle Lienhart
                         {% endif %}
                         </a>
                         </p>
