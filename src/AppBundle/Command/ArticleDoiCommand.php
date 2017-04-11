@@ -262,7 +262,7 @@ class ArticleDoiCommand extends ContainerAwareCommand
         }
 
         if ('source' == $entity->getGenre()) {
-            // TODO: adjust for different types of sources
+            // adjust for different types of sources
             /*
             Controlled List Values for resourceTypeGeneral:
             Audiovisual -> Video
@@ -278,7 +278,22 @@ class ArticleDoiCommand extends ContainerAwareCommand
                     $root->addChild('resourceType', 'Object', [ 'resourceTypeGeneral' => 'PhysicalObject' ]);
                     break;
 
+                case 'Image':
+                case 'Bild':
+                    $root->addChild('resourceType', 'Image', [ 'resourceTypeGeneral' => 'Image' ]);
+                    break;
+
+                case 'Audio':
+                    $root->addChild('resourceType', 'Video', [ 'resourceTypeGeneral' => 'Audiovisual' ]);
+                    break;
+
+                case 'Video':
+                    $root->addChild('resourceType', 'Audio', [ 'resourceTypeGeneral' => 'Sound' ]);
+                    break;
+
                 case 'Text':
+                case 'Transcript':
+                case 'Transkript':
                     $root->addChild('resourceType', 'Source', [ 'resourceTypeGeneral' => 'Text' ]);
                     break;
 
@@ -322,11 +337,13 @@ class ArticleDoiCommand extends ContainerAwareCommand
                 }
             }
         }
-        if (empty($rights)) {
-            die('TODO: determine rights-statment for ' . $entity->getLicense());
+        if (empty($rights) && !empty($entity->getLicense())) {
+            die('TODO: determine rights-statement for ' . $entity->getLicense());
         }
-        $root->addChild('rightsList', true)
-            ->addChild('rights', $rights, $rightsAttr);
+        if (!empty($rights)) {
+            $root->addChild('rightsList', true)
+                ->addChild('rights', $rights, $rightsAttr);
+        }
 
 
         $keywords = $entity->getKeywords();
