@@ -1,5 +1,6 @@
+{% import 'AppBundle:Shared:helper.html.twig' as helper %}
 {% if articles is not empty %}
     {% for article in articles %}
-        <a href="{{ path('source', { 'uid' : article.uid }) }}">{{ article.name }}</a><br />
+        {{ helper.article_linked(article) }}<br />
     {% endfor %}
 {% endif %}

@@ -150,7 +150,7 @@ class PlaceController extends Controller
                     ->createQueryBuilder('A')
                     ;
 
-            $qb->select('A.uid, A.name')
+            $qb->select('A')
                     ->distinct()
                     ->andWhere('A.status IN (1) AND P.id IN (:ids)')
                     ->setParameter('ids', $ids)
