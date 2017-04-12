@@ -113,7 +113,7 @@ Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und du
                         {% else %}
                         <b>Interpretation</b> von
                         {% endif %}
-                        Martin Ulmer 
+                        Martin Ulmer
                         </a>
                         </p>
                     </div>
@@ -124,6 +124,31 @@ Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und du
                 <div class="row box-color-title">
                     <div class="col-sm-12">
                         <h4>{{ 'New Sources'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse">
+                    <div class="col-sm-4">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-98' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00098/thumb.jpg" style="width: 100%; height: auto" /></a>
+                    </div>
+                    <div class="col-sm-8">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-98' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>The Police Authority. Department II (Political and Criminal Investigation Unit), Report by Constable Erxleben. Re: Observations Carried out in the Streets and Public Houses</b>, Hamburg, October 1st, 1898
+                        {% else %}
+                        <b>Die Polizei-Behörde. Abteilung II (Politische und Criminal-Polizei), Bericht des Criminal-Schutzmannes Erxleben. Betr. Betrifft Die in den Straßen und Wirthschaften ausgeübten Vigilanzen Beobachtungen</b>, Hamburg, 1.10.1898
+                        {% endif %}
+                        </a>
+
+                        <p>
+                        <a href="{{ path('article', { 'slug' : 'jgo:article-95' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Source Interpretation</b> by
+                        {% else %}
+                        <b>Interpretation</b> von
+                        {% endif %}
+                        Ulrich Wyrwa
+                        </a>
+                        </p>
                     </div>
                 </div>
                 <div class="row box-color-content-inverse">
@@ -172,30 +197,6 @@ Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und du
                         <b>Interpretation</b> von
                         {% endif %}
                         Dirk Brietzke
-                        </a>
-                        </p>
-                    </div>
-                </div>
-                <div class="row box-color-content-inverse">
-                    <div class="col-sm-4">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-135' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00135/thumb.jpg" style="width: 100%; height: auto" /></a>
-                    </div>
-                    <div class="col-sm-8">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-135' }) }}">
-                        {% if 'en' == app.request.locale %}
-                        <b>The “Israelitisches Familienblatt” and Its Support of Jewish Ceremonial Art</b>, September 20, 1928
-                        {% else %}
-                        <b>Das „Israelitische Familienblatt“ im Dienste der jüdisch-sakralen Kunst</b>, 20.9.1928
-                        {% endif %}
-                        </a>
-
-                        <p>
-                        <a href="{{ path('article', { 'slug' : 'jgo:article-177' }) }}">
-                        {% if 'en' == app.request.locale %}
-                        <b>Source Interpretation</b> by Helga Krohn
-                        {% else %}
-                        <b>Interpretation</b> von Helga Krohn
-                        {% endif %}
                         </a>
                         </p>
                     </div>
