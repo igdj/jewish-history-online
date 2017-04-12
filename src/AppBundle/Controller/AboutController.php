@@ -164,11 +164,57 @@ class AboutController extends RenderTeiController
         return $this->renderTitleContent('Terms and Conditions', 'AppBundle:Default:sitetext.html.twig');
     }
 
+
+    protected function sendMessage($data)
+    {
+        $template = $this->get('twig')->loadTemplate('AppBundle:Default:contact.email.twig');
+        $subject = $template->renderBlock('subject', [ 'data' => $data ]);
+        $textBody = $template->renderBlock('body_text', [ 'data' => $data ]);
+        $htmlBody = $template->renderBlock('body_html', [ 'data' => $data ]);
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject($subject)
+            ->setFrom('burckhardtd@geschichte.hu-berlin.de')
+            ->setTo('burckhardtd@geschichte.hu-berlin.de')
+            ->setReplyTo($data['email']);
+            ;
+
+
+        if (!empty($htmlBody)) {
+            $message->setBody($htmlBody, 'text/html')
+                ->addPart($textBody, 'text/plain');
+        } else {
+            $message->setBody($textBody);
+        }
+
+        try {
+            return $this->get('mailer')->send($message);
+        }
+        catch (\Exception $e) {
+            return false;
+        }
+    }
+
     /**
      * @Route("/contact")
      */
     public function contactAction()
     {
-        return $this->renderTitleContent('Contact', 'AppBundle:Default:sitetext.html.twig');
+        $form = $this->createForm(new \AppBundle\Form\Type\ContactType());
+        $form->handleRequest($this->get('request'));
+        if ($form->isSubmitted() && $form->isValid()) {
+            $translator = $this->get('translator');
+            return $this->render('AppBundle:Default:contact-sent.html.twig', [
+                'pageTitle' => $translator->trans('Contact'),
+                'success' => $this->sendMessage($form->getData()),
+            ]);
+        }
+        $response = $this->renderTitleContent('Contact', 'AppBundle:Default:sitetext.html.twig');
+
+        return new Response(str_replace('%form%',
+                            $this->get('twig')
+                            ->render('AppBundle:Default:contact-form.html.twig', [
+                                'form' => $form->createView(),
+                           ]), $response->getContent()));
     }
 }

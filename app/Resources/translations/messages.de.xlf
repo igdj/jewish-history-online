@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2017-03-27T18:01:43Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2017-04-12T08:41:20Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -9,7 +9,7 @@
       <trans-unit id="4a849ff4f7cd00b48d44defc4ceb665a30d99534" resname="...read on">
         <source>...read on</source>
         <target>...mehr</target>
-        <jms:reference-file line="104">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\entity-lookup.html.twig\</jms:reference-file>
+        <jms:reference-file line="105">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\entity-lookup.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="aa2fc7f7cb0a84e35a338368cb01b202686ebcb4" resname="A Digital Source Edition">
         <source>A Digital Source Edition</source>
@@ -43,7 +43,7 @@
       </trans-unit>
       <trans-unit id="6ace5fe393eb5f02afd657b64031ed2032f3d051" resname="All Places mentioned">
         <source>All Places mentioned</source>
-        <target state="new">Alle erwähnten Orte</target>
+        <target>Alle erwähnten Orte</target>
         <jms:reference-file line="13">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Place\map.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="5d30deaf879ec747b22aec1863e51b3a9e4ee6b2" resname="Antisemitism and Persecution">
@@ -85,7 +85,6 @@
         <jms:reference-file line="121">\..\..\..\..\..\..\./src\AppBundle\Menu\Builder.php\</jms:reference-file>
         <jms:reference-file line="6">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Date\chronology.html.twig\</jms:reference-file>
         <jms:reference-file line="230">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Place\map.google.twig\</jms:reference-file>
-        <jms:reference-file line="22">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Place\map.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="501d8e4cff50a66866de111c38d237b508f2a0a7" resname="Click to return to the top of the page">
         <source>Click to return to the top of the page</source>
@@ -95,7 +94,13 @@
       <trans-unit id="b37456c4530be810dc040f50da72eda09addfb0a" resname="Contact">
         <source>Contact</source>
         <target>Kontakt</target>
+        <jms:reference-file line="209">\..\..\..\..\..\..\./src\AppBundle\Controller\AboutController.php\</jms:reference-file>
         <jms:reference-file line="95">\..\..\..\..\..\..\./src\AppBundle\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="84f4b34f4610e466ebebcb130432b363ccb9832c" resname="Contact inquiry">
+        <source>Contact inquiry</source>
+        <target>Kontaktanfrage</target>
+        <jms:reference-file line="30">\..\..\..\..\..\..\./src\AppBundle\Form\Type\ContactType.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="4f9be057f0ea5d2ba72fd2c810e8d7b9aa98b469" resname="Content">
         <source>Content</source>
@@ -163,6 +168,11 @@
         <target>Erziehung und Bildung</target>
         <jms:reference-file line="141">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
+      <trans-unit id="86f408b7a2000db4a009c15b491b2be5fd76498f" resname="Error Report">
+        <source>Error Report</source>
+        <target>Fehlermeldung</target>
+        <jms:reference-file line="28">\..\..\..\..\..\..\./src\AppBundle\Form\Type\ContactType.php\</jms:reference-file>
+      </trans-unit>
       <trans-unit id="5678489184de27a0fbf7bf33023aded4af57df35" resname="Exit Fullscreen Mode">
         <source>Exit Fullscreen Mode</source>
         <target>Vollbildmodus verlassen</target>
@@ -178,7 +188,6 @@
         <source>Filter Results</source>
         <target>Ergebnisse filtern</target>
         <jms:reference-file line="226">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Place\map.google.twig\</jms:reference-file>
-        <jms:reference-file line="18">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Place\map.html.twig\</jms:reference-file>
         <jms:reference-file line="49">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Search\index.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="7cfbb4fa15b0617ef7e0c2be592067b54c7f6f65" resname="Founded">
@@ -201,7 +210,7 @@
       <trans-unit id="6d79d21dc398598c8c28e7d8ebf3f1cb823ab0d6" resname="Guide to the Digital Source Edition">
         <source>Guide to the Digital Source Edition</source>
         <target>Begleitbroschüre zur Online-Quellenedition</target>
-        <jms:reference-file line="197">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
+        <jms:reference-file line="208">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="2bb85f0a8dbe6f36708aa5fed8239b1b375c4369" resname="Hide Map">
         <source>Hide Map</source>
@@ -267,7 +276,7 @@
       <trans-unit id="b04ba49f848624bb97ab094a2631d2ad74913498" resname="Loading...">
         <source>Loading...</source>
         <target>Wird geladen...</target>
-        <jms:reference-file line="81">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Place\map.html.twig\</jms:reference-file>
+        <jms:reference-file line="69">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Place\map.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="0e395bfa3879c6532f36f789e96f80c57030f8f0" resname="Look-up">
         <source>Look-up</source>
@@ -301,7 +310,7 @@
       <trans-unit id="5a64c7607d6bbd900e183a7a6f02b220abab20f6" resname="New Sources">
         <source>New Sources</source>
         <target>Neue Quellen</target>
-        <jms:reference-file line="116">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
+        <jms:reference-file line="126">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="b2a35c2b4b4e06249eff799c40dd80f0a45e24b3" resname="No glossary terms were found">
         <source>No glossary terms were found</source>
@@ -319,6 +328,11 @@
         <source>Organizations and Institutions</source>
         <target>Organisationen und Institutionen</target>
         <jms:reference-file line="138">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="a148f31c43866b7ddc2dfc3ac44b688b407189c2" resname="Other Reason">
+        <source>Other Reason</source>
+        <target>Anderer Grund</target>
+        <jms:reference-file line="31">\..\..\..\..\..\..\./src\AppBundle\Form\Type\ContactType.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="f3cf96e919766ef2354bbbddd56e9cbb5f2792e8" resname="Persons">
         <source>Persons</source>
@@ -408,6 +422,11 @@
         <jms:reference-file line="40">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Search\index.html.twig\</jms:reference-file>
         <jms:reference-file line="51">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Search\index.html.twig\</jms:reference-file>
       </trans-unit>
+      <trans-unit id="9bc2575c3930437e80555f78757b783c842e8e66" resname="Send">
+        <source>Send</source>
+        <target>Send</target>
+        <jms:reference-file line="40">\..\..\..\..\..\..\./src\AppBundle\Form\Type\ContactType.php\</jms:reference-file>
+      </trans-unit>
       <trans-unit id="1a0d4b514b3e6b95da4aecd1f0f57821eec4ff33" resname="Show Map">
         <source>Show Map</source>
         <target>Karte einblenden</target>
@@ -467,15 +486,30 @@
         <target>Förderer und Partner</target>
         <jms:reference-file line="87">\..\..\..\..\..\..\./src\AppBundle\Menu\Builder.php\</jms:reference-file>
       </trans-unit>
+      <trans-unit id="8d183dbdcea3b29906090bd83fa6fa37923cc8ec" resname="Subject">
+        <source>Subject</source>
+        <target>Thema der Anfrage</target>
+        <jms:reference-file line="26">\..\..\..\..\..\..\./src\AppBundle\Form\Type\ContactType.php\</jms:reference-file>
+      </trans-unit>
       <trans-unit id="cd432aa53754daa48ec4f436a27db8dd4e9870ae" resname="Successor">
         <source>Successor</source>
         <target>Nachfolger</target>
         <jms:reference-file line="49">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Organization\detail.html.twig\</jms:reference-file>
       </trans-unit>
+      <trans-unit id="c4d2057fcafb8a4ccdb8d8fa7121c3ef9e053f5b" resname="Suggest an Improvement">
+        <source>Suggest an Improvement</source>
+        <target>Verbesserungsvorschlag</target>
+        <jms:reference-file line="29">\..\..\..\..\..\..\./src\AppBundle\Form\Type\ContactType.php\</jms:reference-file>
+      </trans-unit>
       <trans-unit id="894031ed8d341b5ecab5e23002585055f0b7ee4d" resname="Terms and Conditions">
         <source>Terms and Conditions</source>
         <target>Nutzungsbedingungen</target>
         <jms:reference-file line="91">\..\..\..\..\..\..\./src\AppBundle\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="25a4f31eea22a1d1e9f6426d12d1da1357d418a8" resname="Thank you very much for your interest in our project. We will get back to you as soon as possible.">
+        <source>Thank you very much for your interest in our project. We will get back to you as soon as possible.</source>
+        <target>Besten Dank für Ihr Interesse an unserem Projekt. Wir beantworten Ihre Anfrage so bald als möglich.</target>
+        <jms:reference-file line="7">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\contact-sent.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="7e13bd176f89a12f0b614b55ffc19c14515ef920" resname="Topic">
         <source>Topic</source>
@@ -488,13 +522,11 @@
         <jms:reference-file line="97">\..\..\..\..\..\..\./src\AppBundle\Controller\TopicController.php\</jms:reference-file>
         <jms:reference-file line="119">\..\..\..\..\..\..\./src\AppBundle\Menu\Builder.php\</jms:reference-file>
         <jms:reference-file line="233">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Place\map.google.twig\</jms:reference-file>
-        <jms:reference-file line="25">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Place\map.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="81232a82945a3fed446397e2ecf413530abcf41d" resname="Type of Material">
         <source>Type of Material</source>
         <target>Type of Material</target>
         <jms:reference-file line="236">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Place\map.google.twig\</jms:reference-file>
-        <jms:reference-file line="28">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Place\map.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="0e2d9b0777a485c1276de0803c12a7d76fbc5c39" resname="URL">
         <source>URL</source>
@@ -508,11 +540,26 @@
         <target>Im Vollbildmodus anzeigen</target>
         <jms:reference-file line="42">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\viewer.html.twig\</jms:reference-file>
       </trans-unit>
+      <trans-unit id="60fec3e8a77dfaa4c3660e74846536f6e74f5812" resname="We are very sorry: There was a technical problem delivering your message. Please contact us at &lt;a href=&quot;mailto:info@juedische-geschichte-online.net&quot;&gt;info@juedische-geschichte-online.net&lt;/a&gt;.">
+        <source><![CDATA[We are very sorry: There was a technical problem delivering your message. Please contact us at <a href="mailto:info@juedische-geschichte-online.net">info@juedische-geschichte-online.net</a>.]]></source>
+        <target state="new"><![CDATA[Beim Versand Ihrer Nachricht ist ein Fehler aufgetreten. Bitte kontaktieren Sie uns unter <a href="mailto:info@juedische-geschichte-online.net">info@juedische-geschichte-online.net</a>.]]></target>
+        <jms:reference-file line="9">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\contact-sent.html.twig\</jms:reference-file>
+      </trans-unit>
       <trans-unit id="ca4f9dcf204e2037bfe5884867bead98bd9cbaf8" resname="Welcome">
         <source>Welcome</source>
         <target>Willkommen</target>
         <jms:reference-file line="19">\..\..\..\..\..\..\./src\AppBundle\Controller\DefaultController.php\</jms:reference-file>
         <jms:reference-file line="65">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="eb651d18d1992f7df7bfec5cc8f74e023d4925e6" resname="Your E-Mail">
+        <source>Your E-Mail</source>
+        <target>Ihre E-Mail</target>
+        <jms:reference-file line="23">\..\..\..\..\..\..\./src\AppBundle\Form\Type\ContactType.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="8ae188c575e6008af81661c4ed89a26b742c0efa" resname="Your Message">
+        <source>Your Message</source>
+        <target>Ihre Nachricht</target>
+        <jms:reference-file line="37">\..\..\..\..\..\..\./src\AppBundle\Form\Type\ContactType.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="8a4096f53e694a6f123cf72de73b8ec8b654a21b" resname="additionalsource.oneormany">
         <source>additionalsource.oneormany</source>
@@ -562,7 +609,7 @@
         <target>Dieser Text unterliegt den Bedingungen der Creative Commons Namensnennung - Nicht kommerziell - Keine Bearbeitungen 4.0 International Lizenz. Unter Namensnennung gemäß der Zitationsempfehlung darf er in unveränderter Form für nicht-kommerzielle Zwecke nachgenutzt werden.</target>
         <jms:reference-file line="198">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
         <jms:reference-file line="310">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
-        <jms:reference-file line="320">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleDoiCommand.php\</jms:reference-file>
+        <jms:reference-file line="335">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleDoiCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="4c6cc61ad14d77dbcc0f3c9c41cc9531e88392df" resname="license.personal-use">
         <source>license.personal-use</source>

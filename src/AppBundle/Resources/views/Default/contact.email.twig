@@ -1,0 +1,23 @@
+{#
+Template for /contact
+Variables passed to this template:
+    data: form data
+#}
+
+{# The subject line. #}
+{%- block subject -%}{%- autoescape false -%}
+    {{ data['subject']|trans }} - juedische-geschichte-online.net
+{%- endautoescape -%}{%- endblock -%}
+
+{# The plain text message. #}
+{%- block body_text -%}{%- autoescape false -%}
+<{{ data['email'] }}> schrieb:
+
+{{ data['body'] }}
+{%- endautoescape -%}{%- endblock -%}
+
+{# The HTML message. Optional. #}
+{%- block body_html -%}
+<p><a href="mailto:{{ data['email'] }}">{{ data['email'] }}</a> schrieb:</p>
+<p>{{ data['body']|nl2br }}</p>
+{%- endblock -%}

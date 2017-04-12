@@ -34,31 +34,32 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
     </teiHeader>
     <text>
         <body>
-            <div n="2"> 
-                <p>Ihre Fragen und Anregungen erreichen uns per E-Mail an <ref target="mailto:info@juedische-geschichte-online.net">info@juedische-geschichte-online.net</ref> oder über die auf der <ref target="ueber/mitarbeiterinnen">Mitarbeiter_innen-Seite</ref> verlinkten persönlichen Kontaktangaben.<lb/></p>
-                 
+            <div n="2">
+                <p>Ihre Fragen und Anregungen erreichen uns per E-Mail an <ref target="mailto:info@juedische-geschichte-online.net">info@juedische-geschichte-online.net</ref>, über die auf der <ref target="ueber/mitarbeiterinnen">Mitarbeiter_innen-Seite</ref> verlinkten persönlichen Kontaktangaben oder direkt über das folgende Kontaktformular:<lb/></p>
+                <p>%form%</p>
+
                 <div n="3">
                     <head>Impressum</head><lb/>
                     <p>Institut für die Geschichte der deutschen Juden<lb/>
                         Beim Schlump 83<lb/>
                         20144 Hamburg<lb/></p>
-                    
-                    <p>              
+
+                    <p>
                         Tel. +49 40 – 42 838-2617<lb/>
                         Fax +49 40 – 44 808-66<lb/>
                         E-Mail: <ref target="mailto:kontakt@igdj-hh.de">kontakt@igdj-hh.de</ref><lb/>
-                        Internet: <ref target="http://www.igdj-hh.de/">www.igdj-hh.de</ref></p>      
-                    
+                        Internet: <ref target="http://www.igdj-hh.de/">www.igdj-hh.de</ref></p>
+
                     <p>Das Institut ist eine Stiftung bürgerlichen Rechts in der Trägerschaft der
                         Freien Hansestadt Hamburg.</p>
-                    
+
                     <p>Vertretungsberechtigte Personen<lb/>
                     Direktorin: Dr. Miriam Rürup<lb/>
                         Stellvertretender Direktor: PD Dr. Andreas Brämer</p>
-                    
+
                     <p>Inhaltlich verantwortlich:<lb/>
                     Dr. Anna Menny und Daniel Burckhardt</p>
-                    
+
                     <p>Aufsichtbehörde<lb/>
                         Justizverwaltungsamt Stiftungsangelegenheiten<lb/>
                     Drehbahn 36, 20354 Hamburg</p>
