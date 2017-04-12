@@ -775,6 +775,19 @@ footer {
     }
 }
 
+@media (max-width: $screen-sm-size) {
+    /* language selector on small screens */
+    #menu-lang {
+        position: absolute;
+        top: 20px;
+        right: 0;
+        border-left: none !important;
+    }
+    #site-name {
+        padding-top: 15px;
+    }
+}
+
 /* route-specific styles */
 .route-topic-index {
     .topic {

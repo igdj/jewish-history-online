@@ -120,7 +120,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-sm-12">
+                    <div class="col-sm-12" id="site-name">
                         <h1>
                             <a href="{{ path('home') }}">{{ siteName|trans }}</a><br />
                             <a href="{{ path('home') }}" style="font-size: 14px; font-weight: normal">{{ 'A Digital Source Edition'|trans }}</a>
@@ -152,15 +152,15 @@
         <footer>
             <div id="footer-navigation" class="container">
                 <div class="row">
-                    <div class="col-xs-4 col-sm-3">
+                    <div class="col-xs-12 col-sm-3" style="z-index: 1">
                         {% set menu = knp_menu_get('AppBundle:Builder:mainMenu', [], {'position': 'footer'}) %}
                         {{ knp_menu_render(menu) }}
                     </div>
-                    <div class="col-xs-4 col-sm-3">
+                    <div class="col-xs-6 col-sm-3" style="z-index: 1">
                         {% set menu = knp_menu_get('AppBundle:Builder:topMenu', [], {'position': 'footer', 'part': 'left'}) %}
                         {{ knp_menu_render(menu) }}
                     </div>
-                    <div class="col-xs-4 col-sm-2">
+                    <div class="col-xs-6 col-sm-2" style="z-index: 1">
                         {% set menu = knp_menu_get('AppBundle:Builder:topMenu', [], {'position': 'footer', 'part': 'right'}) %}
                         {{ knp_menu_render(menu) }}
                     </div>
