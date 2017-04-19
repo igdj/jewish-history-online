@@ -102,7 +102,6 @@ class ArticleAdjustCommand extends BaseEntityCommand
                     $stmt = $conn->executeQuery($sql,
                                                 [ explode(',', $result['section']) ],
                                                 [ \Doctrine\DBAL\Connection::PARAM_INT_ARRAY ]);
-                    // TODO: set primary topic according to editor
                     $terms = $stmt->fetchAll();
 
                     $topics = [];
@@ -111,6 +110,7 @@ class ArticleAdjustCommand extends BaseEntityCommand
                         $topics[] = $translator->trans(\AppBundle\Controller\TopicController::lookupLocalizedTopic($term['name'], $translator, 'de')); // db-terms in German
                     }
 
+                    // set primary topic according to editor
                     $responsible = [];
                     switch ($result['referee_slug']) {
                         case 'bergmann-werner':
@@ -249,7 +249,7 @@ class ArticleAdjustCommand extends BaseEntityCommand
                 $seriesStmt = [];
                 foreach ($articles as $article) {
                     $corresp = sprintf('#jgo:article-%d', $article['id']);
-                    $seriesStmt[$corresp] = $article['subject']; // TODO: get actual title, not the one from db
+                    $seriesStmt[$corresp] = $article['subject']; // TODO: get actual title from TEI, not the one from db
                 }
                 if (!empty($seriesStmt)) {
                     $data['seriesStmt'] = $seriesStmt;
@@ -369,6 +369,7 @@ class ArticleAdjustCommand extends BaseEntityCommand
             $langCode1 = $matches[3];
         }
         else if (preg_match('/(source)\-(\d+)\.(yi|yl)\.(xml|tei)$/', $fname, $matches)) {
+            // yiddish
             $uid = sprintf('jgo:%s-%d', $matches[1], $matches[2]);
             $langCode1 = $matches[3];
         }

@@ -24,7 +24,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorMap({"interpretation" = "Article", "source" = "SourceArticle"})
  */
 class Article
-implements \JsonSerializable, JsonLdSerializable, OgSerializable
+implements \JsonSerializable, JsonLdSerializable, OgSerializable,
+\Eko\FeedBundle\Item\Writer\RoutedItemInterface
 {
     static function formatDateIncomplete($dateStr)
     {
@@ -383,6 +384,39 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
     public function getAuthor()
     {
         return $this->author;
+    }
+
+    /**
+     * Gets author Firstname1 Lastname1, Firstname2 Lastname2
+     *
+     * @return string
+     */
+    public function getAuthorDisplay($givenNameFirst = true)
+    {
+        $howMany = is_null($this->author) ? 0 : count($this->author);
+
+        if (0 == $howMany) {
+            return '';
+        }
+        if (1 == $howMany) {
+            return $this->author[0]->getFullname($givenNameFirst);
+        }
+        if (!empty($this->creator)) {
+            // TODO: get from creator so we respect order
+            $fullnames = explode('; ', $this->creator);
+            if ($givenNameFirst) {
+                // switch Lastname, Firstname to Firstname Lastname
+                $fullnames = array_map(function ($name) {
+                    return join(' ', array_reverse(explode(', ', $name, 2)));
+                }, $fullnames);
+            }
+        }
+        else {
+            $fullnames = array_map(function ($person) use ($givenNameFirst) {
+                return $person->getFullname($givenNameFirst);
+            }, $this->author->toArray());
+        }
+        return join(', ', $fullnames);
     }
 
     /**
@@ -1176,6 +1210,46 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
         ];
 
         return $ret;
+    }
+
+    // RoutedItemInterface for Feed Generation
+    public function getFeedItemTitle()
+    {
+        return $this->getAuthorDisplay() . ', ' . $this->getName();
+    }
+
+    public function getFeedItemDescription()
+    {
+        return $this->description;
+    }
+
+    public function getFeedItemPubDate()
+    {
+        return $this->datePublished;
+    }
+
+    public function getFeedItemRouteName()
+    {
+        if ('source' == $this->getGenre()) {
+            return 'source';
+        }
+        if ('background' == $this->articleSection) {
+            return 'topic-background';
+        }
+        return 'article';
+    }
+
+    public function getFeedItemRouteParameters()
+    {
+        if ('source' == $this->getGenre()) {
+            return [ 'slug' => $this->getUid() ];
+        }
+        return [ 'slug' => $this->getSlug(true) ];
+    }
+
+    public function getFeedItemUrlAnchor()
+    {
+        return '';
     }
 
     // solr-stuf

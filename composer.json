@@ -67,7 +67,8 @@
         "floriansemm/solr-bundle": "1.4",
         "knplabs/knp-paginator-bundle": "~2.5",
 
-        "presta/sitemap-bundle": "~1.5"
+        "presta/sitemap-bundle": "~1.5",
+        "eko/feedbundle": "dev-master"
     },
 
     "autoload": {

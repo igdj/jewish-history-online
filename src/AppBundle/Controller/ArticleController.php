@@ -209,4 +209,56 @@ class ArticleController extends RenderTeiController
 
         return $this->renderArticle($article);
     }
+
+    /**
+     * @Route("/article")
+     */
+    public function indexAction()
+    {
+        $language = null;
+        $locale = $this->get('request')->getLocale();
+        if (!empty($locale)) {
+            $language = \AppBundle\Utils\Iso639::code1to3($locale);
+        }
+
+        $sort = in_array($this->container->get('request')->get('_route'), [
+                    'article-index-date', 'article-index-rss'
+                ])
+            ? '-A.datePublished' : 'A.creator';
+
+        $qb = $this->getDoctrine()
+                ->getManager()
+                ->createQueryBuilder();
+
+        $qb->select([ 'A',
+                     $sort . ' HIDDEN articleSort'
+            ])
+            ->from('AppBundle:Article', 'A')
+            ->where('A.status = 1')
+            ->andWhere('A.language = :language')
+            ->andWhere("A.articleSection IN ('background', 'interpretation')")
+            ->andWhere('A.creator IS NOT NULL') // TODO: set for background
+            ->orderBy('articleSort, A.creator, A.name')
+            ;
+        $query = $qb->getQuery();
+        if (!empty($language)) {
+            $query->setParameter('language', $language);
+        }
+        if ('article-index-rss' == $this->container->get('request')->get('_route')) {
+            $query->setMaxResults(10);
+        }
+        $articles = $query->getResult();
+
+        if ('article-index-rss' == $this->container->get('request')->get('_route')) {
+            $feed = $this->get('eko_feed.feed.manager')->get('article');
+            $feed->addFromArray($articles);
+
+            return new Response($feed->render('rss')); // or 'atom'
+        }
+
+        return $this->render('AppBundle:Article:index.html.twig', [
+            'pageTitle' => $this->get('translator')->trans('Article Overview'),
+            'articles' => $articles,
+        ]);
+    }
 }

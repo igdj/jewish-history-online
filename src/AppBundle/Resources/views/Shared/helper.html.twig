@@ -19,9 +19,28 @@
         {% endif %}
         <a href="{{ path }}">
             {{ article.name }}
-            {% if article.author|length > 0%}
-            ({% for author in article.author %}{{ author.givenName }} {{ author.familyName }}{% if not loop.last %}, {% endif %}{% endfor %})
+            {% if article.author|length > 0 %}
+            ({{ article.authorDisplay(true) }})
             {% endif %}
+        </a>
+    {% elseif 'source' == article.genre %}
+        <a href="{{ path('source', { 'uid' : article.uid }) }}">{{ article.name }}</a>
+    {% endif %}
+{% endmacro %}
+
+{% macro article_linked_full(article) %}
+    {% if 'interpretation' == article.genre %}
+        {% if 'background' == article.articleSection %}
+            {% set path = path('topic-background', { 'slug' : article.getSlug(true) }) %}
+        {% else %}
+            {% set path = path('article', { 'slug' : article.getSlug(true) }) %}
+        {% endif %}
+        <a href="{{ path }}">
+            {% if article.author|length > 0 %}
+            {{ article.authorDisplay(true) }},
+            {% endif %}
+            {{ article.name }}
+            {%- if article.datePublished is not empty %}, {{ article.datePublished|dateincomplete }}{% if article.dateModified is not empty and article.dateModified != article.datePublished %} ({{'as of'|trans }} {{ article.dateModified|dateincomplete }}){% endif %}{% endif %}.
         </a>
     {% elseif 'source' == article.genre %}
         <a href="{{ path('source', { 'uid' : article.uid }) }}">{{ article.name }}</a>

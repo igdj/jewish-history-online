@@ -82,6 +82,7 @@ class ArticleHeaderCommand extends ContainerAwareCommand
                 'uid' => $article->uid,
                 'language' => $article->language,
             ]);
+
         if (is_null($entity)) {
             if ($input->getOption('insert-missing')) {
                 switch ($article->genre) {
@@ -147,12 +148,16 @@ class ArticleHeaderCommand extends ContainerAwareCommand
         // TODO: pack the following into custom hydrator
         $normalizer = new ObjectNormalizer();
         // exclude object-properties since arrays would be passed in
-        $ignoredAttributes = [ 'datePublished', 'author', 'translator', 'provider', 'contentLocation', 'isPartOf'  ];
+        $ignoredAttributes = [
+            'datePublished',
+            'author', 'translator',
+            'provider', 'contentLocation', 'isPartOf',
+        ];
         $normalizer->setIgnoredAttributes($ignoredAttributes);
         $serializer = new Serializer([ $normalizer ], [ new JsonEncoder() ]);
 
         $serializer->deserialize(json_encode($article), get_class($entity), 'json', [ 'object_to_populate' => $entity ]);
-        
+
         foreach ($ignoredAttributes as $attribute) {
             if (!isset($article->$attribute)) {
                 continue;
@@ -172,9 +177,9 @@ class ArticleHeaderCommand extends ContainerAwareCommand
                 case 'author':
                     $repoClass = 'Person';
                     $key = 'slug';
-                    $value = array_map(
-                                       function($related) { return $related->getSlug(); },
+                    $value = array_map(function ($related) { return $related->getSlug(); },
                                        $related);
+                    $creator = [];
                     break;
 
                 case 'translator':
@@ -217,14 +222,21 @@ class ArticleHeaderCommand extends ContainerAwareCommand
                         $relatedEntity = $em->getRepository('AppBundle:' . $repoClass)
                             ->findOneBy($criteria);
 
-                        if (!is_null($relatedEntity)
-                            && !$currentValues->contains($relatedEntity))
-                        {
-                            $method = 'add' . ucfirst($attribute);
-                            $entity->$method($relatedEntity);
+                        if (!is_null($relatedEntity)) {
+                            if ('author' == $attribute) {
+                                // collect author into creator for quick sorting
+                                $creator[] = $relatedEntity->getFullname();
+                            }
+                            if (!$currentValues->contains($relatedEntity)) {
+                                $method = 'add' . ucfirst($attribute);
+                                $entity->$method($relatedEntity);
+                            }
                         }
                     }
                     $currentValues = $entity->$methodGet();
+                    if ('author' == $attribute) {
+                        $entity->setCreator(join('; ', $creator));
+                    }
                 }
                 else {
                     $relatedEntity = $em->getRepository('AppBundle:' . $repoClass)

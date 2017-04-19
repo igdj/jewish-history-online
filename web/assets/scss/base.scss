@@ -848,10 +848,14 @@ footer {
 }
 
 body.route-place-map-mentioned #switch-place-map-mentioned,
-body.route-place-map #switch-place-map {
+body.route-place-map #switch-place-map,
+body.route-article-index #switch-article-index,
+body.route-article-index-date #switch-article-index-date
+{
     /* active switch */
     font-weight: bold;
 }
+
 
 .list-inline.switch {
     li {
@@ -914,6 +918,15 @@ body[class="route-terms"] {
         margin-top: 1em;
     }
 }
+
+a.rss {
+    padding-left: 24px;
+    background: url("../img/icon/icon-rss.png") no-repeat;
+    background-position: 0px 0;
+    height: 32px;
+    display: inline-block;
+}
+
 
 /* bootstrap panels */
 .panel {

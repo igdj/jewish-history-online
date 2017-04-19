@@ -128,7 +128,17 @@ knp_paginator:
         # pagination: KnpPaginatorBundle:Pagination:sliding.html.twig     # sliding pagination controls template
         pagination: KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig
         sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
-        
+       
+eko_feed:
+    feeds:
+        article:
+            title:       'Key Documents of German-Jewish History - Articles'
+            description: 'Latest Articles from the Digital Source Edition'
+            link:
+                route_name: article-index-date
+            encoding:    'utf-8'
+            #author:      'Gregor Panek'
+            
 swiftmailer:
     # disable_delivery:  true
     # delivery_address: daniel.burckhardt@sur-gmbh.ch

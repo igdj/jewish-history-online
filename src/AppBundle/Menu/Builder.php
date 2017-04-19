@@ -138,6 +138,10 @@ class Builder implements ContainerAwareInterface
                 'label' => $translator->trans('Bibliography'), 'route' => 'bibliography-index',
             ]);
         $menu['_lookup']
+            ->addChild('article-index', [
+                'label' => $translator->trans('Articles'), 'route' => 'article-index',
+            ]);
+        $menu['_lookup']
             ->addChild('glossary-index', [
                 'label' => $translator->trans('Glossary'), 'route' => 'glossary-index',
             ]);
@@ -264,6 +268,12 @@ class Builder implements ContainerAwareInterface
             case 'organization':
             case 'organization-by-gnd':
                 $item = $menu['_lookup']['organization-index'];
+                $item = $item->addChild($current_route, [ 'label' => 'Detail', 'uri' => '#' ]);
+                break;
+
+            case 'article-index':
+            case 'article-index-date':
+                $item = $menu['_lookup']['article-index'];
                 $item = $item->addChild($current_route, [ 'label' => 'Detail', 'uri' => '#' ]);
                 break;
 

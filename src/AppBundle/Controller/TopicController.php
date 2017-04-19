@@ -190,10 +190,10 @@ class TopicController extends RenderTeiController
         // sidebar
         $query = $this->get('doctrine')
             ->getManager()
-            ->createQuery("SELECT a FROM AppBundle:Article a"
-                          . " WHERE a.status IN(1) AND a.keywords LIKE :topic AND a.articleSection <> 'background'"
-                          . (!empty($language) ? ' AND a.language=:language' : '')
-                          . " ORDER BY a.name")
+            ->createQuery("SELECT A FROM AppBundle:Article A"
+                          . " WHERE A.status IN (1) AND A.keywords LIKE :topic AND A.articleSection <> 'background'"
+                          . (!empty($language) ? ' AND A.language=:language' : '')
+                          . " ORDER BY A.name")
             ->setParameter('topic', '%' . $topics[$slug] . '%')
             ;
         if (!empty($language)) {

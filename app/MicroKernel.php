@@ -77,6 +77,9 @@ class MicroKernel extends Kernel
             // sitemap
             new Presta\SitemapBundle\PrestaSitemapBundle(),
 
+            // rss
+            new Eko\FeedBundle\EkoFeedBundle(),
+
             // own code
             new AppBundle\AppBundle(),
         );
@@ -167,6 +170,10 @@ class MicroKernel extends Kernel
         );
         $routes->addRoute($topicBackgroundRoute, 'topic-background');
         $routes->add('/topic/{slug}.pdf', 'AppBundle:Topic:background', 'topic-background-pdf');
+
+        $routes->add('/article', 'AppBundle:Article:index', 'article-index');
+        $routes->add('/article/date', 'AppBundle:Article:index', 'article-index-date');
+        $routes->add('/article.rss', 'AppBundle:Article:index', 'article-index-rss');
 
         $articleRoute = new \Symfony\Component\Routing\Route(
             '/article/{slug}',
