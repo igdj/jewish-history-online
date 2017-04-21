@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
+type="application/xml"
+schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="main">Goals</title>
+            </titleStmt>
+            <publicationStmt>
+                <p></p>
+            </publicationStmt>
+            <sourceDesc>
+                <p></p>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <langUsage><language ident="en">Englisch</language></langUsage>
+        </profileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <p>The main goals of this edition are to impart knowledge about Jewish history through
+                sources, to make larger contexts comprehensible through specific examples, and to
+                facilitate access to these sources and thus encourage new research. Furthermore, it
+                represents a contribution to the preservation and study of Jewish heritage. In
+                publishing this edition, it is our intention to provide a new perspective on
+                Hamburg’s Jewish history while making a technical contribution to the long-term
+                preservation of key sources.</p>
+            <lb/>
+            <p>By presenting previously little studied sources and putting familiar archival
+                documents in new contexts and formats we hope to give thought-provoking impulses and
+                encourage new lines of study. The fact that the arguments made are based directly on
+                the sources encourages debate on specific interpretations and categorizations.
+                Hamburg’s Jewish history is considered in a national, transnational, and global
+                context. Beyond their significance for local history, the sources are meant to “open
+                doors” to understanding broader developments and questions in (German-)Jewish
+                history. </p>
+            <lb/>
+            <p>The source interpretations which provide critical commentary on the documents as well
+                as context on their history are informed by current research. Thus it is ensured
+                that the edition reflects current scholarly debate while the commentary also serves
+                the purpose of contextualizing a source that has been taken out of its original
+                place of discovery. In order to include findings from current research projects, we
+                specifically encouraged the participation of junior scholars in our project.</p>
+            <lb/>
+            <p>Making sources available on the internet not only increases their visibility and
+                accessibility, the edition also seeks to digitally reunite Hamburg’s Jewish
+                heritage, which has been scattered all over the world, and to preserve it for future
+                generations (and scholars). The English translations provided for all source
+                material are intended to facilitate the inclusion of sources on Hamburg’s Jewish
+                history in comparative transnational studies or in academic curricula outside
+                Germany.</p>
+            <lb/>
+            <p>Since the online source edition is conceived of as a model project, it is also
+                intended to provide new insights into the use of digitization in the field of Jewish
+                history and document these. These may include the practical application of existing
+                digital tools or the tagging of heterogeneous source material. Experiences
+                concerning the possible improvement and testing of subject-specific requirements
+                such as thesauri, multilingual versions of sources or tagging texts including Hebrew
+                characters will be of particular interest in this process. Being anchored in the
+                discipline of history, we hope this edition will increase the acceptance of digital
+                publications and provide guidance on their critical use.</p>
+        </body>
+    </text>
+</TEI>

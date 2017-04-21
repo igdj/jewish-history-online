@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
+type="application/xml"
+schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="main">Ziele</title>
+            </titleStmt>
+            <publicationStmt>
+                <p></p>
+            </publicationStmt>
+            <sourceDesc>
+                <p></p>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <langUsage><language ident="deu">Deutsch</language></langUsage>
+        </profileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <p>Wesentliche Ziele der Edition sind, Wissen zur jüdischen Geschichte anhand von
+                Quellen zu vermitteln, größere Zusammenhänge über konkrete Beispielfälle zu
+                erschließen, den Zugang zu den Quellen zu erleichtern und dadurch neue Forschungen
+                anzustoßen. Auch wird dadurch zur Bewahrung und Nutzung des jüdischen Erbes
+                beigetragen. Die Quellenedition folgt den Intentionen, inhaltlich neue Perspektiven
+                auf die jüdische Geschichte Hamburgs zu werfen und zugleich technisch zur
+                langfristigen Sicherung zentraler Quellen beizutragen.</p>
+            <lb/>
+            <p>Durch die Präsentation von bislang weniger bekanntem Quellenmaterial sowie durch die
+                neuartige Anordnung und Aufbereitung zentraler Quellen sollen Denkanstöße gegeben
+                und neue Fragestellungen angeregt werden. Dass die Quelle Ausgangspunkt der
+                Argumentation ist, fördert zudem Auseinandersetzungen über konkrete Deutungen und
+                Einordnungen. Die jüdische Geschichte Hamburgs wird dabei in ihrem nationalen,
+                transnationalen und globalen Kontext gesehen. Die Quellen werden über ihre
+                lokalgeschichtliche Bedeutung hinaus als „Türöffner“ zum Verständnis für größere
+                Entwicklungen und Fragestellungen der (deutsch-)jüdischen Geschichte verstanden.</p>
+            <lb/>
+            <p>Die Quelleninterpretationen, die die bereitgestellten Dokumente kommentieren und in
+                ihren historischen Entstehungszusammenhang einordnen, lassen aktuelle
+                Forschungsergebnisse in die Edition einfließen. So wird eine Anbindung an die
+                fachlichen Diskussionen sichergestellt, zugleich dienen die kommentierenden Texte
+                einer Kontextualisierung der Quelle, die aus ihrem Überlieferungszusammenhang
+                herausgelöst wird. Um Erkenntnisse aus aktuellen Forschungsprojekten aufzugreifen,
+                wurde gezielt auch der akademische Nachwuchs in das Projekt einbezogen.</p>
+            <lb/>
+            <p>Durch die Bereitstellung der Quellen im Internet erhöht sich nicht nur deren
+                Sichtbarkeit und Zugänglichkeit, die Edition möchte zugleich dazu beitragen, das in
+                die verschiedensten Teile der Welt verstreute jüdische Erbe Hamburgs digital wieder
+                zusammenzuführen und für zukünftige (Forscher-)Generationen zu bewahren. Die
+                Übersetzung aller Materialien ins Englische soll es erleichtern, die Quellen zur
+                jüdischen Geschichte Hamburgs in vergleichende transnational angelegte Studien
+                einzubeziehen oder in der akademische Lehre außerhalb Deutschlands zu verwenden.</p>
+            <lb/>
+            <p>Da die Online-Quellenedition als ein Modellprojekt verstanden wird, soll sie auch
+                dazu beitragen, neue Erkenntnisse zur Digitalisierung im Fach jüdische Geschichte zu
+                liefern und zu dokumentieren, etwa im Hinblick auf die praktische Anwendung
+                bestehender digitaler Werkzeuge und Infrastrukturen oder die Auszeichnung des
+                heterogenen Quellenmaterials. Von besonderem Interesse werden dabei die Erfahrungen
+                hinsichtlich einer möglichen Weiterentwicklung und praktischen Erprobung
+                fachspezifischer Anforderungen, wie etwa Thesauri, Mehrsprachigkeit der Quellen oder
+                die Auszeichnung von Texten mit hebräischen Schriftzeichen, sein. Die Verankerung im
+                Fach trägt zugleich dazu bei, die Akzeptanz von digitalen Publikationsformen zu
+                erhöhen und den kritischen Umgang mit diesen einzuüben.</p>
+        </body>
+    </text>
+</TEI>

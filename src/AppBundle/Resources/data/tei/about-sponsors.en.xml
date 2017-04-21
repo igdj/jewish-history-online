@@ -6,7 +6,7 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
     <teiHeader>
         <fileDesc>
             <titleStmt>
-                <title type="main">Förderer und Partner</title>
+                <title type="main">Sponsors and Partners</title>
             </titleStmt>
             <publicationStmt>
                 <publisher>
@@ -27,22 +27,22 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
             </sourceDesc>
         </fileDesc>
         <profileDesc>
-            <langUsage><language ident="deu">Deutsch</language></langUsage>
+            <langUsage><language ident="en">Englisch</language></langUsage>
         </profileDesc>
     </teiHeader>
     <text>
         <body>
             <div n="2">
                 <!-- <head>Das Projekt</head> -->
-                <p>Die <hi rendition="#b"><ref target="http://www.awhamburg.de/">Akademie der
-                            Wissenschaften in Hamburg</ref></hi> förderte die anfängliche Konzeption
-                    der Edition. Juli 2015 fördert die <hi rendition="#b">Deutsche
-                        Forschungsgemeinschaft</hi> die Realisierung der Online-Edition im
-                    Förderbereich <ref target="http://gepris.dfg.de/gepris/projekt/268470421"
-                        >Wissenschaftliche Literaturversorgungs- und Informationssysteme</ref>.
+                <p>The <hi rendition="#b"><ref target="http://www.awhamburg.de/">Akademie der
+                            Wissenschaften in Hamburg</ref></hi> funded the initial concept of the
+                    edition. Since July 2015 the realization of the online edition has received
+                    funding from the <hi rendition="#b">Deutsche Forschungsgemeinschaft</hi> through
+                    its funding stream “<ref target="http://gepris.dfg.de/gepris/projekt/268470421"
+                        >Wissenschaftliche Literaturversorgungs- und Informationssysteme</ref>.”
                     <lb/></p>
-                <p>Das Vorhaben wird in Kooperation mit verschiedenen Einrichtungen und Projekten
-                    durchgeführt: <lb/></p>
+                <p>This project is realized in cooperation with various institutions and projects :
+                    <lb/></p>
                 <p><hi rendition="#b"><ref
                             target="http://www.jmberlin.de/main/DE/03b-Akademie/03-Archiv/00-archiv.php"
                             >Archiv des Jüdischen Museums, Berlin</ref></hi><lb/></p>
@@ -75,16 +75,14 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
                             target="http://sammlungen.ub.uni-frankfurt.de/cm?lang=de">Compact
                             Memory</ref></hi> und Digitale Sammlungen) <lb/></p>
                 <p><hi rendition="#b"><ref target="http://www.hamburg.de/staatsarchiv/">Staatsarchiv
-                            Hamburg</ref></hi><lb/></p></div>
-            <div n="2">
-                <head>Design und grafische Umsetzung</head>
-                <lb/>
-                <p>Sandra Morath; edelweiss* büro für grafik und design, Hamburg, <ref
-                        target="http://www.buero-edelweiss.de/">www.buero-edelweiss.de</ref></p>
+                            Hamburg</ref></hi><lb/></p>
+                <div n="2">
+                    <head>Design</head>
+                    <lb/>
+                    <p>Sandra Morath; edelweiss* büro für grafik und design, Hamburg, <ref
+                            target="http://www.buero-edelweiss.de/">www.buero-edelweiss.de</ref></p>
+                </div>
             </div>
-                
-                
-         
         </body>
     </text>
 </TEI>

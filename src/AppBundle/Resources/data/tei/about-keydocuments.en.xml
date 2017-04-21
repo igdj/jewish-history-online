@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
+type="application/xml"
+schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="main">Key Documents</title>
+            </titleStmt>
+            <publicationStmt>
+                <p></p>
+            </publicationStmt>
+            <sourceDesc>
+                <p></p>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <langUsage><language ident="eng">Englisch</language></langUsage>
+        </profileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <p>This source edition does not represent a complete set of archival holdings, but is
+                composed of documents selected from different archives and institutions based on
+                their content. Longer texts or expansive image files/audiovisual documents are
+                excerpted to present key passages or parts of this source. Where the rights could be
+                obtained, both the excerpted version (annotated according to our edition guidelines)
+                and the entire source are included; if a digitized version of a source already
+                exists, a link is included. The main criterion for source selection is the idea of
+                “key documents.”</p>
+            <lb/>
+            <p>The term key documents describes selected sources which are used as examples to
+                provide insight into historical contexts and events. Key documents are supposed to
+                “open doors” leading to a better and more vivid understanding of history. Whether
+                these are well-known records – such as by-laws and other legal documents – or
+                previously little studied sources, efforts were consistently made to ensure the
+                representative character of the entire volume of documents. The selection of the
+                interpreted and edited sources is a result of close cooperation between the
+                editorial staff, the authors, and editors.</p>
+            <lb/>
+            <p>The following criteria were central to the selection of sources which include texts,
+                images, sound recordings, and audiovisual files.</p>
+            <lb/>
+            <p>The source has to…
+                <list>
+                    <item>connect to a broader historical context / pose questions</item>
+                    <item>represent an example from a larger volume of sources or tell a
+                        “typical” story because of its uniqueness</item>
+                    <item>be clearly identifiable based on
+                        extensive information on the source (time of creation, author, etc.)</item>
+                    
+                </list>
+            </p>
+            <lb/>
+            <p>The basic idea is that each source and its commentary should be closely connected in
+                order to allow references back to the source and inferences from it in a manner that
+                is as transparent as possible. The reader is encouraged to not just follow the
+                interpretation, but attempt their own interpretation. In order to ensure this,
+                focusing on short documents seemed necessary.</p>
+        </body>
+    </text>
+</TEI>

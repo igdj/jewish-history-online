@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
+type="application/xml"
+schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="main">About Us</title>
+            </titleStmt>
+            <publicationStmt>
+                <publisher>
+                    <orgName>Institut für die Geschichte der deutschen Juden</orgName>
+                    <email>redaktion@juedische-geschichte-online.net</email>
+                    <address><addrLine>Beim Schlump 83, 20144 Hamburg</addrLine></address>
+                </publisher>
+                <pubPlace>Hamburg</pubPlace>
+                <date type="publication">2016-09-01</date>
+                <availability>
+                    <licence target="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+                        <p>Dieser Text unterliegt den Bedingungen der Creative Commons Namensnennung - Nicht kommerziell - Keine Bearbeitungen 4.0 International Lizenz. Unter Namensnenung gemäß dem Zitationshinweis darf er in unveränderter Form für nicht-kommerzielle Zwecke nachgenutzt werden.</p>
+                    </licence>
+                </availability>
+            </publicationStmt>
+            <sourceDesc>
+                <p></p>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <langUsage><language ident="eng">Englisch</language></langUsage>
+        </profileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <div n="2">
+                <!-- <head>The Project</head> -->
+                <p>This online source edition published by the Institute for the History of German
+                    Jews (IGdJ) uses a selection of sources, so-called key documents, to
+                    thematically highlight central aspects in Hamburg’s Jewish history from the
+                    early modern age to the present. The editors consider Hamburg as a lens for
+                    larger developments and questions in German-Jewish history. The source edition
+                    aims to help digitally reunite the city’s Jewish heritage, scattered all over
+                    the world due to persecution and migration, and to make it accessible and
+                    preserve it for future generations. <lb/></p>
+                <p>By presenting previously little studied sources and putting familiar archival
+                    documents in new contexts and formats we hope to give thought-provoking impulses
+                    and encourage new lines of study. The sources are at the center of this project,
+                    inspiring discussion about specific interpretations and categorizations.
+                    <lb/></p>
+                <p>Transcripts as well as digital facsimiles are provided for all sources, which are
+                    placed in historical context by interpretations and background information. The
+                    source material is further enriched by information on its provenance, historical
+                    responses to it, and scholarly controversies. All content is provided in both
+                    German and English. <lb/></p>
+                <p>The target audience for this source edition is college students, researchers and
+                    teachers, as well as the interested public and high school students. It covers a
+                    spectrum ranging from more general, introductory texts to those developing their
+                    argument by a close study of the source, and it offers different ways of
+                    approaching the texts—through a timeline, a specific topic or a map. The project
+                    is supported by an advisory board consisting of renowned scholars of
+                    German-Jewish history and experts in the field of digitization.<lb/></p>
+                <p>The online edition receives funding from the Deutsche Forschungsgemeinschaft for
+                    a two-year period that began in July 2015. With this edition the IGdJ once again
+                    fulfils its role as an institution serving as a link between scholarship and the
+                    interested public.</p>
+            </div>
+        </body>
+    </text>
+</TEI>
+
+

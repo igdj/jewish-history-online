@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
+type="application/xml"
+schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="main">Technische Umsetzung</title>
+            </titleStmt>
+            <publicationStmt>
+                <p></p>
+            </publicationStmt>
+            <sourceDesc>
+                <p></p>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <langUsage><language ident="deu">German</language></langUsage>
+        </profileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <p>
+                Bei der Quellenedition handelt es sich um ein Modellprojekt zur praktischen Erprobung
+                und Weiterentwicklung bestehender digitaler Infrastrukturen. Das Projekt greift auf
+                Open-Source-Lösungen zurück und integriert gängige Standardformate Digitaler
+                Editionen und dient der Langfristarchivierung wie MODS (Katalogdaten), METS
+                (Digitalisate), TEI P5 (Textauszeichnung der Transkriptionen und Übersetzungen), 
+                DOI (persistente Adressierung), GND-Beacon-Dateien und den MyCoRe-Viewer.<note
+                    type="editorial" place="foot"><ref target="http://www.mycore.de/documentation/frontend/imageviewer.pdf">www.mycore.de/documentation/frontend/imageviewer.pdf</ref>
+                    (Zugriff: 29.08.2016).</note> Es verbindet diese mit einer nutzerfreundlichen
+                Präsentation in einem gängigen Open-Source-Framework.<note type="editorial"
+                    place="foot">Der Quellcode ist verfügbar unter <ref target="https://github.com/burki/jewish-history-online">github.com/burki/jewish-history-online</ref> (Zugriff: 21.04.2017).</note> Die
+                Digitalisierung erfolgt gemäß den Praxisregeln „Digitalisierung“ der Deutschen
+                Forschungsgemeinschaft (DFG).<note type="editorial"
+                    place="foot"><ref target="http://www.dfg.de/formulare/12_151/12_151_de.pdf">www.dfg.de/formulare/12_151/12_151_de.pdf</ref> (Zugriff: 29.08.2016).</note>
+                Die Digitalisate, TEI-Dateien und Metadaten werden zur Langzeitarchivierung parallel
+                als METS-Container in einer Instanz des MyCoRe-Repositoriums abgelegt.<note
+                    type="editorial" place="foot">Aufgrund der Kooperation mit dem Regionalen Rechenzentrum der
+                    Universität Hamburg als Partner für die digitale Langfristarchivierung wurde für
+                    dieses Projekt die dort primär eingesetzte MyCoRe-Plattform gewählt.</note> Die
+                Einbindung der Digitalisate (Faksimile), Transkriptionen (Volltext) und
+                Übersetzungen in ein attraktives Frontend erfolgt über ein Viewer-Plugin für
+                METS-Container, das über die OAI-Schnittstelle mit dem Repositorium verbunden
+                wird.
+            </p>
+        </body>
+    </text>
+</TEI>

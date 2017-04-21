@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
+type="application/xml"
+schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="main">Target audience</title>
+            </titleStmt>
+            <publicationStmt>
+                <p></p>
+            </publicationStmt>
+            <sourceDesc>
+                <p></p>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <langUsage><language ident="eng">Englisch</language></langUsage>
+        </profileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <p>
+                The edition is mainly intended for college students, researchers, and teachers in the
+                field of Jewish history, but it also wants to provide insight into the subject to
+                the interested public and high school students. Online publications in particular
+                are faced with a challenge that also represents an opportunity: each user picks
+                topics of interest to them and uses digital content according to an arbitrary, often
+                random logic that cannot be compared to reading a book one has picked up. Thus users
+                who might not be reached by a traditional, printed source edition might be randomly
+                directed to the online version by a search engine. It is impossible to predict where
+                a user will begin reading an online edition. While one can assume that the reader of
+                a printed edition will begin by looking at the table of contents or the index, an
+                online edition must be accessible to the reader in all possible ways: traditionally
+                by starting with the home page or the index as well as by following a direct link to
+                a source. We do not expect a focused reading of this online edition from an assumed
+                “beginning” to an assumed “end.” Therefore this edition seeks to provide information
+                to random visitors just as thoroughly as to those who visit it for a specific
+                purpose. The index, a key element of the printed edition, is also included in the
+                online version.</p>
+            <lb/>
+            <p>By providing bilingual, digital versions of the edited sources accompanied by
+                introductions written by well-known scholars in the field online, we hope to reach
+                German- and English-speaking junior scholars in particular.</p>
+            <lb/>
+            <p>Since online projects provide the opportunity to expand the (potential) audience of
+                users beyond a local and regional target audience, all material is also made
+                available in English. Among other things, this is an expression of the IGdJ’s
+                growing international contacts, which have been further expanded in recent years,
+                and of its networking with international scholars. Moreover, it reflects the history
+                of Jewish sourcesscattered widely beyond the city of Hamburg and allows the
+                descendants of Jewish former Hamburg citizens to connect with the urban history of
+                their ancestors.</p>
+        </body>
+    </text>
+</TEI>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
+type="application/xml"
+schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="main">Editorial Model</title>
+            </titleStmt>
+            <publicationStmt>
+                <p></p>
+            </publicationStmt>
+            <sourceDesc>
+                <p></p>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <langUsage><language ident="eng">Englisch</language></langUsage>
+        </profileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <p>This online edition is a collaborative effort. While the Institute for the History of German Jews is responsible for the processes of editing, coordination, and technical implementation and support, the project is co-created by the participating editors and the currently more than 100 authors of source interpretations.</p>
+            <lb/>
+            <p>The editors write the introductions, suggest sources for their topic and support the editorial staff in recruiting authors for source interpretations. All submitted texts are subject to two levels of review: first, the editorial staff reviews the source description and interpretation. The respective editors then review the text and the source interpretations for their topic.</p>
+            <lb/>
+            <p>Where required external reviews are commissioned. After the author has revised their text, it is once again reviewed by the editorial staff. Finally, the text is formatted and proof-read.</p>
+            <lb/>
+            <p>The introductions also undergo a first reading by the editorial staff before they are reviewed by all the other editors. Two workshops were held in order to discuss the content of the introductions and the individual texts. The revised texts were once again reviewed by the editorial staff before they were formatted and proof-read.</p>
+            <lb/>
+            <p>This process of multiple rounds of review and the close cooperation between the editorial staff, the group of editors, and the authors ensures the high scholarly quality of all contributions to the project.</p>
+            <lb/>
+            <p>In addition to reviewing and proof-reading the material, the editorial staff also coordinates its translation into English as well as the obtaining, transcription, and tagging of sources. All translations are reviewed and edited as well.</p>
+        </body>
+    </text>
+</TEI>

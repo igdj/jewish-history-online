@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
+type="application/xml"
+schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="main">Hinweise zur Nutzung dieser Edition </title>
+            </titleStmt>
+            <publicationStmt>
+                <p></p>
+            </publicationStmt>
+            <sourceDesc>
+                <p></p>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <langUsage><language ident="deu">Deutsch</language></langUsage>
+        </profileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <p>Die Online-Edition zeichnet sich durch eine hohe Nutzerfreundlichkeit und umfassende
+                Recherchemöglichkeiten aus und spricht so auch das allgemein interessierte Publikum
+                an. Verschiedene <hi rendition="#b">Textsorten und Quellenarten</hi> wie Bilder,
+                Audio- und Videodokumente vermitteln Informationen zur deutsch-jüdischen Geschichte
+                auf verschiedenen Vertiefungsebenen. Die Edition ist modular aufgebaut, die Quellen
+                können von den Nutzerinnen und Nutzern über <hi rendition="#b">drei Zugänge</hi>
+                recherchiert werden: über einen <hi rendition="#b">Zeitstrahl</hi>, über eine <hi
+                    rendition="#b">Karte</hi> oder über <hi rendition="#b">Themenmodule</hi>.
+            </p>
+            
+            <div n="2">
+                <head>Textsorten und Quellenarten</head><lb/>
+                <p>Die Online-Edition wirft am Beispiel von derzeit rund 50, 
+                    bis zum Ende der Projektlaufzeit rund 150 Schlüsseldokumenten 
+                    thematische Schlaglichter auf zentrale Aspekte der lokalen, regionalen 
+                    und allgemeinen deutsch-jüdischen Geschichte. 
+                    Die Anzahl der Schlüsseldokumente ist dabei durchaus erweiterbar. 
+                    Um die Quellen in ihren historischen Kontext und die Forschungsdiskussionen 
+                    einbetten zu können, existieren unterschiedliche Textebenen.
+                </p>
+                <p>Überblickscharakter haben als <hi rendition="#b">erste Textsorte</hi> dabei die <ref target="../thema"><hi rendition="#b"><hi rendition="#i">Einführungstexte zu den derzeit insgesamt 15 Themenkategorien</hi></hi></ref>. 
+                    Diese Einführungsartikel wurden von <ref target="herausgeberinnen">verschiedenen Herausgeberinnen und Herausgebern</ref> geschrieben und sind die inhaltlich ausführlichste und tief gehendste Textsorte der Edition. Anders als in einer in Buchform verfassten historischen Einführung folgen sie nicht einem gemeinsamen Narrativ und können auch unabhängig voneinander gelesen werden. So wiederholen sich teilweise thematische Aspekte in den verschiedenen Einführungen, die jede für sich steht und die sich dennoch inhaltlich ergänzen. Die Einführungstexte sind die längsten Texte dieser Edition. Sie ordnen die Quellen der Edition in einen größeren historischen Zusammenhang ein.
+                </p>
+                <p>Die Auswahl der Themenkategorien bietet einen multiperspektivischen Zugang zu den Rahmenbedingungen jüdischen Lebens und erfasst wichtige Aspekte innerjüdischen Lebens auf verschiedenen Ebenen, ohne ein Metanarrativ anbieten zu wollen. Die Kategorien dienen dazu, die vielfältigen Facetten jüdischen Lebens darzustellen und jüdische Geschichte nicht auf eine Verfolgungs- und/oder Beitragsgeschichte zu reduzieren. Ausgangsgedanke der verschiedenen thematischen Einführungen ist, dass ein bestimmter thematischer Fokus einen Pfad in die deutsch-jüdische Geschichte schlägt, über den sich weitere Fragen entwickeln. Wer sich so möglicherweise zunächst nur für das Thema „Recht und Politik“ interessiert, gelangt bei der Lektüre eventuell über Verweise zu einer Quelle schließlich beim Thema „Freizeit und Sport“. Die Auswahl der Themenkategorien versteht sich zum einen als von den Quellen her induktiv – dies gilt beispielsweise für Kategorien wie „Freizeit und Sport“ oder „Kunst und Kultur“. Zum anderen ist der Redaktion bewusst, dass ein gewisses thematisches Grundgerüst, einer historischen Einführung gleich, angeboten werden muss, weshalb auch Einführungstexte wie „Demographie und soziale Strukturen“ und „Wirtschaft und Berufsstruktur“ angeboten werden.
+                </p>
+                <p><hi rendition="#b">Die Themenkategorien lauten im Einzelnen:</hi><lb/>
+                    •	Alltag und Familie,<lb/>
+                    •	Demographie und soziale Strukturen,<lb/>
+                    •	Erinnern und Gedenken,<lb/>
+                    •	Erziehung und Bildung,<lb/>
+                    •	Freizeit und Sport,<lb/>
+                    •	Judenfeindschaft und Verfolgung,<lb/>
+                    •	Kunst und Kultur,<lb/>
+                    •	Migration,<lb/>
+                    •	Organisationen und Institutionen,<lb/>
+                    •	Recht und Politik,<lb/>
+                    •	Religion und Identität,<lb/>
+                    •	Sefarden,<lb/>
+                    •	Soziale Fragen und Wohlfahrt,<lb/>
+                    •	Wirtschaft und Berufsstruktur,<lb/>
+                    •	Wissenschaft.
+                </p>
+                <p>Kernstück der Edition sind als <hi rendition="#b">zweite Textsorte</hi> 
+                    die <hi rendition="#b"><hi rendition="#i">Quellen</hi></hi> selbst. 
+                    Die meisten der edierten Quellen sind Texte, aber auch die nicht 
+                    textuellen Quellen werden als Texte gelesen. 
+                    Die Quelle ist möglichst vollständig abgebildet, nur in Einzelfällen 
+                    finden sich Ausschnitte oder Auszüge. Die Beschränkung des Umfangs 
+                    der Quellen hat inhaltliche und praktische Gründe: Zum einen erlaubt 
+                    die Kürze, sich in den Interpretationen intensiv mit einzelnen 
+                    Aspekten auseinanderzusetzen und etwa auch Sätze oder Formulierungen 
+                    genauer in den Blick zu nehmen, die bei längeren Textquellen nicht 
+                    in der Intensität diskutiert werden könnten. Zum anderen ist die Kürze 
+                    dem Medium und den Online-Lesegewohnheiten geschuldet.
+                </p>
+                
+                <p>Die <hi rendition="#b">dritte Textsorte</hi> sind die <hi rendition="#b"><hi rendition="#i">Quelleninterpretationen</hi></hi>. Sie sind gewissermaßen der „Türöffner“ zum Verständnis der Quellen, greifen die übergeordneten Themen aus den Einführungstexten auf und zeigen wesentliche Entwicklungen der jüdischen Geschichte konkret an der Quelle. Zugleich liefern sie eine mögliche Interpretation der vorliegenden Quelle.</p>
+                <p>Zu Beginn jeder Quelleninterpretation steht dabei jeweils eine knappe Quellenbeschreibung, die in wenigen Sätzen die bedeutendsten Aspekte und relevante Informationen zur Quelle hervorhebt.</p>
+                
+                <p>Auf der technischen Ebene gibt es zu jeder Quelle jeweils eine <hi rendition="#b"><hi
+                    rendition="#i">Transkription der Quelle</hi></hi>, was bei Interviews, Liedern oder schwer entzifferbaren Handschriften hilfreich, wenn nicht gar notwendig zum Quellenverständnis sein kann und zugleich die Möglichkeit zur Volltextsuche bietet.</p>
+                
+                <p>Schließlich finden sich englische <hi rendition="#b"><hi rendition="#i">Übersetzungen</hi></hi> nicht nur der Metatexte (der Einführungen wie der Interpretationen), sondern auch der Quellen selbst.</p>
+                <p>Die <hi rendition="#b">Metadaten</hi> von Personen, Orten und Ereignissen sind direkt in den Dokumenten ausgezeichnet. Dies ermöglicht neben gezielten Suchanfragen, dass in der Darstellung auf der Website ausgefeilte Registerfunktionen zur Verfügung stehen, die die Potenziale einer elektronischen Publikation ausschöpfen. Denn diese Metadaten sind zu großen Teilen in einem <hi
+                    rendition="#b"><hi rendition="#i">Register</hi></hi> hinterlegt. In der Rubrik „Nachschlagen“ 
+                    finden sich diese knappen Hintergrundinformationen, dazu gehört auch ein noch 
+                    erweiterbares <ref target="../glossar">Glossar</ref>, das weiterführende Informationen beispielsweise zu einer Person liefert und, wo es sinnvoll ist, auch auf externe Links verweist.</p>
+            </div>
+            
+            <div n="2">
+                <head>Zugänge</head><lb/>
+                <p>Die digitale Edition bietet vielfältige Zugänge zu den Quellen beziehungsweise den
+                    Fragen der deutsch-jüdischen Geschichte. Verschiedene Wege führen zu den Quellen
+                    sowie den sie interpretierenden Texten. Diese Wege sind über drei Reiter mit den
+                    Titeln „Zeitstrahl“, „Karte“ und „Themen“ ansteuerbar. Alle Quellen sind über die
+                    Metadaten mit einem Primärdatum versehen. Dies ist in der Regel der feststellbare
+                    Entstehungszeitpunkt der Quelle. Bei lebensgeschichtlichen Interviews und
+                    Lebenserinnerungen hat sich die Redaktion dafür entschieden, zwei Daten zu vergeben
+                    – den Zeitpunkt des Verfassens der Quelle sowie den feststellbar historisch
+                    behandelten Zeitpunkt. Anhand dieser Daten sind sie auf einem <hi rendition="#b"><hi
+                        rendition="#i">Zeitstrahl</hi></hi> angeordnet. So können beispielsweise
+                    diejenigen, die sich nicht diachron für ein Thema im gesamten Verlauf der neueren
+                    deutsch-jüdischen Geschichte interessieren, sondern beispielsweise synchron für die
+                    Geschichte der Hamburger Juden im 18. Jahrhundert, zielgerichtet nach den für sie
+                    relevanten Quellen suchen. Die Entscheidung für eine Zeitleiste und gegen eine
+                    Einteilung in die gängigen historischen Epochen erfolgte, um eine Offenheit zu
+                    wahren, auch andere historische Zäsuren auszumachen.</p>
+                <lb/>
+                <p>Ein zweiter Zugang führt über eine <hi rendition="#b"><hi rendition="#i"
+                    >Karte</hi></hi>. So sind die Quellen neben dem Primärdatum auch mit einem
+                    Primärort – in der Regel dem Entstehungsort der Quelle – ausgezeichnet, der ihre
+                    Anordnung innerhalb einer Karte ermöglicht. Da die Edition mehrere Jahrhunderte
+                    umspannt und somit zahlreiche historische, politische wie auch naturräumliche
+                    Veränderungen bezeugt, ist die Kartengrundlage bewusst keine historische, sondern
+                    eine abstrahierte Karte, die vor allem der räumlichen Orientierung dienen soll und
+                    keine historische Genauigkeit beansprucht. In der jetzigen Phase der
+                    Editionsentwicklung, in der der Fokus auf Hamburg liegt, bildet die Karte aus
+                    naheliegenden Gründen vor allem Treffer im norddeutschen Raum ab.</p>
+                <lb/>
+                <p>Der dritte Zugang zu den Quellen erfolgt über die <hi rendition="#b"><hi
+                    rendition="#i">Themen</hi></hi>, die in Einführungstexten vertieft werden
+                    und in denen bereits auf dazugehörige Quellen explizit Bezug genommen wird. Der
+                    jeweilige Einführungstext ist dabei mit einzelnen Quellen, die zur Thematik passen,
+                    verlinkt. Aufgrund der Vielschichtigkeit einiger Quellen sind diese bei
+                    verschiedenen Einführungstexten hinterlegt.</p>
+            </div>
+        </body>
+    </text>
+</TEI>

@@ -2,7 +2,7 @@
 <?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
 type="application/xml"
 schematypens="http://relaxng.org/ns/structure/1.0"?>
-<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf" xml:lang="de">
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf">
     <teiHeader>
         <fileDesc>
             <titleStmt>
@@ -15,6 +15,9 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
                 <p></p>
             </sourceDesc>
         </fileDesc>
+        <profileDesc>
+            <langUsage><language ident="deu">Deutsch</language></langUsage>
+        </profileDesc>
     </teiHeader>
     <text>
         <body>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
+type="application/xml"
+schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="main">Redaktionsmodell</title>
+            </titleStmt>
+            <publicationStmt>
+                <p></p>
+            </publicationStmt>
+            <sourceDesc>
+                <p></p>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <langUsage><language ident="deu">Deutsch</language></langUsage>
+        </profileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <p>Die Online-Edition ist ein Gemeinschaftswerk. Zwar sind die redaktionelle Betreuung
+                und Koordination sowie die technische Umsetzung und Betreuung am Institut für die
+                Geschichte der deutschen Juden angesiedelt. Doch das Projekt wird von den
+                beteiligten 14 Herausgeberinnen und Herausgebern sowie derzeit über 100 Autorinnen
+                und Autoren von Interpretationstexten mitgestaltet.</p>
+            <lb/>
+            <p>Die <ref target="herausgeberinnen">Herausgeberinnen und Herausgeber</ref> verfassen die Einführungstexte, schlagen Quellen
+                für ihr Themenfeld vor und werben gemeinsam mit der Redaktion Interpretationen dafür
+                ein. Alle eingeworbenen Texte durchlaufen ein mindestens zweistufiges
+                Begutachtungsverfahren: Zunächst begutachtet die Projektredaktion die
+                Quellenbeschreibungen und -interpretationen. In einem zweiten Schritt überprüfen die
+                jeweiligen Herausgeberinnen oder Herausgeber den Text. Sie betreuen mithin auch die
+                ihrer jeweiligen Themenkategorie zugeordneten Quelleninterpretationen.</p>
+            <lb/>
+            <p>Gegebenenfalls werden danach noch externe Gutachten herangezogen. Nach der
+                Überarbeitung durch die Autorin oder den Autor wird der Text noch einmal von der
+                Redaktion geprüft. Abschließend finden eine formale Korrektur und ein Lektorat
+                statt.</p>
+            <lb/>
+            <p>Die Einführungsartikel wurden ebenfalls zunächst von der Redaktion gesichtet,
+                anschließend wurden sie von allen anderen Herausgeberinnen und Herausgeber
+                begutachtet. Die Diskussion der inhaltlichen Ausrichtung der Einführungstexte sowie
+                der einzelnen Texte erfolgte in zwei Workshops. Die überarbeiteten Texte wurden dann
+                noch einmal von der Redaktion kontrolliert, bevor sie hinsichtlich der formalen
+                Richtlinien überprüft und lektoriert wurden.</p>
+            <lb/>
+            <p>Dieses mehrstufige Begutachtungsverfahren und die enge Zusammenarbeit von Redaktion,
+                Herausgebergremium, Autorinnen und Autoren sichern die hohe wissenschaftliche
+                Qualität aller Beiträge.</p>
+            <lb/>
+            <p>Neben der Begutachtung und dem Lektorat ist die Redaktion auch für die Koordination
+                der Übersetzungen ins Englische sowie die Beschaffung und anschließend die
+                Transkription und Auszeichnung der Quellen zuständig. Auch die Übersetzungen
+                durchlaufen ein Begutachtungsverfahren und Lektorat.</p>
+        </body>
+    </text>
+</TEI>

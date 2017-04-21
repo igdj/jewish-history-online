@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
+type="application/xml"
+schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="main">Structure / How to Use this Edition</title>
+            </titleStmt>
+            <publicationStmt>
+                <p></p>
+            </publicationStmt>
+            <sourceDesc>
+                <p></p>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <langUsage><language ident="en">Englisch</language></langUsage>
+        </profileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <p>Being extremely user-friendly and offering extensive research tools, this online
+                edition is attractive to the general interested public as well. Different <hi
+                    rendition="#b">text genres</hi> and various <hi rendition="#b">types of
+                    sources</hi> such as images or sound and video recordings provide information on
+                German-Jewish history on different levels. The edition has a modular structure so
+                that the sources can be researched by users via three different paths: a timeline, a
+                map or a thematic module.
+            </p>
+            
+            <div n="2">
+                <head>Text Genres and Types of Sources</head><lb/>
+                <p>The online edition thematically highlights key aspects of local, regional, and
+                    general German-Jewish history by using a sample of currently 50 (about 150 once this
+                    phase of the project is completed) key documents. The number of these key documents
+                    could certainly be increased. There are different text levels in order to integrate
+                    the sources into their historical context as well as into scholarly debate.</p>
+                <lb/>
+                <p>A general overview is provided by the <hi rendition="#b">first text genre</hi>, the
+                    <ref target="../topic"><hi rendition="#b"><hi rendition="#i">introductions</hi></hi> to the currently
+                        15 subject categories</ref>. Written by <ref target="editors">different editors</ref>, these introductions represent
+                    the most detailed and profound text genre in terms of content. In contrast to a
+                    printed historical introduction, they do not follow a common narrative and can thus
+                    be read independently of one another. In some cases thematic aspects will therefore
+                    be repeated in different introductions, all of which stand alone yet complement each
+                    other content wise. The introductions are the longest texts in the edition. Their
+                    purpose is to place the sources in the broader historical context.</p>
+                <lb/>
+                <p>The selection of subject categories offers a multi-perspective access to the
+                    circumstances shaping Jewish life, and it captures important aspects of life within
+                    the Jewish communities on various levels without trying to establish a
+                    metanarrative. The categories are meant to present the diverse facets of Jewish life
+                    rather than reduce Jewish history to a history of persecution and/or contribution.
+                    The underlying idea of the thematic introductions is that a specific thematic focus
+                    opens up a path into German-Jewish history which will then lead to further
+                    questions. Someone only interested in the topic of “law and politics” initially
+                    might thus be directed to the topic of “leisure and sports” by clicking a link to a
+                    source. On the one hand, the selection of subject categories is arrived at by
+                    processof induction from the sources – in the case of categories such as “leisure
+                    and sports” or “arts and culture,” for example. On the other hand, the editorial
+                    staff is aware that a certain basic thematic structure similar to a historical
+                    introduction is necessary, and therefore introductions on “demographics and social
+                    structure” and “economy and occupational patterns” are provided as well.</p>
+                <lb/>
+                <p><hi rendition="#b">The individual subject categories are:</hi>
+                    <lb/>• Antisemitism and Persecution <lb/>• Arts and Culture <lb/>• Economy and
+                    Occupational Patterns <lb/>• Education and Learning <lb/>• Everyday Life and Family
+                    <lb/>• Demographics and Social Structure <lb/>• Law and Politics <lb/>• Leisure and
+                    Sports <lb/>• Memory and Remembrance <lb/>• Migration <lb/>• Organizations and
+                    Institutions <lb/>• Religion and Identity <lb/>• Social Questions and Welfare <lb/>•
+                    Scholarship <lb/>• Sephardic Jews </p>
+                <lb/>
+                <p>The core of the edition consists of the <hi rendition="#b">second text genre</hi>,
+                    the <hi rendition="#b"><hi rendition="#i">sources</hi></hi>. Most of the edited
+                    sources are texts, but non-textual sources are read as texts as well. Whenever
+                    possible sources are presented in their entirety; only in some cases have clips or
+                    excerpts been chosen instead. The length of the sources has been limited for reasons
+                    of content as well as for practical reasons: firstly, a short text allows the
+                    interpretation to discuss single aspects in depth and to closely examine individual
+                    sentences or phrases which cannot be discussed as thoroughly when interpreting a
+                    longer text. Secondly, the brevity of the texts is necessitated by the medium and
+                    online reading habits.</p>
+                <lb/>
+                <p><hi rendition="#b"><hi rendition="#i">Source interpretations</hi></hi> represent the
+                    <hi rendition="#b">third text genre</hi>. Their function is to “open the door”
+                    to understanding the sources, to pick up on the larger topics discussed in the
+                    introductions, and to illustrate major developments in Jewish history by means of a
+                    specific source. At the same time they offer one way of interpreting the source in
+                    question.</p>
+                <lb/>
+                <p>Each source interpretation opens with a brief source description highlighting the
+                    most significant aspects and relevant information about the source in a few
+                    sentences.</p>
+                <lb/>
+                <p>On the technical level each source is accompanied by a <hi rendition="#b"><hi
+                    rendition="#i">transcription</hi></hi>, which is helpful if not outright
+                    necessary for interviews, songs or barely legible handwriting and also enables a
+                    full text search.</p>
+                <lb/>
+                <p>English <hi rendition="#b"><hi rendition="#i">translations</hi></hi> are made
+                    available not only for the metatexts (introductions and interpretations), but also
+                    for the sources themselves.</p>
+                <lb/>
+                <p><hi rendition="#b">Metadata</hi> for persons, places, and events are tagged directly
+                    in the documents. In addition to targeted searches, this allows for sophisticated
+                    indexing tools to be included in the website, thus taking advantage of the potential
+                    of electronic publishing. Large parts of these metadata are stored in an <hi
+                        rendition="#b"><hi rendition="#i">index</hi></hi>. This concise background
+                    information can be found in the “look-up” menu, including an extensible <hi
+                        rendition="#b"><hi rendition="#i">glossary</hi></hi> providing further
+                    information on persons, for example. Where applicable it will also include external
+                    links.</p>
+                
+            </div>
+            <div n="2">
+                <head>Paths</head><lb/>
+                <p>The digital edition provides many different ways of accessing the sources or
+                    questions relating to German-Jewish history. Different paths lead users to the
+                    sources and their interpretations. These paths can be accessed via three flags
+                    labeled “timeline,” “map,” and “topics.” All sources are assigned a primary date
+                    through metadata. This generally is the verifiable date of the source’s creation.
+                    For oral history interviews and memoirs the editorial staff has decided to assign two
+                    dates – the date when the source was created and the verifiable historic time period
+                    it covers. They are integrated into a <hi rendition="#b"><hi rendition="#i"
+                        >timeline</hi></hi> based on these dates. For example, those not interested
+                    in a diachronic look at a subject throughout the entire course of modern
+                    German-Jewish history but in a synchronous look at the history of Hamburg’s Jews in
+                    the eighteenth century can run a targeted search for the relevant sources. The
+                    decision for a timeline and against established historical epochs was taken in order
+                    to ensure opennessfor other historical caesuras. </p>
+                <lb/>
+                <p>A second way of accessing the material is through a <hi rendition="#b"><hi
+                    rendition="#i">map</hi></hi>. In addition to a primary date the sources are
+                    also tagged with a primary location – usually the place where they were created –
+                    which allows for their location on the map. Since the edition spans several
+                    centuries and thus covers several historical, political, and environmental changes,
+                    this map is not based on historical data. It is an abstracted map intended mainly
+                    for spatial orientation and does not claim historical accuracy. In the current phase
+                    of the project, which focuses on Hamburg, the map mostly shows results in the area
+                    of northern Germany for obvious reasons. </p>
+                <lb/>
+                <p>The third way of accessing the sources is through specific <hi rendition="#b"><hi
+                    rendition="#i">topics</hi></hi> which are discussed in depth in the
+                    introductions, where explicit reference is made to the relevant sources. Each
+                    introduction contains links to individual sources related to its subject matter.
+                    Since some sources are relevant to various contexts, links to them appear in several
+                    of the introductions. </p>                
+            </div>
+        </body>
+    </text>
+</TEI>
