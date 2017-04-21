@@ -1204,7 +1204,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
         ];
 
         $ret = [
-	    'og:type' => 'article',
+            'og:type' => 'article',
             'og:title' => $this->name,
             'article:section' => $sectionMap[$this->articleSection],
         ];

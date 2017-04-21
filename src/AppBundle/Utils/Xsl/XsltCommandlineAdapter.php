@@ -52,7 +52,7 @@ class XsltCommandlineAdapter
                           ]));
         $res = `$cmd`;
 
-        // TODO: maybe some form of error-handling
+        // TODO: implement some form of error-handling
         return $res;
     }
 }

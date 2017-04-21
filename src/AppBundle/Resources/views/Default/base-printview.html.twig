@@ -33,10 +33,10 @@
 
     <body role="document" class="route-{{ app.request.get('_route') | replace({'_' : '-'}) }}">
         <!--<header>
-			<h1>
-				<a href="{{ path('home') }}">{{ siteName|trans }}</a><br />
-				<a href="{{ path('home') }}" style="font-size: 14px; font-weight: normal">{{ 'A Digital Source Edition'|trans }}</a></smaller>
-			</h1>
+            <h1>
+                <a href="{{ path('home') }}">{{ siteName|trans }}</a><br />
+                <a href="{{ path('home') }}" style="font-size: 14px; font-weight: normal">{{ 'A Digital Source Edition'|trans }}</a></smaller>
+            </h1>
         </header>-->
 
         {% block body %}{% endblock %}

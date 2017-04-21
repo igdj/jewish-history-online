@@ -9,9 +9,11 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\CssSelector\CssSelectorConverter;
 
-abstract class RenderTeiController extends Controller
+abstract class RenderTeiController
+extends Controller
 {
-    use OgBuilderTrait;
+    use OgBuilderTrait,
+        \AppBundle\Utils\RenderTeiTrait; // use shared method renderTei()
 
     protected function locateTeiResource($fnameXml)
     {

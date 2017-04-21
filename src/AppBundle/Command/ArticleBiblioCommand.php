@@ -96,7 +96,6 @@ class ArticleBiblioCommand extends ContainerAwareCommand
                     continue;
                 }
                 else if (count($zoteroItems) > 1) {
-                    // TODO: check the zotero key
                     $output->writeln(sprintf('<error>More than one Zotero entry found for %s</error>',
                                              trim($key)));
                     continue;

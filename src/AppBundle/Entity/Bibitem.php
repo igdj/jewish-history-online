@@ -1458,7 +1458,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
         }
 
         $ret = [
-			'og:type' => $type,
+            'og:type' => $type,
             'og:title' => $this->name,
         ];
 

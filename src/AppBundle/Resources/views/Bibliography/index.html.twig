@@ -17,11 +17,11 @@
             {% endif %}
             <li>
                 <a href="{% if item.slug is not empty %}{{ path('bibliography', { 'slug' : item.slug }) }}{% else %}{{ path('bibliography', { 'slug' : item.id }) }}{% endif %}">
-					{{ item.renderCitationAsHtml(citeProc)|raw }}
+                    {{ item.renderCitationAsHtml(citeProc)|raw }}
                 </a>
             </li>
         {% endfor %}
-        </ul>
+            </ul>
         {% else %}
             Es wurden keine Einträge gefunden
         {% endif %}

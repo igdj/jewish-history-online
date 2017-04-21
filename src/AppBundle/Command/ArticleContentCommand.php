@@ -17,8 +17,11 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-class ArticleContentCommand extends ContainerAwareCommand
+class ArticleContentCommand
+extends ContainerAwareCommand
 {
+    use \AppBundle\Utils\RenderTeiTrait; // use shared method renderTei()
+
     protected function configure()
     {
         $this
@@ -44,29 +47,6 @@ class ArticleContentCommand extends ContainerAwareCommand
                 'If set, an existing article will be updated'
             )
         ;
-    }
-
-    /* TODO: move the following to a RenderTeiTrait shared with RenderTeiController */
-    protected function renderTei($fnameXml, $fnameXslt = 'dtabf_article.xsl', $options = [])
-    {
-        $kernel = $this->getContainer()->get('kernel');
-
-        $locateResource = !array_key_exists('locateXmlResource', $options)
-            || $options['locateXmlResource'];
-        if ($locateResource) {
-            $pathToXml = $this->locateTeiResource($fnameXml);
-            if (false === $pathToXml) {
-                return false;
-            }
-        }
-        else {
-            $pathToXml = $fnameXml;
-        }
-
-        $proc = $this->getContainer()->get('app.xslt');
-        $pathToXslt = $kernel->locateResource('@AppBundle/Resources/data/xsl/' . $fnameXslt);
-        $res = $proc->transformFileToXml($pathToXml, $pathToXslt, $options);
-        return $res;
     }
 
     function removeByCssSelector($html, $selectorsToRemove)

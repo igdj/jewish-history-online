@@ -1002,7 +1002,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
         static $genderMap = [ 'F' => 'female', 'M' => 'male' ];
 
         $ret = [
-			'og:type' => 'profile',
+            'og:type' => 'profile',
             'og:title' => $this->getFullname(),
         ];
 

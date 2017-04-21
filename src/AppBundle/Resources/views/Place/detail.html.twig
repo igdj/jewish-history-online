@@ -42,7 +42,7 @@
         </div>
 
         <div class="col-sm-4 sidebar">
-			{#{ dump(place.additional )}#}
+            {#{ dump(place.additional )}#}
             {% if place.geo is not empty or place.additional.boundary is not empty %}
             <div id="map" class="col-sm-12" style="width: 100%; min-height: 360px"></div>
             <script>
@@ -59,9 +59,9 @@
 
             var map = L.map('map');
 
-			var bounds = null;
+            var bounds = null;
             {% if place.additional.bounds is not empty %}
-				bounds = {{ place.additional.bounds|json_encode|raw }};
+                bounds = {{ place.additional.bounds|json_encode|raw }};
             {% elseif place.geo is not null %}
                 {% if place.showCenterMarker %}
                     L.marker([ {{ place.geo }} ]).addTo(map);
@@ -76,13 +76,13 @@
             {% if place.additional.boundary is not empty %}
                 var boundary = {{ place.additional.boundary|json_encode|raw }};
                 var geojsonLayer = L.geoJSON(boundary).addTo(map);
-				if (bounds == null) {
-					bounds = geojsonLayer.getBounds();
-				}
+                if (bounds == null) {
+                    bounds = geojsonLayer.getBounds();
+                }
             {% endif %}
             if (bounds != null) {
-	            map.fitBounds(bounds);
-			}
+                map.fitBounds(bounds);
+            }
             </script>
             {% endif %}
         </div>

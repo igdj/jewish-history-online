@@ -20,12 +20,12 @@
                 {{ person.fullname }}
                 </a>
 
-		{% if person.birthDate is not empty or person.deathDate is not empty %}
-		    ({{ person.birthDate|dateincomplete }} - {{  person.deathDate|dateincomplete  }})
-		{% endif %}
+                {% if person.birthDate is not empty or person.deathDate is not empty %}
+                    ({{ person.birthDate|dateincomplete }} - {{  person.deathDate|dateincomplete  }})
+                {% endif %}
             </li>
         {% endfor %}
-	    </ul>
+            </ul>
         {% else %}
             Es wurden keine Personen gefunden
         {% endif %}
