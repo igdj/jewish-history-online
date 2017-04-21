@@ -2,11 +2,12 @@ Web-site http://jewish-history-online.net/
 ==========================================
 
 This is the code base for the presentation of the site. Since certain
-assumptions concerning the bilingual presentation of all content (de / en) or
-the set of licenses used, this code is not intended for out-of-the-box re-use.
+assumptions concerning the bilingual presentation of all the content (de / en)
+or the set of licenses used are currently hardwired, this code is not
+yet intended for out-of-the-box re-use by other projects.
 
 You may use it in parts or adjust it to your own need if it fits your needs.
-If you have any questions, please contact us at
+If you have any questions or find this code helpful, please contact us at
     http://jewish-history-online.net/contact
 
 
