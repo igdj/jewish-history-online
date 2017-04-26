@@ -1,0 +1,3 @@
+    <div class="route-{{ app.request.get('_route') | replace({'_' : '-'}) }}">
+        {% block body %}{% endblock %}
+    </div>

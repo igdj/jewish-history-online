@@ -59,6 +59,8 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
                 <p><hi rendition="#b"><ref target="https://www.gwiss.uni-hamburg.de/gwin.html"
                             >Geisteswissenschaftliche Infrastruktur für Nachhaltigkeit</ref></hi>,
                     Universität Hamburg<lb/></p>
+                <p><hi rendition="#b"><ref target="https://www.ghi-dc.org/"
+                    >German Historical Institute in Washington DC</ref></hi><lb/></p>                
                 <p><hi rendition="#b"><ref target="http://www.hamburgwissen-digital.de/home.html"
                             >HamburgWissen Digital</ref></hi><lb/></p>
                 <p><hi rendition="#b"><ref target="http://www.judaica-europeana.eu/">Judaica

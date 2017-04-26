@@ -142,6 +142,7 @@ class MicroKernel extends Kernel
         $routes->mount('/', $routes->import('@PrestaSitemapBundle/Resources/config/routing.yml'));
 
         $routes->add('/', 'AppBundle:Default:index', 'home');
+
         $routes->add('/about/edition', 'AppBundle:About:about', 'about');
         $routes->add('/about/goals', 'AppBundle:About:goals', 'about-goals');
         $routes->add('/about/keydocuments', 'AppBundle:About:keydocuments', 'about-keydocuments');
@@ -189,9 +190,10 @@ class MicroKernel extends Kernel
         $routes->add('/source/{uid}', 'AppBundle:Source:sourceViewer', 'source');
 
         $routes->add('/map', 'AppBundle:Place:map', 'place-map');
-        $routes->add('/map/place', 'AppBundle:Place:mapMentioned', 'place-map-mentioned');
+        $routes->add('/map/place', 'AppBundle:Place:map', 'place-map-mentioned');
         $routes->add('/map/popup-content/{ids}', 'AppBundle:Place:mapPopupContent', 'place-map-popup-content');
 
+        $routes->add('/chronology/partial', 'AppBundle:Date:chronology', 'date-chronology-partial');
         $routes->add('/chronology', 'AppBundle:Date:chronology', 'date-chronology');
 
         $routes->add('/person', 'AppBundle:Person:index', 'person-index');

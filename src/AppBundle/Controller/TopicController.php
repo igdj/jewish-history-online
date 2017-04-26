@@ -56,7 +56,7 @@ class TopicController extends RenderTeiController
         return $topic;
     }
 
-    private function buildTopicsBySlug($translate_keys = false)
+    protected function buildTopicsBySlug($translate_keys = false)
     {
         $translator = $this->get('translator');
         $slugify = $this->get('cocur_slugify');
@@ -71,10 +71,7 @@ class TopicController extends RenderTeiController
         return $topics;
     }
 
-    /**
-     * @Route("/topic")
-     */
-    public function indexAction()
+    protected function buildTopicsDescriptions()
     {
         $locale = $this->get('request')->getLocale();
         $fnameAppend = !empty($locale) ? '.' . $locale : '';
@@ -93,9 +90,17 @@ class TopicController extends RenderTeiController
             }
         }
 
+        return $topicsDescription;
+    }
+
+    /**
+     * @Route("/topic")
+     */
+    public function indexAction()
+    {
         return $this->render('AppBundle:Topic:index.html.twig', [
             'pageTitle' => $this->get('translator')->trans('Topics'),
-            'topics' => $topicsDescription,
+            'topics' => $this->buildTopicsDescriptions(),
         ]);
     }
 

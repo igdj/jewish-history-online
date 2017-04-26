@@ -1,4 +1,12 @@
 {% extends 'AppBundle:Default:base.html.twig' %}
+
+{% import 'AppBundle:Shared:map-leaflet.html.twig' as map %}
+
+{% block head %}
+    {{ map.head() }}
+    {{ map.head_markercluster() }}
+{% endblock %}
+
 {% block contenttop %}
 {% embed 'AppBundle:Default:contenttop_skeleton.html.twig' %}
 
@@ -62,8 +70,18 @@
 {% block body %}
     <div class="row">
         <div class="col-sm-8">
-            <h2>{% trans %}Welcome{% endtrans %}</h2>
-            <div class="two-columns justify-hyphens">
+            <div class="container-fluid">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist" style="margin-bottom: 1em">
+                    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">{{ 'Welcome'|trans }}</a></li>
+                    <li role="presentation"><a href="#topic" aria-controls="topic" role="tab" data-toggle="tab">{{ 'Topics'|trans }}</a></li>
+                    <li role="presentation"><a href="#map" aria-controls="map" role="tab" data-toggle="tab">{{ 'Map'|trans }}</a></li>
+                    <li role="presentation"><a href="#chronology" data-url="{{ path('date-chronology-partial') }}" aria-controls="chronology" role="tab" data-toggle="tab">{{ 'Chronology'|trans }}</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="home">
+                        <div class="two-columns justify-hyphens">
 {% if 'en' == app.request.locale %}
     <p>This online source edition published by the Institute for the History of German Jews (IGdJ) uses a selection of sources, so-called <a href="{{ path('about-keydocuments') }}">key documents</a>, to thematically highlight central aspects in Hamburg’s Jewish history from the early modern age to the present. The editors consider Hamburg as a lens for larger developments and questions in German-Jewish history. The source edition aims to help digitally reunite the city’s Jewish heritage, scattered all over the world due to persecution and migration, and to make it accessible and preserve it for future generations.</p>
 
@@ -84,7 +102,68 @@ Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und du
 
     <p>Die Online-Edition wird seit Juli 2015 für zwei Jahre von der <a href="http://dfg.de/">Deutschen Forschungsgemeinschaft</a> gefördert. Mit der Edition präsentiert sich das IGdJ erneut in seiner Rolle als Verbindungsglied zwischen Wissenschaft und interessierter Öffentlichkeit.</p>
 {% endif %}
-            </div>
+                        </div><!-- .two-columns -->
+                    </div><!-- .tab-pane -->
+
+                    <div role="tabpanel" class="tab-pane" id="topic">
+                    {% for slug,topicDescr in topics %}
+                        <div class="col-sm-4 col-xs-6 topic">
+                            {% if topicDescr.article is not empty %}
+                            <a href="{{ path('topic-background', { 'slug' : topicDescr.article }) }}">
+                            {% endif %}
+                                <h4>
+                                    <div class="topic-label">{{ topicDescr.label }}</div>
+                                </h4>
+                                <img src="{{ asset('img/topic/' ~ slug ~ '.jpg') }}" style="width: 100%; height: auto" />
+                            {% if topicDescr.article is not empty %}
+                            </a>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    </div><!-- .tab-pane -->
+
+                    <div role="tabpanel" class="tab-pane" id="map">
+                        <div id="map-container">
+                            <div id="map" style="width: 100%; min-height: 360px"></div>
+                            <script>
+
+                            var chronologyLoaded = false;
+
+                            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                              var target = $(e.target).attr("href") // activated tab
+                              if ('#map' == target) {
+                                if (map != null) {
+                                    map.invalidateSize(false);
+                                }
+                                else {
+                                    showMap();
+                                }
+                              }
+                              else if ('#chronology' == target) {
+                                if (!chronologyLoaded) {
+                                    var url = $(this).attr("data-url");
+                                    var pane = $(this), href = this.hash;
+
+                                    // ajax load from data-url
+                                    $(href).load(url,function(result){
+                                        pane.tab('show');
+                                        chronologyLoaded = true;
+                                    });
+                                }
+                              }
+                            });
+
+
+                            {{ map.showMap(bounds, markers) }}
+                            </script>
+                        </div>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane" id="chronology">
+                        {{ 'Loading...' | trans }}
+                    </div>
+                </div>
+            </div><!-- .container-fluid -->
         </div>
 
         <div class="col-sm-4 sidebar">

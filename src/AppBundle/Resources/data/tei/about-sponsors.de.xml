@@ -36,7 +36,7 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
                 <!-- <head>Das Projekt</head> -->
                 <p>Die <hi rendition="#b"><ref target="http://www.awhamburg.de/">Akademie der
                             Wissenschaften in Hamburg</ref></hi> förderte die anfängliche Konzeption
-                    der Edition. Juli 2015 fördert die <hi rendition="#b">Deutsche
+                    der Edition. Seit Juli 2015 fördert die <hi rendition="#b">Deutsche
                         Forschungsgemeinschaft</hi> die Realisierung der Online-Edition im
                     Förderbereich <ref target="http://gepris.dfg.de/gepris/projekt/268470421"
                         >Wissenschaftliche Literaturversorgungs- und Informationssysteme</ref>.
@@ -50,6 +50,8 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
                             the History of the Jewish People, Jerusalem</ref></hi><lb/></p>
                 <p><hi rendition="#b"><ref target="http://www.centrumjudaicum.de/cjudaicum_wp/"
                             >Centrum Judaicum, Berlin</ref></hi><lb/></p>
+                <p><hi rendition="#b"><ref target="https://www.ghi-dc.org/"
+                    >Deutsches Historisches Institut Washington DC</ref></hi><lb/></p>                
                 <p><hi rendition="#b"><ref target="http://www.dra.de/">Deutsches Rundfunkarchiv,
                             Frankfurt am Main</ref></hi><lb/></p>
                 <p><hi rendition="#b"><ref target="https://www.lbi.org/digibaeck/">DigiBaeck, Leo

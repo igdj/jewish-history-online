@@ -1,9 +1,13 @@
-{% extends 'AppBundle:Default:base.html.twig' %}
-
+{% extends app.request.attributes.get('_route') == 'date-chronology-partial'
+    ? 'AppBundle:Default:partial.html.twig'
+    : 'AppBundle:Default:base.html.twig'
+%}
 {% import 'AppBundle:Shared:helper.html.twig' as helper %}
 
 {% block body %}
+    {% if app.request.attributes.get('_route') != 'date-chronology-partial' %}
     <h1>{{ 'Chronology'|trans }}</h1>
+    {% endif %}
     <div class="row">
         <div class="col-sm-12">
         {# styles: see http://stackoverflow.com/questions/19089384/twitter-bootstrap-3-two-columns-full-height #}
