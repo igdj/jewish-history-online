@@ -1,7 +1,6 @@
 # project specific
 /web/.htaccess
 /web/viewer
-/sphinx-2.2.10-release-win64-full
 /sql
 
 # Cache, session files and logs (Symfony3)
@@ -14,7 +13,6 @@
 
 # Parameters
 /app/config/parameters.yml
-/app/config/parameters.ini
 
 # Managed by Composer
 /app/bootstrap.php.cache
