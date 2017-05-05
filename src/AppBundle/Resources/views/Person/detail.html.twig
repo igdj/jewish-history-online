@@ -126,38 +126,22 @@
             </script>
             {% endif %}
 
-            {% if person.gnd is not empty %}
+            {% if person.gnd is not empty or person.djh is not empty or person.stolpersteine is not empty %}
             <div class="container-fluid box">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
-                        <h4>{{ 'Integrated Authority File'|trans }}
-                        <br /><a href="http://d-nb.info/gnd/{{ person.gnd }}" target="_blank">{{ person.gnd }}</a>
+                        <h4>
+                            {% if person.gnd is not empty %}
+                            {{ 'Integrated Authority File'|trans }}
+                            <br /><a href="http://d-nb.info/gnd/{{ person.gnd }}" target="_blank">{{ person.gnd }}</a>
+                            {% else %}
+                            {{ 'Additional Information'|trans }}
+                            {% endif %}
                         </h4>
                     </div>
                 </div>
                 <div class="row box-color-content-inverse">
-                    {% if person.additional.beacon is not empty %}
-                    <div class="col-sm-12 beacon-ul">
-                        <ul>
-                            {% for info in person.additional.beacon %}
-                            <li><a href="{{ info.url }}" target="_blank">{{ info.description }}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    {% endif %}
-                    <div class="col-sm-12">
-                        <div title="{{ person.gnd }}" class="pndaks seealso-ul"></div>
-                    </div>
-                </div>
-            </div>
-            {% elseif person.djh is not empty or person.stolpersteine is not empty %}
-            <div class="container-fluid box">
-                <div class="row box-color-title">
-                    <div class="col-sm-12">
-                        <h4>{{ 'Additional Information'|trans }}</h4>
-                    </div>
-                </div>
-                <div class="row box-color-content-inverse">
+                    {% if person.djh is not empty or person.stolpersteine is not empty or person.additional.beacon is not empty %}
                     <div class="col-sm-12 beacon-ul">
                         <ul>
                             {% if person.djh is not empty %}
@@ -170,7 +154,16 @@
                                 <a href="http://www.stolpersteine-hamburg.de//?MAIN_ID=7&BIO_ID={{ person.stolpersteine }}" target="_blank">Stolpersteine Hamburg</a>
                             </li>
                             {% endif %}
+                            {% if person.additional.beacon is not empty %}
+                                {% for info in person.additional.beacon %}
+                            <li><a href="{{ info.url }}" target="_blank">{{ info.description }}</a></li>
+                                {% endfor %}
+                            {% endif %}
                         </ul>
+                    </div>
+                    {% endif %}
+                    <div class="col-sm-12">
+                        <div title="{{ person.gnd }}" class="pndaks seealso-ul"></div>
                     </div>
                 </div>
             </div>
