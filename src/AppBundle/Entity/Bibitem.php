@@ -1037,12 +1037,22 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
     public function renderCitationAsHtml($citeProc, $purgeSeparator = false)
     {
         $ret = $citeProc->render(json_decode(json_encode($this->jsonSerialize())));
+
+        /* vertical-align: super doesn't render nicely:
+           http://stackoverflow.com/a/1530819/2114681
+        */
+        $ret = preg_replace('/style="([^"]*)vertical\-align\:\s*super;([^"]*)"/',
+                            'style="\1vertical-align: top; font-size: 66%;\2"', $ret);
+
         if ($purgeSeparator) {
             if (preg_match('/, <span class="citeproc\-in">/', $ret, $matches)) {
                 $ret = preg_replace('/, (<span class="citeproc\-in">)/', '\1', $ret);
             }
             else if (preg_match('/, <span class="citeproc\-volumes">/', $ret, $matches)) {
                 $ret = preg_replace('/, (<span class="citeproc\-volumes">)/', '\1', $ret);
+            }
+            else if (preg_match('/, <span class="citeproc\-book\-series">/', $ret, $matches)) {
+                $ret = preg_replace('/, (<span class="citeproc\-book\-series">)/', '\1', $ret);
             }
             else if (preg_match('/, <span class="citeproc\-place">/', $ret, $matches)) {
                 $ret = preg_replace('/, (<span class="citeproc\-place">)/', '\1', $ret);
@@ -1487,5 +1497,4 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
     {
         return $this->status >= 0;
     }
-
 }

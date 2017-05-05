@@ -46,7 +46,8 @@
       <term name="no date" form="short">o. D.</term>
     </terms>
 
-    <!-- this seems to be picked up in xml:lang="en" as well, so set in academicpuma/locales/locales-de-DE.xml instead
+    <!-- the following seems to be picked up in xml:lang="en" as well, so set in academicpuma/locales/locales-de-DE.xml instead
+    <term name="online">online unter</term>
     <date form="text">
       <date-part name="day" suffix=". "/>
       <date-part name="month" suffix=" "/>
@@ -116,6 +117,7 @@
               </group>
             </group>
             <text macro="type-description"/>
+            <text macro="book-series"/>
           </group>
         </group>
         <text macro="alt-publisher"/>
@@ -123,14 +125,15 @@
           <text macro="place"/>
           <text macro="date"/>
           <date variable="original-date" form="text" prefix="[" suffix="]"/>
-          <text macro="book-series"/>
+          <!--<text macro="book-series"/>-->
         </group>
         <text macro="artwork-description"/>
         <text macro="archive-location"/>
         <text macro="pages"/>
         <text macro="url-web-documents-only"/>
+        <text macro="url-non-web-documents"/>
       </group>
-      <text macro="url-non-web-documents"/>
+      <!--<text macro="url-non-web-documents"/>-->
     </group>
   </macro>
   <macro name="subsequent-reference">
@@ -145,7 +148,7 @@
   </macro>
   <macro name="creator">
     <names variable="author">
-      <name et-al-min="4" et-al-use-first="3"/>
+      <name et-al-min="4" et-al-use-first="1"/>
       <label form="short" prefix="&#160;(" suffix=")"/>
       <substitute>
         <names variable="editor"/>
@@ -206,7 +209,7 @@
     <choose>
       <if type="chapter paper-conference" match="any">
         <names variable="editor">
-          <name et-al-min="4" et-al-use-first="3"/>
+          <name et-al-min="4" et-al-use-first="1"/>
           <label form="short" prefix="&#160;(" suffix=")"/>
           <substitute>
             <names variable="container-author"/>
@@ -412,7 +415,8 @@
   <macro name="book-series">
     <choose>
       <if type="book chapter paper-conference                 entry-dictionary entry-encyclopedia" match="any">
-        <group prefix="(=" suffix=")" delimiter=" ">
+        <!--<group prefix="(=" suffix=")" delimiter=" ">-->
+        <group delimiter=" ">
           <text variable="collection-title"/>
           <choose>
             <if is-numeric="collection-number">
@@ -455,7 +459,8 @@
   <macro name="url-non-web-documents">
     <choose>
       <if variable="DOI">
-        <text term="online" text-case="capitalize-first" suffix=": "/>
+        <!--<text term="online" text-case="capitalize-first" suffix=": "/>-->
+        <text term="online" suffix=": "/>
         <group delimiter=", ">
           <text variable="source"/>
           <text macro="doi"/>
@@ -465,7 +470,8 @@
         <choose>
           <if type="webpage post post-weblog" match="none">
             <group delimiter=" ">
-              <text term="online" text-case="capitalize-first" suffix=": "/>
+              <!--<text term="online" text-case="capitalize-first" suffix=": "/>-->
+              <text term="online" suffix=": "/>
               <group delimiter=", ">
                 <text variable="source"/>
                 <text macro="url"/>
