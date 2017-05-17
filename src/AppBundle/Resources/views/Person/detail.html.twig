@@ -162,9 +162,11 @@
                         </ul>
                     </div>
                     {% endif %}
+                    {% if person.gnd is not empty %}
                     <div class="col-sm-12">
                         <div title="{{ person.gnd }}" class="pndaks seealso-ul"></div>
                     </div>
+                    {% endif %}
                 </div>
             </div>
             {% endif %}
