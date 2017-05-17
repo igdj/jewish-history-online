@@ -12,44 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
  */
 class ArticleController extends RenderTeiController
 {
-    protected function adjustMedia($html, $baseUrl)
-    {
-        $crawler = new \Symfony\Component\DomCrawler\Crawler();
-        $crawler->addHtmlContent($html);
-
-        $crawler->filter('audio > source')->each(function ($node, $i) use ($baseUrl) {
-            $src = $node->attr('src');
-            $node->getNode(0)->setAttribute('src', $baseUrl . '/' . $src);
-        });
-
-        // for https://github.com/iainhouston/bootstrap3_player
-        $crawler->filter('audio')->each(function ($node, $i) use ($baseUrl) {
-            $poster = $node->attr('data-info-album-art');
-            if (!is_null($poster)) {
-                $node->getNode(0)->setAttribute('data-info-album-art', $baseUrl . '/' . $poster);
-            }
-        });
-
-        $crawler->filter('video > source')->each(function ($node, $i) use ($baseUrl) {
-            $src = $node->attr('src');
-            $node->getNode(0)->setAttribute('src', $baseUrl . '/' . $src);
-        });
-
-        $crawler->filter('video')->each(function ($node, $i) use ($baseUrl) {
-            $poster = $node->attr('poster');
-            if (!is_null($poster)) {
-                $node->getNode(0)->setAttribute('poster', $baseUrl . '/' . $poster);
-            }
-        });
-
-        $crawler->filter('img')->each(function ($node, $i) use ($baseUrl) {
-            $src = $node->attr('src');
-            $node->getNode(0)->setAttribute('src', $baseUrl . '/' . $src);
-        });
-
-        return $crawler->html();
-    }
-
     /*
      * TODO: maybe move into entity
      */
@@ -122,13 +84,8 @@ class ArticleController extends RenderTeiController
                 'section_headers' => $section_headers,
                 'license' => $license,
             ]);
-            // return new Response($html); // just for debugging
-            $pdfGenerator = new \AppBundle\Utils\PdfGenerator();
-            $fnameLogo = $this->get('kernel')->getRootDir() . '/../web/img/icon/icons_wide.png';
-            $pdfGenerator->logo_top = file_get_contents($fnameLogo);
 
-            $pdfGenerator->writeHTML($html);
-            $pdfGenerator->Output(str_replace(':', '-', $article->getSlug(true)) . '.pdf', 'I');
+            $this->renderPdf($html, str_replace(':', '-', $article->getSlug(true)) . '.pdf');
             return;
         }
 

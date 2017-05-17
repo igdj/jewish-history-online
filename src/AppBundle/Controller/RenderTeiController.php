@@ -324,23 +324,70 @@ extends Controller
         return $glossaryLookup;
     }
 
-    protected function renderPdf()
+    protected function adjustMedia($html, $baseUrl, $imgClass = 'image-responsive')
     {
+        $crawler = new \Symfony\Component\DomCrawler\Crawler();
+        $crawler->addHtmlContent($html);
+
+        $crawler->filter('audio > source')->each(function ($node, $i) use ($baseUrl) {
+            $src = $node->attr('src');
+            $node->getNode(0)->setAttribute('src', $baseUrl . '/' . $src);
+        });
+
+        // for https://github.com/iainhouston/bootstrap3_player
+        $crawler->filter('audio')->each(function ($node, $i) use ($baseUrl) {
+            $poster = $node->attr('data-info-album-art');
+            if (!is_null($poster)) {
+                $node->getNode(0)->setAttribute('data-info-album-art', $baseUrl . '/' . $poster);
+            }
+        });
+
+        $crawler->filter('video > source')->each(function ($node, $i) use ($baseUrl) {
+            $src = $node->attr('src');
+            $node->getNode(0)->setAttribute('src', $baseUrl . '/' . $src);
+        });
+
+        $crawler->filter('video')->each(function ($node, $i) use ($baseUrl) {
+            $poster = $node->attr('poster');
+            if (!is_null($poster)) {
+                $node->getNode(0)->setAttribute('poster', $baseUrl . '/' . $poster);
+            }
+        });
+
+        $crawler->filter('img')->each(function ($node, $i) use ($baseUrl, $imgClass) {
+            $src = $node->attr('src');
+            $node->getNode(0)->setAttribute('src', $baseUrl . '/' . $src);
+            if (!empty($imgClass)) {
+                $node->getNode(0)->setAttribute('class', $imgClass);
+            }
+        });
+
+        return $crawler->html();
+    }
+
+    protected function renderPdf($html, $filename = '', $dest = 'I')
+    {
+        /*
+        // for debugging
+        echo $html;
+        exit;
+        */
+
         // mpdf
-        $pdf = new \AppBundle\Utils\PdfGenerator();
+        $pdfGenerator = new \AppBundle\Utils\PdfGenerator();
 
         /*
         // hyphenation
         list($lang, $region) = explode('_', $display_lang, 2);
-        $pdf->SHYlang = $lang;
-        $pdf->SHYleftmin = 3;
-
-
-        $pdf->logo = file_get_contents(BASE_PATH . '/media/logo_arthist.jpg');
-        $pdf->logo_footer = file_get_contents(BASE_PATH . '/media/logo_arthist_footer.jpg');
+        $pdfGenerator->SHYlang = $lang;
+        $pdfGenerator->SHYleftmin = 3;
         */
-        $pdf->writeHTML($html);
-        $pdf->Output();
+
+        $fnameLogo = $this->get('kernel')->getRootDir() . '/../web/img/icon/icons_wide.png';
+        $pdfGenerator->logo_top = file_get_contents($fnameLogo);
+
+        $pdfGenerator->writeHTML($html);
+        $pdfGenerator->Output($filename, 'I');
     }
 
     protected function adjustRefs($html, $refs, $language)

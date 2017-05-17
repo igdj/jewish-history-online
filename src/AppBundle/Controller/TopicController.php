@@ -123,6 +123,7 @@ class TopicController extends RenderTeiController
 
         $generatePrintView = 'topic-background-pdf' == $this->container->get('request')->get('_route');
         $fname = $slug . $fnameAppend . '.xml';
+        $path = '';
 
         $criteria = [ 'slug' => $slug, 'language' => \AppBundle\Utils\Iso639::code1to3($locale) ];
 
@@ -131,6 +132,10 @@ class TopicController extends RenderTeiController
                 ->findOneBy($criteria);
         if (isset($article)) {
             $meta = $article;
+            list($prefix, $path) = explode(':', $meta->getUid(), 2);
+            if (preg_match('/\-(\d+)$/', $path, $matches)) {
+                $path = preg_replace('/\-(\d+)$/', sprintf('-%05d', $matches[1]), $path);
+            }
         }
         else {
             // fallback to file system
@@ -138,10 +143,16 @@ class TopicController extends RenderTeiController
             $meta = $teiHelper->analyzeHeader($this->locateTeiResource($fname));
         }
 
+        // TODO: Unify with ArticleController::renderArticle()
         $html = $this->renderTei($fname, $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl');
 
         list($authors, $section_headers, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html);
         $html = $this->adjustRefs($html, $refs, $language);
+
+        $html = $this->adjustMedia($html,
+                                   $this->get('request')->getBaseURL()
+                                   . '/viewer/' . $path,
+                                   $generatePrintView ? '' : 'img-responsive');
 
         if ($generatePrintView) {
             $html = $this->removeByCssSelector('<body>' . $html . '</body>',
@@ -149,21 +160,15 @@ class TopicController extends RenderTeiController
 
             $templating = $this->container->get('templating');
 
-            $html = $templating->render('AppBundle:Article:article-printview.html.twig',
-                                 [
-                                    'name' => $topics[$slug],
-                                    'html' => preg_replace('/<\/?body>/', '', $html),
-                                    'authors' => $authors,
-                                    'section_headers' => $section_headers,
-                                    'license' => $license,
-                                  ]);
-            // return new Response($html);
-            $pdfGenerator = new \AppBundle\Utils\PdfGenerator();
-            $fnameLogo = $this->get('kernel')->getRootDir() . '/../web/img/icon/icons_wide.png';
-            $pdfGenerator->logo_top = file_get_contents($fnameLogo);
+            $html = $templating->render('AppBundle:Article:article-printview.html.twig', [
+                'name' => $topics[$slug],
+                'html' => preg_replace('/<\/?body>/', '', $html),
+                'authors' => $authors,
+                'section_headers' => $section_headers,
+                'license' => $license,
+            ]);
 
-            $pdfGenerator->writeHTML($html);
-            $pdfGenerator->Output($slug . '.pdf', 'I');
+            $this->renderPdf($html, $slug . '.pdf');
             return;
         }
 
