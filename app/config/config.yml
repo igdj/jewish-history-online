@@ -64,6 +64,9 @@ doctrine:
         connection: default        
         auto_generate_proxy_classes: '%kernel.debug%'
         auto_mapping: true 
+        dql:
+            string_functions:
+              REPLACE: DoctrineExtensions\Query\Mysql\Replace
 
 stof_doctrine_extensions:
     orm:

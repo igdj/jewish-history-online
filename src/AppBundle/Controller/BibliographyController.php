@@ -19,8 +19,7 @@ class BibliographyController extends Controller
         $kernel = $this->container->get('kernel');
         $path = $kernel->locateResource('@AppBundle/Resources/data/csl/jgo-infoclio-de.csl.xml');
 
-        return new \AcademicPuma\CiteProc\CiteProc(file_get_contents($path),
-                                                   $locale);
+        return new \AcademicPuma\CiteProc\CiteProc(file_get_contents($path), $locale);
     }
 
     /**
@@ -32,9 +31,7 @@ class BibliographyController extends Controller
                 ->getManager()
                 ->createQueryBuilder();
 
-        $qb->select([ 'B',
-                     "B.slug HIDDEN nameSort"
-                     ])
+        $qb->select([ 'B', "B.slug HIDDEN nameSort" ])
             ->from('AppBundle:Bibitem', 'B')
             ->where('B.status IN (0,1)')
             ->orderBy('nameSort')
@@ -58,14 +55,15 @@ class BibliographyController extends Controller
         $csl = json_encode([ $data ]);
 
         $converter = new \Geissler\Converter\Converter();
-        $res = $converter->convert(new \Geissler\Converter\Standard\CSL\CSL($csl), new \Geissler\Converter\Standard\RIS\RIS());
+        $res = $converter->convert(new \Geissler\Converter\Standard\CSL\CSL($csl),
+                                   new \Geissler\Converter\Standard\RIS\RIS());
 
         $response = new \Symfony\Component\HttpFoundation\Response($res);
         $response->headers->set('Content-Type', 'text/plain; charset=UTF-8');
         return $response;
     }
 
-    public function detailAction($id = null, $slug = null)
+    public function detailAction($id = null, $slug = null, $isbn = null)
     {
         $bibitemRepo = $this->getDoctrine()
                 ->getRepository('AppBundle:Bibitem');
@@ -78,6 +76,31 @@ class BibliographyController extends Controller
         }
         else if (!empty($slug)) {
             $bibitem = $bibitemRepo->findOneBySlug($slug);
+        }
+        else if (!empty($isbn)) {
+            $variants = \AppBundle\Entity\Bibitem::buildIsbnVariants($isbn, false);
+            if (!empty($variants)) {
+                $orParts = [];
+                foreach ($variants as $variant) {
+                    $orParts[] = sprintf("REPLACE(B.isbn, '-', '') LIKE '%%%s%%'",
+                                         $variant);
+                }
+                $query = $bibitemRepo
+                        ->createQueryBuilder('B')
+                        ->select('B')
+                        ->where("B.status >= 0 AND B.itemType IN ('book')")
+                        ->andWhere(join(' OR ', $orParts))
+                        ->groupBy('B.isbn')
+                        ->orderBy('B.isbn')
+                        ->getQuery()
+                        ;
+                $bibitems = $query->execute();
+                if (count($bibitems) > 0) {
+                    return $this->redirectToRoute('bibliography', [ 'slug' => $bibitems[0]->getSlug() ]);
+                }
+            }
+
+
         }
 
         if (!isset($bibitem) || $bibitem->getStatus() < 0) {
@@ -102,8 +125,7 @@ class BibliographyController extends Controller
             'bibitem' => $bibitem,
             'citeProc' => $this->instantiateCiteProc(),
             'pageMeta' => [
-                'jsonLd' =>
-                $bibitem->jsonLdSerialize($this->getRequest()->getLocale()),
+                'jsonLd' => $bibitem->jsonLdSerialize($this->getRequest()->getLocale()),
                 'og' => $this->buildOg($bibitem, $routeName, $routeParams),
             ],
         ]);
@@ -145,30 +167,31 @@ class BibliographyController extends Controller
         return $response;
     }
 
-    /*
     public function isbnBeaconAction()
     {
         $translator = $this->container->get('translator');
         $twig = $this->container->get('twig');
 
-        $personRepo = $this->getDoctrine()
+        $bibitemRepo = $this->getDoctrine()
                 ->getRepository('AppBundle:Bibitem');
 
-        $query = $personRepo
+        $query = $bibitemRepo
                 ->createQueryBuilder('B')
-                ->where('B.status >= 0')
-                ->andWhere('B.isbn IS NOT NULL')
+                ->select('B.isbn, COUNT(B.isbn) AS how_many')
+                ->where("B.status >= 0 AND B.itemType IN ('book')")
+                ->andWhere("B.isbn IS NOT NULL AND B.isbn <> ''")
+                ->groupBy('B.isbn')
                 ->orderBy('B.isbn')
                 ->getQuery()
                 ;
 
-        $persons = $query->execute();
+        $bibitems = $query->execute();
 
         $ret = '#FORMAT: BEACON' . "\n"
-             . '#PREFIX: http://d-nb.info/gnd/'
-             . "\n";
-        $ret .= sprintf('#TARGET: %s/gnd/{ID}',
-                        $this->generateUrl('person-index', [], true))
+             // . "#VERSION: 0.1\n"
+             ;
+        $ret .= sprintf('#TARGET: %s/isbn/{ID}',
+                        $this->generateUrl('bibliography-index', [], true))
               . "\n";
 
         $globals = $twig->getGlobals();
@@ -176,12 +199,21 @@ class BibliographyController extends Controller
               . "\n";
         // $ret .= '#MESSAGE: ' . "\n";
 
-        foreach ($persons as $person) {
-            $ret .=  $person->getGnd() . "\n";
+        $isbns = [];
+        foreach ($bibitems as $bibitem) {
+            $isbnList = \AppBundle\Entity\Bibitem::buildIsbnListNormalized($bibitem['isbn'], false);
+            foreach ($isbnList as $isbn) {
+                if (!array_key_exists($isbn, $isbns)) {
+                    $isbns[$isbn] = 0;
+                }
+                $isbns[$isbn] += $bibitem['how_many'];
+            }
+        }
+        foreach ($isbns as $isbn => $count) {
+            $ret .=  $isbn . ($count > 1 ? '|' . $count : '') . "\n";
         }
 
         return new \Symfony\Component\HttpFoundation\Response($ret, \Symfony\Component\HttpFoundation\Response::HTTP_OK,
                                                               [ 'Content-Type' => 'text/plain; charset=UTF-8' ]);
     }
-    */
 }

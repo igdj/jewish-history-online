@@ -28,6 +28,78 @@ class Bibitem
 implements \JsonSerializable, JsonLdSerializable, OgSerializable
 {
     /**
+     * Gets a list of normalized ISBNs of the book.
+     *
+     * @return array
+     */
+    public static function buildIsbnListNormalized($isbn, $hyphens = true)
+    {
+        $normalized = [];
+        if (empty($isbn)) {
+            return $normalized;
+        }
+
+        $isbnUtil = new \Isbn\Isbn();
+
+        $candidates = preg_split('/\s+/', $isbn);
+        foreach ($candidates as $candidate) {
+            if (preg_match('/([0-9xX\-]+)/', $candidate, $matches)) {
+                $type = $isbnUtil->check->identify($matches[1]);
+                if (false !== $type) {
+                    $isbn13 = 13 == $type
+                        ? $matches[1]
+                        : $isbnUtil->translate->to13($matches[1]);
+                    if (true === $hyphens) {
+                        $isbn13 = $isbnUtil->hyphens->fixHyphens($isbn13);
+                    }
+                    else if (false === $hyphens) {
+                        $isbn13 = $isbnUtil->hyphens->removeHyphens($isbn13);
+                    }
+                    if (!in_array($isbn13, $normalized)) {
+                        $normalized[] = $isbn13;
+                    }
+                }
+            }
+        }
+
+        return $normalized;
+    }
+
+    public static function buildIsbnVariants($isbn, $hyphens = true)
+    {
+        $variants = [];
+
+        $isbnUtil = new \Isbn\Isbn();
+
+        $type = $isbnUtil->check->identify($isbn);
+        if (false === $type) {
+            return $variants;
+        }
+
+        $isbn10 = 13 == $type ? $isbnUtil->translate->to10($isbn) : $isbn;
+        if (false !== $isbn10) {
+            if (true === $hyphens) {
+                $isbn10 = $isbnUtil->hyphens->fixHyphens($isbn10);
+            }
+            else if (false === $hyphens) {
+                $isbn10 = $isbnUtil->hyphens->removeHyphens($isbn10);
+            }
+            $variants[] = $isbn10;
+        }
+
+        $isbn13 = 13 == $type ? $isbn : $isbnUtil->translate->to13($isbn);
+        if (true === $hyphens) {
+            $isbn13 = $isbnUtil->hyphens->fixHyphens($isbn13);
+        }
+        else if (false === $hyphens) {
+            $isbn13 = $isbnUtil->hyphens->removeHyphens($isbn13);
+        }
+        $variants[] = $isbn13;
+
+        return $variants;
+    }
+
+    /**
      * @var int
      *
      * @Solr\Id
@@ -658,35 +730,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
      */
     public function getIsbnListNormalized($hyphens = true)
     {
-        $normalized = [];
-        if (empty($this->isbn)) {
-            return $normalized;
-        }
-
-        $isbnUtil = new \Isbn\Isbn();
-
-        $candidates = preg_split('/\s+/', $this->isbn);
-        foreach ($candidates as $candidate) {
-            if (preg_match('/([0-9xX\-]+)/', $candidate, $matches)) {
-                $type = $isbnUtil->check->identify($matches[1]);
-                if (false !== $type) {
-                    $isbn13 = 13 == $type
-                        ? $matches[1]
-                        : $isbnUtil->translate->to13($matches[1]);
-                    if (true === $hyphens) {
-                        $isbn13 = $isbnUtil->hyphens->fixHyphens($isbn13);
-                    }
-                    else if (false === $hyphens) {
-                        $isbn13 = $isbnUtil->hyphens->removeHyphens($isbn13);
-                    }
-                    if (!in_array($isbn13, $normalized)) {
-                        $normalized[] = $isbn13;
-                    }
-                }
-            }
-        }
-
-        return $normalized;
+        return self::buildIsbnListNormalized($this->isbn, $hyphens);
     }
 
     /**

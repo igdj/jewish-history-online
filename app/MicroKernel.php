@@ -221,6 +221,8 @@ class MicroKernel extends Kernel
         $routes->add('/bibliography/{slug}.ris', 'AppBundle:Bibliography:detail', 'bibliography-ris');
         $routes->add('/bibliography/{slug}.jsonld', 'AppBundle:Bibliography:detail', 'bibliography-jsonld');
         $routes->add('/bibliography/{slug}', 'AppBundle:Bibliography:detail', 'bibliography');
+        $routes->add('/bibliography/isbn/beacon', 'AppBundle:Bibliography:isbnBeacon', 'bibliography-isbn-beacon');
+        $routes->add('/bibliography/isbn/{isbn}', 'AppBundle:Bibliography:detail', 'bibliography-by-isbn');
 
         $routes->add('/glossary', 'AppBundle:Glossary:index', 'glossary-index');
         $routes->add('/glossary/{slug}', 'AppBundle:Glossary:detail', 'glossary');
