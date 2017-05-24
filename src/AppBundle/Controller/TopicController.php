@@ -144,7 +144,17 @@ class TopicController extends RenderTeiController
         }
 
         // TODO: Unify with ArticleController::renderArticle()
-        $html = $this->renderTei($fname, $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl');
+        // localize labels in xslt
+        $language = null;
+        $params = [];
+        if ($article instanceof \AppBundle\Entity\Article) {
+            $language = $article->getLanguage();
+            if (!empty($language)) {
+                $params['lang'] = $language;
+            }
+        }
+
+        $html = $this->renderTei($fname, $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl', [ 'params' => $params ]);
 
         list($authors, $section_headers, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html);
         $html = $this->adjustRefs($html, $refs, $language);
