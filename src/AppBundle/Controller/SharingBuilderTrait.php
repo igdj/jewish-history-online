@@ -1,12 +1,16 @@
 <?php
 
 /**
- * Shared methods to build Facebook OpenGraph meta-tags
+ *
+ * Shared methods to build Facebook OpenGraph
+ *  https://developers.facebook.com/docs/sharing/webmasters#markup
+ * and Twitter Cards meta-tags
+ *  https://dev.twitter.com/cards/overview
  */
 
 namespace AppBundle\Controller;
 
-trait OgBuilderTrait
+trait SharingBuilderTrait
 {
     /*
      * transforms en -> en_US and de -> de_DE
@@ -79,6 +83,9 @@ trait OgBuilderTrait
             if ($entity instanceof \AppBundle\Entity\Person) {
                 $og['og:image'] = $baseUri . 'img/icon/placeholder_person.png';
             }
+            else if ($entity instanceof \AppBundle\Entity\Bibitom) {
+                $og['og:image'] = $baseUri . 'img/icon/placeholder_bibitem.png';
+            }
             else if ($entity instanceof \AppBundle\Entity\Article) {
                 switch ($entity->getArticleSection()) {
                     case 'background':
@@ -88,14 +95,34 @@ trait OgBuilderTrait
                         $og['og:image'] = $baseUri . 'img/topic/' . $imgName . '.jpg';
                         break;
 
+                    case 'interpretation':
                     case 'source':
-                        // check for thumb
-                        $thumb = sprintf('viewer/source-%05d/thumb.jpg',
-                                         str_replace('jgo:source-', '', $entity->getUid()));
+                        $uidSource = null;
 
-                        if (file_exists($globals['webDir'] . '/' . $thumb)) {
-                            $og['og:image'] = $baseUri . $thumb;
-                            break;
+                        if ('source' == $entity->getArticleSection()) {
+                            $uidSource = $entity->getUid();
+                        }
+                        else {
+                            // take the first source
+                            $related = $this->getDoctrine()
+                                ->getRepository('AppBundle:Article')
+                                ->findBy([ 'isPartOf' => $entity ],
+                                         [ 'dateCreated' => 'ASC', 'name' => 'ASC'],
+                                         1);
+                            if (count($related) > 0) {
+                                $uidSource = $related[0]->getUid();
+                            }
+                        }
+
+                        if (!is_null($uidSource)) {
+                            // check for thumb
+                            $thumb = sprintf('viewer/source-%05d/thumb.jpg',
+                                             str_replace('jgo:source-', '', $uidSource));
+
+                            if (file_exists($globals['webDir'] . '/' . $thumb)) {
+                                $og['og:image'] = $baseUri . $thumb;
+                                break;
+                            }
                         }
                         // fall-through
 
@@ -106,5 +133,37 @@ trait OgBuilderTrait
         }
 
         return $og;
+    }
+
+    /**
+     *
+     * Build twitter:* meta-tags for Twitter Decks
+     * This can be tested through
+     *  http://cards-dev.twitter.com/validator
+     *
+     */
+    public function buildTwitter($entity, $routeName, $routeParams = [], $params = [])
+    {
+        $twitter = [];
+
+        $twig = $this->container->get('twig');
+        $globals = $twig->getGlobals();
+        if (empty($globals['twitterSite'])) {
+            return $twitter;
+        }
+
+        // we don't put @ in parameters.yml since @keydocuments looks like a service
+        $twitter['twitter:card'] = 'summary';
+        $twitter['twitter:site'] = '@' . $globals['twitterSite'];
+
+        if ($entity instanceof \AppBundle\Entity\TwitterSerializable) {
+            $baseUri = $this->getRequest()->getUriForPath('/');
+            $twitterEntity = $entity->twitterSerialize($this->getRequest()->getLocale(), $baseUri, $params);
+            if (isset($twitterEntity)) {
+                $twitter = array_merge($twitter, $twitterEntity);
+            }
+        }
+
+        return $twitter;
     }
 }

@@ -10,7 +10,7 @@ use FS\SolrBundle\Doctrine\Annotation as Solr;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- *
+ * Bibliographic Item
  *
  * See also [blog post](http://blog.schema.org/2014/09/schemaorg-support-for-bibliographic_2.html).
  *
@@ -25,10 +25,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  */
 class Bibitem
-implements \JsonSerializable, JsonLdSerializable, OgSerializable
+implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSerializable
 {
     /**
-     * Gets a list of normalized ISBNs of the book.
+     * Build a list of normalized ISBNs of the book.
      *
      * @return array
      */
@@ -65,6 +65,11 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
         return $normalized;
     }
 
+    /**
+     * Build both ISBN-10 and ISBN-13.
+     *
+     * @return array
+     */
     public static function buildIsbnVariants($isbn, $hyphens = true)
     {
         $variants = [];
@@ -1113,6 +1118,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
                 },
                 $ret);
         }
+
         return $ret;
     }
 
@@ -1479,7 +1485,6 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
                     $ret['publisher']['location'] = $location->jsonLdSerialize($locale, true);
                 }
             }
-
         }
 
         if (!is_null($this->datePublished)
@@ -1487,13 +1492,6 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
         {
             $ret['datePublished'] = \AppBundle\Utils\JsonLd::formatDate8601($this->datePublished);
         }
-
-        /*
-        if (!is_null($this->dateModified)) {
-            $dateModified = \AppBundle\Utils\JsonLd::formatDate8601($this->dateModified);
-            $ret['dateModified'] = $dateModified;
-        }
-        */
 
         return $ret;
     }
@@ -1521,7 +1519,21 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
             // 'books:isbn' is required
             return;
         }
+
         $ret['books:isbn'] = $isbns[0];
+
+        return $ret;
+    }
+
+    public function twitterSerialize($locale, $baseUrl, $params = [])
+    {
+        $ret = [];
+
+        $citation = $this->renderCitationAsHtml($params['citeProc'], true);
+        if (preg_match('/(.*<span class="citeproc\-title">.*?<\/span>)(.*)/', $citation, $matches)) {
+            $ret['twitter:title'] = rtrim(html_entity_decode(strip_tags($matches[1])));
+            $ret['twitter:description'] = rtrim(html_entity_decode(strip_tags($matches[2])));
+        }
 
         return $ret;
     }

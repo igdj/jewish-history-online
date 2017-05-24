@@ -26,6 +26,17 @@
         <link rel="canonical" href="{{ pageMeta.og['og:url'] }}">
                 {% endif %}
             {% endif %}
+            {% if pageMeta.twitter is defined %}
+                {% for prop, val in pageMeta.twitter %}
+                    {% if val is iterable %}
+                        {% for single_val in val %}
+        <meta name="{{ prop }}" content="{{ single_val }}">
+                        {% endfor %}
+                    {% else %}
+        <meta name="{{ prop }}" content="{{ val }}">
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
             {% if pageMeta.jsonLd is defined %}
         <script type="application/ld+json">
             {{ pageMeta.jsonLd|json_encode|raw }}

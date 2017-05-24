@@ -27,6 +27,21 @@ class Article
 implements \JsonSerializable, JsonLdSerializable, OgSerializable,
 \Eko\FeedBundle\Item\Writer\RoutedItemInterface
 {
+    static function truncate($value, $length = 30, $preserve = false, $separator = '...')
+    {
+        if (mb_strlen($value, 'UTF-8') > $length) {
+            if ($preserve) {
+                // If breakpoint is on the last word, return the value without separator.
+                if (false === ($breakpoint = mb_strpos($value, ' ', $length, 'UTF-8'))) {
+                    return $value;
+                }
+                $length = $breakpoint;
+            }
+            return rtrim(mb_substr($value, 0, $length, 'UTF-8')).$separator;
+        }
+        return $value;
+    }
+
     static function formatDateIncomplete($dateStr)
     {
         if (preg_match('/^\d{4}$/', $dateStr)) {
@@ -1208,6 +1223,28 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
             'og:title' => $this->name,
             'article:section' => $sectionMap[$this->articleSection],
         ];
+
+        $description = null;
+        switch ($this->articleSection) {
+            case 'background':
+            case 'interpretation':
+                $description = $this->description;
+                if (!empty($description)) {
+                    // remove all caps heading at beginning
+                    $description = preg_replace('/^\p{Lu}[\p{Lu}\x{00df}\-\']+\s+/', '', $description);
+                }
+                break;
+
+            case 'source':
+                if (!is_null($this->isPartOf)) {
+                    $description = $this->isPartOf->getDescription();
+                }
+                break;
+        }
+
+        if (!empty($description)) {
+            $ret['og:description'] = str_replace("\n", ' ', self::truncate($description, 190, true));
+        }
 
         return $ret;
     }

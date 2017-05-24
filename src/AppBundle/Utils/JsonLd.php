@@ -9,7 +9,6 @@ namespace AppBundle\Utils;
  */
 class JsonLd
 {
-
     /** No instances */
     private function __construct() {}
 
@@ -41,7 +40,7 @@ class JsonLd
         if (empty($ret)) {
             return;
         }
+
         return count($ret) < 3 ? $ret[0] : implode('-', $ret);
     }
-
 }

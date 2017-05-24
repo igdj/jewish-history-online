@@ -88,6 +88,7 @@ class SourceController extends ArticleController
                 'pageMeta' => [
                     'jsonLd' => $sourceArticle->jsonLdSerialize($this->getRequest()->getLocale()),
                     'og' => $this->buildOg($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]),
+                    'twitter' => $this->buildTwitter($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]),
                 ],
             ]);
         }
@@ -110,6 +111,7 @@ class SourceController extends ArticleController
             'pageMeta' => [
                 'jsonLd' => $sourceArticle->jsonLdSerialize($this->getRequest()->getLocale()),
                 'og' => $this->buildOg($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]),
+                'twitter' => $this->buildTwitter($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]),
             ],
         ]);
     }
@@ -236,17 +238,17 @@ class SourceController extends ArticleController
         }
 
         $iterators = [ new \GlobIterator($srcDir . '/f*.jpg') ];
-        
+
         if ('Audio' == $sourceArticle->getSourceType()) {
-            $iterators[] = new \GlobIterator($srcDir . '/m*.mp3');            
+            $iterators[] = new \GlobIterator($srcDir . '/m*.mp3');
         }
-        
+
         foreach ($iterators as $iterator) {
             foreach ($iterator as $file) {
                 if ($file->isFile()) {
                     $files[$file->getFilename()] = $file->getPathname();
                 }
-            }            
+            }
         }
 
         if (empty($files) && 'Text' != $sourceArticle->getSourceType()) {

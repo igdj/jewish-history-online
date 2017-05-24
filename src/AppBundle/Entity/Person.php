@@ -1003,13 +1003,31 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
 
         $ret = [
             'og:type' => 'profile',
-            'og:title' => $this->getFullname(),
+            'og:title' => $this->getFullname(true),
         ];
+
+        $parts = [];
 
         $description = $this->getDescriptionLocalized($locale);
         if (!empty($description)) {
-            $ret['og:description'] = $description;
+            $parts[] = $description;
         }
+
+        $datesOfLiving = '';
+        if (!empty($this->birthDate)) {
+            $datesOfLiving = \AppBundle\Utils\Formatter::dateIncomplete($this->birthDate, $locale);
+        }
+        if (!empty($this->deathDate)) {
+            $datesOfLiving .= ' - ' . \AppBundle\Utils\Formatter::dateIncomplete($this->deathDate, $locale);
+        }
+        if (!empty($datesOfLiving)) {
+            $parts[] = '[' . $datesOfLiving . ']';
+        }
+
+        if (!empty($parts)) {
+            $ret['og:description'] = join(' ', $parts);
+        }
+
         // TODO: maybe get og:image
 
         if (!empty($this->givenName)) {
@@ -1042,5 +1060,4 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
     {
         return $this->status >= 0;
     }
-
 }

@@ -237,7 +237,8 @@ class TopicController extends RenderTeiController
             'interpretations' => $articles,
             'pageMeta' => [
                 'jsonLd' => $article->jsonLdSerialize($this->getRequest()->getLocale()),
-                'og' => $this->buildOg($article, 'topic-background', [ 'slug' => $slug ])
+                'og' => $this->buildOg($article, 'topic-background', [ 'slug' => $slug ]),
+                'twitter' => $this->buildTwitter($article, 'topic-background', [ 'slug' => $slug ]),
             ],
             'route_params_locale_switch' => $localeSwitch, // TODO: put into pageMeta
         ]);

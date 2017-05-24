@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
  */
 class BibliographyController extends Controller
 {
-    use OgBuilderTrait;
+    use SharingBuilderTrait;
 
     private function instantiateCiteProc()
     {
@@ -127,6 +127,8 @@ class BibliographyController extends Controller
             'pageMeta' => [
                 'jsonLd' => $bibitem->jsonLdSerialize($this->getRequest()->getLocale()),
                 'og' => $this->buildOg($bibitem, $routeName, $routeParams),
+                'twitter' => $this->buildTwitter($bibitem, $routeName, $routeParams,
+                                                 [ 'citeProc' => $this->instantiateCiteProc() ]),
             ],
         ]);
     }

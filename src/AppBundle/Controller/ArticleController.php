@@ -133,6 +133,7 @@ class ArticleController extends RenderTeiController
             'pageMeta' => [
                 'jsonLd' => $article->jsonLdSerialize($this->getRequest()->getLocale()),
                 'og' => $this->buildOg($article, 'article', [ 'slug' => $article->getSlug(true) ]),
+                'twitter' => $this->buildTwitter($article, 'article', [ 'slug' => $article->getSlug(true) ]),
             ],
             'route_params_locale_switch' => $localeSwitch,
         ]);

@@ -1,19 +1,20 @@
 <?php
 // src/AppBundle/Twig/AppExtension.php
-/*
 
-see http://symfony.com/doc/current/cookbook/templating/twig_extension.html
-
-# app/config/services.yml
-
-services:
-    app.twig_extension:
-        class: AppBundle\Twig\AppExtension
-        public: false
-        tags:
-            - { name: twig.extension }
-
-*/
+/**
+ * see http://symfony.com/doc/current/cookbook/templating/twig_extension.html
+ *
+ * register in
+ *   app/config/services.yml
+ * as
+ * services:
+ *   app.twig_extension:
+ *       class: AppBundle\Twig\AppExtension
+ *       public: false
+ *       tags:
+ *           - { name: twig.extension }
+ *
+ */
 
 namespace AppBundle\Twig;
 
@@ -35,27 +36,27 @@ class AppExtension extends \Twig_Extension
 
     public function getFunctions()
     {
-        return array(
+        return [
             new \Twig_SimpleFunction('file_exists', 'file_exists'),
-        );
+        ];
     }
 
     public function getFilters()
     {
-        return array(
+        return [
             // general
-            new \Twig_SimpleFilter('dateincomplete', array($this, 'dateincompleteFilter')),
-            new \Twig_SimpleFilter('epoch', array($this, 'epochFilter')),
-            new \Twig_SimpleFilter('prettifyurl', array($this, 'prettifyurlFilter')),
+            new \Twig_SimpleFilter('dateincomplete', [ $this, 'dateincompleteFilter' ]),
+            new \Twig_SimpleFilter('epoch', [ $this, 'epochFilter' ]),
+            new \Twig_SimpleFilter('prettifyurl', [ $this, 'prettifyurlFilter' ]),
 
             // appbundle-specific
-            new \Twig_SimpleFilter('placeTypeLabel', array($this, 'placeTypeLabelFilter')),
-            new \Twig_SimpleFilter('lookupLocalizedTopic', array($this, 'lookupLocalizedTopicFilter')),
-            new \Twig_SimpleFilter('glossaryAddRefLink', array($this, 'glossaryAddRefLinkFilter'),
-                                   array('is_safe' => array('html'))),
-            new \Twig_SimpleFilter('renderCitation', array($this, 'renderCitation'),
-                                   array('is_safe' => array('html'))),
-        );
+            new \Twig_SimpleFilter('placeTypeLabel', [ $this, 'placeTypeLabelFilter' ]),
+            new \Twig_SimpleFilter('lookupLocalizedTopic', [ $this, 'lookupLocalizedTopicFilter' ]),
+            new \Twig_SimpleFilter('glossaryAddRefLink', [ $this, 'glossaryAddRefLinkFilter' ],
+                                   [ 'is_safe' => [ 'html' ] ]),
+            new \Twig_SimpleFilter('renderCitation', [ $this, 'renderCitation' ],
+                                   [ 'is_safe' => [ 'html' ] ]),
+        ];
     }
 
     private function getLocale()

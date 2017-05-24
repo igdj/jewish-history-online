@@ -12,7 +12,7 @@ use Symfony\Component\CssSelector\CssSelectorConverter;
 abstract class RenderTeiController
 extends Controller
 {
-    use OgBuilderTrait,
+    use SharingBuilderTrait,
         \AppBundle\Utils\RenderTeiTrait; // use shared method renderTei()
 
     protected function locateTeiResource($fnameXml)

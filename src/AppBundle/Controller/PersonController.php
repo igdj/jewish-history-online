@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
  */
 class PersonController extends Controller
 {
-    use OgBuilderTrait;
+    use SharingBuilderTrait;
 
     /**
      * @Route("/person")
@@ -84,6 +84,7 @@ class PersonController extends Controller
             'pageMeta' => [
                 'jsonLd' => $person->jsonLdSerialize($this->getRequest()->getLocale()),
                 'og' => $this->buildOg($person, $routeName, $routeParams),
+                'twitter' => $this->buildTwitter($person, $routeName, $routeParams),
             ],
         ]);
     }
