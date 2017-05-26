@@ -161,6 +161,15 @@
         </div>
 
         <footer>
+            {% if twitterSite is not empty %}
+            <div id="footer-social" class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-12" style="z-index: 1; text-align: center">
+                    <a class="twitter" target="_blank" href="https://twitter.com/@{{ twitterSite }}" title="@{{ twitterSite }}"> </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
             <div id="footer-navigation" class="container">
                 <div class="row">
                     <div class="col-xs-12 col-sm-3" style="z-index: 1">

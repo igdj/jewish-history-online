@@ -747,6 +747,20 @@ footer {
     margin-top: 1rem;
     margin-bottom: 2rem;
 
+    #footer-social {
+        background-color: $color-gray-light;
+        padding-top: 12px;
+        line-height: 32px;
+
+        a.twitter {
+            background: url("../img/icon/twitter.png") no-repeat;
+            background-size: cover;
+            height: 32px;
+            width: 32px;
+            display: inline-block;
+        }
+    }
+
     #footer-navigation {
         padding-top: 2rem;
         padding-bottom: 1rem;
@@ -757,7 +771,7 @@ footer {
         padding-left: 0;
 
         &#menu-main-footer {
-            text-transform: uppercase;
+            text-trdansform: uppercase;
         }
     }
 
@@ -956,7 +970,6 @@ a.rss {
     height: 32px;
     display: inline-block;
 }
-
 
 /* bootstrap panels */
 .panel {
