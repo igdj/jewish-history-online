@@ -241,7 +241,7 @@ class ArticleAdjustCommand extends BaseEntityCommand
                 // articles related to this source
                 $sql = "SELECT Message.id AS id, subject, status"
                      . " FROM Message, MessagePublication"
-                     . " WHERE MessagePublication.publication_id=? AND MessagePublication.message_id=Message.id AND Message.status <> 1"
+                     . " WHERE MessagePublication.publication_id=? AND MessagePublication.message_id=Message.id AND Message.status <> -1"
                      . " ORDER BY Message.id DESC";
 
                 $stmt = $conn->executeQuery($sql, [ $result['id'] ]);
