@@ -632,19 +632,6 @@ h3#citation {
     */
 }
 
-/* see https://gist.github.com/JayHoltslander/9998612 */
-div.two-columns {
-    -webkit-column-count: 2; /* Chrome, Safari, Opera */
-    -moz-column-count:    2; /* Firefox */
-    column-count:         2;
-    -webkit-column-gap:   20px; /* Chrome, Safari, Opera */
-    -moz-column-gap:      20px; /* Firefox */
-    column-gap:           20px;
-    /* column-rule-color: #ccc; */ /* Optional */
-    /* column-rule-style:solid; */ /* Optional */
-    /* column-rule-width: 1px; */ /* Optional */
-}
-
 .panel.source-box {
     max-width: 640px;
 
@@ -795,6 +782,19 @@ footer {
 @media (min-width: $screen-sm-size) {
     #footer-dfg, #header-search-wrapper {
         text-align: right;
+    }
+
+    /* see https://gist.github.com/JayHoltslander/9998612 */
+    div.two-columns {
+        -webkit-column-count: 2; /* Chrome, Safari, Opera */
+        -moz-column-count:    2; /* Firefox */
+        column-count:         2;
+        -webkit-column-gap:   20px; /* Chrome, Safari, Opera */
+        -moz-column-gap:      20px; /* Firefox */
+        column-gap:           20px;
+        /* column-rule-color: #ccc; */ /* Optional */
+        /* column-rule-style:solid; */ /* Optional */
+        /* column-rule-width: 1px; */ /* Optional */
     }
 }
 
