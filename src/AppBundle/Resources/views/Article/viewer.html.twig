@@ -6,7 +6,7 @@
 
 {% block head %}
     {{ map.head() }}
-    
+
     <script src="{{ app.request.basepath }}/js/screenfull.min.js"></script>
     <script src="{{ app.request.basepath }}/viewer/shared/iview2/js/iview-client-base.js"></script>
     <script src="{{ app.request.basepath }}/viewer/shared/iview2/js/iview-client-desktop.js"></script>
@@ -159,7 +159,7 @@
         </div><!-- .col -->
 
         <div class="col-xs-12 col-md-3 sidebar">
-            {{ helper.source_sidebar(meta, description, interpretations, related) }}
+            {{ helper.source_sidebar(meta, description, interpretations, related, mets) }}
         </div>
     </div>
 {% endblock %}

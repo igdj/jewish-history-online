@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2017-05-24T15:10:10Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2017-06-19T09:21:42Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -100,7 +100,7 @@
       </trans-unit>
       <trans-unit id="ae3f5dbc3027a9155cb99192add16c75f508bce8" resname="bibliography-by-isbn">
         <source>/bibliography/isbn/{isbn}</source>
-        <target state="new">/bibliografie/isbn/{isbn}</target>
+        <target>/bibliografie/isbn/{isbn}</target>
       </trans-unit>
       <trans-unit id="b5eaaebd137fcbdb054988d35fead774bcf6df0d" resname="bibliography-index">
         <source>/bibliography</source>
@@ -108,7 +108,7 @@
       </trans-unit>
       <trans-unit id="31beb2ee6f05a21a32437e7bca5b5ab287fc3dd4" resname="bibliography-isbn-beacon">
         <source>/bibliography/isbn/beacon</source>
-        <target state="new">/bibliografie/isbn/beacon</target>
+        <target>/bibliografie/isbn/beacon</target>
       </trans-unit>
       <trans-unit id="c4c6677ea81bcaead346e8fc3dff02164383daa2" resname="bibliography-jsonld">
         <source>/bibliography/{slug}.jsonld</source>
@@ -245,6 +245,10 @@
       <trans-unit id="bdf6a48d85794eee850d4a07e462466ebca51a17" resname="source-jsonld">
         <source>/source/{uid}.jsonld</source>
         <target>/quelle/{uid}.jsonld</target>
+      </trans-unit>
+      <trans-unit id="fc8ab9a4dd2e637bb5a3e2ad4b5cca3b44db1867" resname="source-mets">
+        <source>/source/{uid}.mets.xml</source>
+        <target>/quelle/{uid}.mets.xml</target>
       </trans-unit>
       <trans-unit id="e05e7bf953c24ee7391d7bc744869c9f769e23d4" resname="tei2html">
         <source>/source/tei2html/{path}</source>

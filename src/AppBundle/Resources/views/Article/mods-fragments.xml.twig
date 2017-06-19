@@ -1,0 +1,64 @@
+{#
+Template for mods for dfg-viewer
+#}
+
+{%- block amdSecChildren -%}
+  <mets:rightsMD xmlns:mets="http://www.loc.gov/METS/" ID="RIGHTS">
+    <mets:mdWrap MDTYPE="OTHER" MIMETYPE="text/xml" OTHERMDTYPE="DVRIGHTS">
+      <mets:xmlData>
+        <dv:rights xmlns:dv="http://dfg-viewer.de/">
+          <dv:owner>Institut für die Geschichte der deutschen Juden</dv:owner>
+          <dv:ownerLogo>http://juedische-geschichte-online.net/img/dfgviewer_logo_igdj.gif</dv:ownerLogo>
+          <dv:ownerSiteURL>http://igdj-hh.de/</dv:ownerSiteURL>
+          <dv:ownerContact>mailto:info@juedische-geschichte-online.net</dv:ownerContact>
+        </dv:rights>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:rightsMD>
+  <mets:digiprovMD xmlns:mets="http://www.loc.gov/METS/" ID="DIGIPROV">
+    <mets:mdWrap MDTYPE="OTHER" MIMETYPE="text/xml" OTHERMDTYPE="DVLINKS">
+      <mets:xmlData>
+        <dv:links xmlns:dv="http://dfg-viewer.de/">
+          <dv:presentation>{{ url('source', { 'uid' : article.uid }) }}</dv:presentation>
+        </dv:links>
+      </mets:xmlData>
+   </mets:mdWrap>
+  </mets:digiprovMD>
+{%- endblock -%}
+
+{%- block dmdSecChildren -%}
+  <mets:mdWrap xmlns:mets="http://www.loc.gov/METS/" MDTYPE="MODS">
+    <mets:xmlData>
+      <mods:mods xmlns:mods="http://www.loc.gov/mods/v3">
+        <mods:relatedItem type="series">
+          <mods:titleInfo>
+            <mods:title>{{ siteName|trans }}</mods:title>
+          </mods:titleInfo>
+        </mods:relatedItem>
+        <mods:titleInfo>
+          <mods:title>{{ article.name }}</mods:title>
+        </mods:titleInfo>
+        <mods:originInfo>
+          {% if article.contentLocation is not empty %}
+          <mods:place>
+            <mods:placeTerm type="text">{{ article.contentLocation.name }}</mods:placeTerm>
+          </mods:place>
+        {% endif %}
+        {% if article.dateCreatedDisplay is not empty %}
+          <mods:dateIssued keyDate="yes" encoding="iso8601">{{ article.dateCreatedDisplay }}</mods:dateIssued>
+        {% else %}
+          <mods:dateIssued keyDate="yes" encoding="iso8601">{{ article.dateCreated|dateincomplete }}</mods:dateIssued>
+        {% endif %}
+        </mods:originInfo>
+        {% if article.creator is not empty %}
+        <mods:name type="personal">
+          <mods:role>
+            <mods:roleTerm authority="marcrelator" type="code">aut</mods:roleTerm>
+          </mods:role>
+          <mods:displayForm>{{ article.creator }}</mods:displayForm>
+        </mods:name>
+      {% endif %}
+      </mods:mods>
+    </mets:xmlData>
+  </mets:mdWrap>
+{%- endblock -%}

@@ -268,7 +268,7 @@ class SourceController extends ArticleController
         return $files;
     }
 
-    protected function generateZip($uid, $files)
+    protected function buildViewerPath($uid)
     {
         $dir = $this->buildFolderName($uid);
         if (false === $dir) {
@@ -277,14 +277,25 @@ class SourceController extends ArticleController
 
         $relPath = sprintf('viewer/%s', $dir);
         $baseDir = realpath($this->get('kernel')->getRootDir() . '/..');
-        $dstPath = $baseDir . '/web/' . $relPath;
+        $filePath = $baseDir . '/web/' . $relPath;
 
-        if (!file_exists($dstPath)) {
+        if (!file_exists($filePath)) {
             return false;
         }
 
-        $fnameZip = $dir . '.zip';
-        $fullnameZip = $dstPath . '/' . $fnameZip;
+        return [ $relPath, $filePath ];
+    }
+
+    protected function generateZip($uid, $files)
+    {
+        $dstPath = $this->buildViewerPath($uid);
+        if (false === $dstPath) {
+            return false;
+        }
+        list($relPath, $filePath) = $dstPath;
+
+        $fnameZip = $this->buildFolderName($uid) . '.zip';
+        $fullnameZip = $filePath . '/' . $fnameZip;
         $urlZip = $this->get('router')->getContext()->getBaseUrl()
                 . '/' . $relPath . '/' . $fnameZip;
 
@@ -343,7 +354,7 @@ class SourceController extends ArticleController
         return $urlZip;
     }
 
-    public function downloadAction($uid)
+    protected function findSourceArticle($uid)
     {
         $criteria = [ 'uid' => $uid ];
         $locale = $this->get('request')->getLocale();
@@ -351,9 +362,14 @@ class SourceController extends ArticleController
             $criteria['language'] = \AppBundle\Utils\Iso639::code1to3($locale);
         }
 
-        $article = $this->getDoctrine()
+        return $this->getDoctrine()
                 ->getRepository('AppBundle:SourceArticle')
                 ->findOneBy($criteria);
+    }
+
+    public function downloadAction($uid)
+    {
+        $article = $this->findSourceArticle($uid);
 
         if (!$article) {
             throw $this->createNotFoundException('This source does not exist');
@@ -383,6 +399,104 @@ class SourceController extends ArticleController
         }
 
         return new \Symfony\Component\HttpFoundation\RedirectResponse($urlZip);
+    }
+
+    /**
+     *
+     * @Route("/source/{uid}.mets.xml")
+     *
+     * For downloadable sources, adjust the METS-container so it works well
+     * in the DFG-Viewer
+     *
+     */
+    public function metsAction($uid)
+    {
+        $article = $this->findSourceArticle($uid);
+
+        if (!$article) {
+            throw $this->createNotFoundException('This source does not exist');
+        }
+
+        $request = $this->getRequest();
+
+        $relPath = $resource = null;
+        if ($article->licenseAllowsDownload()) {
+            // if we are allowed to download, check for a mets container
+            $dstPath = $this->buildViewerPath($uid);
+            if (false !== $dstPath) {
+                list($relPath, $filePath) = $dstPath;
+                $fnameMets = sprintf('%s.%s.mets.xml',
+                                     $this->buildFolderName($uid),
+                                     $request->getLocale());
+                $fullnameMets = $filePath . '/' . $fnameMets;
+                try {
+                    $resource = new \DOMDocument();
+                    $resource->load($fullnameMets);
+                } catch (\Exception $e) {
+                    $resource = null;
+                    ; // import failed
+                }
+            }
+        }
+
+        if (is_null($resource)) {
+            // no download or mets-container
+            return new \Symfony\Component\HttpFoundation\RedirectResponse($this->generateUrl('source', [ 'uid' => $uid ]));
+        }
+
+        $defaultZoom = 3;
+
+        $directoryUrlAbs = $request->getSchemeAndHttpHost()
+            . $this->get('router')->getContext()->getBaseUrl()
+            . '/' . $relPath;
+
+        $xpath = new \DOMXPath($resource);
+        foreach ($xpath->query("//mets:fileSec/mets:fileGrp[@USE='MASTER']") as $fileSec) {
+            // <mets:fileGrp USE="MASTER"> -> <mets:fileGrp USE="DEFAULT">
+            $fileSec->setAttribute('USE', 'DEFAULT');
+
+            /*
+             *  change <mets:FLocat LOCTYPE="URL" xlink:href="fxxx.(jpg|png)">
+             *    to absolute urls pointing to the default ZOOM-level
+             *    (_3.(jpg|png) if available, otherwise _2 or _1)
+             */
+            foreach ($xpath->query("./mets:file/mets:FLocat[@LOCTYPE='URL']", $fileSec) as $node) {
+                $hrefRel = $node->getAttribute('xlink:href');
+                $pathParts = pathinfo($hrefRel);
+                for ($zoom = $defaultZoom; $zoom >= 0; $zoom--) {
+                    $fnameScaled = $pathParts['filename'] . '_' . $zoom . '.' . $pathParts['extension'];
+                    if (file_exists($filePath . '/' . $fnameScaled)) {
+                        $hrefAbs = $directoryUrlAbs . '/' . $fnameScaled;
+                        $node->setAttribute('xlink:href', $hrefAbs);
+                        break;
+                    }
+                }
+            };
+        }
+
+        $twig = $this->get('twig');
+        $template = $twig->loadTemplate('AppBundle:Article:mods-fragments.xml.twig');
+        $context = $twig->getGlobals();
+
+        // add mets:rightsMD / mets:digiprovMD to mets:dmdSec
+        foreach ($xpath->query("//mets:dmdSec[1]") as $dmdSec) {
+            $fragment = $resource->createDocumentFragment();
+            $fragment->appendXML($template->renderBlock('dmdSecChildren', [ 'article' => $article ] + $context));
+            $dmdSec->appendChild($fragment);
+        }
+
+        // add mets:mdWrap to mets:amdSec
+        $xpath = new \DOMXPath($resource);
+        foreach ($xpath->query("//mets:amdSec[1]") as $amdSec) {
+            // add rights-header
+            $fragment = $resource->createDocumentFragment();
+            $fragment->appendXML($template->renderBlock('amdSecChildren', [ 'article' => $article ] + $context));
+            $amdSec->appendChild($fragment);
+        }
+
+        return new \Symfony\Component\HttpFoundation\Response($resource->saveXML() , 200, [
+            'Content-Type' => 'text/xml;charset=UTF-8'
+        ]);
     }
 
     public function tei2htmlAction($path)

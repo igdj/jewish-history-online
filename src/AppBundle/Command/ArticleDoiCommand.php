@@ -191,12 +191,11 @@ class ArticleDoiCommand extends ContainerAwareCommand
         $translator = $this->getContainer()->get('translator');
         $translator->setLocale($locale);
 
-        $xsiNs = new FluidNamespace('xsi', 'http://www.w3.org/2001/XMLSchema-instance');
-
         $resource = new FluidXml(null);
         $resource->namespace('datacite', 'http://datacite.org/schema/kernel-4', FluidNamespace::MODE_IMPLICIT);
         $root = $resource->add('datacite:resource', true);
 
+        $xsiNs = new FluidNamespace('xsi', 'http://www.w3.org/2001/XMLSchema-instance');
         $rootNode = $root[0];
         $rootNode->setAttributeNS('http://www.w3.org/2000/xmlns/', "xmlns:{$xsiNs->id()}",  $xsiNs->uri());
 
@@ -344,7 +343,6 @@ class ArticleDoiCommand extends ContainerAwareCommand
             $root->addChild('rightsList', true)
                 ->addChild('rights', $rights, $rightsAttr);
         }
-
 
         $keywords = $entity->getKeywords();
         if (!empty($keywords)) {
