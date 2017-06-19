@@ -24,6 +24,11 @@ parameters:
     app.datacite.prefix: 10.5072
     # app.datacite.prefix: 10.XXXX # your production
 
+    # if you want to use a wordpress installation for news
+    # app.wp-rest.url: "http://juedische-geschichte-online.net/projekt/"
+    # app.wp-rest.user: wp-rest
+    # app.wp-rest.url: "secret"
+
     # xslt settings
     app.xslt.adapter.class:  AppBundle\Utils\Xsl\XsltCommandlineAdapter
     # linux

@@ -116,6 +116,53 @@ class AboutController extends RenderTeiController
         return $this->renderAbout('Technical Implementation');
     }
 
+    protected function buildNewsArticles(&$posts)
+    {
+        $articles = [];
+        foreach ($posts as $post) {
+            $article = new \AppBundle\Entity\Article();
+            $article->setName($post['title']['rendered']);
+            $article->setSlug($post['slug']);
+            $article->setText($post['content']['rendered']);
+            $article->setDatePublished(new \DateTime($post['date_gmt']));
+            $articles[] = $article;
+        }
+        return $articles;
+    }
+
+    /**
+     * @Route("/about/news", name="about-news")
+     */
+    public function newsAction()
+    {
+        /* check if we have settings for wp-rest */
+        $url = $this->container->hasParameter('app.wp-rest.url')
+            ? $this->getParameter('app.wp-rest.url') : null;
+        if (!empty($url)) {
+            try {
+                $client = new \Vnn\WpApiClient\WpClient(
+                    new \Vnn\WpApiClient\Http\Guzzle5Adapter(new \GuzzleHttp\Client()),
+                        $url);
+                $client->setCredentials(new \Vnn\WpApiClient\Auth\WpBasicAuth($this->getParameter('app.wp-rest.user'), $this->getParameter('app.wp-rest.password')));
+                $posts = $client->posts()->get(null, [
+                    'per_page' => 5,
+                    'lang' => $this->get('request')->getLocale(),
+                ]);
+                if (!empty($posts)) {
+                    return $this->render('AppBundle:About:news.html.twig', [
+                        'articles' => $this->buildNewsArticles($posts),
+                    ]);
+                }
+            }
+            catch (\Exception $e) {
+                ;
+            }
+        }
+
+        // static fallback
+        return $this->renderAbout('News');
+    }
+
     /**
      * @Route("/about/staff", name="about-staff")
      */
@@ -163,7 +210,6 @@ class AboutController extends RenderTeiController
     {
         return $this->renderTitleContent('Terms and Conditions', 'AppBundle:Default:sitetext.html.twig');
     }
-
 
     protected function sendMessage($data)
     {

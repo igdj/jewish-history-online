@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2017-06-19T09:21:42Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2017-06-19T12:14:07Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -111,7 +111,7 @@
       <trans-unit id="b37456c4530be810dc040f50da72eda09addfb0a" resname="Contact">
         <source>Contact</source>
         <target>Kontakt</target>
-        <jms:reference-file line="208">\..\..\..\..\..\..\./src\AppBundle\Controller\AboutController.php\</jms:reference-file>
+        <jms:reference-file line="215">\..\..\..\..\..\..\./src\AppBundle\Controller\AboutController.php\</jms:reference-file>
         <jms:reference-file line="95">\..\..\..\..\..\..\./src\AppBundle\Menu\Builder.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="84f4b34f4610e466ebebcb130432b363ccb9832c" resname="Contact inquiry">
@@ -641,7 +641,7 @@
       </trans-unit>
       <trans-unit id="dbc45ed3b5eb1103cc2eb95f29f7de06f6188376" resname="http://dfg-viewer.de/en/v3/">
         <source>http://dfg-viewer.de/en/v3/</source>
-        <target state="new">http://dfg-viewer.de/show/</target>
+        <target>http://dfg-viewer.de/show/</target>
         <jms:reference-file line="291">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="0363581f59629db6c48f4f030f5ed7ea74e0a3a4" resname="interpretation.oneormany">

@@ -60,6 +60,12 @@ class Builder implements ContainerAwareInterface
                 ->addChild('about-implementation', [
                     'label' => $translator->trans('Technical Implementation', [], 'menu'), 'route' => 'about-implementation',
                 ]);
+            /*
+            $menu['about']
+                ->addChild('about-news', [
+                    'label' => $translator->trans('News'), 'route' => 'about-news',
+                ]);
+            */
         }
 
         if (!array_key_exists('part', $options) || 'right' == $options['part']) {
@@ -221,6 +227,7 @@ class Builder implements ContainerAwareInterface
             case 'about-authors':
             case 'about-board':
             case 'about-sponsors':
+            case 'about-news':
                 $toplevel = $this->topMenu($factory, []);
                 $item = $toplevel['about-us'];
                 $item->setParent(null);

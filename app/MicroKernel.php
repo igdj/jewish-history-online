@@ -161,6 +161,7 @@ class MicroKernel extends Kernel
         $routes->add('/terms', 'AppBundle:About:terms', 'terms');
 
         $routes->add('/about/cfp', 'AppBundle:About:cfp', 'about-cfp');
+        $routes->add('/about/news', 'AppBundle:About:news', 'about-news');
 
         $routes->add('/topic', 'AppBundle:Topic:index', 'topic-index');
 
