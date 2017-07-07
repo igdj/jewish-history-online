@@ -446,11 +446,12 @@ header {
         */
 
         .dta-figure {
-            img {
-                max-height: 400px;
-            }
             p.dta-p {
                 font-size: 14px;
+            }
+            img.image-responsive {
+                max-width: 100%;
+                height: auto;
             }
         }
 }
@@ -910,6 +911,15 @@ body.route-article-index-date #switch-article-index-date
     font-weight: bold;
 }
 
+body.route-topic-background {
+    .article {
+        .dta-figure {
+                img {
+                    max-height: 400px;
+                }
+        }
+    }
+}
 
 .list-inline.switch {
     li {
