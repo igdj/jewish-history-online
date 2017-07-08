@@ -7,13 +7,24 @@
     <div class="row">
         <div class="col-sm-8">
         {% if articles is not empty %}
+            <div class="container-fluid">
         {% for article in articles %}
-            <h2 id="{{ article.slug }}">{{ article.name|raw }}</h2>
-            <div>{{ article.datePublished|dateincomplete }}</div>
-            <div class="wp-content">
-                {{ article.text|raw }}
+            <div class="row">
+                <div class="col-sm-3">
+                {% if article.thumbnailUrl is not empty %}
+                    <img src="{{ article.thumbnailUrl }}" alt="" class="img-responsive" />
+                {% endif %}
+                </div>
+                <div class="col-sm-9">
+                    <div>{{ article.datePublished|dateincomplete }} - {{ article.keywords }}</div>
+                    <h2 id="{{ article.slug }}">{{ article.name|raw }}</h2>
+                    <div class="wp-content">
+                        {{ article.text|raw }}
+                    </div>
+                </div>
             </div>
         {% endfor %}
+            </div>
         {% else %}
             Es wurden keine Artikel gefunden
         {% endif %}

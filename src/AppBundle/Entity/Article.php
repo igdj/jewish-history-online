@@ -282,6 +282,13 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
      */
     protected $slug;
 
+    /**
+     * @var string
+     *
+     * Currently only used for news articles
+     */
+    public $thumbnailUrl = null;
+
     public function __construct()
     {
         $this->author = new ArrayCollection();

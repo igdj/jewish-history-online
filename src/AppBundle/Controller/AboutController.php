@@ -116,15 +116,44 @@ class AboutController extends RenderTeiController
         return $this->renderAbout('Technical Implementation');
     }
 
-    protected function buildNewsArticles(&$posts)
+    protected function buildNewsArticles(&$posts, $client)
     {
         $articles = [];
+        $categories = [];
+
         foreach ($posts as $post) {
             $article = new \AppBundle\Entity\Article();
             $article->setName($post['title']['rendered']);
             $article->setSlug($post['slug']);
             $article->setText($post['content']['rendered']);
             $article->setDatePublished(new \DateTime($post['date_gmt']));
+
+            $keywords = [];
+            if (!empty($post['categories'])) {
+                foreach ($post['categories'] as $category) {
+                    if (array_key_exists($category, $categories)) {
+                        $keywords[] = $categories[$category];
+                    }
+                    else {
+                        $categoryInfo = $client->categories()->get($category);
+                        $keywords[] = $categories[$category] = $categoryInfo['name'];
+                    }
+                }
+                $article->setKeywords(join('/ ', $keywords));
+            }
+
+            if (!empty($post['featured_media'])) {
+                try {
+                    $featuredMedia = $client->media()->get($post['featured_media']);
+                    if (!empty($featuredMedia)) {
+                        $article->thumbnailUrl = $featuredMedia['media_details']['sizes']['medium']['source_url'];
+                    }
+                }
+                catch (\Exception $e) {
+                    ; // ignore
+                }
+            }
+
             $articles[] = $article;
         }
         return $articles;
@@ -150,7 +179,7 @@ class AboutController extends RenderTeiController
                 ]);
                 if (!empty($posts)) {
                     return $this->render('AppBundle:About:news.html.twig', [
-                        'articles' => $this->buildNewsArticles($posts),
+                        'articles' => $this->buildNewsArticles($posts, $client),
                     ]);
                 }
             }
