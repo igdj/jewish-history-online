@@ -242,5 +242,8 @@ class MicroKernel extends Kernel
                           'tei2html');
 
         $routes->add('/search', 'AppBundle:Search:index', 'search-index');
+
+        // oai
+        $routes->add('/oai', 'AppBundle:Oai:dispatch', 'oai');
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "95b8af4728b85e3026ecd16b6e6f7e10",
+    "content-hash": "ac2178c0e8af5183da3154fa794fe26c",
     "packages": [
         {
             "name": "academicpuma/locales",
@@ -2803,6 +2803,50 @@
             "time": "2015-05-01T07:00:55+00:00"
         },
         {
+            "name": "picturae/oai-pmh",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/picturae/OaiPmh.git",
+                "reference": "9d1e6c96f41b093b9fbe34d920c640c3ac1e1374"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/picturae/OaiPmh/zipball/9d1e6c96f41b093b9fbe34d920c640c3ac1e1374",
+                "reference": "9d1e6c96f41b093b9fbe34d920c640c3ac1e1374",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/psr7": "^1.2",
+                "psr/http-message": "^1.0"
+            },
+            "require-dev": {
+                "jameshalsall/licenser": "dev-master",
+                "phpunit/phpunit": "^4.8",
+                "satooshi/php-coveralls": "^0.6.1",
+                "squizlabs/php_codesniffer": "^2.3",
+                "zendframework/zend-diactoros": "^1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Picturae\\OaiPmh\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Picturae",
+                    "email": "info@picturae.com"
+                }
+            ],
+            "description": "Picturae OAI-PMH package. Can be used to create a OAI endpoint",
+            "time": "2017-04-22 13:28:27"
+        },
+        {
             "name": "presta/sitemap-bundle",
             "version": "v1.5.1",
             "source": {
@@ -4136,6 +4180,66 @@
             "time": "2017-06-09T08:25:21+00:00"
         },
         {
+            "name": "symfony/psr-http-message-bridge",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/psr-http-message-bridge.git",
+                "reference": "66085f246d3893cbdbcec5f5ad15ac60546cf0de"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/psr-http-message-bridge/zipball/66085f246d3893cbdbcec5f5ad15ac60546cf0de",
+                "reference": "66085f246d3893cbdbcec5f5ad15ac60546cf0de",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "psr/http-message": "~1.0",
+                "symfony/http-foundation": "~2.3|~3.0"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "~2.7|~3.0"
+            },
+            "suggest": {
+                "psr/http-message-implementation": "To use the HttpFoundation factory",
+                "zendframework/zend-diactoros": "To use the Zend Diactoros factory"
+            },
+            "type": "symfony-bridge",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Bridge\\PsrHttpMessage\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "PSR HTTP message bridge",
+            "homepage": "http://symfony.com",
+            "keywords": [
+                "http",
+                "http-message",
+                "psr-7"
+            ],
+            "time": "2016-09-14T18:37:20+00:00"
+        },
+        {
             "name": "symfony/security-acl",
             "version": "v2.8.0",
             "source": {
@@ -4257,16 +4361,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.23",
+            "version": "v2.8.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "bca31e4e3b6cfd8cef39ec04a253966cecf8f2ca"
+                "reference": "0ab3693b1154b1b166e98981ab3755636a5ae0e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/bca31e4e3b6cfd8cef39ec04a253966cecf8f2ca",
-                "reference": "bca31e4e3b6cfd8cef39ec04a253966cecf8f2ca",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/0ab3693b1154b1b166e98981ab3755636a5ae0e3",
+                "reference": "0ab3693b1154b1b166e98981ab3755636a5ae0e3",
                 "shasum": ""
             },
             "require": {
@@ -4390,7 +4494,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-07-04T05:31:17+00:00"
+            "time": "2017-07-05T08:53:15+00:00"
         },
         {
             "name": "technosophos/LibRIS",
@@ -4590,6 +4694,58 @@
                 "source": "https://github.com/burki/wordpress-rest-api-client/tree/master"
             },
             "time": "2017-06-19 09:42:37"
+        },
+        {
+            "name": "zendframework/zend-diactoros",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-diactoros.git",
+                "reference": "b03f285a333f51e58c95cce54109a4a9ed691436"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/b03f285a333f51e58c95cce54109a4a9ed691436",
+                "reference": "b03f285a333f51e58c95cce54109a4a9ed691436",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.4 || ^7.0",
+                "psr/http-message": "~1.0"
+            },
+            "provide": {
+                "psr/http-message-implementation": "1.0"
+            },
+            "require-dev": {
+                "ext-dom": "*",
+                "ext-libxml": "*",
+                "phpunit/phpunit": "^4.6 || ^5.5",
+                "zendframework/zend-coding-standard": "~1.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4-dev",
+                    "dev-develop": "1.5-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\Diactoros\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "description": "PSR HTTP Message implementations",
+            "homepage": "https://github.com/zendframework/zend-diactoros",
+            "keywords": [
+                "http",
+                "psr",
+                "psr-7"
+            ],
+            "time": "2017-04-06T16:18:34+00:00"
         },
         {
             "name": "zendframework/zend-escaper",
@@ -5017,6 +5173,9 @@
         "geissler/converter": 20,
         "servo/fluidxml": 20,
         "eko/feedbundle": 20,
+        "picturae/oai-pmh": 20,
+        "symfony/psr-http-message-bridge": 0,
+        "zendframework/zend-diactoros": 0,
         "vnn/wordpress-rest-api-client": 20
     },
     "prefer-stable": false,

@@ -74,6 +74,10 @@
         "presta/sitemap-bundle": "~1.5",
         "eko/feedbundle": "dev-master",
 
+        "picturae/oai-pmh": "dev-master",
+        "symfony/psr-http-message-bridge": "@stable",
+        "zendframework/zend-diactoros": "@stable",
+
         "vnn/wordpress-rest-api-client": "dev-master",
         "guzzlehttp/guzzle": "^5.3",
         "guzzlehttp/psr7": "*"
