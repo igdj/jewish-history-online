@@ -139,14 +139,16 @@ class AboutController extends RenderTeiController
                         $keywords[] = $categories[$category] = $categoryInfo['name'];
                     }
                 }
-                $article->setKeywords(join('/ ', $keywords));
+                $article->setKeywords(join(' / ', $keywords));
             }
 
             if (!empty($post['featured_media'])) {
                 try {
                     $featuredMedia = $client->media()->get($post['featured_media']);
                     if (!empty($featuredMedia)) {
-                        $article->thumbnailUrl = $featuredMedia['media_details']['sizes']['medium']['source_url'];
+                        $size = array_key_exists('medium', $featuredMedia['media_details']['sizes'])
+                            ? 'medium' : 'full';
+                        $article->thumbnailUrl = $featuredMedia['media_details']['sizes'][$size]['source_url'];
                     }
                 }
                 catch (\Exception $e) {
@@ -174,7 +176,7 @@ class AboutController extends RenderTeiController
                         $url);
                 $client->setCredentials(new \Vnn\WpApiClient\Auth\WpBasicAuth($this->getParameter('app.wp-rest.user'), $this->getParameter('app.wp-rest.password')));
                 $posts = $client->posts()->get(null, [
-                    'per_page' => 5,
+                    'per_page' => 15,
                     'lang' => $this->get('request')->getLocale(),
                 ]);
                 if (!empty($posts)) {

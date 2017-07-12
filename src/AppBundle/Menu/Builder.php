@@ -60,12 +60,6 @@ class Builder implements ContainerAwareInterface
                 ->addChild('about-implementation', [
                     'label' => $translator->trans('Technical Implementation', [], 'menu'), 'route' => 'about-implementation',
                 ]);
-            /*
-            $menu['about']
-                ->addChild('about-news', [
-                    'label' => $translator->trans('News'), 'route' => 'about-news',
-                ]);
-            */
         }
 
         if (!array_key_exists('part', $options) || 'right' == $options['part']) {
@@ -91,6 +85,10 @@ class Builder implements ContainerAwareInterface
             $menu['about-us']
                 ->addChild('about-sponsors', [
                     'label' => $translator->trans('Sponsors and Partners'), 'route' => 'about-sponsors',
+                ]);
+            $menu['about-us']
+                ->addChild('about-news', [
+                    'label' => $translator->trans('Project News'), 'route' => 'about-news',
                 ]);
 
             $menu->addChild('terms', [

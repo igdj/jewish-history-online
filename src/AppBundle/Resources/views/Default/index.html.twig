@@ -307,6 +307,31 @@ Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und du
                 </div>
             </div>
 
+            {% if news is not empty %}
+            <div class="container-fluid box top-buffer">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4><a href="{{ path('about-news') }}">{{ 'Project News'|trans }}</a></h4>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse menu">
+                    <div class="col-sm-12">
+                    <ul>
+                    {% for article in news %}
+                        <li>
+                            {% if loop.last and loop.index >= 4 %}
+                            <a href="{{ path('about-news') }}#{{ article.slug }}">{{ 'More'|trans }} &gt;</a>
+                            {% else %}
+                            <b><a href="{{ path('about-news') }}#{{ article.slug }}">{{ article.name|raw }}</b> ({{ article.datePublished|dateincomplete }})
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                    </ul>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
             <div class="container-fluid box top-buffer">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
@@ -322,7 +347,6 @@ Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und du
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 {% endblock %}

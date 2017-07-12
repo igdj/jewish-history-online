@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2017-06-19T12:14:07Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2017-07-12T10:32:09Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -60,7 +60,7 @@
       </trans-unit>
       <trans-unit id="0692c6df6de2cb3d9e42dd96ffa3341497ea1170" resname="about-news">
         <source>/about/news</source>
-        <target state="new">/ueber/news</target>
+        <target>/ueber/news</target>
       </trans-unit>
       <trans-unit id="4325ad54eb5c30738fd299324a9ed374ea5d84c1" resname="about-sponsors">
         <source>/about/sponsors</source>
@@ -153,6 +153,10 @@
       <trans-unit id="25d793dbb8b816a2f81fdd7ee262951bf6cf0b17" resname="imginfo">
         <source>/source/imginfo/{path}</source>
         <target>/source/imginfo/{path}</target>
+      </trans-unit>
+      <trans-unit id="db1bb80ce727aa150bc4be7f4eda72fec252c3df" resname="oai">
+        <source>/oai</source>
+        <target state="new">/oai</target>
       </trans-unit>
       <trans-unit id="7cb06027e87e7d848d8576d8fef5f76256f41cee" resname="organization">
         <source>/organization/{id}</source>
