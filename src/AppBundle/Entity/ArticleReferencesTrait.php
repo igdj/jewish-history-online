@@ -23,11 +23,10 @@ trait ArticleReferencesTrait
         $langCode3 = \AppBundle\Utils\Iso639::code1to3($lang);
 
         return $this->articleReferences->filter(
-            function($entity) use ($langCode3) {
+            function ($entity) use ($langCode3) {
                return 1 == $entity->getArticle()->getStatus()
                     && $entity->getArticle()->getLanguage() == $langCode3;
             }
         )->toArray();
     }
-
 }
