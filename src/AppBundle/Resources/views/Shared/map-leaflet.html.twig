@@ -1,116 +1,134 @@
 {% macro head() %}
-	<link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet-1.0.3/leaflet.css" />
-	<script src="{{ app.request.basepath }}/vendor/leaflet-1.0.3/leaflet.js"></script>
+    <link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet-1.0.3/leaflet.css" />
+    <script src="{{ app.request.basepath }}/vendor/leaflet-1.0.3/leaflet.js"></script>
 {% endmacro %}
 
 {% macro head_markercluster() %}
-	<link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet.markercluster-1.0.4/MarkerCluster.css" />
-	<link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet.markercluster-1.0.4/MarkerCluster.Default.css" />
-	<script src="{{ app.request.basepath }}/vendor/leaflet.markercluster-1.0.4/leaflet.markercluster.js"></script>
-	<script>
-		function escapeHtml(text) {
-			return $('<div/>').text(text).html();
-		}
-	</script>
+    <link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet.markercluster-1.0.4/MarkerCluster.css" />
+    <link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet.markercluster-1.0.4/MarkerCluster.Default.css" />
+    <script src="{{ app.request.basepath }}/vendor/leaflet.markercluster-1.0.4/leaflet.markercluster.js"></script>
+    <script>
+        function escapeHtml(text) {
+            return $('<div/>').text(text).html();
+        }
+    </script>
 {% endmacro %}
 
 {% macro addTileLayer(maxZoom) %}
-	if (true) {
-		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiaGF1c3ZlcnN0YW5kIiwiYSI6ImNpemU2OWJvaTAwNHIyd252b2ptaDV2NjkifQ.FGA8-opghZHquZJKlHSFdg', {
-			maxZoom: {{ maxZoom|default(16) }},
-			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-				'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-			id: 'mapbox.streets'
-		}).addTo(map);
-	}
-	else {
-		L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			maxZoom: {{ maxZoom|default(18) }},
-			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-			id: 'mapbox.streets'
-		}).addTo(map);
-	}
+    if (true) {
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiaGF1c3ZlcnN0YW5kIiwiYSI6ImNpemU2OWJvaTAwNHIyd252b2ptaDV2NjkifQ.FGA8-opghZHquZJKlHSFdg', {
+            maxZoom: {{ maxZoom|default(16) }},
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+            id: 'mapbox.streets'
+        }).addTo(map);
+    }
+    else {
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: {{ maxZoom|default(18) }},
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+            id: 'mapbox.streets'
+        }).addTo(map);
+    }
 {% endmacro %}
 
 {% macro showMap(bounds, markers) %}
     {% import _self as map %}
-	var map = null;
-	function showMap() {
-		map = L.map('map');
+    var map = null;
+    function showMap() {
+        map = L.map('map');
 
-		map.fitBounds({{ bounds|json_encode|raw }});
+        map.fitBounds({{ bounds|json_encode|raw }});
 
-		{{ map.addTileLayer() }}
+        {{ map.addTileLayer() }}
 
-		var markers = L.markerClusterGroup({
-			iconCreateFunction: function (cluster) {
-				// var childCount = cluster.getChildCount();
-				var markers = cluster.getAllChildMarkers();
-				var n = 0;
-				for (var i = 0; i < markers.length; i++) {
-					n += markers[i].number;
-				}
-				var childCount = n;
-				var c = ' marker-cluster-';
-				if (childCount < 10) {
-					c += 'small';
-				} else if (childCount < 100) {
-					c += 'medium';
-				} else {
-					c += 'large';
-				}
+        var markers = L.markerClusterGroup({
+            iconCreateFunction: function (cluster) {
+                // var childCount = cluster.getChildCount();
+                var markers = cluster.getAllChildMarkers();
+                var n = 0;
+                for (var i = 0; i < markers.length; i++) {
+                    n += markers[i].number;
+                }
+                var childCount = n;
+                var c = ' marker-cluster-';
+                if (childCount < 10) {
+                    c += 'small';
+                } else if (childCount < 100) {
+                    c += 'medium';
+                } else {
+                    c += 'large';
+                }
 
-				return new L.DivIcon({
-					html: '<div><span>' + childCount + '</span></div>',
-					className: 'marker-cluster' + c,
-					iconSize: new L.Point(40, 40)
-				});
-			},
-			// spiderfyOnMaxZoom: false, showCoverageOnHover: false, zoomToBoundsOnClick: false,
-			disableClusteringAtZoom: 17
-		});
+                return new L.DivIcon({
+                    html: '<div><span>' + childCount + '</span></div>',
+                    className: 'marker-cluster' + c,
+                    iconSize: new L.Point(40, 40)
+                });
+            },
+            /*
+            spiderfyOnMaxZoom: false,
+            showCoverageOnHover: false,
+            zoomToBoundsOnClick: false,
+            */
+            disableClusteringAtZoom: 17
+        });
 
-		var labelLoading = "{{ 'Loading...'|trans }}";
-		var markerPos = {{ markers|json_encode|raw }};
-		var urlTemplatePlace = '{{ path('place-by-tgn', { 'tgn' : '{0}' }) }}';
+        var labelLoading = "{{ 'Loading...'|trans }}";
+        var markerPos = {{ markers|json_encode|raw }};
+        var urlTemplatePlace = '{{ path('place-by-tgn', { 'tgn' : '{0}' }) }}';
 
-		for (var geo in markerPos) {
-			if (markerPos.hasOwnProperty(geo)) {
-				(function(info) {
-					// anonymous function to create a closure
-					var markerGeo = geo;
-					var loaded = false;
-					var marker = L.marker(info['latLng'], { title: info['name'] });
-					marker.number = info['number'];
-					marker.bindPopup(labelLoading, { maxHeight: 160 });
-					marker.on('click', function(e) {
-						var popup = e.target.getPopup();
-						if (!loaded) {
-							loaded = true;
-							var name = escapeHtml(info['name']);
-							if (null != info['tgn']) {
-								var url = decodeURIComponent(urlTemplatePlace).replace('{0}', info['tgn']);
-								name = '<a href="' + url + '">' + name + '</a>';
-							}
-							var header = '<b>' + name + '</b><br />';
-							popup.setContent(header + labelLoading);
-							popup.update();
-							var urlTemplate = '{{ path('place-map-popup-content', { 'ids' : '{0}', 'geo' : '{1}', 'caller' : app.request.attributes.get('_route') })|raw }}';
-							var url = decodeURIComponent(urlTemplate).replace('{0}', info['places']).replace('{1}', markerGeo);
-							$.get(url).done(function(data) {
-								popup.setContent(header + data);
-								popup.update();
-							});
-						}
-					});
+        var baseUrlMarkerImg = "{{ app.request.basepath }}/vendor/leaflet-color-markers/img/";
+        var greyIcon = new L.Icon({
+            iconUrl: baseUrlMarkerImg + 'marker-icon-2x-grey.png',
+            shadowUrl: baseUrlMarkerImg + 'marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
 
-					markers.addLayer(marker);
-				})(markerPos[geo]);
-			}
-		}
+        for (var geo in markerPos) {
+            if (markerPos.hasOwnProperty(geo)) {
+                (function(info) {
+                    // anonymous function to create a closure
+                    var markerGeo = geo;
+                    var loaded = false;
+                    var options = { title: info['name'] };
+                    if (!info['primary']) {
+                        options.icon = greyIcon;
+                    }
+                    var marker = L.marker(info['latLng'], options);
+                    marker.number = info['number'];
+                    marker.bindPopup(labelLoading, { maxHeight: 160 });
+                    marker.on('click', function(e) {
+                        var popup = e.target.getPopup();
+                        if (!loaded) {
+                            loaded = true;
+                            var name = escapeHtml(info['name']);
+                            if (null != info['tgn']) {
+                                var url = decodeURIComponent(urlTemplatePlace).replace('{0}', info['tgn']);
+                                name = '<a href="' + url + '">' + name + '</a>';
+                            }
+                            var header = '<b>' + name + '</b><br />';
+                            popup.setContent(header + labelLoading);
+                            popup.update();
+                            var urlTemplate = '{{ path('place-map-popup-content', { 'ids' : '{0}', 'geo' : '{1}', 'caller' : app.request.attributes.get('_route') })|raw }}';
+                            var url = decodeURIComponent(urlTemplate).replace('{0}', info['places']).replace('{1}', markerGeo);
+                            $.get(url).done(function(data) {
+                                popup.setContent(header + data);
+                                popup.update();
+                            });
+                        }
+                    });
 
-		map.addLayer(markers);
-	}
+                    markers.addLayer(marker);
+                })(markerPos[geo]);
+            }
+        }
+
+        map.addLayer(markers);
+    }
 {% endmacro %}

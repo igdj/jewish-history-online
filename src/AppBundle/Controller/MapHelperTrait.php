@@ -11,7 +11,7 @@ trait MapHelperTrait
     /**
      *
      */
-    protected function buildPlaceMarkers($result, $locale)
+    protected function buildPlaceMarkers($result, $locale, $geoPrimary = null)
     {
         $place = new \AppBundle\Entity\Place();
         $markers = [];
@@ -29,6 +29,7 @@ trait MapHelperTrait
                 $position['number'] = (int)($position['number']);
                 $latLng = explode(',', $geo);
                 $position['latLng'] = [ (double)$latLng[0], (double)$latLng[1] ];
+                $position['primary'] = is_null($geoPrimary) || array_key_exists($geo, $geoPrimary);
                 $markers[$geo] = $position;
             }
             else {
@@ -46,7 +47,27 @@ trait MapHelperTrait
                 ->createQueryBuilder('A')
                 ;
 
+        $geoPrimary = null;
         if ($mentioned) {
+            // set $geoPrimary = [ 'geo0' => 1, 'geo1' => 1, ... ] for quick lookup
+            $geo = $this->getDoctrine()
+                ->getRepository('AppBundle:SourceArticle')
+                ->createQueryBuilder('A')
+                ->select('COALESCE(A.geo,P.geo) AS geo')
+                ->distinct()
+                ->innerJoin('A.contentLocation', 'P')
+                ->andWhere('A.status IN (1) AND (P.geo IS NOT NULL OR A.geo IS NOT NULL)')
+                ->getQuery()
+                ->getScalarResult()
+                ;
+
+            // https://stackoverflow.com/a/13462039/2114681
+            $geoPrimary = array_reduce($geo,
+                function ($result, $row) {
+                    $result[$row['geo']] = 1;
+                    return $result;
+                }, []);
+
             $qb->select('COUNT(DISTINCT A.id) AS number, P.id AS places, P.name, P.alternateName, P.tgn, P.geo')
                     ->innerJoin('A.placeReferences', 'AP')
                     ->innerJoin('AP.place', 'P')
@@ -77,7 +98,7 @@ trait MapHelperTrait
                 ->getResult();
                 ;
 
-        $markers = $this->buildPlaceMarkers($result, $locale);
+        $markers = $this->buildPlaceMarkers($result, $locale, $geoPrimary);
 
         return [
             $markers, $mentioned
