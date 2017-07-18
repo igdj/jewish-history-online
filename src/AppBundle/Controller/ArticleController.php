@@ -27,13 +27,31 @@ class ArticleController extends RenderTeiController
                                  \AppBundle\Utils\Iso639::code3to1($article->getLanguage()));
             }
         }
+
         $fname .= $extension;
+
         return $fname;
     }
 
-    protected function renderSourceDescription($interpretation)
+    protected function renderSourceDescription($article)
     {
-        $html = $this->renderTei($this->buildArticleFname($interpretation), 'dtabf_note.xsl');
+        // localize labels in xslt
+        $language = null;
+        $params = [];
+        if ($article instanceof \AppBundle\Entity\Article) {
+            $language = $article->getLanguage();
+            if (!empty($language)) {
+                $params['lang'] = $language;
+            }
+        }
+
+        $html = $this->renderTei($this->buildArticleFname($article), 'dtabf_note.xsl', [
+            'params' => $params,
+        ]);
+
+        list($authors, $sectionHeaders, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html);
+        $html = $this->adjustRefs($html, $refs, $language);
+
         return $html;
     }
 
@@ -60,7 +78,7 @@ class ArticleController extends RenderTeiController
                                  $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl',
                                  [ 'params' => $params ]);
 
-        list($authors, $section_headers, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html);
+        list($authors, $sectionHeaders, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html);
         $html = $this->adjustRefs($html, $refs, $language);
 
         $html = $this->adjustMedia($html,
@@ -81,7 +99,7 @@ class ArticleController extends RenderTeiController
                 'name' => $article->getName(),
                 'html' => preg_replace('/<\/?body>/', '', $html),
                 'authors' => $authors,
-                'section_headers' => $section_headers,
+                'section_headers' => $sectionHeaders,
                 'license' => $license,
             ]);
 
@@ -125,7 +143,7 @@ class ArticleController extends RenderTeiController
             'pageTitle' => $article->getName(), // TODO: append authors in brackets
             'html' => $html,
             'authors' => $authors,
-            'section_headers' => $section_headers,
+            'section_headers' => $sectionHeaders,
             'license' => $license,
             'entity_lookup' => $entityLookup,
             'bibitem_lookup' => $bibitemLookup,
