@@ -24,7 +24,9 @@
 <xsl:template match='tei:gap'>
   <span class="gap">
     <xsl:text>[</xsl:text>
-    <xsl:if test="@reason='lost'">verlorenes Material</xsl:if>
+    <xsl:if test="@reason='lost'"><xsl:call-template name="translate">
+              <xsl:with-param name="label" select="'verlorenes Material'" />
+    </xsl:call-template></xsl:if>
     <xsl:if test="@reason='insignificant'"><span><xsl:attribute name="title">
         <xsl:call-template name="translate">
             <xsl:with-param name="label" select="'irrelevantes Material'" />
