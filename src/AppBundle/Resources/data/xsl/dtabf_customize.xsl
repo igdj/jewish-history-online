@@ -58,6 +58,45 @@
   </span>
 </xsl:template>
 
+  <xsl:template match="tei:foreign">
+    <span class="dta-foreign">
+     <xsl:attribute name="title">
+        <xsl:call-template name="translate">
+            <xsl:with-param name="label" select="'fremdsprachliches Material'" />
+        </xsl:call-template>
+     </xsl:attribute>
+     <xsl:choose>
+      <xsl:when test="@xml:lang">
+        <xsl:attribute name="xml:lang">
+          <xsl:value-of select="@xml:lang"/>
+        </xsl:attribute>
+        <xsl:choose>
+          <xsl:when test="not(child::*) and not(child::text())">
+            <xsl:text>FM: </xsl:text>
+            <xsl:choose>
+              <xsl:when test="@xml:lang='he' or @xml:lang='heb' or @xml:lang='hbo'">
+                <xsl:text>hebräisch</xsl:text>
+              </xsl:when>
+              <xsl:when test="@xml:lang='el' or @xml:lang='grc' or @xml:lang='ell'">
+                <xsl:text>griechisch</xsl:text>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="@xml:lang"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:apply-templates/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+       <xsl:otherwise>
+         <xsl:apply-templates/>
+       </xsl:otherwise>
+     </xsl:choose>
+    </span>
+  </xsl:template>
+
   <!-- we do separate note-handling -->
   <xsl:template match="tei:text[not(descendant::tei:text)]">
     <xsl:apply-templates/>
