@@ -26,7 +26,7 @@ class PersonController extends Controller
 
         $qb->select([
                 'P',
-                "CONCAT(COALESCE(P.familyName,P.givenName), ' ', P.givenName) HIDDEN nameSort"
+                "CONCAT(COALESCE(P.familyName,P.givenName), ' ', COALESCE(P.givenName, '')) HIDDEN nameSort"
             ])
             ->from('AppBundle:Person', 'P')
             ->where('P.status IN (0,1)')
