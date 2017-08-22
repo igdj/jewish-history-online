@@ -118,6 +118,11 @@ class ArticleAuthorCommand extends BaseEntityCommand
                         $methodName = 'set' . ucfirst($target);
                         $person->$methodName($user[$src]);
                     }
+                    else if ('url' == $target) {
+                        // clear url
+                        $methodName = 'set' . ucfirst($target);
+                        $person->$methodName(null);
+                    }
                 }
                 $description = [];
                 if (!empty($user['description_de'])) {
