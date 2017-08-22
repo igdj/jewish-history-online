@@ -176,12 +176,14 @@ class ArticleAdjustCommand extends BaseEntityCommand
                     });
                     $data['topic'] = $topics;
                 }
+
                 if ('en' == $translator->getLocale() && !empty($result['slug'])) {
                     $data['slug'] = $result['slug'];
                 }
                 else if ('de' == $translator->getLocale() && !empty($result['slug_de'])) {
                     $data['slug'] = $result['slug_de'];
                 }
+
                 $dates = [];
                 if (!empty($result['published'])) {
                     $published = new \DateTime($result['published']);
@@ -190,13 +192,21 @@ class ArticleAdjustCommand extends BaseEntityCommand
                 if (!empty($dates)) {
                     $data['dates'] = $dates;
                 }
+
                 if (!empty($result['license'])) {
                     switch ($result['license']) {
                         case 'CC BY-NC-ND':
                             $data['license'] = [
                                 'http://creativecommons.org/licenses/by-nc-nd/4.0/'
                                 => $translator->trans('license.by-nc-nd'),
-                                ];
+                            ];
+                            break;
+
+                        case 'CC BY-SA':
+                            $data['license'] = [
+                                'http://creativecommons.org/licenses/by-sa/4.0/'
+                                => $translator->trans('license.by-sa'),
+                            ];
                             break;
 
                         case 'restricted':
@@ -305,6 +315,16 @@ class ArticleAdjustCommand extends BaseEntityCommand
 
                 if (!empty($result['license'])) {
                     switch ($result['license']) {
+                        case 'CC BY-SA':
+                            $licenseKey = 'http://creativecommons.org/licenses/by-sa/4.0/';
+                            $licenseAttribution = $translator->trans('license.by-sa');
+                            break;
+
+                        case 'CC BY-NC-SA':
+                            $licenseKey = 'http://creativecommons.org/licenses/by-nc-sa/4.0/';
+                            $licenseAttribution = $translator->trans('license.by-nc-sa');
+                            break;
+
                         case 'CC BY-NC-ND':
                             $licenseKey = 'http://creativecommons.org/licenses/by-nc-nd/4.0/';
                             $licenseAttribution = $translator->trans('license.by-nc-nd');
