@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2017-07-12T10:32:08Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2017-08-22T09:49:19Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -16,7 +16,7 @@
         <target>Eine Online-Quellenedition</target>
         <jms:reference-file line="144">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\article-printview.html.twig\</jms:reference-file>
         <jms:reference-file line="46">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\base-printview.html.twig\</jms:reference-file>
-        <jms:reference-file line="137">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\base.html.twig\</jms:reference-file>
+        <jms:reference-file line="172">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\base.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="b7327b21bc776ba5d03796403347a7f5738978be" resname="About this edition">
         <source>About this edition</source>
@@ -59,7 +59,7 @@
       <trans-unit id="cbf151ff78cda144bdc40b8c2dd82c707fc2bf4e" resname="Article Overview">
         <source>Article Overview</source>
         <target>Beitragsübersicht</target>
-        <jms:reference-file line="218">\..\..\..\..\..\..\./src\AppBundle\Controller\ArticleController.php\</jms:reference-file>
+        <jms:reference-file line="236">\..\..\..\..\..\..\./src\AppBundle\Controller\ArticleController.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="7c422841b7e3951946583038790545c4ed38481b" resname="Articles">
         <source>Articles</source>
@@ -106,7 +106,7 @@
       <trans-unit id="501d8e4cff50a66866de111c38d237b508f2a0a7" resname="Click to return to the top of the page">
         <source>Click to return to the top of the page</source>
         <target>Klicken Sie, um an den Beginn der Seite zurückzukehren</target>
-        <jms:reference-file line="195">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\base.html.twig\</jms:reference-file>
+        <jms:reference-file line="230">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\base.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="b37456c4530be810dc040f50da72eda09addfb0a" resname="Contact">
         <source>Contact</source>
@@ -233,7 +233,7 @@
       <trans-unit id="6d79d21dc398598c8c28e7d8ebf3f1cb823ab0d6" resname="Guide to the Digital Source Edition">
         <source>Guide to the Digital Source Edition</source>
         <target>Begleitbroschüre zur Online-Quellenedition</target>
-        <jms:reference-file line="338">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
+        <jms:reference-file line="341">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="2bb85f0a8dbe6f36708aa5fed8239b1b375c4369" resname="Hide Map">
         <source>Hide Map</source>
@@ -266,9 +266,9 @@
       <trans-unit id="97c20e9ee98b40e4c76b73b7186c7fe341baf247" resname="Institute for the History of the German Jews">
         <source>Institute for the History of the German Jews</source>
         <target>Institut für die Geschichte der deutschen Juden</target>
-        <jms:reference-file line="390">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="410">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
         <jms:reference-file line="249">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleDoiCommand.php\</jms:reference-file>
-        <jms:reference-file line="130">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\base.html.twig\</jms:reference-file>
+        <jms:reference-file line="165">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\base.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="2312ce905355db60ba0a4da09a398ae54ecc79fd" resname="Integrated Authority File">
         <source>Integrated Authority File</source>
@@ -300,7 +300,7 @@
         <source>Loading...</source>
         <target>Wird geladen...</target>
         <jms:reference-file line="163">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
-        <jms:reference-file line="75">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\map-leaflet.html.twig\</jms:reference-file>
+        <jms:reference-file line="79">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\map-leaflet.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="0e395bfa3879c6532f36f789e96f80c57030f8f0" resname="Look-up">
         <source>Look-up</source>
@@ -333,13 +333,13 @@
       </trans-unit>
       <trans-unit id="4bab2d8fe13fa6ab57f80098b414f0f734c5dd25" resname="More">
         <source>More</source>
-        <target state="new">Weitere</target>
-        <jms:reference-file line="323">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
+        <target>Weitere</target>
+        <jms:reference-file line="326">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="5a64c7607d6bbd900e183a7a6f02b220abab20f6" resname="New Sources">
         <source>New Sources</source>
         <target>Neue Quellen</target>
-        <jms:reference-file line="205">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
+        <jms:reference-file line="206">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="b2a35c2b4b4e06249eff799c40dd80f0a45e24b3" resname="No glossary terms were found">
         <source>No glossary terms were found</source>
@@ -393,11 +393,11 @@
       </trans-unit>
       <trans-unit id="9c0ada22130357a26990ce755db75086346e3149" resname="Project News">
         <source>Project News</source>
-        <target state="new">Projektneuigkeiten</target>
+        <target>Projektneuigkeiten</target>
         <jms:reference-file line="91">\..\..\..\..\..\..\./src\AppBundle\Menu\Builder.php\</jms:reference-file>
         <jms:reference-file line="36">\..\..\..\..\..\..\./src\AppBundle\Resources\views\About\news.html.twig\</jms:reference-file>
         <jms:reference-file line="6">\..\..\..\..\..\..\./src\AppBundle\Resources\views\About\news.html.twig\</jms:reference-file>
-        <jms:reference-file line="314">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
+        <jms:reference-file line="317">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\index.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="fda3484edf8db0684440157ce0b110d784d42704" resname="README.txt">
         <source>README.txt</source>
@@ -443,9 +443,9 @@
       <trans-unit id="bce06414177f72ab70e6387b6af9f8ceef0d6049" resname="Search">
         <source>Search</source>
         <target>Suche</target>
-        <jms:reference-file line="145">\..\..\..\..\..\..\./src\AppBundle\Controller\SearchController.php\</jms:reference-file>
+        <jms:reference-file line="164">\..\..\..\..\..\..\./src\AppBundle\Controller\SearchController.php\</jms:reference-file>
         <jms:reference-file line="291">\..\..\..\..\..\..\./src\AppBundle\Menu\Builder.php\</jms:reference-file>
-        <jms:reference-file line="146">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\base.html.twig\</jms:reference-file>
+        <jms:reference-file line="181">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\base.html.twig\</jms:reference-file>
         <jms:reference-file line="6">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Search\index.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="e75fa612b3435df4dfe963f813cb8a876de9d113" resname="Search in KVK">
@@ -500,7 +500,7 @@
       <trans-unit id="6da13addb000b67d42a6d66391713819e634149f" resname="Source">
         <source>Source</source>
         <target>Quelle</target>
-        <jms:reference-file line="235">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="245">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
         <jms:reference-file line="120">\..\..\..\..\..\..\./src\AppBundle\Controller\RenderTeiController.php\</jms:reference-file>
         <jms:reference-file line="246">\..\..\..\..\..\..\./src\AppBundle\Menu\Builder.php\</jms:reference-file>
         <jms:reference-file line="61">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\article.html.twig\</jms:reference-file>
@@ -666,24 +666,35 @@
       <trans-unit id="98c3779109f14746d0072d67f89da51920f50b4d" resname="license.by-nc-nd">
         <source>license.by-nc-nd</source>
         <target>Dieser Text unterliegt den Bedingungen der Creative Commons Namensnennung - Nicht kommerziell - Keine Bearbeitungen 4.0 International Lizenz. Unter Namensnennung gemäß der Zitationsempfehlung darf er in unveränderter Form für nicht-kommerzielle Zwecke nachgenutzt werden.</target>
-        <jms:reference-file line="198">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
-        <jms:reference-file line="310">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="201">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="330">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
         <jms:reference-file line="334">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleDoiCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="96057d4edae7eba4b35f07efb642bd322672f229" resname="license.by-nc-sa">
+        <source>license.by-nc-sa</source>
+        <target state="new">license.by-nc-sa</target>
+        <jms:reference-file line="325">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="b47d90519495ca4112cd38479b0dc29cdddffd8c" resname="license.by-sa">
+        <source>license.by-sa</source>
+        <target state="new">license.by-sa</target>
+        <jms:reference-file line="208">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="320">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="4c6cc61ad14d77dbcc0f3c9c41cc9531e88392df" resname="license.personal-use">
         <source>license.personal-use</source>
         <target>license.personal-use</target>
-        <jms:reference-file line="324">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="344">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="76ef082a395e8e204883a504ca3e054bedf59149" resname="license.public-domain">
         <source>license.public-domain</source>
         <target>license.public-domain</target>
-        <jms:reference-file line="319">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="339">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="da2999cac117278739bcc5e3843a108636701ebd" resname="license.restricted">
         <source>license.restricted</source>
         <target><![CDATA[© Institut für die Geschichte der deutschen Juden (IGdJ) und Autor, alle Rechte vorbehalten. Dieses Werk entstand im Rahmen der Online-Quellenedition „Hamburger Schlüsseldokumente zur deutsch-jüdischen Geschichte“ und darf nur mit Einwilligung der Rechteinhaber vervielfältigt und veröffentlicht werden. Bitte kontaktieren Sie: <info@juedische-geschichte-online.net>]]></target>
-        <jms:reference-file line="203">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="213">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="6f422dcae21f2b91aa0b8583fe9d7f94084bf997" resname="limited to">
         <source>limited to</source>

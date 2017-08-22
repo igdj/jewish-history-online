@@ -46,9 +46,6 @@
         <meta property="og:title" content="{{ pageTitle }}">
         {% endif %}
 
-        <!--
-        <script src="{{ app.request.basepath }}/js/modernizr.js"></script>
-        -->
         <script src="{{ app.request.basepath }}/js/jquery-2.2.3.min.js"></script>
 
         <!-- Latest compiled and minified CSS -->
@@ -56,6 +53,9 @@
 
         <!-- Latest compiled and minified JavaScript -->
         <script src="{{ app.request.basepath }}/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+
+        <!-- Search suggest -->
+        <script src="{{ app.request.basepath }}/js/bootstrap3-typeahead.js"></script>
 
         {% stylesheets filter="scssphp" output="css/app.css"
             "assets/scss/base.scss"
@@ -83,7 +83,8 @@
         </script>
 
         <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
+            // show back to top arrow upon scroll
             $(window).scroll(function () {
                     if ($(this).scrollTop() > 50) {
                         $('#back-to-top').fadeIn();
@@ -101,6 +102,40 @@
             });
 
             // $('#back-to-top').tooltip('show');
+
+            // typeahead for search
+            var $input = $('#header-search');
+            $input.typeahead({
+                autoSelect: true,
+                minLength: 3,
+                delay: 100,
+                source: function (query, process) {
+                    $.ajax({
+                        url: '{{ path('search-suggest') }}',
+                        data: { q: query },
+                        dataType: 'json'
+                    })
+                    .done(function(response) {
+                        return process(response);
+                    });
+                }
+            });
+            $input.change(function() {
+              var current = $input.typeahead('getActive');
+              if (current) {
+                // Some item from your model is active!
+                if (current.name == $input.val()) {
+                    // This means the exact match is found. Use toLowerCase() if you want case insensitive match.
+                    window.location = current.url;
+                } else {
+                    // This means it is only a partial match, you can either add a new item
+                    // or take the active if you don't want new items
+
+                }
+              } else {
+                // Nothing is active so it is a new value (or maybe empty value)
+              }
+            });
         });
         </script>
     </head>
@@ -143,7 +178,7 @@
                     <div id="header-search-wrapper" class="col-sm-3 hidden-xs">
                         <form action="{{ path('search-index') }}" method="post">
                             <div class="form-group has-feedback" style="margin-bottom: 0">
-                            <input name="q" type="text" placeholder="{{ 'Search'|trans }}" />
+                            <input autocomplete="off" id="header-search" name="q" type="text" placeholder="{{ 'Search'|trans }}" />
                             <i style="margin-top: -2px" class="glyphicon glyphicon-search form-control-feedback"></i>
                             </div>
                         </form>

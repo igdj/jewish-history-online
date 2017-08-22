@@ -2,7 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
@@ -10,23 +12,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
  */
 class SearchController extends Controller
 {
-    /**
-     * @Route("/search")
-     */
-    public function indexAction()
+    protected function getQuery(Request $request, $facetNames = [])
     {
-        $solrClient = $this->get('solr.client')->getClient();
-
-        $request = $this->getRequest();
-
-        $locale = $request->getLocale();
-        $endpoint = 'jgo_presentation-' . $locale;
-
-        $facetNames = [ 'entity' ];
-
-        $meta = $results = [];
         $q = ''; $filter = [];
-        $pagination = null;
 
         if ($request->getMethod() == 'POST') {
             $q = trim($request->request->get('q'));
@@ -39,6 +27,35 @@ class SearchController extends Controller
                 $filter = array_intersect_key($filter, array_flip($facetNames));
             }
         }
+
+        return [ $q, $filter ];
+    }
+
+    protected function getSolrClient($request)
+    {
+        $solrClient = $this->get('solr.client')->getClient();
+
+        $locale = $request->getLocale();
+        $endpoint = 'jgo_presentation-' . $locale;
+
+        // set the proper $endpoint
+        $solrClient->setDefaultEndpoint($endpoint);
+
+        return $solrClient;
+    }
+
+    /**
+     * @Route("/search")
+     */
+    public function indexAction(Request $request)
+    {
+        $solrClient = $this->getSolrClient($request);
+
+        $meta = $results = [];
+        $pagination = null;
+        $facetNames = [ 'entity' ];
+
+        list($q, $filter) = $this->getQuery($request, $facetNames);
 
         if (!empty($q) || !empty($filter)) {
             $meta['query'] = $q;
@@ -78,7 +95,11 @@ class SearchController extends Controller
 
                 // create a facet field
                 $facetField = $facetSet
-                    ->createFacetField([ 'key' => $facetName, 'field' => $field, 'exclude' => $facetName ])
+                    ->createFacetField([
+                        'key' => $facetName,
+                        'field' => $field,
+                        'exclude' => $facetName,
+                    ])
                     ->setMinCount(1) // only get the ones with matches
                     ;
             }
@@ -90,8 +111,6 @@ class SearchController extends Controller
             $hl->setSimplePrefix('<b>');
             $hl->setSimplePostfix('</b>');
 
-            // set the proper $endpoint
-            $solrClient->setDefaultEndpoint($endpoint);
 
             /*
             // debug
@@ -104,7 +123,7 @@ class SearchController extends Controller
             $paginator = $this->get('knp_paginator');
 
             $pagination = $paginator->paginate(
-                array($solrClient, $solrQuery),
+                [ $solrClient, $solrQuery ],
                 $request->query->get('page', 1),
                 $resultsPerPage
             );
@@ -148,5 +167,142 @@ class SearchController extends Controller
             'pagination' => $pagination,
             'highlighting' => isset($resultset) ? $resultset->getHighlighting() : null,
         ]);
+    }
+
+    /**
+     * @Route("/search/suggest")
+     */
+    public function suggestAction(Request $request)
+    {
+        $suggestions = [];
+
+        list($q, $filter) = $this->getQuery($request);
+        if (empty($q) || mb_strlen($q, 'UTF-8') < 3) {
+            return new \Symfony\Component\HttpFoundation\JsonResponse($suggestions);
+        }
+
+        $solrClient = $this->getSolrClient($request);
+
+        // get a suggester query instance
+        $query = $solrClient->createSuggester();
+        $query->setQuery($q);
+        $query->setDictionary('suggester');
+
+        $query->addParam('suggest.cfq', '!bibitem'); // currently exclude
+
+        /*
+        // override the presets
+        $query->setOnlyMorePopular(true);
+        $query->setCount(10);
+        $query->setCollate(true);
+        */
+
+        // this executes the query and returns the result
+        $resultset = $solrClient->suggester($query);
+        $data = $resultset->getData();
+        $terms = array_keys($data['suggest']['suggester']);
+        $term = $terms[0]; // should be same as $q, but we don't want to rely on this
+
+        $terms = [];
+        foreach ($data['suggest']['suggester'][$term]['suggestions'] as $suggestion) {
+            if (in_array($suggestion['term'], $terms)) {
+                // duplicates like for example city and state Hamburg are confusing
+                continue;
+            }
+            $terms[] = $suggestion['term'];
+
+            // build route from $suggestion['payload']
+            $parts = explode('_', $suggestion['payload'], 2);
+            $route = null;
+            switch ($parts[0]) {
+                case 'sourcearticle':
+                case 'article':
+                    $articleIds[] = intval($parts[1]);
+                    $route = 'article';
+                    $routeParams = [ 'id' => intval($parts[1]) ];
+                    break;
+
+                case 'bibitem':
+                    $route = 'bibliography';
+                    ; // fall through
+                default:
+                    if (is_null($route)) {
+                        $route = $parts[0];
+                        $routeParams = [ 'id' => intval($parts[1]) ];
+                    }
+            }
+
+            $suggestion['route'] = $route;
+            $suggestion['routeParams'] = $routeParams;
+
+            $suggestions[] = $suggestion;
+        }
+
+        // payload can only hold a single field, so we need to lookup the rest
+        $articles = [];
+        if (!empty($articleIds)) {
+            $qb = $this->getDoctrine()
+                    ->getRepository('AppBundle:Article')
+                    ->createQueryBuilder('A')
+                    ;
+            $qb->select('A.id, A.uid, A.slug, A.articleSection')
+                ->where('A.status = 1')
+                ->andWhere('A.id IN (:ids)')
+                ->setParameter('ids', $articleIds)
+                ;
+
+            foreach ($qb->getQuery()->getResult() as $article) {
+                $articles[$article['id']] = $article;
+            }
+        }
+
+        $suggestionsFinal = [];
+        foreach ($suggestions as $suggestion) {
+            $url = null;
+
+            if ('article' == $suggestion['route']) {
+                if (!array_key_exists($suggestion['routeParams']['id'], $articles)) {
+                    continue; // lookup failed
+                }
+                $article = & $articles[$suggestion['routeParams']['id']];
+                switch ($article['articleSection']) {
+                    case 'background':
+                        $route = 'topic-background';
+                        $routeParams = [ 'slug' => $article['slug'] ];
+                        break;
+
+                    case 'interpretation':
+                        $route = 'article';
+                        $routeParams = [
+                            'slug' => !empty($article['slug'])
+                                ? $article['slug'] : $article['uid'],
+                        ];
+                        break;
+
+                    case 'source':
+                        $route = 'source';
+                        $routeParams = [ 'uid' => $article['uid'] ];
+                        break;
+
+                    default:
+                        // we shouldn't get here
+                        continue;
+                }
+
+                $url = $this->generateUrl($route, $routeParams);
+            }
+            else {
+                $url = $this->generateUrl($suggestion['route'], $suggestion['routeParams']);
+            }
+
+            if (!is_null($url)) {
+                $suggestionsFinal[] = [
+                    'name' => $suggestion['term'],
+                    'url' => $url,
+                ];
+            }
+        }
+
+        return new \Symfony\Component\HttpFoundation\JsonResponse($suggestionsFinal);
     }
 }

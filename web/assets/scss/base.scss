@@ -990,6 +990,21 @@ a.rss {
     display: inline-block;
 }
 
+ul.typeahead.dropdown-menu {
+    margin-left: -100px;
+    margin-top: 5px;
+    border-radius: 0px;
+    background-color: $color-color-medium;
+    li.active a {
+        background-color: $color-color-dark;
+    }
+    li a {
+        width: 239px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
 /* bootstrap panels */
 .panel {
     border-radius: 0px;

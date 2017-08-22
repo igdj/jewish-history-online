@@ -48,7 +48,10 @@ class SourceArticle extends Article
             && in_array($license, [
                 '#personal-use',
                 '#public-domain',
-                'http://creativecommons.org/licenses/by-nc-nd/4.0/']))
+                'http://creativecommons.org/licenses/by-sa/4.0/',
+                'http://creativecommons.org/licenses/by-nc-sa/4.0/',
+                'http://creativecommons.org/licenses/by-nc-nd/4.0/',
+            ]))
         {
             return true;
         }

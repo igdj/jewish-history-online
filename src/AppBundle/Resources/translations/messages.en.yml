@@ -14,6 +14,7 @@ result.oneormany:                   "result|results"
 epoch.century:                      "%century%th Century"
 epoch.decade:                       "%epoch%s"
 "license.by-nc-nd":                 "This text is licensed under a Creative Commons Attribution - Non commercial - No Derivatives 4.0 International License. As long as the work is unedited and you give appropriate credit according to the Recommended Citation, you may reuse and redistribute the material in any medium or format for non-commercial purposes."
+"license.by-sa":                    "This text is licensed under a Creative Commons Attribution - ShareAlike License. You make share and adapt the material in any medium or format as long as you give appropriate credit, provide a link to the license, and indicate if changes were made."
 "license.restricted":               "© Institute for the History of the German Jews (IGdJ) and the author, all rights reserved. This work was written for the digital source edition “Key Documents of German-Jewish History” and may only be copied and redistributed if permission is granted by the author and usage rights holder. Please contact <info@juedische-geschichte-online.net>"
 error.404.description:              >
     The requested page couldn't be located. Checkout for any URL misspelling
