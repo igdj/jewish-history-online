@@ -31,8 +31,8 @@
     {{ entityLookup.head(entity_lookup, bibitem_lookup, glossary_lookup) }}
     <script>
         function setViewerClose(id) {
-            var $button = jQuery('[data-id="CloseViewerGroup"] > button');
-            var $span = jQuery('[data-id="CloseViewerGroup"] span.glyphicon');
+            var $button = $( '[data-id="CloseViewerGroup"] > button' );
+            var $span = $( '[data-id="CloseViewerGroup"] span.glyphicon' );
             if (screenfull.isFullscreen) {
                 $button.attr('title', '{{ 'Exit Fullscreen Mode'|trans }}');
                 $span.removeClass('glyphicon-fullscreen');
@@ -55,12 +55,12 @@
         }
 
         function resizeViewerDiv() {
-            var parentWidth = $('#image-viewer').parent().width();
+            var parentWidth = $( '#image-viewer' ).parent().width();
             if (parentWidth < 640) {
                 parentWidth = 640;
             }
-            console.log('Set #image-viewer.width(): ' + parentWidth + '-' + $('#image-viewer').parent().width());
-            $('#image-viewer').width(parentWidth);
+            // console.log('Set #image-viewer.width(): ' + parentWidth + '-' + $('#image-viewer').parent().width());
+            $( '#image-viewer' ).width(parentWidth);
         }
 
         function createViewer () {
@@ -86,9 +86,8 @@
                 lang: "{{ app.request.locale }}",
                 // pdfCreatorStyle: "pdf",
                 // pdfCreatorURI: "http://wrackdm17.thulb.uni-jena.de/mets-printer/pdf",
-                // "text.enabled":"true",
                 text: {
-                    // showOnStart: ["transcription"],
+                    // showOnStart: ["transcription"], // we set this below depending on viewer width
                     enabled: true
                 },
                 metadataURL: "",
@@ -123,28 +122,36 @@
                 }
             };
 
-            if ($('#image-viewer').width() > 800) {
+            if ($( '#image-viewer' ).width() > 800) {
                 viewer_options.text.showOnStart = ["transcription"];
             }
 
-            window["viewer"] = new mycore.viewer.MyCoReViewer(jQuery("#image-viewer"), viewer_options);
+            window["viewer"] = new mycore.viewer.MyCoReViewer($( "#image-viewer" ), viewer_options);
 
             // a bit of a hack - some event or setting would be nicer
             setTimeout(function(){
-                jQuery('[data-id="CloseViewerGroup"]').show();
+                $( '[data-id="CloseViewerGroup"]' ).show();
                 setViewerClose('image-viewer');
 
-                $('[data-id="ZoomWidthButton"]').click()
+                $( '[data-id="ZoomWidthButton"]' ).click()
             }, 500);
         }
 
         $( document ).ready(function() {
             initEntityGlossaryNote('.source-description');
 
-            // see http://stackoverflow.com/a/16735080 - other .width() is wrong
-            setTimeout(function(){
-                createViewer();
-            }, 10);
+            /* preload the translation to avoid
+               TypeError: _this.languageModel is null
+               iview-c...base.js (line 7942, col 29)
+            */
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "{{ app.request.basepath }}/viewer/shared/iview2/i18n/{{ app.request.locale }}.json",
+                success: function (data) {
+                    createViewer();
+                }
+            });
         });
     </script>
 {% endblock %}
