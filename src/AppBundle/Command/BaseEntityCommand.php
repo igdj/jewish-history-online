@@ -49,6 +49,7 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
         }
 
         $em = $this->getContainer()->get('doctrine')->getManager();
+
         return $em->getRepository('AppBundle\Entity\Person')->findOneBy($condition);
     }
 
@@ -72,27 +73,31 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
 
                     // TODO: use hydrator
                     foreach ([
-                              'surname',
-                              'forename',
-                              'dateOfBirth',
-                              'dateOfDeath',
-                              'biographicalInformation',
-                              ] as $src)
+                            'surname',
+                            'forename',
+                            'dateOfBirth',
+                            'dateOfDeath',
+                            'biographicalInformation',
+                        ] as $src)
                     {
                         if (!empty($bio->{$src})) {
                             switch ($src) {
                                 case 'surname':
                                     $person->setFamilyName($bio->{$src});
                                     break;
+
                                 case 'forename':
                                     $person->setGivenName($bio->{$src});
                                     break;
+
                                 case 'dateOfBirth':
                                     $person->setBirthDate($bio->{$src});
                                     break;
+
                                 case 'dateOfDeath':
                                     $person->setDeathDate($bio->{$src});
                                     break;
+
                                 case 'biographicalInformation':
                                     $person->setDescription([ 'de' => $bio->{$src} ]);
                                     break;
@@ -108,6 +113,7 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
         }
         $em->persist($person);
         $em->flush();
+
         return 1;
     }
 
@@ -131,10 +137,12 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
 
         if (is_null($condition)) {
             die('Currently not handling ' . $uri);
+
             return -1;
         }
 
         $em = $this->getContainer()->get('doctrine')->getManager();
+
         return $em->getRepository('AppBundle\Entity\Organization')->findOneBy($condition);
     }
 
@@ -155,27 +163,31 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
                     if (is_null($corporateBody) || !$corporateBody->isDifferentiated) {
                         return -1;
                     }
+
                     // var_dump($corporateBody);
                     // TODO: use hydrator
                     foreach ([
-                              'preferredName',
-                              'dateOfEstablishment',
-                              'dateOfTermination',
-                              'biographicalInformation',
-                              'homepage',
-                              ] as $src)
+                            'preferredName',
+                            'dateOfEstablishment',
+                            'dateOfTermination',
+                            'biographicalInformation',
+                            'homepage',
+                        ] as $src)
                     {
                         if (!empty($corporateBody->{$src})) {
                             switch ($src) {
                                 case 'preferredName':
                                     $organization->setName($corporateBody->{$src});
                                     break;
+
                                 case 'dateOfEstablishment':
                                     $organization->setFoundingDate($corporateBody->{$src});
                                     break;
+
                                 case 'dateOfTermination':
                                     $organization->setDissolutionDate($corporateBody->{$src});
                                     break;
+
                                 case 'biographicalInformation':
                                     $organization->setDescription([ 'de' => $corporateBody->{$src} ]);
                                     break;
@@ -195,6 +207,7 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
         }
         $em->persist($organization);
         $em->flush();
+
         return 1;
     }
 
@@ -222,6 +235,7 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
         }
 
         $em = $this->getContainer()->get('doctrine')->getManager();
+
         return $em->getRepository('AppBundle\Entity\Place')->findOneBy($condition);
     }
 
@@ -243,6 +257,7 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
                     $em->flush();
                 }
             }
+
             return 0;
         }
 
@@ -285,25 +300,27 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
 
                     // TODO: use hydrator
                     foreach ([
-                              'type',
-                              'preferredName', 'alternateName',
-                              'latitude',
-                              ] as $src)
+                            'type',
+                            'preferredName', 'alternateName',
+                            'latitude',
+                        ] as $src)
                     {
                         if (!empty($geo->{$src})) {
                             switch ($src) {
                                 case 'preferredName':
                                     $entity->setName($geo->{$src});
                                     break;
+
                                 case 'alternateName':
                                     $entity->setAlternateName($geo->{$src});
                                     break;
+
                                 case 'type':
                                     $entity->setType($geo->{$src});
                                     break;
+
                                 case 'latitude':
-                                    $entity->setGeo(join(',',
-                                                         [ $geo->latitude, $geo->longitude ]));
+                                    $entity->setGeo(join(',', [ $geo->latitude, $geo->longitude ]));
                                     break;
                             }
                         }
@@ -317,6 +334,7 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
         }
         $em->persist($entity);
         $em->flush();
+
         return 1;
     }
 }

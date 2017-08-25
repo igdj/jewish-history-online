@@ -23,14 +23,6 @@ class MetsCommand extends ContainerAwareCommand
                 InputArgument::REQUIRED,
                 'TEI file'
             )
-            /*
-            ->addOption(
-                'yell',
-                null,
-                InputOption::VALUE_NONE,
-                'If set, the task will yell in uppercase letters'
-            )
-            */
         ;
     }
 
@@ -47,6 +39,7 @@ class MetsCommand extends ContainerAwareCommand
 
         if (!$fs->exists($fname)) {
             $output->writeln(sprintf('<error>%s does not exist</error>', $fname));
+
             return 1;
         }
 
@@ -58,6 +51,7 @@ class MetsCommand extends ContainerAwareCommand
             foreach ($teiHelper->getErrors() as $error) {
                 $output->writeln(sprintf('<error>  %s</error>', trim($error->message)));
             }
+
             return 1;
         }
 
@@ -69,6 +63,7 @@ class MetsCommand extends ContainerAwareCommand
             foreach (libxml_get_errors() as $error) {
                 $output->writeln(sprintf('<error>  %s</error>', trim($error->message)));
             }
+
             return 1;
         }
 
@@ -79,6 +74,7 @@ class MetsCommand extends ContainerAwareCommand
         $result = $xml->xpath('/tei:TEI/tei:text//tei:pb');
         if (empty($result)) {
             $output->writeln('<error>No pb found</error>');
+
             return;
         }
 
@@ -177,8 +173,7 @@ class MetsCommand extends ContainerAwareCommand
                         */
                         foreach ($translations as $code1) {
                             $hrefs[] = sprintf('tei/translation.%s/page-%d.xml',
-                                              $code1, $page);
-
+                                               $code1, $page);
                         }
                     }
                     else {
@@ -288,7 +283,6 @@ class MetsCommand extends ContainerAwareCommand
                     if (array_key_exists($page, $logical_by_physical_start)) {
                         $part = $logical_by_physical_start[$page];
                         $from = 'log_' . $ID . '_' . $part['ORDER'];
-
                     }
                     $to = sprintf('phys_dmd_%s_%s',
                                   $ID, $page);

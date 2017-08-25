@@ -32,14 +32,6 @@ extends ContainerAwareCommand
                 InputArgument::REQUIRED,
                 'TEI file'
             )
-            /*
-            ->addOption(
-                'insert-missing',
-                null,
-                InputOption::VALUE_NONE,
-                'If set, a missing article will be added'
-            )
-            */
             ->addOption(
                 'update',
                 null,
@@ -61,14 +53,6 @@ extends ContainerAwareCommand
                     $node->parentNode->removeChild($node);
                 }
             });
-
-            /*
-            // TODO: switch to reduce - doesn't work yet
-            $crawler->filter($selector)->reduce(function ($crawler, $i) {
-                return false;
-
-            });
-            */
         }
 
         return $crawler->html();
@@ -77,6 +61,7 @@ extends ContainerAwareCommand
     protected function html2text($html)
     {
         $html2text = new \Html2Text\Html2Text($html);
+
         return $html2text->getText();
     }
 
@@ -88,6 +73,7 @@ extends ContainerAwareCommand
 
         if (!$fs->exists($fname)) {
             $output->writeln(sprintf('<error>%s does not exist</error>', $fname));
+
             return 1;
         }
 
@@ -100,15 +86,18 @@ extends ContainerAwareCommand
             foreach ($teiHelper->getErrors() as $error) {
                 $output->writeln(sprintf('<error>  %s</error>', trim($error->message)));
             }
+
             return 1;
         }
 
         if (empty($article->uid)) {
             $output->writeln(sprintf('<error>no uid found in %s</error>', $fname));
+
             return 1;
         }
         if (empty($article->language)) {
             $output->writeln(sprintf('<error>no language found in %s</error>', $fname));
+
             return 1;
         }
 
@@ -123,6 +112,7 @@ extends ContainerAwareCommand
         if (is_null($entity)) {
             $output->writeln(sprintf('<error>no article found for %s - %s</error>',
                                      $uid, $language));
+
             return 1;
         }
 

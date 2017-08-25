@@ -78,6 +78,7 @@ class ArticleBiblioCommand extends ContainerAwareCommand
             foreach($teiHelper->getErrors() as $error) {
                 $output->writeln(sprintf('<error>  %s</error>', trim($error->message)));
             }
+
             return 1;
         }
 
@@ -88,6 +89,7 @@ class ArticleBiblioCommand extends ContainerAwareCommand
                 if (!is_null($bibitem) && !$input->getOption('update')) {
                     continue;
                 }
+
                 // either insert or update
                 $zoteroItems = $this->findZoteroItemsBySlug($key, $output);
                 if (empty($zoteroItems)) {
@@ -100,6 +102,7 @@ class ArticleBiblioCommand extends ContainerAwareCommand
                                              trim($key)));
                     continue;
                 }
+
                 $zoteroItem = & $zoteroItems[0];
                 if (is_null($bibitem)) {
                     $bibitem = new \AppBundle\Entity\Bibitem();
@@ -107,35 +110,37 @@ class ArticleBiblioCommand extends ContainerAwareCommand
                     $bibitem->setSlug($key);
                 }
                 $zoteroData = json_decode($zoteroItem['zoteroData'], true);
+
                 // var_dump($zoteroData);
                 foreach ([
-                           'itemType' => 'itemType',
-                           'title' => 'name',
-                           'bookTitle' => 'containerName',
-                           'encyclopediaTitle' => 'containerName',
-                           'publicationTitle' => 'containerName',
-                           'creators' => 'creators',
-                           'series' => 'series',
-                           'seriesNumber' => 'seriesNumber',
-                           'volume' => 'volume',
-                           'numberOfVolumes' => 'numberOfVolumes',
-                           'edition' => 'bookEdition',
-                           'place' => 'publicationLocation',
-                           'publisher' => 'publisher',
-                           'date' => 'datePublished',
-                           'pages' => 'pagination',
-                           'numPages' => 'numberOfPages',
-                           'language' => 'language',
-                           'DOI' => 'doi',
-                           'ISBN' => 'isbn',
-                           'url' => 'url',
-                           ] as $src => $target)
+                        'itemType' => 'itemType',
+                        'title' => 'name',
+                        'bookTitle' => 'containerName',
+                        'encyclopediaTitle' => 'containerName',
+                        'publicationTitle' => 'containerName',
+                        'creators' => 'creators',
+                        'series' => 'series',
+                        'seriesNumber' => 'seriesNumber',
+                        'volume' => 'volume',
+                        'numberOfVolumes' => 'numberOfVolumes',
+                        'edition' => 'bookEdition',
+                        'place' => 'publicationLocation',
+                        'publisher' => 'publisher',
+                        'date' => 'datePublished',
+                        'pages' => 'pagination',
+                        'numPages' => 'numberOfPages',
+                        'language' => 'language',
+                        'DOI' => 'doi',
+                        'ISBN' => 'isbn',
+                        'url' => 'url',
+                    ] as $src => $target)
                 {
                     if (array_key_exists($src, $zoteroData)) {
                         $methodName = 'set' . ucfirst($target);
                         $bibitem->$methodName($zoteroData[$src]);
                     }
                 }
+
                 var_dump(json_encode($bibitem));
                 $em->persist($bibitem);
                 $em->flush();
@@ -146,10 +151,13 @@ class ArticleBiblioCommand extends ContainerAwareCommand
 
             if (empty($article->uid)) {
                 $output->writeln(sprintf('<error>no uid found in %s</error>', $fname));
+
                 return 1;
             }
+
             if (empty($article->language)) {
                 $output->writeln(sprintf('<error>no language found in %s</error>', $fname));
+
                 return 1;
             }
 
@@ -158,14 +166,17 @@ class ArticleBiblioCommand extends ContainerAwareCommand
             $uid = $article->uid; $language = $article->language;
             $article = $em->getRepository('AppBundle\Entity\Article')
                 ->findOneBy([
-                             'uid' => $uid,
-                             'language' => $language,
-                             ]);
+                    'uid' => $uid,
+                    'language' => $language,
+                ]);
+
             if (is_null($article)) {
                 $output->writeln(sprintf('<error>no article found for uid %s and language %s</error>',
                                          $uid, $language));
+
                 return 1;
             }
+
             $persist = false;
             foreach ([ 'bibitem' ] as $type) {
                 // clear existing before adding them back
@@ -182,6 +193,7 @@ class ArticleBiblioCommand extends ContainerAwareCommand
                     }
                 }
             }
+
             if ($persist) {
                 $em->persist($article);
                 $em->flush();
@@ -203,12 +215,14 @@ class ArticleBiblioCommand extends ContainerAwareCommand
         $entityReference = new \AppBundle\Entity\ArticleBibitem();
         $entityReference->setEntity($entity);
         $article->addBibitemReference($entityReference);
+
         return true;
     }
 
     protected function findBibitemBySlug($slug)
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
+
         return $em->getRepository('AppBundle\Entity\Bibitem')->findOneBySlug($slug);
     }
 
@@ -217,7 +231,7 @@ class ArticleBiblioCommand extends ContainerAwareCommand
         $conn = $this->getContainer()->get('doctrine.dbal.admin_connection');
 
         $sql = "SELECT * FROM Zotero WHERE corresp = :slug AND status>= 0";
+
         return $conn->fetchAll($sql, [ 'slug' => $slug ]);
     }
-
 }

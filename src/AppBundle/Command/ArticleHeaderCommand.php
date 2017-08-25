@@ -58,6 +58,7 @@ class ArticleHeaderCommand extends ContainerAwareCommand
 
         if (!$fs->exists($fname)) {
             $output->writeln(sprintf('<error>%s does not exist</error>', $fname));
+
             return 1;
         }
 
@@ -70,6 +71,7 @@ class ArticleHeaderCommand extends ContainerAwareCommand
             foreach ($teiHelper->getErrors() as $error) {
                 $output->writeln(sprintf('<error>  %s</error>', trim($error->message)));
             }
+
             return 1;
         }
 
@@ -105,11 +107,13 @@ class ArticleHeaderCommand extends ContainerAwareCommand
             }
             else {
                 $output->writeln(sprintf('<error>no entry for uid %s found</error>', $article->uid));
+
                 return 1;
             }
         }
         else if ($input->getOption('insert-missing')) {
             $output->writeln(sprintf('<info>entry for uid %s already exists</info>', $article->uid));
+
             return 0;
         }
 
@@ -138,10 +142,13 @@ class ArticleHeaderCommand extends ContainerAwareCommand
 
         if (empty($article->uid)) {
             $output->writeln(sprintf('<error>no uid found in %s</error>', $fname));
+
             return 1;
         }
+
         if (empty($article->language)) {
             $output->writeln(sprintf('<error>no language found in %s</error>', $fname));
+
             return 1;
         }
 

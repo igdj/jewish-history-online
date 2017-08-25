@@ -46,6 +46,7 @@ class ArticleAuthorCommand extends BaseEntityCommand
 
         if (!$fs->exists($fname)) {
             $output->writeln(sprintf('<error>%s does not exist</error>', $fname));
+
             return 1;
         }
 
@@ -58,11 +59,13 @@ class ArticleAuthorCommand extends BaseEntityCommand
             foreach($teiHelper->getErrors() as $error) {
                 $output->writeln(sprintf('<error>  %s</error>', trim($error->message)));
             }
+
             return 1;
         }
 
         if (empty($article->author)) {
             $output->writeln(sprintf('<info>No author found in %s</info>', $fname));
+
             return 0;
         }
 
@@ -70,6 +73,7 @@ class ArticleAuthorCommand extends BaseEntityCommand
         if (!empty($article->translator)) {
             $persons[] = $article->translator;
         }
+
         echo json_encode($persons, JSON_PRETTY_PRINT);
 
         if ($input->getOption('insert-missing') || $input->getOption('update')) {
@@ -103,13 +107,13 @@ class ArticleAuthorCommand extends BaseEntityCommand
                     $person->setSlug($slug);
                 }
                 foreach ([
-                           'title' => 'honoricPrefix',
-                           'firstname' => 'givenName',
-                           'lastname' => 'familyName',
-                           'position' => 'jobTitle',
-                           'sex' => 'gender',
-                           'url' => 'url',
-                           ] as $src => $target)
+                        'title' => 'honoricPrefix',
+                        'firstname' => 'givenName',
+                        'lastname' => 'familyName',
+                        'position' => 'jobTitle',
+                        'sex' => 'gender',
+                        'url' => 'url',
+                    ] as $src => $target)
                 {
                     if (!empty($user[$src])) {
                         if ('url' == $src && preg_match('/^keine/i', $user[$src])) {
@@ -124,6 +128,7 @@ class ArticleAuthorCommand extends BaseEntityCommand
                         $person->$methodName(null);
                     }
                 }
+
                 $description = [];
                 if (!empty($user['description_de'])) {
                     $description['de'] = $user['description_de'];
@@ -132,6 +137,7 @@ class ArticleAuthorCommand extends BaseEntityCommand
                     $description['en'] = $user['description'];
                 }
                 $person->setDescription($description);
+
                 // var_dump(json_encode($person));
                 $em->persist($person);
                 $em->flush();
@@ -148,17 +154,19 @@ class ArticleAuthorCommand extends BaseEntityCommand
         if (empty($users)) {
             return;
         }
+
         if (count($users) > 1) {
             $output->writeln(sprintf('<error>More than one user found for %s</error>',
                                      trim($slug)));
         }
+
         return $users[0];
     }
 
     protected function findPersonBySlug($slug)
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
+
         return $em->getRepository('AppBundle\Entity\Person')->findOneBySlug($slug);
     }
-
 }

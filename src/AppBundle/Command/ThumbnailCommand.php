@@ -41,6 +41,7 @@ class ThumbnailCommand extends ContainerAwareCommand
 
         if (!$fs->exists($fname)) {
             $output->writeln(sprintf('<error>%s does not exist</error>', $fname));
+
             return 1;
         }
 
@@ -52,6 +53,7 @@ class ThumbnailCommand extends ContainerAwareCommand
             foreach ($teiHelper->getErrors() as $error) {
                 $output->writeln(sprintf('<error>  %s</error>', trim($error->message)));
             }
+
             return 1;
         }
 
@@ -69,6 +71,7 @@ class ThumbnailCommand extends ContainerAwareCommand
             $srcDir = realpath($baseDir . '/' . $srcPath);
             if (empty($srcDir)) {
                 $output->writeln(sprintf('<error>%s does not exist</error>', $srcPath));
+
                 return 1;
             }
 
@@ -88,6 +91,7 @@ class ThumbnailCommand extends ContainerAwareCommand
 
             if (false == $fnameSrc) {
                 $output->writeln(sprintf('<error>%s.{jpg|png|pdf} does not exist</error>', $srcDir . '/' . $facsimile));
+
                 return 1;
             }
 
@@ -98,6 +102,7 @@ class ThumbnailCommand extends ContainerAwareCommand
             $targetDir = realpath($baseDir . '/' . $targetPath);
             if (empty($targetDir)) {
                 $output->writeln(sprintf('<error>%s could not be created</error>', $targetPath));
+
                 return 1;
             }
 
@@ -105,6 +110,7 @@ class ThumbnailCommand extends ContainerAwareCommand
             $fnameFull = realpath($srcDir . '/' . $fnameSrc);
             if (!file_exists($fnameFull)) {
                 $output->writeln(sprintf('<error>%s does not exist</error>', $fnameFull));
+
                 return 1;
             }
 
@@ -127,6 +133,7 @@ class ThumbnailCommand extends ContainerAwareCommand
 
                     if (!file_exists($fnameFull)) {
                         $output->writeln(sprintf('<error>%s does not exist</error>', $fnameFull));
+
                         return 1;
                     }
             }

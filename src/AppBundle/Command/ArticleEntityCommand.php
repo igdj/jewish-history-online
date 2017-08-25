@@ -46,6 +46,7 @@ class ArticleEntityCommand extends BaseEntityCommand
 
         if (!$fs->exists($fname)) {
             $output->writeln(sprintf('<error>%s does not exist</error>', $fname));
+
             return 1;
         }
 
@@ -58,6 +59,7 @@ class ArticleEntityCommand extends BaseEntityCommand
             foreach($teiHelper->getErrors() as $error) {
                 $output->writeln(sprintf('<error>  %s</error>', trim($error->message)));
             }
+
             return 1;
         }
 
@@ -88,10 +90,13 @@ class ArticleEntityCommand extends BaseEntityCommand
 
             if (empty($article->uid)) {
                 $output->writeln(sprintf('<error>no uid found in %s</error>', $fname));
+
                 return 1;
             }
+
             if (empty($article->language)) {
                 $output->writeln(sprintf('<error>no language found in %s</error>', $fname));
+
                 return 1;
             }
 
@@ -100,14 +105,17 @@ class ArticleEntityCommand extends BaseEntityCommand
             $uid = $article->uid; $language = $article->language;
             $article = $em->getRepository('AppBundle\Entity\Article')
                 ->findOneBy([
-                             'uid' => $uid,
-                             'language' => $language,
-                             ]);
+                    'uid' => $uid,
+                    'language' => $language,
+                ]);
+
             if (is_null($article)) {
                 $output->writeln(sprintf('<error>no article found for uid %s and language %s</error>',
                                          $uid, $language));
+
                 return 1;
             }
+
             $persist = false;
             foreach ([ 'person', 'place', 'organization' ] as $type) {
                 // clear existing before adding them back
@@ -121,6 +129,7 @@ class ArticleEntityCommand extends BaseEntityCommand
                 if (empty($entities[$type])) {
                     continue;
                 }
+
                 foreach ($entities[$type] as $uri => $num) {
                     switch ($type) {
                         case 'person':
@@ -143,6 +152,7 @@ class ArticleEntityCommand extends BaseEntityCommand
                     }
                 }
             }
+
             if ($persist) {
                 $em->persist($article);
                 $em->flush();
@@ -164,6 +174,7 @@ class ArticleEntityCommand extends BaseEntityCommand
         $entityReference = new \AppBundle\Entity\ArticlePerson();
         $entityReference->setEntity($entity);
         $article->addPersonReference($entityReference);
+
         return true;
     }
 
@@ -177,6 +188,7 @@ class ArticleEntityCommand extends BaseEntityCommand
         $entityReference = new \AppBundle\Entity\ArticleOrganization();
         $entityReference->setEntity($entity);
         $article->addOrganizationReference($entityReference);
+
         return true;
     }
 
@@ -190,6 +202,7 @@ class ArticleEntityCommand extends BaseEntityCommand
         $entityReference = new \AppBundle\Entity\ArticlePlace();
         $entityReference->setEntity($entity);
         $article->addPlaceReference($entityReference);
+
         return true;
     }
 }

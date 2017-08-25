@@ -18,11 +18,6 @@ class ImportEntityCommand extends BaseEntityCommand
         $this
             ->setName('import:entity')
             ->setDescription('Import Entities')
-            /*->addArgument(
-                'file',
-                InputArgument::REQUIRED,
-                'XLSX file'
-            )*/
         ;
     }
 
@@ -35,6 +30,7 @@ class ImportEntityCommand extends BaseEntityCommand
 
         if (!$fs->exists($fname)) {
             $output->writeln(sprintf('<error>%s does not exist</error>', $fname));
+            
             return 1;
         }
 
@@ -61,6 +57,7 @@ class ImportEntityCommand extends BaseEntityCommand
             if (empty($entities[$type])) {
                 continue;
             }
+
             foreach ($entities[$type] as $uri => $additional) {
                 switch ($type) {
                     case 'person':
@@ -78,5 +75,4 @@ class ImportEntityCommand extends BaseEntityCommand
             }
         }
     }
-
 }

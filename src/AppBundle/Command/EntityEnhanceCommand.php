@@ -23,7 +23,7 @@ class EntityEnhanceCommand extends ContainerAwareCommand
                 InputArgument::REQUIRED,
                 'which entities do you want to enhance (person / place / organization / bibitem)'
             )
-            ;
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -52,6 +52,7 @@ class EntityEnhanceCommand extends ContainerAwareCommand
             default:
                 $output->writeln(sprintf('<error>invalid type: %s</error>',
                                          $input->getArgument('type')));
+
                 return 1;
         }
     }
@@ -61,12 +62,14 @@ class EntityEnhanceCommand extends ContainerAwareCommand
         if (!class_exists('\Normalizer')) {
             return $value;
         }
+
         if (!\Normalizer::isNormalized($value)) {
             $normalized = \Normalizer::normalize($value);
             if (false !== $normalized) {
                 $value = $normalized;
             }
         }
+
         return $value;
     }
 
@@ -102,6 +105,7 @@ class EntityEnhanceCommand extends ContainerAwareCommand
         if (!isset($content)) {
             return false;
         }
+
         $json = json_decode(self::normalizeUnicode($content), true);
 
         // API error
@@ -224,7 +228,7 @@ class EntityEnhanceCommand extends ContainerAwareCommand
                     foreach ([ 'birth', 'death' ] as $property) {
                         if ('en' == $locale) {
                             // we use english locale because of date format
-                            
+
                             $key = 'dateOf' . ucfirst($property);
                             if (!empty($entityfacts[$key])) {
                                 $method = 'get' . ucfirst($property) . 'Date';
@@ -253,12 +257,12 @@ class EntityEnhanceCommand extends ContainerAwareCommand
                                         var_dump($value);
                                         $method = 'set' . ucfirst($property) . 'Date';
                                         $person->$method($value);
-                                        $persist = true;                                        
+                                        $persist = true;
                                     }
-                                }                 
+                                }
                             }
                         }
-                        
+
                         $method = 'get' . ucfirst($property) . 'PlaceInfo';
                         $placeInfo = $person->$method($locale);
                         if (is_null($placeInfo) || !empty($placeInfo['tgn'])) {

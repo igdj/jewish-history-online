@@ -57,6 +57,7 @@ class ArticleDoiCommand extends ContainerAwareCommand
 
         if (!$fs->exists($fname)) {
             $output->writeln(sprintf('<error>%s does not exist</error>', $fname));
+
             return 1;
         }
 
@@ -69,6 +70,7 @@ class ArticleDoiCommand extends ContainerAwareCommand
             foreach ($teiHelper->getErrors() as $error) {
                 $output->writeln(sprintf('<error>  %s</error>', trim($error->message)));
             }
+
             return 1;
         }
 
@@ -82,6 +84,7 @@ class ArticleDoiCommand extends ContainerAwareCommand
 
         if (is_null($entity)) {
             $output->writeln(sprintf('<error>no entry for uid %s found</error>', $article->uid));
+
             return 1;
         }
 
@@ -96,6 +99,7 @@ class ArticleDoiCommand extends ContainerAwareCommand
             if (!is_null($doi)) {
                 $output->writeln(sprintf('<info>doi for uid %s already exists: %s</info>',
                                          $entity->getUid(), $entity->getDoi()));
+
                 return 0;
             }
         }
@@ -104,6 +108,7 @@ class ArticleDoiCommand extends ContainerAwareCommand
             if (is_null($doi)) {
                 $output->writeln(sprintf('<info>no doi for uid %s yet</info>',
                                          $entity->getUid()));
+
                 return 0;
             }
         }
@@ -118,6 +123,7 @@ class ArticleDoiCommand extends ContainerAwareCommand
             else {
                 $output->writeln(sprintf('<info>Error trying to register doi %s for %s</info>',
                                          $doi, $entity->getUid()));
+
                 return 2;
             }
         }

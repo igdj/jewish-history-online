@@ -29,6 +29,7 @@ class ImportGeoCommand extends BaseEntityCommand
         $precision = 'nation' == $type ? 0.01 : 0.001;
 
         $simplifier = $this->getContainer()->get('app.simplify_geojson');
+
         return $simplifier->simplifyGeojson($geometry, $precision);
     }
 
@@ -41,6 +42,7 @@ class ImportGeoCommand extends BaseEntityCommand
                 $countryCode = $feature['properties']['ISO3166-1'];
             }
         }
+
         if (is_null($countryCode)) {
             return false;
         }
@@ -127,6 +129,7 @@ class ImportGeoCommand extends BaseEntityCommand
 
         if (!$fs->exists($dir)) {
             $output->writeln(sprintf('<error>%s does not exist</error>', $fname));
+
             return 1;
         }
 

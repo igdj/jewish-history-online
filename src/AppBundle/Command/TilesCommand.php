@@ -34,6 +34,7 @@ class TilesCommand extends ContainerAwareCommand
 
         if (!$fs->exists($fname)) {
             $output->writeln(sprintf('<error>%s does not exist</error>', $fname));
+
             return 1;
         }
 
@@ -46,6 +47,7 @@ class TilesCommand extends ContainerAwareCommand
         $srcDir = realpath($baseDir . '/' . $srcPath);
         if (empty($srcDir)) {
             $output->writeln(sprintf('<error>%s does not exist</error>', $srcPath));
+
             return 1;
         }
 
@@ -95,6 +97,7 @@ class TilesCommand extends ContainerAwareCommand
         $targetDir = realpath($baseDir . '/' . $targetPath);
         if (empty($targetDir)) {
             $output->writeln(sprintf('<error>%s could not be created</error>', $targetPath));
+
             return 1;
         }
 
@@ -172,6 +175,5 @@ class TilesCommand extends ContainerAwareCommand
                 $zoomFactor *= 2;
             }
         }
-
     }
 }

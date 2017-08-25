@@ -116,40 +116,50 @@ class ArticleAdjustCommand extends BaseEntityCommand
                         case 'bergmann-werner':
                             $responsible = [ $translator->trans('Antisemitism and Persecution') ];
                             break;
+
                         case 'braemer-andreas':
                             $responsible = [ $translator->trans('Religion and Identity') ];
                             break;
+
                         case 'brinkmann-tobias':
                             $responsible = [ $translator->trans('Migration') ];
                             break;
+
                         case 'heinsohn-kirsten':
                             $responsible = [ $translator->trans('Leisure and Sports') ];
                             break;
+
                         case 'jensen-uffa':
                             $responsible = [
                                 $translator->trans('Law and Politics'),
                                 $translator->trans('Economy and Occupational Composition'),
                             ];
                             break;
+
                         case 'kauders-anthony':
                             $responsible = [ $translator->trans('Arts and Culture') ];
                             break;
+
                         case 'liedtke-rainer':
                             $responsible = [ $translator->trans('Organizations and Institutions') ];
                             break;
+
                         case 'lohmann-ingrid':
                             $responsible = [ $translator->trans('Education and Learning') ];
                             break;
+
                         case 'meyer-beate':
                             $responsible = [ $translator->trans('Memory and Remembrance') ];
                             break;
+
                         case 'ruerup-miriam':
                             $responsible = [ $translator->trans('Demographics and Social Structure') ];
                             break;
-                            break;
+
                         case 'schueler-springorum-stefanie':
                             $responsible = [ $translator->trans('Social Issues and Welfare') ];
                             break;
+
                         case 'tuerk-lilian':
                             $responsible = [ $translator->trans('Scholarship') ];
                             break;
@@ -159,6 +169,7 @@ class ArticleAdjustCommand extends BaseEntityCommand
                                 die('TODO: handle ' . $result['referee_slug']);
                             }
                     }
+
                     usort($topics, function ($a, $b) use ($responsible) {
                         if ($a == $b) {
                             return 0;
@@ -172,8 +183,10 @@ class ArticleAdjustCommand extends BaseEntityCommand
                         if (in_array($b, $responsible)) {
                             return 1;
                         }
+
                         return strcmp($a, $b);
                     });
+
                     $data['topic'] = $topics;
                 }
 
@@ -294,9 +307,12 @@ class ArticleAdjustCommand extends BaseEntityCommand
                     while (preg_match('/(.+)\-00$/', $when, $matches)) {
                         $when = $matches[1];
                     }
-                    $bibl['date'] = [ '@when' => $when,
-                                      '@value' => $date ];
+                    $bibl['date'] = [
+                        '@when' => $when,
+                        '@value' => $date,
+                    ];
                 }
+
                 if (!empty($result['provider_name'])
                     && $result['provider_name'] != 'unbekannt')
                 {
@@ -378,6 +394,7 @@ class ArticleAdjustCommand extends BaseEntityCommand
 
         if (!$fs->exists($fname)) {
             $output->writeln(sprintf('<error>%s does not exist</error>', $fname));
+
             return 1;
         }
 
@@ -416,14 +433,11 @@ class ArticleAdjustCommand extends BaseEntityCommand
 
         // all the data from the admin-database
         $dataFromDb = $this->getDataFromAdminDb($data, $translator);
-        /*
-        var_dump($dataFromDb);
-        exit;
-        */
 
         $xml = $teiHelper->adjustHeader($fname, $dataFromDb);
         if (false === $xml) {
             $output->writeln(sprintf('<error>%s could not be loaded</error>', $fname));
+
             return 1;
         }
 
