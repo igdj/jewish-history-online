@@ -20,17 +20,20 @@ class ArticleController extends RenderTeiController
         $fname = $article->getSlug();
 
         if (empty($fname) || false === $this->locateTeiResource($fname . $extension)) {
-            $uid = $article->getUid();
-            if (preg_match('/(article|source)\-(\d+)/', $uid, $matches)) {
-                $fname = sprintf('%s-%05d.%s',
-                                 $matches[1], $matches[2],
-                                 \AppBundle\Utils\Iso639::code3to1($article->getLanguage()));
-            }
+            $fname = $this->buildArticleFnameFromUid($article->getUid(), \AppBundle\Utils\Iso639::code3to1($article->getLanguage()));
         }
 
         $fname .= $extension;
 
         return $fname;
+    }
+
+    protected function buildArticleFnameFromUid($uid, $locale)
+    {
+        if (preg_match('/(article|source)\-(\d+)/', $uid, $matches)) {
+            return sprintf('%s-%05d.%s',
+                           $matches[1], $matches[2], $locale);
+        }
     }
 
     protected function renderSourceDescription($article)

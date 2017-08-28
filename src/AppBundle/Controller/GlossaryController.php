@@ -30,6 +30,7 @@ class GlossaryController extends Controller
     }
 
     /*
+    // currently only index, no detail
     public function detailAction($slug = null, $gnd = null)
     {
         $termRepo = $this->getDoctrine()

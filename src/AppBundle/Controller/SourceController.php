@@ -70,6 +70,98 @@ class SourceController extends ArticleController
             $html = $this->adjustMedia($html,
                                        $this->get('request')->getBaseURL()
                                        . '/viewer/' . $path);
+            $sourceLocale = \AppBundle\Utils\Iso639::code3to1($sourceArticle->getLanguage());
+
+            if (in_array($sourceArticle->getSourceType(), [
+                    'Transkript', 'Transcript', 'Audio', 'Video',
+                ]))
+            {
+                $pullFeaturedMedia = false;
+
+                $variants = [ 'transcription' ];
+                $bodies = []; // rendered content by variant
+
+                $getTranslatedFrom = $sourceArticle->getTranslatedFrom();
+                if (!empty($getTranslatedFrom)
+                    && ($sourceArticle->getTranslatedFrom() != $sourceArticle->getLanguage()))
+                {
+                    // $html is a translation
+                    $key = 'translation_' . $sourceLocale;
+                    $variants[] = $key;
+                    $bodies[$key] = $html;
+                }
+                else {
+                    // $html is transcription, no additional $variant
+                    $bodies['transcription'] = $html;
+                }
+
+                $layers = [];
+                foreach ($variants as $variant) {
+                    if ('transcription' == $variant) {
+                        $label = 'Transcript';
+                        if (!array_key_exists($variant, $bodies)) {
+                            $transcriptionLocale = \AppBundle\Utils\Iso639::code3to1($sourceArticle->getTranslatedFrom());
+                            $transcriptionFname = $this->buildArticleFnameFromUid($sourceArticle->getUid(), $transcriptionLocale) . '.xml';
+
+                            $params = [
+                                'params' => [
+                                    'lang' => $transcriptionLocale, // localize labels in xslt
+                                ],
+                            ];
+
+                            $body = $this->adjustMedia($this->renderTei($transcriptionFname, 'dtabf_article.xsl', $params),
+                                                       $this->get('request')->getBaseURL()
+                                                       . '/viewer/' . $path);
+                        }
+                        else {
+                            $body = $bodies[$variant];
+                        }
+                    }
+                    else {
+                        $keyParts = explode('_', $variant, 2);
+                        $label = ('en' == $keyParts[1] ? 'English' : 'German') . ' Translation';
+                        $body = $bodies[$key];
+                    }
+
+                    $layers[] = [
+                        'opened' => !$pullFeaturedMedia
+                            && (1 == count($variants) || $variant == 'translation_' . $sourceLocale),
+                        'label' => $label,
+                        'body' => $this->removeByCssSelector($body, [ '#license' ]),
+                    ];
+                }
+
+                if ($pullFeaturedMedia) {
+                    $player = 'TODO: Player';
+                }
+                else {
+                    $player = '';
+                }
+
+                // AV plus transcript and maybe translation
+                // should be handled through iview2 in the future
+                return $this->render('AppBundle:Article:viewer-layers.html.twig', [
+                    'article' => $sourceArticle,
+                    'html' => $player,
+                    'layers' => $layers,
+                    'meta' => $meta,
+                    'description' => $sourceDescription,
+                    'name' => $sourceArticle->getName(),
+                    'pageTitle' => $sourceArticle->getName(),
+                    'interpretations' => [ $interpretation ],
+                    'related' => $related,
+                    'uid' => $uid,
+                    'path' => $path,
+                    'license' => $license,
+                    'entity_lookup' => $entityLookup,
+                    'glossary_lookup' => $glossaryLookup,
+                    'pageMeta' => [
+                        'jsonLd' => $sourceArticle->jsonLdSerialize($this->getRequest()->getLocale()),
+                        'og' => $this->buildOg($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]),
+                        'twitter' => $this->buildTwitter($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]),
+                    ],
+                ]);
+            }
 
             return $this->render('AppBundle:Article:viewer-media.html.twig', [
                 'article' => $sourceArticle,

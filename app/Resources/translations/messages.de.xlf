@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2017-08-22T09:49:19Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2017-08-25T18:17:37Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -59,7 +59,7 @@
       <trans-unit id="cbf151ff78cda144bdc40b8c2dd82c707fc2bf4e" resname="Article Overview">
         <source>Article Overview</source>
         <target>Beitragsübersicht</target>
-        <jms:reference-file line="236">\..\..\..\..\..\..\./src\AppBundle\Controller\ArticleController.php\</jms:reference-file>
+        <jms:reference-file line="239">\..\..\..\..\..\..\./src\AppBundle\Controller\ArticleController.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="7c422841b7e3951946583038790545c4ed38481b" resname="Articles">
         <source>Articles</source>
@@ -69,7 +69,7 @@
       <trans-unit id="c98b595a02a901249b7e960bd050144412e764bc" resname="Arts and Culture">
         <source>Arts and Culture</source>
         <target>Kunst und Kultur</target>
-        <jms:reference-file line="135">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="140">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="ba9493b694886a3a73c7e13a3911d6056a440140" resname="Become an Author">
         <source>Become an Author</source>
@@ -145,7 +145,7 @@
       <trans-unit id="88796547e574b1346b3f3c63fce6354c38eb56a0" resname="Demographics and Social Structure">
         <source>Demographics and Social Structure</source>
         <target>Demographie und soziale Strukturen</target>
-        <jms:reference-file line="147">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="156">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="7c9a7c0610c1bc20abb9c9d07094daa33576a8f8" resname="Detail">
         <source>Detail</source>
@@ -160,6 +160,11 @@
         <source>Died</source>
         <target>Gestorben</target>
         <jms:reference-file line="48">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Person\detail.html.twig\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="93cb21061c70a7a91f19eb79e908ddbf180a139b" resname="Display Layer">
+        <source>Display Layer</source>
+        <target state="new">Anzeige</target>
+        <jms:reference-file line="82">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\viewer-audiovideo.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="f9cb5291a5b7d74308f19dd7686f56fdb94d18f0" resname="Display Source">
         <source>Display Source</source>
@@ -184,12 +189,12 @@
       <trans-unit id="3b361d851268fb12ca7570b2a4655ef249efbe52" resname="Economy and Occupational Composition">
         <source>Economy and Occupational Composition</source>
         <target>Wirtschaft und Berufsstruktur</target>
-        <jms:reference-file line="131">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="135">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="114f8ce87ef7495c357afa6082d3ae278b116fd4" resname="Education and Learning">
         <source>Education and Learning</source>
         <target>Erziehung und Bildung</target>
-        <jms:reference-file line="141">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="148">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="86f408b7a2000db4a009c15b491b2be5fd76498f" resname="Error Report">
         <source>Error Report</source>
@@ -266,8 +271,8 @@
       <trans-unit id="97c20e9ee98b40e4c76b73b7186c7fe341baf247" resname="Institute for the History of the German Jews">
         <source>Institute for the History of the German Jews</source>
         <target>Institut für die Geschichte der deutschen Juden</target>
-        <jms:reference-file line="410">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
-        <jms:reference-file line="249">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleDoiCommand.php\</jms:reference-file>
+        <jms:reference-file line="427">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="255">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleDoiCommand.php\</jms:reference-file>
         <jms:reference-file line="165">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Default\base.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="2312ce905355db60ba0a4da09a398ae54ecc79fd" resname="Integrated Authority File">
@@ -289,12 +294,12 @@
       <trans-unit id="a234f62d3e6b46fe44ffeb992f1072faea7dae2d" resname="Law and Politics">
         <source>Law and Politics</source>
         <target>Recht und Politik</target>
-        <jms:reference-file line="130">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="134">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="71717de1cb4a9ed79b08b504b4070ef753b4a306" resname="Leisure and Sports">
         <source>Leisure and Sports</source>
         <target>Freizeit und Sport</target>
-        <jms:reference-file line="126">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="129">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="b04ba49f848624bb97ab094a2631d2ad74913498" resname="Loading...">
         <source>Loading...</source>
@@ -319,7 +324,7 @@
       <trans-unit id="a2829defe01f5563cea7b877f065784e3ac6a619" resname="Memory and Remembrance">
         <source>Memory and Remembrance</source>
         <target>Erinnern und Gedenken</target>
-        <jms:reference-file line="144">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="152">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="dc8ad47bdc5bc211d13f24a4aaabf25d77d47042" resname="Mentioned in">
         <source>Mentioned in</source>
@@ -329,7 +334,7 @@
       <trans-unit id="6e458173eef4a800366eeb68965cf8f147c4756b" resname="Migration">
         <source>Migration</source>
         <target>Migration</target>
-        <jms:reference-file line="123">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="125">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="4bab2d8fe13fa6ab57f80098b414f0f734c5dd25" resname="More">
         <source>More</source>
@@ -356,7 +361,7 @@
       <trans-unit id="d031e7922ae6b4cbdc221ebda4bed363b187b54d" resname="Organizations and Institutions">
         <source>Organizations and Institutions</source>
         <target>Organisationen und Institutionen</target>
-        <jms:reference-file line="138">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="144">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="a148f31c43866b7ddc2dfc3ac44b688b407189c2" resname="Other Reason">
         <source>Other Reason</source>
@@ -402,7 +407,7 @@
       <trans-unit id="fda3484edf8db0684440157ce0b110d784d42704" resname="README.txt">
         <source>README.txt</source>
         <target>LIESMICH.txt</target>
-        <jms:reference-file line="206">\..\..\..\..\..\..\./src\AppBundle\Controller\SourceController.php\</jms:reference-file>
+        <jms:reference-file line="294">\..\..\..\..\..\..\./src\AppBundle\Controller\SourceController.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="1de9b5aa8ef2a69cf3b723e9f4dded03396a160c" resname="Read on">
         <source>Read on</source>
@@ -426,7 +431,7 @@
       <trans-unit id="b6713b5cbc4889212035a2f69a285f62d2da6d59" resname="Religion and Identity">
         <source>Religion and Identity</source>
         <target>Religion und Identität</target>
-        <jms:reference-file line="120">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="121">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="396afc00b25ee2d1e0ff4b16268c9b306ec219d7" resname="Rights Statements">
         <source>Rights Statements</source>
@@ -438,7 +443,7 @@
       <trans-unit id="da0f3e5b26896228d59d696d23b312da5ea1a054" resname="Scholarship">
         <source>Scholarship</source>
         <target>Wissenschaft</target>
-        <jms:reference-file line="154">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="164">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="bce06414177f72ab70e6387b6af9f8ceef0d6049" resname="Search">
         <source>Search</source>
@@ -485,7 +490,7 @@
       <trans-unit id="f1f4a2d21b837d5497595ff66188fc7f16081a98" resname="Social Issues and Welfare">
         <source>Social Issues and Welfare</source>
         <target>Soziale Fragen und Wohlfahrtswesen</target>
-        <jms:reference-file line="151">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="160">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="d1db3d4224977d8799ad16c5fd5ba195eea182d5" resname="Sort by Author">
         <source>Sort by Author</source>
@@ -500,7 +505,7 @@
       <trans-unit id="6da13addb000b67d42a6d66391713819e634149f" resname="Source">
         <source>Source</source>
         <target>Quelle</target>
-        <jms:reference-file line="245">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="258">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
         <jms:reference-file line="120">\..\..\..\..\..\..\./src\AppBundle\Controller\RenderTeiController.php\</jms:reference-file>
         <jms:reference-file line="246">\..\..\..\..\..\..\./src\AppBundle\Menu\Builder.php\</jms:reference-file>
         <jms:reference-file line="61">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Article\article.html.twig\</jms:reference-file>
@@ -578,7 +583,7 @@
       </trans-unit>
       <trans-unit id="81232a82945a3fed446397e2ecf413530abcf41d" resname="Type of Material">
         <source>Type of Material</source>
-        <target>Type of Material</target>
+        <target>Materialart</target>
         <jms:reference-file line="236">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Place\map.google.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="0e2d9b0777a485c1276de0803c12a7d76fbc5c39" resname="URL">
@@ -666,35 +671,35 @@
       <trans-unit id="98c3779109f14746d0072d67f89da51920f50b4d" resname="license.by-nc-nd">
         <source>license.by-nc-nd</source>
         <target>Dieser Text unterliegt den Bedingungen der Creative Commons Namensnennung - Nicht kommerziell - Keine Bearbeitungen 4.0 International Lizenz. Unter Namensnennung gemäß der Zitationsempfehlung darf er in unveränderter Form für nicht-kommerzielle Zwecke nachgenutzt werden.</target>
-        <jms:reference-file line="201">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
-        <jms:reference-file line="330">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
-        <jms:reference-file line="334">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleDoiCommand.php\</jms:reference-file>
+        <jms:reference-file line="214">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="346">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="340">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleDoiCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="96057d4edae7eba4b35f07efb642bd322672f229" resname="license.by-nc-sa">
         <source>license.by-nc-sa</source>
-        <target state="new">license.by-nc-sa</target>
-        <jms:reference-file line="325">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <target>license.by-nc-sa</target>
+        <jms:reference-file line="341">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="b47d90519495ca4112cd38479b0dc29cdddffd8c" resname="license.by-sa">
         <source>license.by-sa</source>
-        <target state="new">license.by-sa</target>
-        <jms:reference-file line="208">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
-        <jms:reference-file line="320">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <target>license.by-sa</target>
+        <jms:reference-file line="221">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="336">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="4c6cc61ad14d77dbcc0f3c9c41cc9531e88392df" resname="license.personal-use">
         <source>license.personal-use</source>
         <target>license.personal-use</target>
-        <jms:reference-file line="344">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="360">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="76ef082a395e8e204883a504ca3e054bedf59149" resname="license.public-domain">
         <source>license.public-domain</source>
         <target>license.public-domain</target>
-        <jms:reference-file line="339">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="355">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="da2999cac117278739bcc5e3843a108636701ebd" resname="license.restricted">
         <source>license.restricted</source>
         <target><![CDATA[© Institut für die Geschichte der deutschen Juden (IGdJ) und Autor, alle Rechte vorbehalten. Dieses Werk entstand im Rahmen der Online-Quellenedition „Hamburger Schlüsseldokumente zur deutsch-jüdischen Geschichte“ und darf nur mit Einwilligung der Rechteinhaber vervielfältigt und veröffentlicht werden. Bitte kontaktieren Sie: <info@juedische-geschichte-online.net>]]></target>
-        <jms:reference-file line="213">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="226">\..\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="6f422dcae21f2b91aa0b8583fe9d7f94084bf997" resname="limited to">
         <source>limited to</source>

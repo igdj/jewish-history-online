@@ -6,7 +6,7 @@
 
 {% block head %}
     {{ map.head() }}
-    
+
     {# TODO: move to some shared style-sheet #}
     <style>
     .article img.img-responsive {
@@ -14,8 +14,6 @@
         width: auto;
     }
     </style>
-
-    {# <script src="{{ app.request.basepath }}/js/screenfull.min.js"></script> #}
 
     {{ entityLookup.head(entity_lookup, bibitem_lookup, glossary_lookup) }}
 
@@ -26,7 +24,6 @@
         });
     </script>
     <link href="{{ app.request.basepath }}/vendor/bootstrap3_player/bootstrap3_player.css" rel="stylesheet">
-
 {% endblock %}
 
 {% block body %}
