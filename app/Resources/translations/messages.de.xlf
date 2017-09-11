@@ -570,7 +570,7 @@
       </trans-unit>
       <trans-unit id="7e13bd176f89a12f0b614b55ffc19c14515ef920" resname="Topic">
         <source>Topic</source>
-        <target>Topic</target>
+        <target>Thema</target>
         <jms:reference-file line="108">\..\..\..\..\..\..\./src\AppBundle\Controller\RenderTeiController.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="07e4f9c27860c8f452d481954e498a807cd27a98" resname="Topics">
