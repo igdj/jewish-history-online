@@ -179,7 +179,7 @@
                         <form action="{{ path('search-index') }}" method="post">
                             <div class="form-group has-feedback" style="margin-bottom: 0">
                             <input autocomplete="off" id="header-search" name="q" type="text" placeholder="{{ 'Search'|trans }}" />
-                            <i style="margin-top: -2px" class="glyphicon glyphicon-search form-control-feedback"></i>
+                            <i style="margin-top: -2px; pointer-events: inherit" onclick=" $(this).closest('form').submit()" class="glyphicon glyphicon-search form-control-feedback"></i>
                             </div>
                         </form>
                     </div>
