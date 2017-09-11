@@ -208,6 +208,31 @@ Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und du
                 </div>
                 <div class="row box-color-content-inverse">
                     <div class="col-sm-4">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-13' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00013/thumb.jpg" style="width: 100%; height: auto" /></a>
+                    </div>
+                    <div class="col-sm-8">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-13' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Transcript of a Letter from the Executive Board of the Israelite Congregation of Lübeck to the Lord Chief Rabbi Anschel Stern of Hamburg</b>, Lübeck, December 20, 1884
+                        {% else %}
+                        <b>Abschrift des Schreibens des Vorstandes der Israelitischen Gemeinde Lübeck an Herrn Oberrabbiner Anschel Stern zu Hamburg</b>, Lübeck, 20.12.1884
+                        {% endif %}
+                        </a>
+
+                        <p>
+                        <a href="{{ path('article', { 'slug' : 'jgo:article-16' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Source Interpretation</b> by
+                        {% else %}
+                        <b>Interpretation</b> von
+                        {% endif %}
+                        Nadine Garling
+                        </a>
+                        </p>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse">
+                    <div class="col-sm-4">
                         <!--
                         <a href="{{ path('source', { 'uid' : 'jgo:source-164' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00164/thumb.jpg" style="width: 100%; height: auto" /></a>
                 -->
@@ -279,31 +304,6 @@ Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und du
                         <b>Interpretation</b> von
                         {% endif %}
                         Ingrid Lohmann
-                        </a>
-                        </p>
-                    </div>
-                </div>
-                <div class="row box-color-content-inverse">
-                    <div class="col-sm-4">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-145' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00145/thumb.jpg" style="width: 100%; height: auto" /></a>
-                    </div>
-                    <div class="col-sm-8">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-145' }) }}">
-                        {% if 'en' == app.request.locale %}
-                        <b>Access Authorization to the Broadcasting Studio Hamburg for Major Everitt, issued by the Broadcasting Control Unit Hamburg</b>, 1946
-                        {% else %}
-                        <b>Zugangsberechtigung für das Redaktionsgebäude des Studio Hamburg für Major Everitt, ausgestellt von der Broadcasting Control Unit Hamburg</b>, 1946
-                        {% endif %}
-                        </a>
-
-                        <p>
-                        <a href="{{ path('article', { 'slug' : 'jgo:article-114' }) }}">
-                        {% if 'en' == app.request.locale %}
-                        <b>Source Interpretation</b> by
-                        {% else %}
-                        <b>Interpretation</b> von
-                        {% endif %}
-                        Hans-Ulrich Wagner
                         </a>
                         </p>
                     </div>
