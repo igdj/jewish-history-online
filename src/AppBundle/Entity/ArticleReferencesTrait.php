@@ -24,7 +24,7 @@ trait ArticleReferencesTrait
 
         return $this->articleReferences->filter(
             function ($entity) use ($langCode3) {
-               return 1 == $entity->getArticle()->getStatus()
+                return 1 == $entity->getArticle()->getStatus()
                     && $entity->getArticle()->getLanguage() == $langCode3;
             }
         )->toArray();

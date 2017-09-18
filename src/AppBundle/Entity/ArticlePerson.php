@@ -35,5 +35,4 @@ class ArticlePerson extends ArticleEntity
     {
         return $this->person;
     }
-
 }
