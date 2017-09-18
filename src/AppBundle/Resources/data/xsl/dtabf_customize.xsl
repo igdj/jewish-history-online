@@ -62,6 +62,9 @@
 
   <xsl:template match="tei:foreign">
     <span class="dta-foreign">
+     <xsl:if test="@dir">
+       <xsl:attribute name="dir"><xsl:value-of select="@dir"/></xsl:attribute>
+     </xsl:if>
      <xsl:attribute name="title">
         <xsl:call-template name="translate">
             <xsl:with-param name="label" select="'fremdsprachliches Material'" />
