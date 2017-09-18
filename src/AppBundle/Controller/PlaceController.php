@@ -14,7 +14,7 @@ extends Controller
     use MapHelperTrait;
 
     /**
-     * @Route("/map")
+     * @Route("/map", name="place-map")
      *
      * This is the map of all sources
      *
@@ -31,7 +31,7 @@ extends Controller
     }
 
     /**
-     * @Route("/map/popup-content/{ids}")
+     * @Route("/map/popup-content/{ids}", name="place-map-popup-content")
      */
     public function mapPopupContentAction($ids)
     {
@@ -93,7 +93,7 @@ extends Controller
     }
 
     /**
-     * @Route("/place")
+     * @Route("/place", name="place-index")
      */
     public function indexAction()
     {

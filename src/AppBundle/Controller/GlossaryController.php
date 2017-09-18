@@ -11,7 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class GlossaryController extends Controller
 {
     /**
-     * @Route("/glossary")
+     * @Route("/glossary", name="glossary-index")
      */
     public function indexAction()
     {

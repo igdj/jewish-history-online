@@ -11,7 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class DateController extends Controller
 {
     /**
-     * @Route("/chronology")
+     * @Route("/chronology", name="date-chronology")
      */
     public function chronologyAction()
     {

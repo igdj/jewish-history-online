@@ -23,7 +23,7 @@ class BibliographyController extends Controller
     }
 
     /**
-     * @Route("/bibliography")
+     * @Route("/bibliography", name="bibliography-index")
      */
     public function indexAction()
     {

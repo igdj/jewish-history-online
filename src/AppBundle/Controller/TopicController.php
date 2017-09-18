@@ -94,7 +94,7 @@ class TopicController extends RenderTeiController
     }
 
     /**
-     * @Route("/topic")
+     * @Route("/topic", name="topic-index")
      */
     public function indexAction()
     {
@@ -105,7 +105,7 @@ class TopicController extends RenderTeiController
     }
 
     /**
-     * @Route("/topic/{slug}")
+     * @Route("/topic/{slug}.pdf", name="topic-background-pdf")
      */
     public function backgroundAction($slug)
     {

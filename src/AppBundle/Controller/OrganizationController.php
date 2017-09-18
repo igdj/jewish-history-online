@@ -11,7 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class OrganizationController extends Controller
 {
     /**
-     * @Route("/organization")
+     * @Route("/organization", name="organization-index")
      */
     public function indexAction()
     {

@@ -53,7 +53,7 @@ class AboutController extends RenderTeiController
     }
 
     /**
-     * @Route("/about")
+     * @Route("/about/edition", name="about")
      */
     public function aboutAction()
     {
@@ -69,7 +69,7 @@ class AboutController extends RenderTeiController
     }
 
     /**
-     * @Route("/about/goals", name="about-goals")
+     * @Route("/about/keydocuments", name="about-keydocuments")
      */
     public function keydocumentsAction()
     {
@@ -101,7 +101,7 @@ class AboutController extends RenderTeiController
     }
 
     /**
-     * @Route("/about/edition", name="about-edition")
+     * @Route("/about/edition-guidelines", name="about-editionguidelines")
      */
     public function editionguidelinesAction()
     {
@@ -235,7 +235,7 @@ class AboutController extends RenderTeiController
     }
 
     /**
-     * @Route("/terms")
+     * @Route("/terms", name="terms")
      */
     public function termsAction()
     {
@@ -273,7 +273,7 @@ class AboutController extends RenderTeiController
     }
 
     /**
-     * @Route("/contact")
+     * @Route("/contact", name="contact")
      */
     public function contactAction()
     {

@@ -13,7 +13,7 @@ class PersonController extends Controller
     use SharingBuilderTrait;
 
     /**
-     * @Route("/person")
+     * @Route("/person", name="person-index")
      */
     public function indexAction()
     {

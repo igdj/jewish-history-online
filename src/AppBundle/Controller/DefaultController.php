@@ -15,7 +15,7 @@ extends TopicController
     use MapHelperTrait;
 
     /**
-     * @Route("/")
+     * @Route("/", name="home")
      */
     public function indexAction()
     {

@@ -45,7 +45,7 @@ class SearchController extends Controller
     }
 
     /**
-     * @Route("/search")
+     * @Route("/search", name="search-index")
      */
     public function indexAction(Request $request)
     {
@@ -170,7 +170,7 @@ class SearchController extends Controller
     }
 
     /**
-     * @Route("/search/suggest")
+     * @Route("/search/suggest", name="search-suggest")
      */
     public function suggestAction(Request $request)
     {

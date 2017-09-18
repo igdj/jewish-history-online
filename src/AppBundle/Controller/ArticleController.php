@@ -107,6 +107,7 @@ class ArticleController extends RenderTeiController
             ]);
 
             $this->renderPdf($html, str_replace(':', '-', $article->getSlug(true)) . '.pdf');
+
             return;
         }
 
@@ -161,7 +162,6 @@ class ArticleController extends RenderTeiController
     }
 
     /**
-     * @Route("/article/{slug}")
      */
     public function articleAction($slug)
     {
@@ -190,7 +190,7 @@ class ArticleController extends RenderTeiController
     }
 
     /**
-     * @Route("/article")
+     * @Route("/article", name="article-index")
      */
     public function indexAction()
     {

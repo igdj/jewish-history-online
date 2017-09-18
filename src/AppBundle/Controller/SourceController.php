@@ -209,7 +209,7 @@ class SourceController extends ArticleController
     }
 
     /**
-     * @Route("/source/{uid}")
+     * @Route("/source/{uid}", name="source")
      */
     public function sourceViewerAction($uid)
     {
@@ -495,7 +495,7 @@ class SourceController extends ArticleController
 
     /**
      *
-     * @Route("/source/{uid}.mets.xml")
+     * @Route("/source/{uid}.mets.xml", name="source-mets")
      *
      * For downloadable sources, adjust the METS-container so it works well
      * in the DFG-Viewer

@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class OaiController extends Controller
 {
     /**
-     * @Route("/oai")
+     * @Route("/oai", name="oai")
      */
     public function dispatchAction()
     {
