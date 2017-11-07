@@ -8,12 +8,13 @@
     <script>
         var service = new SeeAlsoCollection();
         service.services = {
-            'isbntoc' : new SeeAlsoService('http://beacon.findbuch.de/articles/isbn-toc')
+            'isbntoc' : new SeeAlsoService('https://beacon.findbuch.de/articles/isbn-toc')
         };
         service.views = {
             'seealso-ul' : new SeeAlsoUL({
-                                linkTarget: '_blank',
-                                maxItems: 100 })
+                linkTarget: '_blank',
+                maxItems: 100
+            })
         };
         service.replaceTagsOnLoad();
     </script>

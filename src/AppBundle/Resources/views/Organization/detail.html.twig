@@ -7,12 +7,12 @@
     <script>
         var service = new SeeAlsoCollection();
         service.services = {
-            'gkdaks' : new SeeAlsoService('http://beacon.findbuch.de/seemore/gnd-aks/-dewp@wd/-jgo-hsd-organisationen')
+            'gkdaks' : new SeeAlsoService('https://beacon.findbuch.de/seemore/gnd-aks/-dewp@wd/-jgo-hsd-organisationen')
         };
         service.views = {
             'seealso-ul' : new SeeAlsoUL({
                 linkTarget: '_blank',
-                 maxItems: 100
+                maxItems: 100
             })
         };
         service.replaceTagsOnLoad();
