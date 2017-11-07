@@ -416,8 +416,9 @@ class ArticleDoiCommand extends ContainerAwareCommand
         // description
         $description = $entity->getDescription();
         if (!empty($description)) {
+            // htmlspecialchars added due to https://github.com/servo-php/fluidxml/issues/14
             $root->addChild('descriptions', true)
-                ->addChild('description', $description, [
+                ->addChild('description', htmlspecialchars($description, ENT_XML1, 'UTF-8'), [
                     'descriptionType' => 'Abstract',
                     'xml:lang' => $locale,
                 ]);

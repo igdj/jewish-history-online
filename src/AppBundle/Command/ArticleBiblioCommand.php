@@ -135,10 +135,14 @@ class ArticleBiblioCommand extends ContainerAwareCommand
                         'url' => 'url',
                     ] as $src => $target)
                 {
-                    if (array_key_exists($src, $zoteroData)) {
-                        $methodName = 'set' . ucfirst($target);
-                        $bibitem->$methodName($zoteroData[$src]);
+                    $val = array_key_exists($src, $zoteroData) ? $zoteroData[$src] : null;
+                    if (is_null($val) && 'containerName' == $target) {
+                        // skip on null since multiple $src can set this
+                        continue;
                     }
+                    
+                    $methodName = 'set' . ucfirst($target);
+                    $bibitem->$methodName($val);
                 }
 
                 var_dump(json_encode($bibitem));
@@ -230,7 +234,7 @@ class ArticleBiblioCommand extends ContainerAwareCommand
     {
         $conn = $this->getContainer()->get('doctrine.dbal.admin_connection');
 
-        $sql = "SELECT * FROM Zotero WHERE corresp = :slug AND status>= 0";
+        $sql = "SELECT * FROM Zotero WHERE corresp = :slug AND status >= 0";
 
         return $conn->fetchAll($sql, [ 'slug' => $slug ]);
     }
