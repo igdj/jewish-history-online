@@ -1,5 +1,29 @@
 {% macro head(entity_lookup, bibitem_lookup, glossary_lookup) %}
     <script>
+    var tooltipDelayHide = 150;
+
+    /* Bootstrap tooltips to stay open on hover: https://stackoverflow.com/a/36056707/2114681 */
+    var originalLeave = $.fn.tooltip.Constructor.prototype.leave;
+    $.fn.tooltip.Constructor.prototype.leave = function(obj){
+      var self = obj instanceof this.constructor ?
+        obj : $(obj.currentTarget)[this.type](this.getDelegateOptions()).data('bs.' + this.type)
+      var container, timeout;
+
+      originalLeave.call(this, obj);
+
+      if(obj.currentTarget) {
+        container = $(obj.currentTarget).siblings('.tooltip')
+        timeout = self.timeout;
+        container.one('mouseenter', function(){
+          //We entered the actual popover – call off the dogs
+          clearTimeout(timeout);
+          //Let's monitor popover content instead
+          container.one('mouseleave', function(){
+            $.fn.tooltip.Constructor.prototype.leave.call(self, self);
+          });
+        })
+      }
+    };
     var entityLookup = {{ entity_lookup|json_encode|raw }};
     var bibitemLookup = {{ bibitem_lookup|json_encode|raw }};
     var glossaryLookup = {{ glossary_lookup|json_encode|raw }};
@@ -35,8 +59,7 @@
                 });
                 $el.tooltip({
                     title: info.title,
-                    html: false /*,
-                    delay: { hide: 350 } */
+                    html: false
                 });
             }
             else {
@@ -60,8 +83,10 @@
         // console.log('Note ' + $( id_sel ).html());
         $( element ).tooltip({
             title: $( id_sel ).html(),
-            html: true  /*,
-            delay: { hide: 350 } */
+            html: true,
+            delay: {
+                hide: tooltipDelayHide
+            }
         });
     }
 
@@ -104,7 +129,9 @@
                     $el.tooltip({
                         title: info.blurb + ' <a href="' + info.url + '">{{ '...read on'|trans }}</a>',
                         html: true,
-                        delay: { hide: 350 }
+                        delay: {
+                            hide: tooltipDelayHide
+                        }
                     });
                 }
             }
