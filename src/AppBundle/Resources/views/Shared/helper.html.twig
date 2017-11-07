@@ -337,3 +337,36 @@
             </div>
             {% endif %}
 {% endmacro %}
+
+{% macro person_list_item(person) %}
+    <a href="{% if person.gnd is not empty %}{{ path('person-by-gnd', { 'gnd' : person.gnd }) }}{% else %}{{ path('person', { 'id' : person.id }) }}{% endif %}">
+        {{ person.fullname }}
+    </a>
+
+    {% set birthPlace = person.birthPlaceInfo(app.request.locale) %}
+    {% set deathPlace = person.deathPlaceInfo(app.request.locale) %}
+    {% if birthPlace is not empty or person.birthDate is not empty
+       or deathPlace is not empty or person.deathDate is not empty %}
+        ({% if birthPlace is not empty or person.birthDate is not empty %}
+                {{- person.birthDate|dateincomplete -}}
+                {% if birthPlace is not empty %}{% if person.birthDate is not empty %}{{- ',' }}{% endif %}
+                    {% if birthPlace.id is not empty %}
+                        <a href="{% if birthPlace.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : birthPlace.tgn }) }}{% else %}{{ path('place', { 'id' : birthPlace.id }) }}{% endif %}">
+                        {{ birthPlace['name'] }}
+                        </a>
+                    {% else %}
+                        {{ birthPlace['name'] }}
+                    {% endif %}
+                {% endif %}
+        {% endif %}
+        {% if deathPlace is not empty or person.deathDate is not empty %}
+            -
+                {{ person.deathDate|dateincomplete -}}
+                {% if deathPlace is not empty %}{% if person.deathDate is not empty %}{{- ',' }}{% endif %}
+                    {% if deathPlace.id is not empty %}<a href="{% if deathPlace.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : deathPlace.tgn }) }}{% else %}{{ path('place', { 'id' : deathPlace.id }) }}{% endif %}">
+                        {{ deathPlace['name'] -}}</a>{% else %}{{ deathPlace['name'] -}}
+                    {% endif -%}
+                {% endif -%}
+        {% endif -%})
+    {% endif %}
+{% endmacro %}

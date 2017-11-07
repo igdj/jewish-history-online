@@ -39,6 +39,18 @@
         {% endif %}
 
         {{ helper.list_entity_mentioned_in(place.articleReferences(app.request.locale)) }}
+
+        {% if persons is not empty %}
+        <h3>{{ 'person.oneormany'|transchoice(persons|length) }}</h3>
+        <ul>
+        {% for person in persons %}
+            <li>
+                {{ helper.person_list_item(person) }}
+            </li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+
         </div>
 
         <div class="col-sm-4 sidebar">
