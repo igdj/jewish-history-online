@@ -10,6 +10,7 @@ abstract class DnbData
         if (!isset(self::$RDFParser)) {
             self::$RDFParser = \ARC2::getRDFParser();
         }
+
         return self::$RDFParser;
     }
 
@@ -25,21 +26,27 @@ abstract class DnbData
 
     /*
      */
-    static function fetchGeographicLocation($url)
+    static function fetchGeographicLocation($uri)
     {
         $parser = self::getRDFParser();
-        $parser->parse($url . '/about/lds');
+        if (preg_match('/d\-nb\.info\/gnd\/([^\/]*)$/', $uri, $matches)) {
+            $url = sprintf('https://d-nb.info/gnd/%s/about/lds', $matches[1]);
+        }
+        $parser->parse($url);
         $triples = $parser->getTriples();
         $index = \ARC2::getSimpleIndex($triples, true) ; /* true -> flat version */
-        if (isset($index[$url]['http://d-nb.info/standards/elementset/gnd#preferredNameForThePlaceOrGeographicName'])) {
-            return self::normalizeString($index[$url]['http://d-nb.info/standards/elementset/gnd#preferredNameForThePlaceOrGeographicName'][0]);
+
+        if (isset($index[$uri]['http://d-nb.info/standards/elementset/gnd#preferredNameForThePlaceOrGeographicName'])) {
+            return self::normalizeString($index[$uri]['http://d-nb.info/standards/elementset/gnd#preferredNameForThePlaceOrGeographicName'][0]);
         }
-        if (isset($index[$url]['preferredNameForThePlaceOrGeographicName'])) {
-            return self::normalizeString($index[$url]['preferredNameForThePlaceOrGeographicName'][0]);
+
+        if (isset($index[$uri]['preferredNameForThePlaceOrGeographicName'])) {
+            return self::normalizeString($index[$uri]['preferredNameForThePlaceOrGeographicName'][0]);
         }
+
         foreach ($triples as $triple) {
             if ('sameAs' == $triple['p']) {
-                if (preg_match('/d\-nb\.info/', $triple['o']) && $triple['o'] != $url) {
+                if (preg_match('/d\-nb\.info/', $triple['o']) && $triple['o'] != $uri) {
                     return self::fetchGeographicLocation($triple['o']);
                 }
             }
@@ -77,13 +84,16 @@ abstract class DnbData
 
     static function fetchByGnd($gnd)
     {
+        $url = sprintf('https://d-nb.info/gnd/%s/about/lds', $gnd);
+
         $parser = self::getRDFParser();
-        $url = sprintf('http://d-nb.info/gnd/%s/about/lds', $gnd);
         $parser->parse($url);
         $triples = $parser->getTriples();
+
         if (empty($triples)) {
             return;
         }
+
         $index = \ARC2::getSimpleIndex($triples, false) ; /* false -> non-flat version */
 
         $res = self::instantiateResult($index['http://d-nb.info/gnd/' . $gnd], $gnd);
@@ -91,10 +101,12 @@ abstract class DnbData
             // type not handled
             return null;
         }
+
         $res->gnd = $gnd;
         foreach ($triples as $triple) {
             $res->processTriple($triple);
         }
+
         return $res;
     }
 

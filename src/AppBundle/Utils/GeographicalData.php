@@ -59,7 +59,7 @@ class GeographicalData
 
             $count = $resource->countValues($key);
             if ($count > 1) {
-                $collect = array();
+                $collect = [];
                 $properties = $resource->all($key);
                 foreach ($properties as $property) {
                     $value = $property->getValue();
@@ -93,7 +93,7 @@ class GeographicalData
         }
         else if ('gnd' == $parts[0]) {
             \EasyRdf_Namespace::set('gnd', 'http://d-nb.info/standards/elementset/gnd#');
-            $url = sprintf('http://d-nb.info/%s/%s/about/lds', $parts[0], $parts[1]);
+            $url = sprintf('https://d-nb.info/%s/%s/about/lds', $parts[0], $parts[1]);
             $uri = sprintf('http://d-nb.info/%s/%s', $parts[0], $parts[1]);
         }
 
@@ -147,10 +147,9 @@ class GeographicalData
                 }
             }
 
-            $place->setValuesFromResource($values, $resource,
-                                         array(
-                                               'parentString' => 'parentPath'),
-                                         'gvp');
+            $place->setValuesFromResource($values, $resource, [
+                    'parentString' => 'parentPath',
+                ], 'gvp');
 
             $broader = $resource->get('gvp:broaderPreferred');
             if (isset($broader)) {
@@ -258,6 +257,10 @@ class GeographicalData
                     $values['type'] = 'region';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300387173':
+                    $values['type'] = 'administrative division';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300387333':
                     $values['type'] = 'district'; // Bezirk
                     break;
@@ -292,6 +295,10 @@ class GeographicalData
 
                 case 'http://vocab.getty.edu/aat/300387067':
                     $values['type'] = 'special city';
+                    break;
+
+                case 'http://vocab.getty.edu/aat/300387354':
+                    $values['type'] = 'former group of political entitites';
                     break;
 
                 case 'http://vocab.getty.edu/aat/300387356':
@@ -355,9 +362,10 @@ class GeographicalData
             }
             $schemaPlace = $resource->get('foaf:focus');
             if (isset($schemaPlace)) {
-                $place->setValuesFromResource($values, $schemaPlace,
-                                             array('lat' => 'latitude', 'long' => 'longitude'),
-                                             'geo');
+                $place->setValuesFromResource($values, $schemaPlace, [
+                        'lat' => 'latitude', 'long' => 'longitude',
+                    ],
+                    'geo');
 
             }
             // echo $schemaPlace->dump();
