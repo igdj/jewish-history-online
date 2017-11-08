@@ -36,7 +36,7 @@ class AboutController extends RenderTeiController
         $translator = $this->get('translator');
 
         return $this->render($template, [
-            'pageTitle' => $translator->trans($title),
+            'pageTitle' => /** @Ignore */ $translator->trans($title),
             'title' => $title,
             'content' => $this->renderContent(),
         ]);

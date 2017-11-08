@@ -70,8 +70,10 @@ class AppBundle extends Bundle
 
                                 foreach (\AppBundle\Controller\TopicController::$TOPICS as $topic) {
                                     $translator->setLocale($defaults['_locale']);
-                                    $url = $router->generate($routeName, [ 'slug' => $slugify->slugify($translator->trans($topic)), '_locale' => $defaults['_locale'] ],
-                                                             UrlGeneratorInterface::ABSOLUTE_URL);
+                                    $url = $router->generate($routeName, [
+                                                                'slug' => $slugify->slugify(/** @Ignore */ $translator->trans($topic)),
+                                                                '_locale' => $defaults['_locale'],
+                                                             ], UrlGeneratorInterface::ABSOLUTE_URL);
                                     $this->addUrlDescription($urlDescriptions, $routeName . $topic, $defaults['_locale'], [ 'url' => $url, 'urlset' => $urlset ]);
                                 }
                                 break;

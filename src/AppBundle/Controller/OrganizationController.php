@@ -57,7 +57,8 @@ class OrganizationController extends Controller
               . "\n";
 
         $globals = $twig->getGlobals();
-        $ret .= '#NAME: ' . $translator->trans($globals['siteName'])
+        $ret .= '#NAME: '
+              . /** @Ignore */ $translator->trans($globals['siteName'])
               . "\n";
         // $ret .= '#MESSAGE: ' . "\n";
 

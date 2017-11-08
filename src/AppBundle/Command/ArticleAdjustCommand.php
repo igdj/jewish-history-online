@@ -95,7 +95,7 @@ class ArticleAdjustCommand extends BaseEntityCommand
                 if (preg_match('/^Einführung/', $result['subject'])) {
                     $genre = 'Introduction';
                 }
-                $data['genre'] = $translator->trans($genre);
+                $data['genre'] = /** @Ignore */ $translator->trans($genre);
 
                 if (!empty($result['section'])) {
                     $sql = "SELECT name FROM Term WHERE id IN (?) AND status <> -1";
@@ -255,7 +255,9 @@ class ArticleAdjustCommand extends BaseEntityCommand
                         break;
                 }
 
-                $data['genre'] = $translator->trans('Source') . ':' . $translator->trans($type);
+                $data['genre'] = $translator->trans('Source')
+                               . ':'
+                               . /** @Ignore */ $translator->trans($type);
 
                 if (!empty($result['url'])) {
                     $data['URLImages'] = $result['url'];

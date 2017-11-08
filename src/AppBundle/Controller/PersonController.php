@@ -45,7 +45,8 @@ class PersonController extends Controller
         $persons = $qb->getQuery()->getResult();
 
         return $this->render('AppBundle:Person:index.html.twig', [
-            'pageTitle' => $this->get('translator')->trans($authorsOnly ? 'Authors' : 'Persons'),
+            'pageTitle' => /** @Ignore */
+                $this->get('translator')->trans($authorsOnly ? 'Authors' : 'Persons'),
             'persons' => $persons,
         ]);
     }
@@ -116,7 +117,8 @@ class PersonController extends Controller
               . "\n";
 
         $globals = $twig->getGlobals();
-        $ret .= '#NAME: ' . $translator->trans($globals['siteName'])
+        $ret .= '#NAME: '
+              . /** @Ignore */ $translator->trans($globals['siteName'])
               . "\n";
         // $ret .= '#MESSAGE: ' . "\n";
 

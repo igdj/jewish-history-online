@@ -52,7 +52,7 @@ trait SharingBuilderTrait
         }
 
         $og = [
-            'og:site_name' => $translator->trans($globals['siteName']),
+            'og:site_name' => /** @Ignore */ $translator->trans($globals['siteName']),
             'og:locale' => $this->buildOgLocale($request),
             'og:url' => $this->generateUrl($routeName, $routeParams, true),
         ];
@@ -76,7 +76,7 @@ trait SharingBuilderTrait
             if (isset($ogEntity)) {
                 $og = array_merge($og, $ogEntity);
                 if (array_key_exists('article:section', $og)) {
-                    $og['article:section'] = $translator->trans($og['article:section']);
+                    $og['article:section'] = /** @Ignore */ $translator->trans($og['article:section']);
                 }
             }
         }

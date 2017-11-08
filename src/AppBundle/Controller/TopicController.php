@@ -44,8 +44,7 @@ class TopicController extends RenderTeiController
         }
 
         foreach (\AppBundle\Controller\TopicController::$TOPICS as $label) {
-            /** @Ignore */
-            if ($translator->trans($label) == $topic) {
+            if (/** @Ignore */ $translator->trans($label) == $topic) {
                 $topic = $label;
                 break;
             }
@@ -190,7 +189,9 @@ class TopicController extends RenderTeiController
             $slugify = $this->get('cocur_slugify');
             foreach ([ 'de' ] as $alternateLocale) {
                 $translator->setLocale($alternateLocale);
-                $localeSwitch[$alternateLocale] = [ 'slug' => $slugify->slugify($translator->trans($topics[$slug])) ];
+                $localeSwitch[$alternateLocale] = [
+                    'slug' => $slugify->slugify(/** @Ignore */ $translator->trans($topics[$slug])),
+                ];
             }
             $translator->setLocale($locale);
         }
@@ -199,7 +200,7 @@ class TopicController extends RenderTeiController
             $translator = $this->get('translator');
             $slugify = $this->get('cocur_slugify');
             foreach (self::$TOPICS as $topicLabel) {
-                if ($topics[$slug] == $translator->trans($topicLabel)) {
+                if ($topics[$slug] == /** @Ignore */ $translator->trans($topicLabel)) {
                     $localeSwitch['en'] = [ 'slug' => $slugify->slugify($topicLabel) ];
                     break;
                 }

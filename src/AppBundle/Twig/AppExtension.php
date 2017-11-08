@@ -83,7 +83,7 @@ class AppExtension extends \Twig_Extension
             $locale = $this->getLocale();
         }
 
-        return $this->translator->trans($class, [
+        return /** @Ignore */ $this->translator->trans($class, [
             '%epoch%' => $epoch,
             '%century%' => intval($epoch / 100) + 1,
             '%decade%' => $epoch % 100,

@@ -123,7 +123,7 @@ class MetsCommand extends ContainerAwareCommand
         $LOGICAL_STRUCTURE = [
             'content' => [
                 'TYPE' => 'content',
-                'LABEL' => $translator->trans($LOGICAL_TYPE),
+                'LABEL' => /** @Ignore */ $translator->trans($LOGICAL_TYPE),
                 'ORDER' => 1,
                 'physical_start' => 1,
             ],
