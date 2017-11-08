@@ -116,6 +116,14 @@ class AboutController extends RenderTeiController
         return $this->renderAbout('Technical Implementation');
     }
 
+    /**
+     * @Route("/about/publications", name="about-publications")
+     */
+    public function publicationsAction()
+    {
+        return $this->renderAbout('Presentations and Publications');
+    }
+
     protected function buildNewsArticles(&$posts, $client)
     {
         $articles = [];

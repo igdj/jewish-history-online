@@ -212,6 +212,7 @@ class Builder implements ContainerAwareInterface
             case 'about-editorialmodel':
             case 'about-editionguidelines':
             case 'about-implementation':
+            case 'about-publications':
             case 'about-cfp':
                 $toplevel = $this->topMenu($factory, []);
                 $item = $toplevel['about'];
@@ -291,15 +292,24 @@ class Builder implements ContainerAwareInterface
                 $item = $menu->addChild($current_route, [ 'label' => 'Search' ]);
                 break;
 
-           default:
+            case 'labs-index':
+            case 'person-by-year':
+            case 'person-by-birthplace':
+            case 'person-by-deathplace':
+            case 'person-birth-death':
+                break;
+
+            default:
                 if (!is_null($current_route)) {
                     var_dump($current_route);
                 }
         }
+
         if (isset($item)) {
             $item->setCurrent(true);
             return $item;
         }
+
         return $menu;
     }
 }

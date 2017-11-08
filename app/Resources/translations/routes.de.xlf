@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2017-08-25T18:17:38Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2017-11-03T12:15:43Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -62,6 +62,10 @@
         <source>/about/news</source>
         <target>/ueber/news</target>
       </trans-unit>
+      <trans-unit id="335e61b3f8dcf3bf86c190b7055854bc5f16fdc3" resname="about-publications">
+        <source>/about/publications</source>
+        <target state="new">/ueber/publikationen</target>
+      </trans-unit>
       <trans-unit id="4325ad54eb5c30738fd299324a9ed374ea5d84c1" resname="about-sponsors">
         <source>/about/sponsors</source>
         <target>/ueber/mittelgeber</target>
@@ -77,6 +81,10 @@
       <trans-unit id="565cecd7e8f5c6063935b41db41797aa37d53b04" resname="article">
         <source>/article/{slug}</source>
         <target>/beitrag/{slug}</target>
+      </trans-unit>
+      <trans-unit id="9e6b2ab8038f9836553617605f7fd84c1ab570e5" resname="article-gdf">
+        <source>/labs/article-gdf</source>
+        <target state="new">/labs/article-gdf</target>
       </trans-unit>
       <trans-unit id="107073db89ac5882d5e4871943d498dc0c82bda2" resname="article-index">
         <source>/article</source>
@@ -154,6 +162,10 @@
         <source>/source/imginfo/{path}</source>
         <target>/source/imginfo/{path}</target>
       </trans-unit>
+      <trans-unit id="f74aa2b0cb28b1dc5622eeef7d9b41286a46c50e" resname="labs-index">
+        <source>/labs</source>
+        <target state="new">/labs</target>
+      </trans-unit>
       <trans-unit id="db1bb80ce727aa150bc4be7f4eda72fec252c3df" resname="oai">
         <source>/oai</source>
         <target>/oai</target>
@@ -186,6 +198,18 @@
         <source>/person/{id}</source>
         <target>/person/{id}</target>
       </trans-unit>
+      <trans-unit id="01fc4774d426a2bce82d87487f14bdf6116d1559" resname="person-birth-death">
+        <source>/labs/person-birth-death</source>
+        <target state="new">/labs/person-birth-death</target>
+      </trans-unit>
+      <trans-unit id="6005ed3eae940e13230a5013eb64d1f276423ff4" resname="person-by-birthplace">
+        <source>/labs/person-by-birthplace</source>
+        <target state="new">/labs/person-by-birthplace</target>
+      </trans-unit>
+      <trans-unit id="378a933c8bc112c495f213f0b2c704a81570a459" resname="person-by-deathplace">
+        <source>/labs/person-by-deathplace</source>
+        <target state="new">/labs/person-by-deathplace</target>
+      </trans-unit>
       <trans-unit id="84d06288bde5af1c4dba24a1e5150f6b0ec557d9" resname="person-by-gnd">
         <source>/person/gnd/{gnd}</source>
         <target>/person/gnd/{gnd}</target>
@@ -193,6 +217,14 @@
       <trans-unit id="37ae3a2b975d5f1e9aea11650a1dac45326a65af" resname="person-by-gnd-jsonld">
         <source>/person/gnd/{gnd}.jsonld</source>
         <target>/person/gnd/{gnd}.jsonld</target>
+      </trans-unit>
+      <trans-unit id="ebf0989b9c7409844d13bb4b04d1aa51230d88b3" resname="person-by-year">
+        <source>/labs/person-by-year</source>
+        <target state="new">/labs/person-by-year</target>
+      </trans-unit>
+      <trans-unit id="8a10cf68a36cafe7d5ab1c196e23ddd063fae907" resname="person-gdf">
+        <source>/labs/person-gdf</source>
+        <target state="new">/labs/person-gdf</target>
       </trans-unit>
       <trans-unit id="6007191513c806f499122915873026637df3c9b1" resname="person-gnd-beacon">
         <source>/person/gnd/beacon</source>
