@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -12,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
  */
 class SourceController extends ArticleController
 {
-    protected function renderSourceViewer($uid, $sourceArticle)
+    protected function renderSourceViewer(Request $request, $uid, $sourceArticle)
     {
         $fname = $this->buildArticleFname($sourceArticle);
 
@@ -22,7 +23,7 @@ class SourceController extends ArticleController
 
         $params = [
             'params' => [
-                'lang' => \AppBundle\Utils\Iso639::code1To3($this->getRequest()->getLocale()), // localize labels in xslt
+                'lang' => \AppBundle\Utils\Iso639::code1To3($request->getLocale()), // localize labels in xslt
             ],
         ];
         $html = $this->renderTei($fname, 'dtabf_article.xsl', $params);
@@ -48,12 +49,12 @@ class SourceController extends ArticleController
                          [ 'dateCreated' => 'ASC', 'name' => 'ASC']);
         }
 
-        if (in_array($this->container->get('request')->get('_route'), [ 'source-jsonld' ])) {
-            return new JsonLdResponse($sourceArticle->jsonLdSerialize($this->getRequest()->getLocale()));
+        if (in_array($request->get('_route'), [ 'source-jsonld' ])) {
+            return new JsonLdResponse($sourceArticle->jsonLdSerialize($request->getLocale()));
         }
 
         $entityLookup = $this->buildEntityLookup($entities);
-        $glossaryLookup = $this->buildGlossaryLookup($glossaryTerms);
+        $glossaryLookup = $this->buildGlossaryLookup($glossaryTerms, $request->getLocale());
 
         $fnameMets = $this->buildArticleFname($sourceArticle, '.mets.xml');
         $parts = explode('.', $fnameMets);
@@ -68,7 +69,7 @@ class SourceController extends ArticleController
                     ])))
         {
             $html = $this->adjustMedia($html,
-                                       $this->get('request')->getBaseURL()
+                                       $request->getBaseURL()
                                        . '/viewer/' . $path);
             $sourceLocale = \AppBundle\Utils\Iso639::code3to1($sourceArticle->getLanguage());
 
@@ -110,7 +111,7 @@ class SourceController extends ArticleController
                             ];
 
                             $body = $this->adjustMedia($this->renderTei($transcriptionFname, 'dtabf_article.xsl', $params),
-                                                       $this->get('request')->getBaseURL()
+                                                       $request->getBaseURL()
                                                        . '/viewer/' . $path);
                         }
                         else {
@@ -156,9 +157,9 @@ class SourceController extends ArticleController
                     'entity_lookup' => $entityLookup,
                     'glossary_lookup' => $glossaryLookup,
                     'pageMeta' => [
-                        'jsonLd' => $sourceArticle->jsonLdSerialize($this->getRequest()->getLocale()),
-                        'og' => $this->buildOg($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]),
-                        'twitter' => $this->buildTwitter($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]),
+                        'jsonLd' => $sourceArticle->jsonLdSerialize($request->getLocale()),
+                        'og' => $this->buildOg($sourceArticle, $request, 'source', [ 'uid' => $sourceArticle->getUid() ]),
+                        'twitter' => $this->buildTwitter($sourceArticle, $request, 'source', [ 'uid' => $sourceArticle->getUid() ]),
                     ],
                 ]);
             }
@@ -178,9 +179,9 @@ class SourceController extends ArticleController
                 'entity_lookup' => $entityLookup,
                 'glossary_lookup' => $glossaryLookup,
                 'pageMeta' => [
-                    'jsonLd' => $sourceArticle->jsonLdSerialize($this->getRequest()->getLocale()),
-                    'og' => $this->buildOg($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]),
-                    'twitter' => $this->buildTwitter($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]),
+                    'jsonLd' => $sourceArticle->jsonLdSerialize($request->getLocale()),
+                    'og' => $this->buildOg($sourceArticle, $request, 'source', [ 'uid' => $sourceArticle->getUid() ]),
+                    'twitter' => $this->buildTwitter($sourceArticle, $request, 'source', [ 'uid' => $sourceArticle->getUid() ]),
                 ],
             ]);
         }
@@ -201,20 +202,21 @@ class SourceController extends ArticleController
             'entity_lookup' => $entityLookup,
             'glossary_lookup' => $glossaryLookup,
             'pageMeta' => [
-                'jsonLd' => $sourceArticle->jsonLdSerialize($this->getRequest()->getLocale()),
-                'og' => $this->buildOg($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]),
-                'twitter' => $this->buildTwitter($sourceArticle, 'source', [ 'uid' => $sourceArticle->getUid() ]),
+                'jsonLd' => $sourceArticle->jsonLdSerialize($request->getLocale()),
+                'og' => $this->buildOg($sourceArticle, $request, 'source', [ 'uid' => $sourceArticle->getUid() ]),
+                'twitter' => $this->buildTwitter($sourceArticle, $request, 'source', [ 'uid' => $sourceArticle->getUid() ]),
             ],
         ]);
     }
 
     /**
+     * @Route("/source/{uid}.jsonld", name="source-jsonld")
      * @Route("/source/{uid}", name="source")
      */
-    public function sourceViewerAction($uid)
+    public function sourceViewerAction(Request $request, $uid)
     {
         $criteria = [ 'uid' => $uid ];
-        $locale = $this->get('request')->getLocale();
+        $locale = $request->getLocale();
         if (!empty($locale)) {
             $criteria['language'] = \AppBundle\Utils\Iso639::code1to3($locale);
         }
@@ -227,7 +229,7 @@ class SourceController extends ArticleController
             throw $this->createNotFoundException('This source does not exist');
         }
 
-        return $this->renderSourceViewer($uid, $article);
+        return $this->renderSourceViewer($request, $uid, $article);
     }
 
     protected function buildFolderName($uid)
@@ -446,10 +448,9 @@ class SourceController extends ArticleController
         return $urlZip;
     }
 
-    protected function findSourceArticle($uid)
+    protected function findSourceArticle($uid, $locale)
     {
         $criteria = [ 'uid' => $uid ];
-        $locale = $this->get('request')->getLocale();
         if (!empty($locale)) {
             $criteria['language'] = \AppBundle\Utils\Iso639::code1to3($locale);
         }
@@ -459,9 +460,12 @@ class SourceController extends ArticleController
                 ->findOneBy($criteria);
     }
 
-    public function downloadAction($uid)
+    /**
+     * @Route("/source/{uid}.zip", name="source-download")
+     */
+    public function downloadAction(Request $request, $uid)
     {
-        $article = $this->findSourceArticle($uid);
+        $article = $this->findSourceArticle($uid, $request->getLocale());
 
         if (!$article) {
             throw $this->createNotFoundException('This source does not exist');
@@ -501,15 +505,13 @@ class SourceController extends ArticleController
      * in the DFG-Viewer
      *
      */
-    public function metsAction($uid)
+    public function metsAction(Request $request, $uid)
     {
-        $article = $this->findSourceArticle($uid);
+        $article = $this->findSourceArticle($uid, $request->getLocale());
 
         if (!$article) {
             throw $this->createNotFoundException('This source does not exist');
         }
-
-        $request = $this->getRequest();
 
         $relPath = $resource = null;
         if ($article->licenseAllowsDownload()) {

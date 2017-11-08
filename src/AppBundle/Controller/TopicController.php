@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -71,9 +73,8 @@ class TopicController extends RenderTeiController
         return $topics;
     }
 
-    protected function buildTopicsDescriptions()
+    protected function buildTopicsDescriptions($locale)
     {
-        $locale = $this->get('request')->getLocale();
         $fnameAppend = !empty($locale) ? '.' . $locale : '';
 
         $topics = $this->buildTopicsBySlug();
@@ -96,21 +97,22 @@ class TopicController extends RenderTeiController
     /**
      * @Route("/topic", name="topic-index")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         return $this->render('AppBundle:Topic:index.html.twig', [
             'pageTitle' => $this->get('translator')->trans('Topics'),
-            'topics' => $this->buildTopicsDescriptions(),
+            'topics' => $this->buildTopicsDescriptions($request->getLocale()),
         ]);
     }
 
     /**
      * @Route("/topic/{slug}.pdf", name="topic-background-pdf")
+     * @Route("/topic/{slug}", name="topic-background")
      */
-    public function backgroundAction($slug)
+    public function backgroundAction(Request $request, $slug)
     {
         $language = null;
-        $locale = $this->get('request')->getLocale();
+        $locale = $request->getLocale();
         if (!empty($locale)) {
             $language = \AppBundle\Utils\Iso639::code1to3($locale);
         }
@@ -121,7 +123,7 @@ class TopicController extends RenderTeiController
             return $this->redirectToRoute('topic-index');
         }
 
-        $generatePrintView = 'topic-background-pdf' == $this->container->get('request')->get('_route');
+        $generatePrintView = 'topic-background-pdf' == $request->get('_route');
         $fname = $slug . $fnameAppend . '.xml';
         $path = '';
 
@@ -160,7 +162,7 @@ class TopicController extends RenderTeiController
         $html = $this->adjustRefs($html, $refs, $language);
 
         $html = $this->adjustMedia($html,
-                                   $this->get('request')->getBaseURL()
+                                   $request->getBaseURL()
                                    . '/viewer/' . $path,
                                    $generatePrintView ? '' : 'img-responsive');
 
@@ -205,10 +207,10 @@ class TopicController extends RenderTeiController
         }
 
         $entityLookup = $this->buildEntityLookup($entities);
-        $glossaryLookup = $this->buildGlossaryLookup($glossaryTerms);
+        $glossaryLookup = $this->buildGlossaryLookup($glossaryTerms, $locale);
 
         // sidebar
-        $query = $this->get('doctrine')
+        $query = $this->getDoctrine()
             ->getManager()
             ->createQuery("SELECT A FROM AppBundle:Article A"
                           . " WHERE A.status IN (1) AND A.keywords LIKE :topic AND A.articleSection <> 'background'"
@@ -236,9 +238,9 @@ class TopicController extends RenderTeiController
             'glossary_lookup' => $glossaryLookup,
             'interpretations' => $articles,
             'pageMeta' => [
-                'jsonLd' => $article->jsonLdSerialize($this->getRequest()->getLocale()),
-                'og' => $this->buildOg($article, 'topic-background', [ 'slug' => $slug ]),
-                'twitter' => $this->buildTwitter($article, 'topic-background', [ 'slug' => $slug ]),
+                'jsonLd' => $article->jsonLdSerialize($request->getLocale()),
+                'og' => $this->buildOg($article, $request, 'topic-background', [ 'slug' => $slug ]),
+                'twitter' => $this->buildTwitter($article, $request, 'topic-background', [ 'slug' => $slug ]),
             ],
             'route_params_locale_switch' => $localeSwitch, // TODO: put into pageMeta
         ]);

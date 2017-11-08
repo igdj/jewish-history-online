@@ -40,7 +40,7 @@ trait MapHelperTrait
         return $markers;
     }
 
-    public function buildMap($mentioned = false)
+    public function buildMap($locale, $mentioned = false)
     {
         $qb = $this->getDoctrine()
                 ->getRepository($mentioned ? 'AppBundle:Article' : 'AppBundle:SourceArticle')
@@ -84,7 +84,6 @@ trait MapHelperTrait
                 ;
         }
 
-        $locale = $this->get('request')->getLocale();
         if (!empty($locale)) {
             $language = \AppBundle\Utils\Iso639::code1to3($locale);
 

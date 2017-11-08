@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -13,9 +15,9 @@ class GlossaryController extends Controller
     /**
      * @Route("/glossary", name="glossary-index")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $language = \AppBundle\Utils\Iso639::code1to3($this->container->get('request')->getLocale());
+        $language = \AppBundle\Utils\Iso639::code1to3($request->getLocale());
 
         $terms = $this->getDoctrine()
                 ->getRepository('AppBundle:GlossaryTerm')
@@ -48,7 +50,7 @@ class GlossaryController extends Controller
         }
 
         return $this->render('AppBundle:Glossary:detail.html.twig',
-                             array('term' => $term));
+                             [ 'term' => $term ]);
     }
     */
 }

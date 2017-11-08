@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -13,7 +15,7 @@ class OrganizationController extends Controller
     /**
      * @Route("/organization", name="organization-index")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $organizations = $this->getDoctrine()
                 ->getRepository('AppBundle:Organization')
@@ -26,35 +28,9 @@ class OrganizationController extends Controller
         ]);
     }
 
-    public function detailAction($id = null, $gnd = null)
-    {
-        $organizationRepo = $this->getDoctrine()
-                ->getRepository('AppBundle:Organization');
-
-        if (!empty($id)) {
-            $organization = $organizationRepo->findOneById($id);
-        }
-        else if (!empty($gnd)) {
-            $organization = $organizationRepo->findOneByGnd($gnd);
-        }
-
-        if (!isset($organization) || $organization->getStatus() < 0) {
-            return $this->redirectToRoute('organization-index');
-        }
-
-        if (in_array($this->container->get('request')->get('_route'), [ 'organization-jsonld', 'organization-by-gnd-jsonld' ])) {
-            return new JsonLdResponse($organization->jsonLdSerialize($this->getRequest()->getLocale()));
-        }
-
-        return $this->render('AppBundle:Organization:detail.html.twig', [
-            'pageTitle' => $organization->getNameLocalized($this->get('request')->getLocale()),
-            'organization' => $organization,
-            'pageMeta' => [
-                'jsonLd' => $organization->jsonLdSerialize($this->getRequest()->getLocale()),
-            ],
-        ]);
-    }
-
+    /**
+     * @Route("/organization/gnd/beacon", name="organization-gnd-beacon")
+     */
     public function gndBeaconAction()
     {
         $translator = $this->container->get('translator');
@@ -91,5 +67,40 @@ class OrganizationController extends Controller
 
         return new \Symfony\Component\HttpFoundation\Response($ret, \Symfony\Component\HttpFoundation\Response::HTTP_OK,
                                                               [ 'Content-Type' => 'text/plain; charset=UTF-8' ]);
+    }
+
+    /**
+     * @Route("/organization/{id}.jsonld", name="organization-jsonld")
+     * @Route("/organization/{id}", name="organization")
+     * @Route("/organization/gnd/{gnd}.jsonld", name="organization-by-gnd-jsonld")
+     * @Route("/organization/gnd/{gnd}", name="organization-by-gnd")
+     */
+    public function detailAction(Request $request, $id = null, $gnd = null)
+    {
+        $organizationRepo = $this->getDoctrine()
+                ->getRepository('AppBundle:Organization');
+
+        if (!empty($id)) {
+            $organization = $organizationRepo->findOneById($id);
+        }
+        else if (!empty($gnd)) {
+            $organization = $organizationRepo->findOneByGnd($gnd);
+        }
+
+        if (!isset($organization) || $organization->getStatus() < 0) {
+            return $this->redirectToRoute('organization-index');
+        }
+
+        if (in_array($request->get('_route'), [ 'organization-jsonld', 'organization-by-gnd-jsonld' ])) {
+            return new JsonLdResponse($organization->jsonLdSerialize($request->getLocale()));
+        }
+
+        return $this->render('AppBundle:Organization:detail.html.twig', [
+            'pageTitle' => $organization->getNameLocalized($request->getLocale()),
+            'organization' => $organization,
+            'pageMeta' => [
+                'jsonLd' => $organization->jsonLdSerialize($request->getLocale()),
+            ],
+        ]);
     }
 }

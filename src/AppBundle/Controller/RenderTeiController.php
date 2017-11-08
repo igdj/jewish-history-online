@@ -84,7 +84,7 @@ extends Controller
         }
 
         // make sure we only pick-up the published ones
-        $query = $this->get('doctrine')
+        $query = $this->getDoctrine()
             ->getManager()
             ->createQuery("SELECT a"
                           . " FROM AppBundle:Article a"
@@ -275,7 +275,7 @@ extends Controller
         return $entitiesByType;
     }
 
-    protected function buildGlossaryLookup($glossaryTerms)
+    protected function buildGlossaryLookup($glossaryTerms, $locale)
     {
         $glossaryLookup = [];
 
@@ -283,7 +283,7 @@ extends Controller
             return $glossaryLookup;
         }
 
-        $language = \AppBundle\Utils\Iso639::code1to3($this->container->get('request')->getLocale());
+        $language = \AppBundle\Utils\Iso639::code1to3($locale);
 
         $slugify = $this->container->get('cocur_slugify');
 
@@ -478,7 +478,7 @@ extends Controller
             foreach ($bibitems as $corresp) {
                 $bibitems_map[$corresp] =  \AppBundle\Entity\Bibitem::slugifyCorresp($slugify, $corresp);
             }
-            $query = $this->get('doctrine')
+            $query = $this->getDoctrine()
                 ->getManager()
                 ->createQuery('SELECT b.slug FROM AppBundle:Bibitem b WHERE b.slug IN (:slugs) AND b.status >= 0')
                 ->setParameter('slugs', array_values($bibitems_map));
@@ -518,7 +518,7 @@ extends Controller
             }
         }
         if (!empty($author_slugs)) {
-            $query = $this->get('doctrine')
+            $query = $this->getDoctrine()
                 ->getManager()
                 ->createQuery('SELECT p.slug, p.description, p.gender FROM AppBundle:Person p WHERE p.slug IN (:slugs)')
                 ->setParameter('slugs', $author_slugs);

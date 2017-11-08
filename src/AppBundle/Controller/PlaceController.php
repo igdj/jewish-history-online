@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -14,14 +16,15 @@ extends Controller
     use MapHelperTrait;
 
     /**
-     * @Route("/map", name="place-map")
+     * Display map of sources and mentioned places
      *
-     * This is the map of all sources
+     * @Route("/map", name="place-map")
+     * @Route("/map/place", name="place-map-mentioned")
      *
      */
-    public function mapAction()
+    public function mapAction(Request $request)
     {
-        list($markers, $bounds) = $this->buildMap('place-map-mentioned' == $this->container->get('request')->get('_route'));
+        list($markers, $bounds) = $this->buildMap($request->getLocale(), 'place-map-mentioned' == $request->get('_route'));
 
         return $this->render('AppBundle:Place:map.html.twig', [
             'pageTitle' => $this->get('translator')->trans('Map'),
@@ -33,14 +36,12 @@ extends Controller
     /**
      * @Route("/map/popup-content/{ids}", name="place-map-popup-content")
      */
-    public function mapPopupContentAction($ids)
+    public function mapPopupContentAction(Request $request, $ids)
     {
         if (empty($ids)) {
             $articles = [];
         }
         else {
-            $request = $this->get('request');
-
             $mentioned = 'place-map-mentioned' == $request->get('caller');
 
             $ids = explode(',', $ids);
@@ -108,7 +109,13 @@ extends Controller
         ]);
     }
 
-    public function detailAction($id = null, $tgn = null)
+    /**
+     * @Route("/place/{id}.jsonld", name="place-jsonld")
+     * @Route("/place/{id}", name="place")
+     * @Route("/place/tgn/{tgn}.jsonld", name="place-by-tgn-jsonld")
+     * @Route("/place/tgn/{tgn}", name="place-by-tgn")
+     */
+    public function detailAction(Request $request, $id = null, $tgn = null)
     {
         $placeRepo = $this->getDoctrine()
                 ->getRepository('AppBundle:Place');
@@ -122,7 +129,6 @@ extends Controller
         /*
         else if (!empty($gnd)) {
             $place = $placeRepo->findOneByGnd($gnd);
-
         }
         */
 
@@ -130,12 +136,11 @@ extends Controller
             return $this->redirectToRoute('place-index');
         }
 
-        if (in_array($this->container->get('request')->get('_route'), [ 'place-jsonld', 'place-by-tgn-jsonld' ])) {
-            return new JsonLdResponse($place->jsonLdSerialize($this->getRequest()->getLocale()));
+        if (in_array($request->get('_route'), [ 'place-jsonld', 'place-by-tgn-jsonld' ])) {
+            return new JsonLdResponse($place->jsonLdSerialize($request->getLocale()));
         }
 
         // get the persons associated with this place, currently birthplace / deathplace
-        // TODO: places of activity
         $qb = $this->getDoctrine()
                 ->getManager()
                 ->createQueryBuilder();
@@ -157,11 +162,11 @@ extends Controller
 
 
         return $this->render('AppBundle:Place:detail.html.twig', [
-            'pageTitle' => $place->getNameLocalized($this->get('request')->getLocale()),
+            'pageTitle' => $place->getNameLocalized($request->getLocale()),
             'place' => $place,
             'persons' => $persons,
             'pageMeta' => [
-                'jsonLd' => $place->jsonLdSerialize($this->getRequest()->getLocale()),
+                'jsonLd' => $place->jsonLdSerialize($request->getLocale()),
             ],
         ]);
     }

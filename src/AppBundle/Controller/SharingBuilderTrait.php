@@ -10,15 +10,17 @@
 
 namespace AppBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 trait SharingBuilderTrait
 {
     /*
      * transforms en -> en_US and de -> de_DE
      *
      */
-    protected function buildOgLocale()
+    protected function buildOgLocale($request)
     {
-        $locale = $this->getRequest()->getLocale();
+        $locale = $request->getLocale();
 
         switch ($locale) {
             case 'en':
@@ -29,6 +31,7 @@ trait SharingBuilderTrait
                 $append = strtoupper($locale);
 
         }
+
         return implode('_', [ $locale, $append ]);
     }
 
@@ -38,7 +41,7 @@ trait SharingBuilderTrait
      * Debug through https://developers.facebook.com/tools/debug/sharing/
      *
      */
-    public function buildOg($entity, $routeName, $routeParams = [])
+    public function buildOg($entity, $request, $routeName, $routeParams = [])
     {
         $translator = $this->container->get('translator');
         $twig = $this->container->get('twig');
@@ -50,13 +53,13 @@ trait SharingBuilderTrait
 
         $og = [
             'og:site_name' => $translator->trans($globals['siteName']),
-            'og:locale' => $this->buildOgLocale(),
+            'og:locale' => $this->buildOgLocale($request),
             'og:url' => $this->generateUrl($routeName, $routeParams, true),
         ];
 
         /*
         foreach ($app['app_allowed_locales'] as $locale) {
-            $locale_full = $this->buildOgLocale($request, $app, $locale);
+            $locale_full = $this->buildOgLocale($request, $locale);
             if ($locale_full != $og['og:locale']) {
                 if (!isset($og['og:locale:alternate'])) {
                     $og['og:locale:alternate'] = array();
@@ -66,10 +69,10 @@ trait SharingBuilderTrait
         }
         */
 
-        $baseUri = $this->getRequest()->getUriForPath('/');
+        $baseUri = $request->getUriForPath('/');
 
         if ($entity instanceof \AppBundle\Entity\OgSerializable) {
-            $ogEntity = $entity->ogSerialize($this->getRequest()->getLocale(), $baseUri);
+            $ogEntity = $entity->ogSerialize($request->getLocale(), $baseUri);
             if (isset($ogEntity)) {
                 $og = array_merge($og, $ogEntity);
                 if (array_key_exists('article:section', $og)) {
@@ -89,7 +92,7 @@ trait SharingBuilderTrait
             else if ($entity instanceof \AppBundle\Entity\Article) {
                 switch ($entity->getArticleSection()) {
                     case 'background':
-                        $englishName = \AppBundle\Controller\TopicController::lookupLocalizedTopic($entity->getName(), $translator, $this->getRequest()->getLocale());
+                        $englishName = \AppBundle\Controller\TopicController::lookupLocalizedTopic($entity->getName(), $translator, $request->getLocale());
                         $slugify = $this->get('cocur_slugify');
                         $imgName = $slugify->slugify($englishName);
                         $og['og:image'] = $baseUri . 'img/topic/' . $imgName . '.jpg';
@@ -142,7 +145,7 @@ trait SharingBuilderTrait
      *  http://cards-dev.twitter.com/validator
      *
      */
-    public function buildTwitter($entity, $routeName, $routeParams = [], $params = [])
+    public function buildTwitter($entity, Request $request, $routeName, $routeParams = [], $params = [])
     {
         $twitter = [];
 
@@ -157,8 +160,8 @@ trait SharingBuilderTrait
         $twitter['twitter:site'] = '@' . $globals['twitterSite'];
 
         if ($entity instanceof \AppBundle\Entity\TwitterSerializable) {
-            $baseUri = $this->getRequest()->getUriForPath('/');
-            $twitterEntity = $entity->twitterSerialize($this->getRequest()->getLocale(), $baseUri, $params);
+            $baseUri = $request->getUriForPath('/');
+            $twitterEntity = $entity->twitterSerialize($request->getLocale(), $baseUri, $params);
             if (isset($twitterEntity)) {
                 $twitter = array_merge($twitter, $twitterEntity);
             }

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -15,9 +16,9 @@ class PersonController extends Controller
     /**
      * @Route("/person", name="person-index")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $route = $this->get('request')->get('_route');
+        $route = $request->get('_route');
         $authorsOnly = 'about-authors' == $route;
 
         $qb = $this->getDoctrine()
@@ -49,7 +50,7 @@ class PersonController extends Controller
         ]);
     }
 
-    public function detailAction($id = null, $gnd = null)
+    public function detailAction(Request $request, $id = null, $gnd = null)
     {
         $personRepo = $this->getDoctrine()
                 ->getRepository('AppBundle:Person');
@@ -74,17 +75,17 @@ class PersonController extends Controller
             $routeParams = [ 'gnd' => $gnd ];
         }
 
-        if (in_array($this->container->get('request')->get('_route'), [ 'person-jsonld', 'person-by-gnd-jsonld' ])) {
-            return new JsonLdResponse($person->jsonLdSerialize($this->getRequest()->getLocale()));
+        if (in_array($request->get('_route'), [ 'person-jsonld', 'person-by-gnd-jsonld' ])) {
+            return new JsonLdResponse($person->jsonLdSerialize($request->getLocale()));
         }
 
         return $this->render('AppBundle:Person:detail.html.twig', [
             'pageTitle' => $person->getFullname(true), // TODO: lifespan in brackets
             'person' => $person,
             'pageMeta' => [
-                'jsonLd' => $person->jsonLdSerialize($this->getRequest()->getLocale()),
-                'og' => $this->buildOg($person, $routeName, $routeParams),
-                'twitter' => $this->buildTwitter($person, $routeName, $routeParams),
+                'jsonLd' => $person->jsonLdSerialize($request->getLocale()),
+                'og' => $this->buildOg($person, $request, $routeName, $routeParams),
+                'twitter' => $this->buildTwitter($person, $request, $routeName, $routeParams),
             ],
         ]);
     }

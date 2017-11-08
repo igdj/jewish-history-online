@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -13,11 +15,11 @@ class DateController extends Controller
     /**
      * @Route("/chronology", name="date-chronology")
      */
-    public function chronologyAction()
+    public function chronologyAction(Request $request)
     {
         $criteria = [ 'status' => [ 1 ] ];
 
-        $locale = $this->get('request')->getLocale();
+        $locale = $$request->getLocale();
         if (!empty($locale)) {
             $criteria['language'] = \AppBundle\Utils\Iso639::code1to3($locale);
         }

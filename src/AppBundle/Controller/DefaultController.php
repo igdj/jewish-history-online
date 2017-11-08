@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -17,9 +19,9 @@ extends TopicController
     /**
      * @Route("/", name="home")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        list($markers, $bounds) = $this->buildMap();
+        list($markers, $bounds) = $this->buildMap($request->getLocale());
 
         /* check if we have settings for wp-rest */
         $news = [];
@@ -33,7 +35,7 @@ extends TopicController
                 $client->setCredentials(new \Vnn\WpApiClient\Auth\WpBasicAuth($this->getParameter('app.wp-rest.user'), $this->getParameter('app.wp-rest.password')));
                 $posts = $client->posts()->get(null, [
                     'per_page' => 4,
-                    'lang' => $this->get('request')->getLocale(),
+                    'lang' => $request->getLocale(),
                 ]);
                 if (!empty($posts)) {
                     foreach ($posts as $post) {
@@ -53,7 +55,7 @@ extends TopicController
 
         return $this->render('AppBundle:Default:index.html.twig', [
             'pageTitle' => $this->get('translator')->trans('Welcome'),
-            'topics' => $this->buildTopicsDescriptions(),
+            'topics' => $this->buildTopicsDescriptions($request->getLocale()),
             'markers' => $markers,
             'bounds' => $bounds,
             'news' => $news,

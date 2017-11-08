@@ -133,10 +133,8 @@ class MicroKernel extends Kernel
             ); */
         }
 
-        /*
-        // Loading annotated routes doesn't seem to work with route translation?!
+        // Loading annotated routes; doesn't seem to work with route translation?!
         $routes->mount('/', $routes->import('@AppBundle/Controller', 'annotation'));
-        */
 
         // exports /sitemap.xml
         $routes->mount('/', $routes->import('@PrestaSitemapBundle/Resources/config/routing.yml'));
@@ -165,30 +163,30 @@ class MicroKernel extends Kernel
 
         $routes->add('/topic', 'AppBundle:Topic:index', 'topic-index');
 
+        $routes->add('/topic/{slug}.pdf', 'AppBundle:Topic:background', 'topic-background-pdf');
         $topicBackgroundRoute = new \Symfony\Component\Routing\Route(
             '/topic/{slug}',
             [ '_controller' => 'AppBundle:Topic:background' ],
             [ 'slug' => '[^\.]+' ]
         );
         $routes->addRoute($topicBackgroundRoute, 'topic-background');
-        $routes->add('/topic/{slug}.pdf', 'AppBundle:Topic:background', 'topic-background-pdf');
 
         $routes->add('/article', 'AppBundle:Article:index', 'article-index');
         $routes->add('/article/date', 'AppBundle:Article:index', 'article-index-date');
         $routes->add('/article.rss', 'AppBundle:Article:index', 'article-index-rss');
 
+        $routes->add('/article/{slug}.jsonld', 'AppBundle:Article:article', 'article-jsonld');
+        $routes->add('/article/{slug}.pdf', 'AppBundle:Article:article', 'article-pdf');
         $articleRoute = new \Symfony\Component\Routing\Route(
             '/article/{slug}',
             [ '_controller' => 'AppBundle:Article:article' ],
             [ 'slug' => '[^\.]+' ]
         );
         $routes->addRoute($articleRoute, 'article');
-        $routes->add('/article/{slug}.jsonld', 'AppBundle:Article:article', 'article-jsonld');
-        $routes->add('/article/{slug}.pdf', 'AppBundle:Article:article', 'article-pdf');
 
-        $routes->add('/source/{uid}.jsonld', 'AppBundle:Source:sourceViewer', 'source-jsonld');
         $routes->add('/source/{uid}.zip', 'AppBundle:Source:download', 'source-download');
         $routes->add('/source/{uid}.mets.xml', 'AppBundle:Source:mets', 'source-mets');
+        $routes->add('/source/{uid}.jsonld', 'AppBundle:Source:sourceViewer', 'source-jsonld');
         $routes->add('/source/{uid}', 'AppBundle:Source:sourceViewer', 'source');
 
         $routes->add('/map', 'AppBundle:Place:map', 'place-map');
@@ -212,22 +210,22 @@ class MicroKernel extends Kernel
         $routes->add('/place/tgn/{tgn}', 'AppBundle:Place:detail', 'place-by-tgn');
 
         $routes->add('/organization', 'AppBundle:Organization:index', 'organization-index');
+        $routes->add('/organization/gnd/beacon', 'AppBundle:Organization:gndBeacon', 'organization-gnd-beacon');
         $routes->add('/organization/{id}.jsonld', 'AppBundle:Organization:detail', 'organization-jsonld');
         $routes->add('/organization/{id}', 'AppBundle:Organization:detail', 'organization');
-        $routes->add('/organization/gnd/beacon', 'AppBundle:Organization:gndBeacon', 'organization-gnd-beacon');
         $routes->add('/organization/gnd/{gnd}.jsonld', 'AppBundle:Organization:detail', 'organization-by-gnd-jsonld');
         $routes->add('/organization/gnd/{gnd}', 'AppBundle:Organization:detail', 'organization-by-gnd');
 
         $routes->add('/bibliography', 'AppBundle:Bibliography:index', 'bibliography-index');
+        $routes->add('/bibliography/isbn/beacon', 'AppBundle:Bibliography:isbnBeacon', 'bibliography-isbn-beacon');
         $routes->add('/bibliography/unapi', 'AppBundle:Bibliography:unapi', 'bibliography-unapi');
         $routes->add('/bibliography/{slug}.ris', 'AppBundle:Bibliography:detail', 'bibliography-ris');
         $routes->add('/bibliography/{slug}.jsonld', 'AppBundle:Bibliography:detail', 'bibliography-jsonld');
         $routes->add('/bibliography/{slug}', 'AppBundle:Bibliography:detail', 'bibliography');
-        $routes->add('/bibliography/isbn/beacon', 'AppBundle:Bibliography:isbnBeacon', 'bibliography-isbn-beacon');
         $routes->add('/bibliography/isbn/{isbn}', 'AppBundle:Bibliography:detail', 'bibliography-by-isbn');
 
         $routes->add('/glossary', 'AppBundle:Glossary:index', 'glossary-index');
-        $routes->add('/glossary/{slug}', 'AppBundle:Glossary:detail', 'glossary');
+        // $routes->add('/glossary/{slug}', 'AppBundle:Glossary:detail', 'glossary'); // currently only index, no detail
 
         // allow / in route .+
         $routes->addRoute(

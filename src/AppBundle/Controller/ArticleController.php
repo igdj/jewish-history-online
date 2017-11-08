@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -58,9 +59,9 @@ class ArticleController extends RenderTeiController
         return $html;
     }
 
-    protected function renderArticle($article)
+    protected function renderArticle(Request $request, $article)
     {
-        $generatePrintView = 'article-pdf' == $this->container->get('request')->get('_route');
+        $generatePrintView = 'article-pdf' == $request->get('_route');
 
         $fname = $this->buildArticleFname($article);
 
@@ -85,7 +86,7 @@ class ArticleController extends RenderTeiController
         $html = $this->adjustRefs($html, $refs, $language);
 
         $html = $this->adjustMedia($html,
-                                   $this->get('request')->getBaseURL()
+                                   $request->getBaseURL()
                                    . '/viewer');
 
         $sourceDescription = $this->renderSourceDescription($article);
@@ -116,7 +117,7 @@ class ArticleController extends RenderTeiController
         $entities = array_merge($entities, $entitiesSourceDescription);
 
         $entityLookup = $this->buildEntityLookup($entities);
-        $glossaryLookup = $this->buildGlossaryLookup($glossaryTerms);
+        $glossaryLookup = $this->buildGlossaryLookup($glossaryTerms, $request->getLocale());
 
         $related = $this->getDoctrine()
             ->getRepository('AppBundle:Article')
@@ -134,8 +135,8 @@ class ArticleController extends RenderTeiController
             }
         }
 
-        if (in_array($this->container->get('request')->get('_route'), [ 'article-jsonld' ])) {
-            return new JsonLdResponse($article->jsonLdSerialize($this->getRequest()->getLocale()));
+        if (in_array($request->get('_route'), [ 'article-jsonld' ])) {
+            return new JsonLdResponse($article->jsonLdSerialize($request->getLocale()));
         }
 
         return $this->render('AppBundle:Article:article.html.twig', [
@@ -153,20 +154,23 @@ class ArticleController extends RenderTeiController
             'bibitem_lookup' => $bibitemLookup,
             'glossary_lookup' => $glossaryLookup,
             'pageMeta' => [
-                'jsonLd' => $article->jsonLdSerialize($this->getRequest()->getLocale()),
-                'og' => $this->buildOg($article, 'article', [ 'slug' => $article->getSlug(true) ]),
-                'twitter' => $this->buildTwitter($article, 'article', [ 'slug' => $article->getSlug(true) ]),
+                'jsonLd' => $article->jsonLdSerialize($request->getLocale()),
+                'og' => $this->buildOg($article, $request, 'article', [ 'slug' => $article->getSlug(true) ]),
+                'twitter' => $this->buildTwitter($article, $request, 'article', [ 'slug' => $article->getSlug(true) ]),
             ],
             'route_params_locale_switch' => $localeSwitch,
         ]);
     }
 
     /**
+     * @Route("/article/{slug}.jsonld", name="article-jsonld")
+     * @Route("/article/{slug}.pdf", name="article-pdf")
+     * @Route("/article/{slug}", name="article")
      */
-    public function articleAction($slug)
+    public function articleAction(Request $request, $slug)
     {
         $criteria = [];
-        $locale = $this->get('request')->getLocale();
+        $locale = $request->getLocale();
         if (!empty($locale)) {
             $criteria['language'] = \AppBundle\Utils\Iso639::code1to3($locale);
         }
@@ -186,21 +190,21 @@ class ArticleController extends RenderTeiController
             throw $this->createNotFoundException('This article does not exist');
         }
 
-        return $this->renderArticle($article);
+        return $this->renderArticle($request, $article);
     }
 
     /**
      * @Route("/article", name="article-index")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $language = null;
-        $locale = $this->get('request')->getLocale();
+        $locale = $request->getLocale();
         if (!empty($locale)) {
             $language = \AppBundle\Utils\Iso639::code1to3($locale);
         }
 
-        $sort = in_array($this->container->get('request')->get('_route'), [
+        $sort = in_array($request->get('_route'), [
                     'article-index-date', 'article-index-rss'
                 ])
             ? '-A.datePublished' : 'A.creator';
@@ -223,12 +227,12 @@ class ArticleController extends RenderTeiController
         if (!empty($language)) {
             $query->setParameter('language', $language);
         }
-        if ('article-index-rss' == $this->container->get('request')->get('_route')) {
+        if ('article-index-rss' == $request->get('_route')) {
             $query->setMaxResults(10);
         }
         $articles = $query->getResult();
 
-        if ('article-index-rss' == $this->container->get('request')->get('_route')) {
+        if ('article-index-rss' == $request->get('_route')) {
             $feed = $this->get('eko_feed.feed.manager')->get('article');
             $feed->addFromArray($articles);
 
