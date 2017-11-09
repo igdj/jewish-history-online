@@ -11,31 +11,31 @@
     <div class="row">
         <div class="col-sm-12">
         {# styles: see http://stackoverflow.com/questions/19089384/twitter-bootstrap-3-two-columns-full-height #}
-        <div id="timeline" class="container-fluid">
+            <div id="timeline" class="container-fluid">
         {% if articles is not empty %}
         {% set last_epoch = '' %}
         {% for source in articles %}
             {% set epochLabel = source.epochLabel %}
             {% if epochLabel[0] != last_epoch %}
                 {% if last_epoch != '' %}
+                    </div>
                 </div>
-            </div>
                 {% endif %}
-            <div class="row">
-                <div class="col-xs-2 epoch-label" style="display: table-cell; height: 100%; float: none; margin-bottom: 1em; position: relative">
-                <h4>{{ epochLabel[0]|epoch(epochLabel[1]) }}</h4>
-                </div>
-                <div class="col-xs-10" style="display: table-cell; float: none;">
-            {% set last_epoch = epochLabel[0] %}
+                <div class="row">
+                    <div class="col-sm-2 hidden-xs epoch-label">
+                        <h4>{{ epochLabel[0]|epoch(epochLabel[1]) }}</h4>
+                    </div>
+                    <div class="col-xs-12 col-sm-10 epoch-content">
+                {% set last_epoch = epochLabel[0] %}
             {% endif %}
             {{ helper.source_box(source) }}
         {% endfor %}
-            </div>
-        </div>
+                    </div>
+                </div><!-- .row -->
         {% else %}
             Es wurden keine Quellen gefunden
         {% endif %}
-        </div>
-        </div>
+            </div><!-- #timeline -->
+        </div><!-- .col-sm-12 -->
     </div><!-- .row -->
 {% endblock %}

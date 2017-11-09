@@ -58,9 +58,12 @@ extends ContainerAwareCommand
         return $crawler->html();
     }
 
-    protected function html2text($html)
+    protected function html2text($html, $do_links = false)
     {
-        $html2text = new \Html2Text\Html2Text($html);
+        $html2text = new \Html2Text\Html2Text($html, [
+            'do_links' => is_bool($do_links) && !$do_links
+                ? 'none' : 'inline',
+            ]);
 
         return $html2text->getText();
     }
@@ -132,7 +135,7 @@ extends ContainerAwareCommand
                 $html = $this->renderTei($fname, 'dtabf_note.xsl',
                                          [ 'params' => $params,
                                            'locateXmlResource' => false ]);
-                $description = $this->html2Text($html);
+                $description = $this->html2Text($html, false);
                 $entity->setDescription(trim($description));
                 break;
 

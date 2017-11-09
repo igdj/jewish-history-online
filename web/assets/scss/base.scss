@@ -806,6 +806,20 @@ footer {
         /* column-rule-style:solid; */ /* Optional */
         /* column-rule-width: 1px; */ /* Optional */
     }
+
+    /* .epoch-label is hidden on xs-screens */
+    .epoch-label {
+        display: table-cell;
+        height: 100%;
+        float: none;
+        margin-bottom: 1em;
+        position: relative;
+    }
+
+    .epoch-content {
+        display: table-cell;
+        float: none;
+    }
 }
 
 @media (max-width: $screen-sm-size) {
