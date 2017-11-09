@@ -19,7 +19,7 @@ class DateController extends Controller
     {
         $criteria = [ 'status' => [ 1 ] ];
 
-        $locale = $$request->getLocale();
+        $locale = $request->getLocale();
         if (!empty($locale)) {
             $criteria['language'] = \AppBundle\Utils\Iso639::code1to3($locale);
         }
