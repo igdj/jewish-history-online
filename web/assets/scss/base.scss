@@ -1005,6 +1005,17 @@ ul.typeahead.dropdown-menu {
     }
 }
 
+.display-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+    content: "\e114";
+    float: right;
+    color: grey;
+}
+.display-toggle.display-toggle-hide:after {
+    content: "\e113";
+}
+
 /* bootstrap panels */
 .panel {
     border-radius: 0px;

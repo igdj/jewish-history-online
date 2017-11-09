@@ -135,6 +135,39 @@
     </div>
 {% endmacro %}
 
+{% macro source_sidebar_row(source) %}
+    {% set path = path('source', { 'uid' : source.uid }) %}
+    <div class="row box-color-content-inverse">
+        <div class="col-sm-4">
+        {% set thumb = "/viewer/source-%05d/thumb.jpg"|format(source.uid|replace({'jgo:source-' : ''})) %}
+        {% if file_exists(webDir ~ thumb) %}
+            <a href="{{ path }}"><img src="{{ app.request.basepath }}{{ thumb }}" alt="" style="width: 100%; height: auto;"></a>
+        {% endif %}
+        </div>
+        <div class="col-sm-8">
+        <a href="{{ path }}">
+            <b>{{ source.name|truncate(160, true, '...') }}</b>{% if source.contentLocation is not empty %}, {{ source.contentLocation.name }}{% endif %}
+        {% if source.dateCreated is not empty %},
+            {% if source.dateCreatedDisplay is not empty %}{{ source.dateCreatedDisplay }}{% else %}{{ source.dateCreated|dateincomplete }}{% endif %}
+        {% endif %}
+        </a>
+        {% if source.isPartOf is not null %}
+            <p>
+                <a href="{{ path('article', { 'slug' : source.isPartOf.getSlug(true) }) }}">
+                {% if 'en' == app.request.locale %}
+                    <b>Source Interpretation</b> by
+                {% else %}
+                    <b>Interpretation</b> von
+                {% endif %}
+                {{ source.isPartOf.authorDisplay(true) }}
+                {% if source.isPartOf.datePublished is not empty %}({{ source.isPartOf.datePublished|dateincomplete }}){% endif %}
+                </a>
+            </p>
+        {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
 {% macro source_description_footer(name, article, description, license) %}
     {% if description is not null %}
     <h2 id="description">{{ 'Source Description'|trans }}</h2>

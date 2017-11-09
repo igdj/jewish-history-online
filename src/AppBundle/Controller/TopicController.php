@@ -211,6 +211,7 @@ class TopicController extends RenderTeiController
         $glossaryLookup = $this->buildGlossaryLookup($glossaryTerms, $locale);
 
         // sidebar
+        /*
         $query = $this->getDoctrine()
             ->getManager()
             ->createQuery("SELECT A FROM AppBundle:Article A"
@@ -222,8 +223,55 @@ class TopicController extends RenderTeiController
         if (!empty($language)) {
             $query->setParameter('language', $language);
         }
+        */
+        $queryBuilder = $this->getDoctrine()
+                ->getManager()
+                ->createQueryBuilder()
+                ->select('A, S')
+                ->from('AppBundle:SourceArticle', 'S')
+                ->leftJoin('S.isPartOf', 'A')
+                ->where("A.status IN (1) AND A.keywords LIKE :topic AND A.articleSection <> 'background'"
+                        . (!empty($language) ? ' AND A.language=:language' : ''))
+                ->setParameter('topic', '%' . $topics[$slug] . '%')
+                ->orderBy('S.dateCreated', 'ASC')
+                ;
+        if (!empty($language)) {
+            $queryBuilder->setParameter('language', $language);
+        }
 
-        $articles = $query->getResult();
+        $articleIds = [];
+        $sources = [];
+        foreach ($queryBuilder->getQuery()->getResult() as $source) {
+            $article = $source->getIsPartOf();
+            $articleId = $article->getId();
+            if (array_key_exists($articleId, $articleIds)) {
+                // only use first source for multiple sources per article
+                continue;
+            }
+            $keywords = $article->getKeywords();
+            $articleIds[$articleId] = $topics[$slug] == $keywords[0];
+            $sources[] = $source;
+        }
+
+        $sourcesAdditional = [];
+        if (count($articleIds) > 8 && count(array_filter(array_values($articleIds))) > 4) {
+            // if there are more than 8 in total and more than 4 who directly belong to this topic
+            // split into primary and additional
+            $sourcesPrimary = [];
+            foreach ($sources as $source) {
+                $article = $source->getIsPartOf();
+                $articleId = $article->getId();
+                if ($articleIds[$articleId]) {
+                    $sourcesPrimary[] = $source;
+                }
+                else {
+                   $sourcesAdditional[] = $source;
+                }
+            }
+        }
+        else {
+            $sourcesPrimary = & $sources;
+        }
 
         return $this->render('AppBundle:Topic:background.html.twig', [
             'slug' => $slug,
@@ -237,7 +285,8 @@ class TopicController extends RenderTeiController
             'entity_lookup' => $entityLookup,
             'bibitem_lookup' => $bibitemLookup,
             'glossary_lookup' => $glossaryLookup,
-            'interpretations' => $articles,
+            'interpretations' => null, // $articles,
+            'sources' => [ $sourcesPrimary, $sourcesAdditional ],
             'pageMeta' => [
                 'jsonLd' => $article->jsonLdSerialize($request->getLocale()),
                 'og' => $this->buildOg($article, $request, 'topic-background', [ 'slug' => $slug ]),
