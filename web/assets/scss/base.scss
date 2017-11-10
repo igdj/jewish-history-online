@@ -677,6 +677,9 @@ h3#citation {
             &:last-of-type {
                 border-bottom: 2px solid $color-gray-medium;
             }
+            &.border-top {
+                border-top: 2px solid $color-gray-medium;
+            }
             padding-top: 10px;
             padding-bottom: 10px;
             font-size: 90%;
@@ -719,7 +722,6 @@ h3#citation {
                     }
                 }
             }
-
         }
     }
 

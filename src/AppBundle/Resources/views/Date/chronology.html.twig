@@ -9,11 +9,12 @@
     <h1>{{ 'Chronology'|trans }}</h1>
     {% endif %}
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-xs-12 col-md-9">
         {# styles: see http://stackoverflow.com/questions/19089384/twitter-bootstrap-3-two-columns-full-height #}
             <div id="timeline" class="container-fluid">
-        {% if articles is not empty %}
+    {% if articles is not empty %}
         {% set last_epoch = '' %}
+        {% set epochs = [] %}
         {% for source in articles %}
             {% set epochLabel = source.epochLabel %}
             {% if epochLabel[0] != last_epoch %}
@@ -23,19 +24,33 @@
                 {% endif %}
                 <div class="row">
                     <div class="col-sm-2 hidden-xs epoch-label">
-                        <h4>{{ epochLabel[0]|epoch(epochLabel[1]) }}</h4>
+                        <h4 id="{{ epochLabel[0] }}">{{ epochLabel[0]|epoch(epochLabel[1]) }}</h4>
                     </div>
                     <div class="col-xs-12 col-sm-10 epoch-content">
                 {% set last_epoch = epochLabel[0] %}
+                {% set epochs = epochs|merge([epochLabel])%}
             {% endif %}
             {{ helper.source_box(source) }}
         {% endfor %}
                     </div>
                 </div><!-- .row -->
-        {% else %}
+    {% else %}
             Es wurden keine Quellen gefunden
-        {% endif %}
+    {% endif %}
             </div><!-- #timeline -->
-        </div><!-- .col-sm-12 -->
+        </div><!-- .col-xs-12 col-md-9 -->
+        <div class="col-md-3 hidden-sm sidebar">
+    {% if epochs is not empty %}
+            <div class="container-fluid box">
+                <div class="row border-top">
+                    <div class="col-xs-12">
+        {% for epochLabel in epochs %}
+                <h5><a href="#{{ epochLabel[0] }}">{{ epochLabel[0]|epoch(epochLabel[1]) }}</a></h5>
+        {% endfor %}
+                    </div>
+                </div>
+            </div>
+    {% endif %}
+        </div>
     </div><!-- .row -->
 {% endblock %}
