@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac2178c0e8af5183da3154fa794fe26c",
+    "content-hash": "6d3eb72d9c084aa13b7ffd352a8653f5",
     "packages": [
         {
             "name": "academicpuma/locales",
@@ -2321,16 +2321,16 @@
         },
         {
             "name": "liip/url-auto-converter-bundle",
-            "version": "1.3.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/liip/LiipUrlAutoConverterBundle.git",
-                "reference": "0d19d76980fadea2f617019777021d1afb756e7a"
+                "url": "https://github.com/burki/LiipUrlAutoConverterBundle.git",
+                "reference": "088e5a620bfbc0c6bd4a4fc12faed8bbd5d6417f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipUrlAutoConverterBundle/zipball/0d19d76980fadea2f617019777021d1afb756e7a",
-                "reference": "0d19d76980fadea2f617019777021d1afb756e7a",
+                "url": "https://api.github.com/repos/burki/LiipUrlAutoConverterBundle/zipball/088e5a620bfbc0c6bd4a4fc12faed8bbd5d6417f",
+                "reference": "088e5a620bfbc0c6bd4a4fc12faed8bbd5d6417f",
                 "shasum": ""
             },
             "require": {
@@ -2352,7 +2352,6 @@
                     "Liip\\UrlAutoConverterBundle\\": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2371,7 +2370,10 @@
             "keywords": [
                 "url"
             ],
-            "time": "2017-03-07T10:41:15+00:00"
+            "support": {
+                "source": "https://github.com/burki/LiipUrlAutoConverterBundle/tree/master"
+            },
+            "time": "2017-11-10T17:29:07+00:00"
         },
         {
             "name": "ml/iri",
@@ -4366,16 +4368,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.28",
+            "version": "v2.8.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "074ae55c3e8029655bfcf2577c89844784cf6518"
+                "reference": "341df0d9ee359197061fc18a033a8532cb4d5d56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/074ae55c3e8029655bfcf2577c89844784cf6518",
-                "reference": "074ae55c3e8029655bfcf2577c89844784cf6518",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/341df0d9ee359197061fc18a033a8532cb4d5d56",
+                "reference": "341df0d9ee359197061fc18a033a8532cb4d5d56",
                 "shasum": ""
             },
             "require": {
@@ -4447,6 +4449,7 @@
                 "symfony/yaml": "self.version"
             },
             "require-dev": {
+                "doctrine/annotations": "~1.0",
                 "doctrine/data-fixtures": "1.0.*",
                 "doctrine/dbal": "~2.4",
                 "doctrine/doctrine-bundle": "~1.2",
@@ -4500,7 +4503,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-10-05T23:24:20+00:00"
+            "time": "2017-11-10T19:54:36+00:00"
         },
         {
             "name": "technosophos/LibRIS",
@@ -5174,6 +5177,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "liip/url-auto-converter-bundle": 20,
         "seboettg/citeproc-php": 20,
         "technosophos/libris": 20,
         "geissler/converter": 20,
