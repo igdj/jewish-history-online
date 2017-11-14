@@ -662,7 +662,7 @@ h3#citation {
 
 .sidebar {
     .box {
-        &.top-buffer { margin-top:20px; }
+        &.top-buffer { margin-top: 20px; }
 
         .seealso-ul, .beacon-ul {
             ul {
@@ -898,6 +898,7 @@ footer {
             background-color: $color-color-chronology;
         }
     }
+
     .epoch-label:after {
         content:"";
         position: absolute;
@@ -913,6 +914,13 @@ footer {
             line-height: 1.4;
             margin-top: 0;
             margin-bottom: 14px;
+        }
+    }
+
+    .sidebar .box .row.box-color-title {
+        background-color: $color-color-chronology;
+        h4 {
+            text-transform: none;
         }
     }
 }

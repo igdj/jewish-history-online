@@ -4,12 +4,42 @@
 %}
 {% import 'AppBundle:Shared:helper.html.twig' as helper %}
 
+{% block head %}
+    <script src="{{ app.request.basepath }}/vendor/waypoints/jquery.waypoints.min.js"></script>
+    <script src="{{ app.request.basepath }}/vendor/waypoints/shortcuts/sticky.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var sticky = new Waypoint.Sticky({
+                element: $('#epoch-navigation')[0],
+                handler: function(direction) {
+                    resizeStuck();
+                }
+            });
+
+            function resizeStuck() {
+                $('.stuck').width($('#epoch-navigation').parent().width() - 32);
+            }
+
+            $(window).on('resize', resizeStuck);
+        });
+    </script>
+    <style>
+        .stuck {
+            position: fixed;
+            margin-left: 0px;
+            padding-left: 15px;
+            top: 0;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    {% if app.request.attributes.get('_route') != 'date-chronology-partial' %}
+    {% set embedded = app.request.attributes.get('_route') == 'date-chronology-partial' %}
+    {% if not embedded %}
     <h1>{{ 'Chronology'|trans }}</h1>
     {% endif %}
-    <div class="row">
-        <div class="col-xs-12 col-md-9">
+    <div class="row stickem-container">
+        <div class="col-xs-12 {% if not embedded %}col-md-9{% endif %}">
         {# styles: see http://stackoverflow.com/questions/19089384/twitter-bootstrap-3-two-columns-full-height #}
             <div id="timeline" class="container-fluid">
     {% if articles is not empty %}
@@ -39,11 +69,16 @@
     {% endif %}
             </div><!-- #timeline -->
         </div><!-- .col-xs-12 col-md-9 -->
-        <div class="col-md-3 hidden-sm sidebar">
-    {% if epochs is not empty %}
-            <div class="container-fluid box">
-                <div class="row border-top">
-                    <div class="col-xs-12">
+        <div class="col-md-3 hidden-sm hidden-xs sidebar">
+    {% if not embedded and epochs is not empty %}
+            <div id="epoch-navigation" class="container-fluid box" style="background-color: white">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>{{ 'Go to'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row box-color-content">
+                    <div class="col-sm-12">
         {% for epochLabel in epochs %}
                 <h5><a href="#{{ epochLabel[0] }}">{{ epochLabel[0]|epoch(epochLabel[1]) }}</a></h5>
         {% endfor %}
