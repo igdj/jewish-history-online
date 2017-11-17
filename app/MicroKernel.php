@@ -12,7 +12,7 @@ class MicroKernel extends Kernel
     /*
      * Set an Environment Variable in Apache Configuration
      *   SetEnv APP_ENVIRONMENT prod
-     * for production setting instead of having www/app.php and ww/app_dev.php
+     * for production setting instead of having www/app.php and www/app_dev.php
      * This approach is described int
      *   https://www.pmg.com/blog/symfony-no-app-dev/
      */
@@ -37,7 +37,7 @@ class MicroKernel extends Kernel
      */
     public function registerBundles()
     {
-        $bundles = array(
+        $bundles = [
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 
@@ -82,7 +82,7 @@ class MicroKernel extends Kernel
 
             // own code
             new AppBundle\AppBundle(),
-        );
+        ];
 
         if (in_array($this->getEnvironment(), [ 'dev', 'test' ], true)) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();

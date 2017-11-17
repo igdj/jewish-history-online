@@ -6,7 +6,6 @@ imports:
 parameters:
     locale: en
     # knp_menu.voter.router.class: Knp\Menu\Matcher\Voter\RegexVoter
-
     
 framework:
     secret: %kernel.secret%
@@ -67,7 +66,7 @@ doctrine:
         auto_mapping: true 
         dql:
             string_functions:
-              REPLACE: DoctrineExtensions\Query\Mysql\Replace
+                REPLACE: DoctrineExtensions\Query\Mysql\Replace
 
 stof_doctrine_extensions:
     orm:
