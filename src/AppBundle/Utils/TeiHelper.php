@@ -12,7 +12,7 @@ class TeiHelper
 
     public function getErrors()
     {
-        return libxml_get_errors();
+        return $this->errors;
     }
 
     public function buildPerson($element)
@@ -34,6 +34,7 @@ class TeiHelper
         if (false === $xml) {
             $this->errors = libxml_get_errors();
             libxml_use_internal_errors(false);
+
             return false;
         }
 
@@ -117,9 +118,13 @@ class TeiHelper
 
         $result = $xml->xpath('/tei:TEI/tei:teiHeader');
         if (empty($result)) {
-            $this->errors = [ (object) [ 'message' => 'No teiHeader found' ] ];
+            $this->errors = [
+                (object) [ 'message' => 'No teiHeader found' ],
+            ];
+
             return false;
         }
+
         $header = $result[0];
         $this->registerXpathNamespaces($header);
 
@@ -228,6 +233,7 @@ class TeiHelper
                     $article->geo = null;
                 }
             }
+
             $orgName = $result[0]->orgName;
             if (!empty($orgName)) {
                 $org = new \AppBundle\Entity\Organization();
@@ -243,6 +249,7 @@ class TeiHelper
                 }
                 $article->provider = $org;
             }
+
             $article->providerIdno = (string)($result[0]->idno);
             $date = $result[0]->date;
             if (!empty($date)) {
@@ -306,18 +313,30 @@ class TeiHelper
                         $article->translatedFrom = $label;
                     }
                     break;
-
             }
         }
         $article->keywords = $keywords;
 
         // isPartOf
         if (isset($article->genre) && 'source' == $article->genre) {
+            $result = $header->xpath('./tei:fileDesc/tei:seriesStmt/tei:idno[@type="DTAID"]');
+            foreach ($result as $element) {
+                $idno = trim((string)$element);
+                if (!empty($idno)) {
+                    if (preg_match('/^\#?(jgo\:(article|source)-\d+)$/', $idno, $matches)) {
+                        $isPartOf = new \AppBundle\Entity\Article();
+                        $isPartOf->setUid($matches[1]);
+                        $article->isPartOf = $isPartOf;
+                    }
+                }
+            }
+
+            // legacy
             $result = $header->xpath('./tei:fileDesc/tei:seriesStmt/tei:title[@type="main"]');
             foreach ($result as $element) {
                 if (!empty($element['corresp'])) {
                     $corresp = (string)$element['corresp'];
-                    if (preg_match('/^\#(jgo\:(article|source)-\d+)$/', $corresp, $matches)) {
+                    if (preg_match('/^\#?(jgo\:(article|source)-\d+)$/', $corresp, $matches)) {
                         $isPartOf = new \AppBundle\Entity\Article();
                         $isPartOf->setUid($matches[1]);
                         $article->isPartOf = $isPartOf;
@@ -352,6 +371,7 @@ class TeiHelper
                 $parent = $result[0];
                 continue;
             }
+
             if (array_key_exists($name, $callbacks)) {
                 // custom call
                 $parent = $callbacks[$name]($parent, $name);
@@ -402,6 +422,7 @@ class TeiHelper
         if (false === $xml) {
             $this->errors = libxml_get_errors();
             libxml_use_internal_errors(false);
+
             return false;
         }
 
@@ -427,14 +448,14 @@ class TeiHelper
             if (!empty($langCode3)) {
                 $langName = \AppBundle\Utils\Iso639::nameByCode3($langCode3);
 
-                $this->addDescendants($header, 'tei:profileDesc/tei:langUsage/tei:language',
-                                     [
-                                        'tei:language' => function ($parent, $name) use ($langName, $langCode3) {
-                                            $self = $parent->addChild($name, $langName);
-                                            $self->addAttribute('tei:ident', $langCode3);
-                                            return $self;
-                                        },
-                                      ]);
+                $this->addDescendants($header, 'tei:profileDesc/tei:langUsage/tei:language', [
+                    'tei:language' => function ($parent, $name) use ($langName, $langCode3) {
+                        $self = $parent->addChild($name, $langName);
+                        $self->addAttribute('tei:ident', $langCode3);
+
+                        return $self;
+                    },
+                ]);
 
                 // remove the original attribute
                 $dom->removeAttribute('xml:lang');
@@ -475,19 +496,19 @@ class TeiHelper
         }
 
         if (!empty($data['translator'])) {
-                $this->addDescendants($header, 'tei:fileDesc/tei:titleStmt/tei:editor[@role="translator"]',
-                                     [
-                                        'tei:editor[@role="translator"]' => function ($parent, $name) use ($data) {
-                                            $self = null;
-                                            foreach ($data['translator'] as $corresp => $persName) {
-                                                $self = $parent->addChild('tei:editor');
-                                                $self->addAttribute('tei:role', 'translator');
-                                                $persName = $self->addChild('tei:persName', $persName);
-                                                $persName->addAttribute('tei:corresp', $corresp);
-                                            }
-                                            return $self;
-                                        },
-                                      ]);
+            $this->addDescendants($header, 'tei:fileDesc/tei:titleStmt/tei:editor[@role="translator"]', [
+                'tei:editor[@role="translator"]' => function ($parent, $name) use ($data) {
+                    $self = null;
+                    foreach ($data['translator'] as $corresp => $persName) {
+                        $self = $parent->addChild('tei:editor');
+                        $self->addAttribute('tei:role', 'translator');
+                        $persName = $self->addChild('tei:persName', $persName);
+                        $persName->addAttribute('tei:corresp', $corresp);
+                    }
+
+                    return $self;
+                },
+            ]);
         }
 
         if (!empty($data['publisher'])) {
@@ -497,26 +518,26 @@ class TeiHelper
                 $dom->parentNode->removeChild($dom);
             }
 
-            $this->addDescendants($header, 'tei:fileDesc/tei:publicationStmt/tei:publisher',
-                                 [
-                                    'tei:publisher' => function ($parent, $name) use ($data) {
-                                        $self = $parent->addChild($name);
-                                        $this->addChildStructure($self, $data['publisher'], 'tei:');
-                                        return $self;
-                                    },
-                                  ]);
+            $this->addDescendants($header, 'tei:fileDesc/tei:publicationStmt/tei:publisher', [
+                'tei:publisher' => function ($parent, $name) use ($data) {
+                    $self = $parent->addChild($name);
+                    $this->addChildStructure($self, $data['publisher'], 'tei:');
+
+                    return $self;
+                },
+            ]);
 
             if (!empty($data['dates'])) {
                 foreach ($data['dates'] as $type => $val) {
                     $match = 'tei:date[@type="' . $type . '"]';
-                    $this->addDescendants($header, 'tei:fileDesc/tei:publicationStmt/' . $match,
-                                     [
-                                        $match => function ($parent, $name) use ($type, $val) {
-                                            $self = $parent->addChild('tei:date', $val);
-                                            $self->addAttribute('tei:type', $type);
-                                            return $self;
-                                        },
-                                      ]);
+                    $this->addDescendants($header, 'tei:fileDesc/tei:publicationStmt/' . $match, [
+                        $match => function ($parent, $name) use ($type, $val) {
+                            $self = $parent->addChild('tei:date', $val);
+                            $self->addAttribute('tei:type', $type);
+
+                            return $self;
+                        },
+                    ]);
                 }
             }
 
@@ -541,55 +562,59 @@ class TeiHelper
                                 }
                             }
                         }
+
                         return $self;
                     },
                 ]);
             }
+
             if (!empty($data['uid'])) {
-                $this->addDescendants($header, 'tei:fileDesc/tei:publicationStmt/tei:idno/tei:idno[@type="DTAID"]',
-                                     [
-                                        'tei:idno[@type="DTAID"]' => function ($parent, $name) use ($data) {
-                                            $self = $parent->addChild('tei:idno', $data['uid']);
-                                            $self->addAttribute('tei:type', 'DTAID');
-                                            return $self;
-                                        },
-                                      ]);
+                $this->addDescendants($header, 'tei:fileDesc/tei:publicationStmt/tei:idno/tei:idno[@type="DTAID"]', [
+                    'tei:idno[@type="DTAID"]' => function ($parent, $name) use ($data) {
+                        $self = $parent->addChild('tei:idno', $data['uid']);
+                        $self->addAttribute('tei:type', 'DTAID');
+
+                        return $self;
+                    },
+                ]);
             }
+
             if (!empty($data['slug'])) {
-                $this->addDescendants($header, 'tei:fileDesc/tei:publicationStmt/tei:idno/tei:idno[@type="DTADirName"]',
-                                     [
-                                        'tei:idno[@type="DTADirName"]' => function ($parent, $name) use ($data) {
-                                            $self = $parent->addChild('tei:idno', $data['slug']);
-                                            $self->addAttribute('tei:type', 'DTADirName');
-                                            return $self;
-                                        },
-                                      ]);
+                $this->addDescendants($header, 'tei:fileDesc/tei:publicationStmt/tei:idno/tei:idno[@type="DTADirName"]', [
+                    'tei:idno[@type="DTADirName"]' => function ($parent, $name) use ($data) {
+                        $self = $parent->addChild('tei:idno', $data['slug']);
+                        $self->addAttribute('tei:type', 'DTADirName');
+
+                        return $self;
+                    },
+                ]);
             }
         }
 
         if (!empty($data['seriesStmt'])) {
-            $this->addDescendants($header, 'tei:fileDesc/tei:seriesStmt',
-                                 [
-                                    'tei:seriesStmt' => function ($parent, $name) use ($header, $data) {
-                                        // seriesStmt must go before sourceDesc
-                                        $result = $header->xpath('./tei:fileDesc/tei:sourceDesc');
-                                        // dirty - we just remove it for now since it will be added through bibl afterwards
-                                        // should change to insertBefore
-                                        foreach ($result as $element) {
-                                            $dom = dom_import_simplexml($element);
-                                            $dom->parentNode->removeChild($dom);
-                                        }
+            $this->addDescendants($header, 'tei:fileDesc/tei:seriesStmt', [
+                'tei:seriesStmt' => function ($parent, $name) use ($header, $data) {
+                    // seriesStmt must go before sourceDesc
+                    $result = $header->xpath('./tei:fileDesc/tei:sourceDesc');
+                    // dirty - we just remove it for now since it will be added through bibl afterwards
+                    // should change to insertBefore
+                    foreach ($result as $element) {
+                        $dom = dom_import_simplexml($element);
+                        $dom->parentNode->removeChild($dom);
+                    }
 
-                                        $self = $parent->addChild('tei:seriesStmt');
-                                        foreach ($data['seriesStmt'] as $corresp => $title) {
-                                            $child = $self->addChild('tei:title', $title);
-                                            $child->addAttribute('tei:type', 'main');
-                                            $child->addAttribute('tei:corresp', $corresp);
-                                        }
+                    $self = $parent->addChild('tei:seriesStmt');
+                    foreach ($data['seriesStmt'] as $corresp => $title) {
+                        $child = $self->addChild('tei:title', $title);
+                        $child->addAttribute('tei:type', 'main');
 
-                                        return $self;
-                                    },
-                                  ]);
+                        $child = $self->addChild('tei:idno', $corresp);
+                        $child->addAttribute('tei:type', 'DTAID');
+                    }
+
+                    return $self;
+                },
+            ]);
         }
 
         if (!empty($data['bibl'])) {
@@ -601,64 +626,62 @@ class TeiHelper
                 $dom->parentNode->removeChild($dom);
             }
             */
-            $this->addDescendants($header, 'tei:fileDesc/tei:sourceDesc/tei:bibl',
-                                 [
-                                    'tei:bibl' => function ($parent, $name) use ($data) {
-                                        $self = $parent->addChild($name);
-                                        $this->addChildStructure($self, $data['bibl'], 'tei:');
-                                    }
-                                 ]);
+            $this->addDescendants($header, 'tei:fileDesc/tei:sourceDesc/tei:bibl', [
+                'tei:bibl' => function ($parent, $name) use ($data) {
+                    $self = $parent->addChild($name);
+                    $this->addChildStructure($self, $data['bibl'], 'tei:');
+                },
+            ]);
         }
 
         if (!empty($data['URLImages'])) {
-            $this->addDescendants($header, 'tei:fileDesc/tei:sourceDesc/tei:msDesc/tei:msIdentifier',
-                                 [
-                                    'tei:msIdentifier' => function ($parent, $name) use ($data) {
-                                        $self = $parent->addChild($name);
-                                        $this->addChildStructure($self,
-                                                                 [
-                                                                   'repository' => $data['bibl']['orgName']['@value'],
-                                                                   'idno' => [ 'idno' => [ '@type' => 'URLImages', '@value' => $data['URLImages']] ]
-                                                                 ],
-                                                                 'tei:');
-                                    }
-                                 ]);
+            $this->addDescendants($header, 'tei:fileDesc/tei:sourceDesc/tei:msDesc/tei:msIdentifier', [
+                'tei:msIdentifier' => function ($parent, $name) use ($data) {
+                    $self = $parent->addChild($name);
+                    $this->addChildStructure($self,
+                                             [
+                                               'repository' => $data['bibl']['orgName']['@value'],
+                                               'idno' => [ 'idno' => [ '@type' => 'URLImages', '@value' => $data['URLImages']] ]
+                                             ],
+                                             'tei:');
+                },
+            ]);
         }
 
         if (!empty($data['genre'])) {
-            $this->addDescendants($header, 'tei:profileDesc/tei:textClass/tei:classCode[contains(@scheme, "genre")]',
-                                 [
-                                    'tei:classCode[contains(@scheme, "genre")]' => function ($parent, $name) use ($data) {
-                                        $self = $parent->addChild('tei:classCode', $data['genre']);
-                                        $self->addAttribute('tei:scheme', 'http://juedische-geschichte-online.net/doku/#genre');
-                                        return $self;
-                                    },
-                                  ]);
+            $this->addDescendants($header, 'tei:profileDesc/tei:textClass/tei:classCode[contains(@scheme, "genre")]', [
+                'tei:classCode[contains(@scheme, "genre")]' => function ($parent, $name) use ($data) {
+                    $self = $parent->addChild('tei:classCode', $data['genre']);
+                    $self->addAttribute('tei:scheme', 'http://juedische-geschichte-online.net/doku/#genre');
 
+                    return $self;
+                },
+            ]);
         }
+
         if (!empty($data['topic'])) {
-            $this->addDescendants($header, 'tei:profileDesc/tei:textClass/tei:classCode[contains(@scheme, "topic")]',
-                                 [
-                                    'tei:classCode[contains(@scheme, "topic")]' => function ($parent, $name) use ($data) {
-                                        $self = null;
-                                        foreach ($data['topic'] as $topic) {
-                                            $self = $parent->addChild('tei:classCode', $topic);
-                                            $self->addAttribute('tei:scheme', 'http://juedische-geschichte-online.net/doku/#topic');
-                                        }
-                                        return $self;
-                                    },
-                                  ]);
-        }
-        if (!empty($data['translatedFrom'])) {
-            $this->addDescendants($header, 'tei:profileDesc/tei:textClass/tei:classCode[contains(@scheme, "translated-from")]',
-                                 [
-                                    'tei:classCode[contains(@scheme, "translated-from")]' => function ($parent, $name) use ($data) {
-                                        $self = $parent->addChild('tei:classCode', $data['translatedFrom']);
-                                        $self->addAttribute('tei:scheme', 'http://juedische-geschichte-online.net/doku/#translated-from');
-                                        return $self;
-                                    },
-                                  ]);
+            $this->addDescendants($header, 'tei:profileDesc/tei:textClass/tei:classCode[contains(@scheme, "topic")]', [
+                'tei:classCode[contains(@scheme, "topic")]' => function ($parent, $name) use ($data) {
+                    $self = null;
+                    foreach ($data['topic'] as $topic) {
+                        $self = $parent->addChild('tei:classCode', $topic);
+                        $self->addAttribute('tei:scheme', 'http://juedische-geschichte-online.net/doku/#topic');
+                    }
 
+                    return $self;
+                },
+            ]);
+        }
+
+        if (!empty($data['translatedFrom'])) {
+            $this->addDescendants($header, 'tei:profileDesc/tei:textClass/tei:classCode[contains(@scheme, "translated-from")]', [
+                'tei:classCode[contains(@scheme, "translated-from")]' => function ($parent, $name) use ($data) {
+                    $self = $parent->addChild('tei:classCode', $data['translatedFrom']);
+                    $self->addAttribute('tei:scheme', 'http://juedische-geschichte-online.net/doku/#translated-from');
+
+                    return $self;
+                },
+            ]);
         }
 
         return $xml;
@@ -676,30 +699,10 @@ class TeiHelper
         if ($normalizeWhitespace) {
             // http://stackoverflow.com/a/33980774
             return preg_replace(['(\s+)u', '(^\s|\s$)u'], [' ', ''], $textContent);
-
         }
+
         return $textContent;
     }
-
-    /*
-    protected function buildPersons($element)
-    {
-        $persons = [];
-
-        $this->registerXpathNamespaces($element);
-        foreach ($element->xpath('.//tei:persName') as $persName) {
-            $person = new \stdClass();
-            if (!empty($persName['corresp'])) {
-                $person->slug = (string)$persName['corresp'];
-            }
-            $person->name = (string)$persName;
-            $person->{'@type'} = 'http://schema.org/Person';
-
-            $persons[] = $person;
-        }
-        return $persons;
-    }
-    */
 
     public function extractEntities($fname)
     {
@@ -832,6 +835,29 @@ class TeiHelper
 
         return $items;
     }
+
+    public function validateXml($fname, $fnameSchema, $schemaType = 'relaxng')
+    {
+        switch ($schemaType) {
+            case 'relaxng':
+                $document = new \Brunty\DOMDocument;
+                $document->load($fname);
+                $result = $document->relaxNGValidate($fnameSchema);
+                if (!$result) {
+                    $errors = [];
+                    foreach ($document->getValidationWarnings() as $message) {
+                        $errors[] = (object)[ 'message' => $message ];
+                    }
+                    $this->errors = $errors;
+                }
+
+                return $result;
+                break;
+
+            default:
+                throw new \InvalidArgumentException('Invalid schemaType: ' . $schemaType);
+        }
+    }
 }
 
 class CollectingReader extends \Sabre\Xml\Reader
@@ -842,6 +868,7 @@ class CollectingReader extends \Sabre\Xml\Reader
         // type="application/xml"
         // schematypens="http://relaxng.org/ns/structure/1.0"?\>
         $source = preg_replace('/<\?xml\-model [\s\S\n]*?\?>/', '', $source);
+
         parent::xml($source, $encoding, $options);
     }
 
@@ -854,6 +881,7 @@ class CollectingReader extends \Sabre\Xml\Reader
     {
         $this->collected = array();
         parent::parse();
+
         return $this->collected;
     }
 

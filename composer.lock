@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d3eb72d9c084aa13b7ffd352a8653f5",
+    "content-hash": "dd1f1fbba56a6d60f263c010b8c20862",
     "packages": [
         {
             "name": "academicpuma/locales",
@@ -167,6 +167,50 @@
                 "transliterator"
             ],
             "time": "2017-04-04T11:38:05+00:00"
+        },
+        {
+            "name": "brunty/relax-ng-domdocument",
+            "version": "0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Brunty/php-relax-ng-domdocument.git",
+                "reference": "ed0fb581caa402de663840795dfd57351a7e70e2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Brunty/php-relax-ng-domdocument/zipball/ed0fb581caa402de663840795dfd57351a7e70e2",
+                "reference": "ed0fb581caa402de663840795dfd57351a7e70e2",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Brunty\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Brunt",
+                    "email": "matt@mfyu.co.uk"
+                }
+            ],
+            "description": "Adds a convenience feature to DOMDocument::relaxNGValidate and  DOMDocument::relaxNGValidateSource to disable PHP Warnings",
+            "keywords": [
+                "RELAX NG",
+                "RELAXNG",
+                "domdocument",
+                "schema",
+                "validation",
+                "xml"
+            ],
+            "time": "2017-01-20T22:08:00+00:00"
         },
         {
             "name": "cocur/slugify",
@@ -5178,10 +5222,10 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "liip/url-auto-converter-bundle": 20,
+        "servo/fluidxml": 20,
         "seboettg/citeproc-php": 20,
         "technosophos/libris": 20,
         "geissler/converter": 20,
-        "servo/fluidxml": 20,
         "eko/feedbundle": 20,
         "picturae/oai-pmh": 20,
         "symfony/psr-http-message-bridge": 0,

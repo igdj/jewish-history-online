@@ -52,6 +52,8 @@
         "knplabs/knp-menu-bundle": "2.1.*",
 
         "sabre/xml": "1.4.*",
+        "servo/fluidxml": "dev-master",
+        "brunty/relax-ng-domdocument": "~0.2",
         "html2text/html2text": "4.0.*",
 
         "semsol/arc2": "2.3.*",
@@ -62,7 +64,6 @@
         "fale/isbn": "3.*",
         "technosophos/libris": "dev-master",
         "geissler/converter": "dev-master",
-        "servo/fluidxml": "dev-master",
         "nategood/httpful": "*",
 
         "ddeboer/data-import": "0.20.*",

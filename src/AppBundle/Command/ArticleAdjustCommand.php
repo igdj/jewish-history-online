@@ -273,7 +273,7 @@ class ArticleAdjustCommand extends BaseEntityCommand
                 $articles = $stmt->fetchAll();
                 $seriesStmt = [];
                 foreach ($articles as $article) {
-                    $corresp = sprintf('#jgo:article-%d', $article['id']);
+                    $corresp = sprintf('jgo:article-%d', $article['id']);
                     $seriesStmt[$corresp] = $article['subject']; // TODO: get actual title from TEI, not the one from db
                 }
                 if (!empty($seriesStmt)) {
