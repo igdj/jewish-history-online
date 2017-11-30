@@ -60,6 +60,10 @@ class Builder implements ContainerAwareInterface
                 ->addChild('about-implementation', [
                     'label' => $translator->trans('Technical Implementation', [], 'menu'), 'route' => 'about-implementation',
                 ]);
+            $menu['about']
+                ->addChild('about-publications', [
+                    'label' => $translator->trans('Presentations and Publications', [], 'menu'), 'route' => 'about-publications',
+                ]);
         }
 
         if (!array_key_exists('part', $options) || 'right' == $options['part']) {
