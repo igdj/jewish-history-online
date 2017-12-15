@@ -17,8 +17,9 @@ DirectoryIndex app.php
     Options -MultiViews
 </IfModule>
 
-# For Database Values
-php_value date.timezone 'UTC'
+# Set proper timezone for Database Values
+# The following line doesn't work in php-fpm and must be set in php.ini instead
+# php_value date.timezone 'UTC'
 
 # APP_ENVIRONMENT is assumed to be 'dev' if not explicitely set
 # SetEnv APP_ENVIRONMENT prod

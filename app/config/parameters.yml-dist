@@ -11,11 +11,13 @@ parameters:
     jms_i18n_routing.hosts.de:  localhost
     jms_i18n_routing.hosts.en:  127.0.0.1
 
+    mailer.transport: 'sendmail'
+    # if you don't have sendmail configured, you can use a smtp-host instead
     # mailer.transport: 'smtp'
-    # mailer.host: localhost
-    # mailer.port: 465
-    # mailer.username: 'your user'
-    # mailer.password: 'your password'
+    mailer.host: ~
+    mailer.port: ~
+    mailer.username: ~
+    mailer.password: ~
 
     app.datacite.url: "https://mds.datacite.org/"
     app.datacite.user: YOUR.USER
@@ -50,5 +52,6 @@ parameters:
         # path: "c:/Users/USER/AppData/Roaming/npm/"
 
 
-    piwik.site_id: 1
+    twitter.site: keydocuments
+    piwik.site_id:  # 2
     googleapis.key: YOUR-KEY
