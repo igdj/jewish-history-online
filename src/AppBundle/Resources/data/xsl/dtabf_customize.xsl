@@ -12,10 +12,10 @@
    <xsl:param name="label" />
    <xsl:choose>
       <xsl:when test="$strings/string[@key=$label and @language=$lang]">
-         <xsl:value-of select="$strings/string[@key=$label and @language=$lang]" />
+        <xsl:value-of select="$strings/string[@key=$label and @language=$lang]" />
       </xsl:when>
       <xsl:otherwise>
-         <xsl:value-of select="$label" />
+        <xsl:value-of select="$label" />
       </xsl:otherwise>
    </xsl:choose>
   </xsl:template>
@@ -102,6 +102,22 @@
     </span>
   </xsl:template>
 
+<xsl:template match='tei:cb'>
+  <div class="dta-cb">
+    <xsl:choose>
+      <xsl:when test="@type='start'">[<xsl:call-template name="translate">
+              <xsl:with-param name="label" select="'Beginn Spaltensatz'" />
+    </xsl:call-template>]</xsl:when>
+      <xsl:when test="@type='end'">[<xsl:call-template name="translate">
+              <xsl:with-param name="label" select="'Ende Spaltensatz'" />
+    </xsl:call-template>]</xsl:when>
+      <xsl:otherwise>[<xsl:call-template name="translate">
+              <xsl:with-param name="label" select="'Spaltenumbruch'" />
+    </xsl:call-template>]</xsl:otherwise>
+    </xsl:choose>
+  </div>
+</xsl:template>
+
   <!-- we do separate note-handling -->
   <xsl:template match="tei:text[not(descendant::tei:text)]">
     <xsl:apply-templates/>
@@ -183,6 +199,45 @@
       </xsl:call-template>
       <xsl:apply-templates/>
     </span>
+  </xsl:template>
+
+  <!-- override version from dta-base.xsl to add support for @dir -->
+  <xsl:template match="tei:p">
+   <xsl:choose>
+     <xsl:when test="ancestor::tei:sp">
+       <xsl:variable name="class">
+         <xsl:choose>
+           <xsl:when test="@prev">dta-p-in-sp dta-no-indent</xsl:when>
+           <xsl:when test="descendant::tei:pb">dta-p-in-sp dta-no-indent</xsl:when>
+           <xsl:otherwise>dta-p-in-sp</xsl:otherwise>
+         </xsl:choose>
+       </xsl:variable>
+       <span>
+         <xsl:call-template name="applyRendition">
+           <xsl:with-param name="class" select="$class"/>
+         </xsl:call-template>
+         <xsl:apply-templates/>
+       </span>
+     </xsl:when>
+     <xsl:otherwise>
+       <xsl:variable name="class">
+         <xsl:choose>
+           <xsl:when test="descendant::tei:pb">dta-p dta-no-indent</xsl:when>
+           <xsl:when test="@prev">dta-p dta-no-indent</xsl:when>
+           <xsl:otherwise>dta-p<xsl:if test="@dir"> dta-p-<xsl:value-of select="@dir"></xsl:value-of></xsl:if></xsl:otherwise>
+         </xsl:choose>
+       </xsl:variable>
+       <p>
+         <xsl:if test="@dir">
+          <xsl:attribute name="dir"><xsl:value-of select="@dir"/></xsl:attribute>
+         </xsl:if>
+         <xsl:call-template name="applyRendition">
+           <xsl:with-param name="class" select="$class"/>
+         </xsl:call-template>
+         <xsl:apply-templates/>
+       </p>
+     </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
 <xsl:template match='tei:figure'>

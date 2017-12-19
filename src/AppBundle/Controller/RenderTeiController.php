@@ -47,6 +47,7 @@ extends Controller
         $proc = $this->get('app.xslt');
         $pathToXslt = $kernel->locateResource('@AppBundle/Resources/data/xsl/' . $fnameXslt);
         $res = $proc->transformFileToXml($pathToXml, $pathToXslt, $options);
+
         return $res;
     }
 
@@ -386,7 +387,9 @@ extends Controller
         $fnameLogo = $this->get('kernel')->getRootDir() . '/../web/img/icon/icons_wide.png';
         $pdfGenerator->logo_top = file_get_contents($fnameLogo);
 
-        $pdfGenerator->writeHTML($html);
+        // silence due to https://github.com/mpdf/mpdf/issues/302 when using tables
+        @$pdfGenerator->writeHTML($html);
+
         $pdfGenerator->Output($filename, 'I');
     }
 
@@ -442,6 +445,7 @@ extends Controller
             if (!empty($slug)) {
                 $author['slug'] = $slug;
             }
+
             return $author;
         });
 
@@ -465,6 +469,7 @@ extends Controller
             if (!empty($uri)) {
                 $entity['uri'] = $uri;
             }
+
             return $entity;
         });
 
@@ -472,6 +477,7 @@ extends Controller
         $bibitems = array_filter(array_unique($crawler->filterXPath("//span[@class='dta-bibl']")->each(function ($node, $i) {
             return trim($node->attr('data-corresp'));
         })));
+
         $bibitems_by_corresp = [];
         if (!empty($bibitems)) {
             $slugify = $this->get('cocur_slugify');

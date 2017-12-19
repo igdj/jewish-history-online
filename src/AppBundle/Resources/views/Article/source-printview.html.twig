@@ -30,6 +30,7 @@
         line-height: 20px;
         background: url(var:logo_top) /* no-repeat */;
         background-image-resize: 2;
+        padding-left: 100px; /* so text doesn't run into logo_top */
         margin-bottom: 8px;
     }
 
@@ -57,12 +58,28 @@
         text-decoration: none;
     }
 
-    .source-description, .article .dta-p, .article div.dta-bibl {
+    .source-description,
+    .article .dta-p, .article span.dta-opener, .article div.dta-closer,
+    .article div.dta-bibl
+    {
         font-size: 14px;
     }
 
     .article > div.dta-endnote {
         margin-top: 0;
+    }
+
+    /* hide source-description  */
+    .article .source-description-head,
+    .article .source-description
+    {
+        display: none;
+    }
+
+    /* hide video */
+    .article .embed-responsive-16by9
+    {
+        display: none;
     }
 
     header {
@@ -88,6 +105,7 @@
     }
 
     h2 {
+        clear: left;
         font-weight: bold;
         font-size: 20px;
     }
@@ -112,6 +130,29 @@
         font-size: 18px;
         font-weight: bold;
     }
+
+    /* override some styles from @mixin dta-styles */
+    .article .dta-reg, .article .dta-abbr {
+        border-bottom: none;
+        color: #6E6E6E;
+    }
+
+    .article p.dta-p-rtl {
+        font-family: 'DejaVu Sans';
+    }
+
+    .article .dta-fn-intext { vertical-align:super; font-size: 11px }
+    .article .dta-fn-sign { vertical-align:super; font-size: 11px }
+
+    dl.dl-horizontal dt {
+        font-weight: bold;
+        float: left;
+        width: 10em;
+    }
+
+    dl.dl-horizontal dd {
+        float: left;
+    }
     </style>
 {% endblock %}
 
@@ -119,12 +160,7 @@
     <htmlpageheader name="header" style="display:none">
         <div id="header-wrapper">
             <div id="author-line">
-            {% if authors is not empty %}
-                {% for author in authors %}
-                    {{ author.text }}{% if not loop.last %}, {% endif %}
-                {% endfor %}
-            {% else %}&nbsp;
-            {% endif %}
+            {{ name|truncate(70, true, '...') }}
             </div>
         </div>
     </htmlpageheader>
@@ -145,24 +181,18 @@
         </h1>
     </header>
 
-    {% if authors is not empty %}
-        <div class="author">
-            <!--<a href="#author">-->
-            {% for author in authors %}
-                {{ author.text }}{% if not loop.last %}, {% endif %}
-            {% endfor %}
-            <!--</a>-->
-        </div>
-    {% endif %}
     <h1 id="title">{{ name }}</h1>
+    {{ helper.source_meta(meta, null, null, true, interpretations) }}
 
-    {{ html|raw }}
+    {% for layer in layers %}
+        {# we start each variant on new page #}
+        <h2 style="page-break-before: always">
+            {{ layer.label|trans }}
+        </h2>
+        {{ layer.body|replace({'<body>': '', '</body>': ''})|raw }}
+    {% endfor %}
 
     <div class="appendix">
-    {{ helper.article_authors(authors) }}
-
-    {{ helper.article_citation(article, meta, authors, name) }}
-
-    {{ helper.article_license(license) }}
+    {{ helper.source_footer(name, article, license) }}
     </div>
 {% endblock %}

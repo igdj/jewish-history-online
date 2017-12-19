@@ -13,26 +13,63 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
  */
 class SourceController extends ArticleController
 {
+    protected function renderSourcePdf($parts)
+    {
+        $sourceArticle = $parts['article'];
+
+        $templating = $this->container->get('templating');
+
+        $html = $templating->render('AppBundle:Article:source-printview.html.twig', [
+            'article' => $sourceArticle,
+            'meta' => $sourceArticle,
+            'layers' => $parts['layers'],
+            'description' => $parts['description'],
+            'interpretations' => $parts['interpretations'],
+            'name' => $sourceArticle->getName(),
+            'license' => $parts['license'],
+        ]);
+
+        /*
+        echo $html;
+        exit;
+        */
+
+        $this->renderPdf($html, str_replace(':', '-', $sourceArticle->getSlug(true)) . '.pdf');
+    }
+
+
     protected function renderSourceViewer(Request $request, $uid, $sourceArticle)
     {
-        $fname = $this->buildArticleFname($sourceArticle);
+        if (in_array($request->get('_route'), [ 'source-jsonld' ])) {
+            // return jsonld-rendition
+            return new JsonLdResponse($sourceArticle->jsonLdSerialize($request->getLocale()));
+        }
 
-        $teiHelper = new \AppBundle\Utils\TeiHelper();
-        $meta = $sourceArticle; // $teiHelper->analyzeHeader($this->locateTeiResource($fname));
-        $firstFacs = $teiHelper->getFirstPbFacs($this->locateTeiResource($fname));
+        $generatePrintView = 'source-pdf' == $request->get('_route');
+
+        $fname = $this->buildArticleFname($sourceArticle);
 
         $params = [
             'params' => [
-                'lang' => \AppBundle\Utils\Iso639::code1To3($request->getLocale()), // localize labels in xslt
+                // localize labels in xslt
+                'lang' => \AppBundle\Utils\Iso639::code1To3($request->getLocale()),
+
+                // notes per page in pdf
+                'noteplacement' => 'perpage',
             ],
         ];
-        $html = $this->renderTei($fname, 'dtabf_article.xsl', $params);
+
+        // render the transcript / translation in the current language to get $license
+        // and rendered content for non-iview2 display
+        $html = $this->renderTei($fname,
+                                 $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl',
+                                 $params);
 
         list($authors, $section_headers, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html);
 
-        $sourceDescription = null;
-        $related = [];
         $interpretation = $sourceArticle->getIsPartOf();
+        $sourceDescription = null; // $sourceDescription is part of $interpretation
+        $related = []; // if there are multipe sources for $interpretation
         if (isset($interpretation)) {
             $sourceDescription = [
                 'article' => $interpretation,
@@ -49,31 +86,46 @@ class SourceController extends ArticleController
                          [ 'dateCreated' => 'ASC', 'name' => 'ASC']);
         }
 
-        if (in_array($request->get('_route'), [ 'source-jsonld' ])) {
-            return new JsonLdResponse($sourceArticle->jsonLdSerialize($request->getLocale()));
-        }
-
         $entityLookup = $this->buildEntityLookup($entities);
         $glossaryLookup = $this->buildGlossaryLookup($glossaryTerms, $request->getLocale());
 
         $fnameMets = $this->buildArticleFname($sourceArticle, '.mets.xml');
         $parts = explode('.', $fnameMets);
-        $path = $parts[0];
+        $path = $parts[0]; // paths are of the format 'source-%05d', e.g. 'source-00123'
 
-        if (in_array($sourceArticle->getSourceType(), [ 'Transkript', 'Transcript' ])
-            || (empty($firstFacs)
-                && in_array($sourceArticle->getSourceType(), [
+        /*
+         * We have three different display formats
+         *  1) Transcript/Translation without facsimile for AV and Transcript only:
+         *      viewer-layers.html.twig
+         *  2) Image/Object without a transcript:
+         *      viewer-media.html.twig
+         *  3) Facsimile and Transcript/Translation through iview2:
+         *      viewer.html.twig
+         *
+         * 1) and 3) should support a PDF-rendition
+         */
+        $teiHelper = new \AppBundle\Utils\TeiHelper();
+
+        $firstFacs = $teiHelper->getFirstPbFacs($this->locateTeiResource($fname));
+
+        $sourceType = $sourceArticle->getSourceType();
+        if ($generatePrintView && 'Text' == $sourceType) {
+            // PDF-view is currently only the transcript without facsimile
+            $sourceType = 'Transcript';
+        }
+
+        if (in_array($sourceType, [ 'Transkript', 'Transcript' ])
+            || (empty($firstFacs) && in_array($sourceArticle->getSourceType(), [
                         'Audio', 'Video',
                         'Bild', 'Image',
                         'Objekt', 'Object',
                     ])))
         {
             $html = $this->adjustMedia($html,
-                                       $request->getBaseURL()
-                                       . '/viewer/' . $path);
+                                       $request->getBaseURL() . '/viewer/' . $path);
             $sourceLocale = \AppBundle\Utils\Iso639::code3to1($sourceArticle->getLanguage());
 
-            if (in_array($sourceArticle->getSourceType(), [
+            if (in_array($sourceType, [
                     'Transkript', 'Transcript', 'Audio', 'Video',
                 ]))
             {
@@ -86,33 +138,60 @@ class SourceController extends ArticleController
                 if (!empty($getTranslatedFrom)
                     && ($sourceArticle->getTranslatedFrom() != $sourceArticle->getLanguage()))
                 {
-                    // $html is a translation
+                    if ('yid' == $sourceArticle->getTranslatedFrom()) {
+                        // yiddish texts in hebrew script might have an additional
+                        // transcript according to YIVO rules in latin script
+                        $variants[] = 'transcription_yl';
+                    }
+
+                    // the source is in a different language than the display locale,
+                    // so $html is a translation and not the transcript
                     $key = 'translation_' . $sourceLocale;
                     $variants[] = $key;
                     $bodies[$key] = $html;
                 }
                 else {
-                    // $html is transcription, no additional $variant
+                    // $html is transcription, so no additional $variant needed
                     $bodies['transcription'] = $html;
                 }
 
                 $layers = [];
                 foreach ($variants as $variant) {
-                    if ('transcription' == $variant) {
-                        $label = 'Transcript';
+                    if (in_array($variant, ['transcription', 'transcription_yl'])) {
+                        $label = 'Transcription';
+                        if ('transcription_yl' == $variant) {
+                            $label .= ' (Latin script)';
+                        }
+
                         if (!array_key_exists($variant, $bodies)) {
-                            $transcriptionLocale = \AppBundle\Utils\Iso639::code3to1($sourceArticle->getTranslatedFrom());
+                            $transcriptionLocale = 'transcription_yl' == $variant
+                                ? 'yl' : \AppBundle\Utils\Iso639::code3to1($sourceArticle->getTranslatedFrom());
                             $transcriptionFname = $this->buildArticleFnameFromUid($sourceArticle->getUid(), $transcriptionLocale) . '.xml';
 
                             $params = [
                                 'params' => [
-                                    'lang' => $transcriptionLocale, // localize labels in xslt
+                                    // localize labels in xslt
+                                    'lang' => $transcriptionLocale,
+
+                                    // notes per page in pdf
+                                    'noteplacement' => 'perpage',
                                 ],
                             ];
 
-                            $body = $this->adjustMedia($this->renderTei($transcriptionFname, 'dtabf_article.xsl', $params),
-                                                       $request->getBaseURL()
-                                                       . '/viewer/' . $path);
+                            $body = $this->adjustMedia($this->renderTei($transcriptionFname, $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl', $params),
+                                                       $request->getBaseURL() . '/viewer/' . $path);
+
+                            // so notes in different locales don't collide
+                            // TODO: use lang in xsl to build the notes
+                            $body = preg_replace('/note\-(\d+)\-marker/',
+                                                 'note-' . $transcriptionLocale . '-\1-marker',
+                                                 $body);
+                            $body = preg_replace('/#note\-(\d+)/',
+                                                 '#note-' . $transcriptionLocale . '-\1',
+                                                 $body);
+                            $body = preg_replace('/name="note\-(\d+)/',
+                                                 'name="note-' . $transcriptionLocale . '-\1',
+                                                 $body);
                         }
                         else {
                             $body = $bodies[$variant];
@@ -132,6 +211,19 @@ class SourceController extends ArticleController
                     ];
                 }
 
+                if ($generatePrintView) {
+                    $this->renderSourcePdf([
+                        'article' => $sourceArticle,
+                        'layers' => $layers,
+                        'description' => $sourceDescription,
+                        'name' => $sourceArticle->getName(),
+                        'interpretations' => [ $interpretation ],
+                        'license' => $license,
+                    ]);
+
+                    return;
+                }
+
                 if ($pullFeaturedMedia) {
                     $player = 'TODO: Player';
                 }
@@ -145,7 +237,6 @@ class SourceController extends ArticleController
                     'article' => $sourceArticle,
                     'html' => $player,
                     'layers' => $layers,
-                    'meta' => $meta,
                     'description' => $sourceDescription,
                     'name' => $sourceArticle->getName(),
                     'pageTitle' => $sourceArticle->getName(),
@@ -167,7 +258,6 @@ class SourceController extends ArticleController
             return $this->render('AppBundle:Article:viewer-media.html.twig', [
                 'article' => $sourceArticle,
                 'html' => $html,
-                'meta' => $meta,
                 'description' => $sourceDescription,
                 'name' => $sourceArticle->getName(),
                 'pageTitle' => $sourceArticle->getName(),
@@ -188,7 +278,6 @@ class SourceController extends ArticleController
 
         return $this->render('AppBundle:Article:viewer.html.twig', [
             'article' => $sourceArticle,
-            'meta' => $meta,
             'description' => $sourceDescription,
             'name' => $sourceArticle->getName(),
             'pageTitle' => $sourceArticle->getName(),
@@ -211,6 +300,7 @@ class SourceController extends ArticleController
 
     /**
      * @Route("/source/{uid}.jsonld", name="source-jsonld")
+     * @Route("/source/{uid}.pdf", name="source-pdf")
      * @Route("/source/{uid}", name="source")
      */
     public function sourceViewerAction(Request $request, $uid)
@@ -292,7 +382,7 @@ class SourceController extends ArticleController
             if (in_array($locale, [ 'en', 'de' ])) {
                 $translator->setLocale($locale);
                 $content = $this->renderView('AppBundle:Article:readme-' . $locale . '.txt.twig',
-                                         [ 'meta' => $sourceArticle ]);
+                                             [ 'meta' => $sourceArticle ]);
                 $tempnam = $fs->tempnam(sys_get_temp_dir(), 'readme-' . $locale);
                 file_put_contents($tempnam,
                                   str_replace("\n", "\r\n",
@@ -593,6 +683,11 @@ class SourceController extends ArticleController
         ]);
     }
 
+    /*
+     * This action is called by
+     *   iview-client-mets.js
+     * to render a specific page of the transcription or translation
+     */
     public function tei2htmlAction($path)
     {
         $parts = explode('/', $path, 2);
@@ -614,7 +709,7 @@ class SourceController extends ArticleController
         }
         $fname .= '.xml';
 
-        // check if source is splitted into parts
+        // check if source is splitted into individual files one per page
         $baseDir = realpath($this->get('kernel')->getRootDir() . '/..');
 
         $targetPath = sprintf('web/viewer/%s', $uid);
@@ -655,6 +750,12 @@ class SourceController extends ArticleController
         return new Response($html);
     }
 
+    /*
+     * This action is called by
+     *   iview-client-mets.js
+     * to determine the width and height of the page facsimile
+     * to determine the maximum zoom level for the tiles
+     */
     public function imgInfoAction($path)
     {
         $parts = explode('/', $path);
@@ -684,7 +785,7 @@ class SourceController extends ArticleController
 
         $response = new Response(<<<EOX
 <?xml version="1.0" encoding="UTF-8"?>
-<imageinfo derivate="${derivate}" path="${fname}" tiles="1" width="${width}" height="${height}" zoomLevel="${level}" />
+<imageinfo derivate="{$derivate}" path="{$fname}" tiles="1" width="{$width}" height="{$height}" zoomLevel="{$level}" />
 EOX
         );
         $response->headers->set('Content-Type', 'text/xml');

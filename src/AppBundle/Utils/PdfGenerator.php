@@ -10,6 +10,7 @@ class PdfGenerator extends \mPDF
         define('_MPDF_SYSTEM_TTFONTS_CONFIG', realpath(__DIR__ . '/config_fonts.php'));
 
         parent::__construct();
+
         $this->SetDisplayMode('fullpage');
     }
 }
