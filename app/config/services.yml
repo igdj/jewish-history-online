@@ -25,11 +25,18 @@ services:
     app.xslt_adapter:
         class:        "%app.xslt.adapter.class%"
         arguments:    [ "%app.xslt.adapter.arguments%" ]
-        
     app.xslt:
         class:        AppBundle\Utils\Xsl\XsltProcessor
-        calls:        
-            - [ setAdapter, [ '@app.xslt_adapter' ]] 
+        calls:
+            - [ setAdapter, [ '@app.xslt_adapter' ]]
+
+    app.xml_formatter_adapter:
+        class:        "%app.xml_formatter.adapter.class%"
+        arguments:    [ "%app.xml_formatter.adapter.arguments%" ]
+    app.xml_formatter:
+        class:        AppBundle\Utils\XmlFormatter\XmlFormatter
+        calls:
+            - [ setAdapter, [ '@app.xml_formatter_adapter' ]]
 
     app.simplify_geojson:
         class:        AppBundle\Utils\SimplifyGeojsonProcessor
