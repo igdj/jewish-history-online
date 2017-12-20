@@ -45,12 +45,14 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(type="integer", nullable=false)
      */
     protected $status = 0;
+
     /**
      * @var string An additional name for a Person, can be used for a middle name.
      *
@@ -58,6 +60,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
      * @ORM\Column(nullable=true)
      */
     protected $additionalName;
+
     /**
      * @var string An award won by or for this item.
      *
@@ -65,12 +68,14 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
      * @ORM\Column(nullable=true)
      */
     protected $award;
+
     /**
      * @var string Date of birth.
      *
      * @ORM\Column(type="string", nullable=true)
      */
     protected $birthDate;
+
     /**
      * @var string Date of death.
      *
@@ -78,6 +83,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
      * @ORM\Column(type="string", nullable=true)
      */
     protected $deathDate;
+
     /**
      * @var string A short description of the item.
      *
@@ -87,6 +93,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
      *
      */
     protected $description;
+
     /**
      * @var string Family name. In the U.S., the last name of an Person. This can be used along with givenName instead of the name property.
      *
@@ -95,6 +102,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
      * @Solr\Field(type="string")
      */
     protected $familyName;
+
     /**
      * @var string Gender of the person.
      *
@@ -102,6 +110,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
      * @ORM\Column(nullable=true)
      */
     protected $gender;
+
     /**
      * @var string Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.
      *
@@ -110,6 +119,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
      * @Solr\Field(type="string")
      */
     protected $givenName;
+
     /**
      * @var string The job title of the person (for example, Financial Manager).
      *
@@ -117,6 +127,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
      * @ORM\Column(nullable=true)
      */
     protected $jobTitle;
+
     /**
      * @var string Nationality of the person.
      *
@@ -124,6 +135,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
      * @ORM\Column(nullable=true)
      */
     protected $nationality;
+
     /**
      * @var string URL of the item.
      *
@@ -131,6 +143,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
      * @ORM\Column(nullable=true)
      */
     protected $url;
+
     /**
      * @var Place The place where the person was born.
      *
@@ -138,6 +151,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
      * @ORM\JoinColumn(name="birthPlace_id", referencedColumnName="id")
      */
     protected $birthPlace;
+
     /**
      * @var Place The place where the person died.
      *
@@ -145,6 +159,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
      * @ORM\JoinColumn(name="deathPlace_id", referencedColumnName="id")
      */
     protected $deathPlace;
+
     /**
      * TODO: rename to honorificPrefix
      * @var string
@@ -153,6 +168,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
      * @ORM\Column(nullable=true)
      */
     protected $honoricPrefix;
+
     /**
      * TODO: rename to honorificSuffice
      * @var string
@@ -161,21 +177,25 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
      * @ORM\Column(nullable=true)
      */
     protected $honoricSuffix;
+
     /**
      * @var string
      * @ORM\Column(type="string", nullable=true)
      */
     protected $gnd;
+
     /**
      * @var string
      * @ORM\Column(type="string", nullable=true)
      */
     protected $stolpersteine;
+
     /**
      * @var string
      * @ORM\Column(type="string", nullable=true)
      */
     protected $djh;
+
     /**
      * @var string
      * @ORM\Column(type="string", nullable=true)
@@ -183,13 +203,13 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
     protected $viaf;
 
     /**
-    * @ORM\Column(type="json_array", nullable=true)
-    */
+     * @ORM\Column(type="json_array", nullable=true)
+     */
     protected $entityfacts;
 
     /**
-    * @ORM\Column(type="json_array", nullable=true)
-    */
+     * @ORM\Column(type="json_array", nullable=true)
+     */
     protected $additional;
 
     /**
@@ -582,10 +602,13 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
 
     private static function buildPlaceInfo($place, $locale)
     {
-        $placeInfo = [ 'name' => $place->getNameLocalized($locale),
-                       'id' => $place->getId(),
-                       'tgn' => $place->getTgn(),
-                       'geo' => $place->getGeo() ];
+        $placeInfo = [
+            'name' => $place->getNameLocalized($locale),
+            'id' => $place->getId(),
+            'tgn' => $place->getTgn(),
+            'geo' => $place->getGeo(),
+        ];
+
         return $placeInfo;
     }
 
@@ -594,10 +617,12 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
         if (is_null($entityfacts) || !array_key_exists($key, $entityfacts)) {
             return;
         }
+
         $place = $entityfacts[$key][0];
         if (empty($place)) {
             return;
         }
+
         $placeInfo = [ 'name' => $place['preferredName'] ];
 
         if (!empty($place['@id'])) {
@@ -618,6 +643,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
         if (is_null($wikidata) || !array_key_exists($key, $wikidata)) {
             return;
         }
+
         return [ 'name' => $wikidata[$key] ];
     }
 
@@ -630,6 +656,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
         if (!is_null($this->birthPlace)) {
             return self::buildPlaceInfo($this->birthPlace, $locale);
         }
+
         return self::buildPlaceInfoFromEntityfacts($this->getEntityfacts($locale), 'placeOfBirth');
     }
 
@@ -666,14 +693,15 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
         if (!is_null($this->deathPlace)) {
             return self::buildPlaceInfo($this->deathPlace, $locale);
         }
+
         $placeInfo = self::buildPlaceInfoFromEntityfacts($this->getEntityfacts($locale), 'placeOfDeath');
         if (!empty($placeInfo)) {
             return $placeInfo;
         }
+
         if (!is_null($this->additional) && array_key_exists('wikidata', $this->additional)) {
             return self::buildPlaceInfoFromWikidata($this->additional['wikidata']['de'],
                                                     'placeOfDeath');
-
         }
     }
 
@@ -892,6 +920,11 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
         return $this->slug;
     }
 
+    /**
+     * Gets Firstname Lastname or Lastname, Firstname depending on $givenNameFirst.
+     *
+     * @return string
+     */
     public function getFullname($givenNameFirst = false)
     {
         $parts = [];
@@ -900,9 +933,11 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
                 $parts[] = $this->$key;
             }
         }
+
         if (empty($parts)) {
             return '';
         }
+
         return $givenNameFirst
             ? implode(' ', array_reverse($parts))
             : implode(', ', $parts);
@@ -929,14 +964,14 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
     public function jsonSerialize()
     {
         return [
-                 'id' => $this->id,
-                 'fullname' => $this->getFullname(),
-                 'honoricPrefix' => $this->getHonoricPrefix(),
-                 'description' => $this->getDescription(),
-                 'gender' => $this->getGender(),
-                 'gnd' => $this->gnd,
-                 'slug' => $this->slug,
-                 ];
+            'id' => $this->id,
+            'fullname' => $this->getFullname(),
+            'honoricPrefix' => $this->getHonoricPrefix(),
+            'description' => $this->getDescription(),
+            'gender' => $this->getGender(),
+            'gnd' => $this->gnd,
+            'slug' => $this->slug,
+        ];
     }
 
     public function jsonLdSerialize($locale, $omitContext = false)
@@ -951,6 +986,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
             '@type' => 'Person',
             'name' => $this->getFullname(true),
         ];
+
         if ($omitContext) {
             unset($ret['@context']);
         }
@@ -978,6 +1014,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
 
             }
         }
+
         if (!empty($this->honoricPrefix)) {
             $ret['honorificPrefix'] = $this->honoricPrefix;
         }
@@ -993,7 +1030,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
         return $ret;
     }
 
-    /*
+    /**
      * See https://developers.facebook.com/docs/reference/opengraph/object-type/profile/
      *
      */
@@ -1014,12 +1051,15 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
         }
 
         $datesOfLiving = '';
+
         if (!empty($this->birthDate)) {
             $datesOfLiving = \AppBundle\Utils\Formatter::dateIncomplete($this->birthDate, $locale);
         }
+
         if (!empty($this->deathDate)) {
             $datesOfLiving .= ' - ' . \AppBundle\Utils\Formatter::dateIncomplete($this->deathDate, $locale);
         }
+
         if (!empty($datesOfLiving)) {
             $parts[] = '[' . $datesOfLiving . ']';
         }
@@ -1052,10 +1092,10 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
     }
 
     /**
-     * TODO: move to a trait
+     * Index everything that isn't deleted (no explicit publishing needed)
      *
      * @return boolean
-    */
+     */
     public function shouldBeIndexed()
     {
         return $this->status >= 0;

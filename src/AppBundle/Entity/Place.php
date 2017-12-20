@@ -35,9 +35,11 @@ implements \JsonSerializable, JsonLdSerializable
         if ('root' == $type) {
             return '';
         }
+
         if ('inhabited place' == $type) {
             return 'place';
         }
+
         return $type;
     }
 
@@ -46,10 +48,12 @@ implements \JsonSerializable, JsonLdSerializable
         if (empty($type)) {
             return '';
         }
+
         $label = self::buildTypeLabel($type);
         if ($count > 1) {
             $label = \Doctrine\Common\Inflector\Inflector::pluralize($label);
         }
+
         return ucfirst($label);
     }
 
@@ -98,18 +102,21 @@ implements \JsonSerializable, JsonLdSerializable
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(type="integer", nullable=false)
      */
     protected $status = 0;
+
     /**
      * @var string
      *
      * @ORM\Column(type="string", nullable=false)
      */
     protected $type = 'inhabited place';
+
     /**
      * @var string The geo coordinates of the place.
      *
@@ -118,6 +125,7 @@ implements \JsonSerializable, JsonLdSerializable
      * @Solr\Field()
      */
     protected $geo;
+
     /**
      * @var string The name of the item.
      *
@@ -126,6 +134,7 @@ implements \JsonSerializable, JsonLdSerializable
      * @Solr\Field(type="string")
      */
     protected $name;
+
     /**
      * @var array An alias for the item.
      *
@@ -149,18 +158,21 @@ implements \JsonSerializable, JsonLdSerializable
 
     /**
      * @var string
+     *
      * @ORM\Column(type="string", nullable=true)
      */
     protected $tgn;
 
     /**
      * @var string
+     *
      * @ORM\Column(type="string", nullable=true)
      */
     protected $gnd;
 
     /**
      * @var string
+     *
      * @ORM\Column(type="string", nullable=true)
      */
     protected $geonames;
@@ -184,8 +196,12 @@ implements \JsonSerializable, JsonLdSerializable
 
     use ArticleReferencesTrait;
 
-   /**
-     * @ORM\OneToMany(targetEntity="ArticlePlace", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+    /**
+     * @ORM\OneToMany(targetEntity="ArticlePlace",
+     *   mappedBy="place",
+     *   cascade={"persist", "remove"},
+     *   orphanRemoval=TRUE
+     * )
      */
     protected $articleReferences;
 
@@ -309,8 +325,10 @@ implements \JsonSerializable, JsonLdSerializable
             if ($ancestorOrSelf->type == 'inhabited place') {
                 return true;
             }
+
             $ancestorOrSelf = $ancestorOrSelf->getParent();
         }
+
         return false;
     }
 
@@ -319,6 +337,7 @@ implements \JsonSerializable, JsonLdSerializable
         if (array_key_exists($this->type, self::$zoomLevelByType)) {
             return self::$zoomLevelByType[$this->type];
         }
+
         return 8;
     }
 
@@ -510,6 +529,7 @@ implements \JsonSerializable, JsonLdSerializable
         if (is_null($this->children)) {
             return null;
         }
+
         $ret = [];
         foreach ($this->children as $child) {
             $type = $child->getType();
@@ -518,6 +538,7 @@ implements \JsonSerializable, JsonLdSerializable
             }
             $ret[$type][] = $child;
         }
+
         $typeWeights = [
             'continent' => -10,
             'nation' => 0,
@@ -534,10 +555,13 @@ implements \JsonSerializable, JsonLdSerializable
             if ($typeA == $typeB) {
                 return 0;
             }
+
             $typeOrderA = array_key_exists($typeA, $typeWeights) ? $typeWeights[$typeA] : 99;
             $typeOrderB = array_key_exists($typeB, $typeWeights) ? $typeWeights[$typeB] : 99;
+
             return ($typeOrderA < $typeOrderB) ? -1 : 1;
         });
+
         return $ret;
     }
 
@@ -552,6 +576,7 @@ implements \JsonSerializable, JsonLdSerializable
             && array_key_exists($locale, $this->alternateName)) {
             return $this->alternateName[$locale];
         }
+
         return $this->getName();
     }
 
@@ -568,6 +593,7 @@ implements \JsonSerializable, JsonLdSerializable
             $path[] = $parent;
             $parent = $parent->getParent();
         }
+
         return array_reverse($path);
     }
 
@@ -579,12 +605,12 @@ implements \JsonSerializable, JsonLdSerializable
     public function jsonSerialize()
     {
         return [
-                 'id' => $this->id,
-                 'name' => $this->name,
-                 'geo' => $this->geo,
-                 'tgn' => $this->tgn,
-                 'gnd' => $this->gnd,
-                 ];
+            'id' => $this->id,
+            'name' => $this->name,
+            'geo' => $this->geo,
+            'tgn' => $this->tgn,
+            'gnd' => $this->gnd,
+        ];
     }
 
     public function jsonLdSerialize($locale, $omitContext = false)
@@ -633,13 +659,12 @@ implements \JsonSerializable, JsonLdSerializable
     }
 
     /**
-     * TODO: move to a trait
+     * Index everything that isn't deleted (no explicit publishing needed)
      *
      * @return boolean
-    */
+     */
     public function shouldBeIndexed()
     {
         return $this->status >= 0;
     }
-
 }

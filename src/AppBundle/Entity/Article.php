@@ -35,10 +35,13 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
                 if (false === ($breakpoint = mb_strpos($value, ' ', $length, 'UTF-8'))) {
                     return $value;
                 }
+
                 $length = $breakpoint;
             }
+
             return rtrim(mb_substr($value, 0, $length, 'UTF-8')).$separator;
         }
+
         return $value;
     }
 
@@ -64,12 +67,14 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
      * @var integer
      *
      * @ORM\Column(type="integer", nullable=false)
      */
     protected $status = 0;
+
     /**
      * @var string
      *
@@ -77,13 +82,19 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
      * @Solr\Field(type="string")
      */
     protected $articleSection;
+
     /**
-     * @var ArrayCollection<Person> The author of this content. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably.
+     * @var ArrayCollection<Person> The author of this content.
+     *
+     * Please note that author is special in that HTML 5 provides
+     * a special mechanism for indicating authorship via the rel tag.
+     * That is equivalent to this and may be used interchangeably.
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Person", inversedBy="articles")
      * @Solr\Field(type="strings", getter="getFullname")
      */
     protected $author;
+
     /**
      * @var Person Organization or person who adapts a creative work to different languages, regional differences and technical requirements of a target market, or that translates during some event..
      *
@@ -116,47 +127,66 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
     protected $geo;
 
     /**
-     *
-     * @ORM\OneToMany(targetEntity="ArticlePerson", mappedBy="article", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+     * @ORM\OneToMany(
+     *   targetEntity="ArticlePerson",
+     *   mappedBy="article",
+     *   cascade={"persist", "remove"},
+     *   orphanRemoval=TRUE
+     * )
      */
     protected $personReferences;
 
     /**
-     *
-     * @ORM\OneToMany(targetEntity="ArticleOrganization", mappedBy="article", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+     * @ORM\OneToMany(
+     *   targetEntity="ArticleOrganization",
+     *   mappedBy="article",
+     *   cascade={"persist", "remove"},
+     *   orphanRemoval=TRUE
+     * )
      */
     protected $organizationReferences;
 
     /**
-     *
-     * @ORM\OneToMany(targetEntity="ArticlePlace", mappedBy="article", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+     * @ORM\OneToMany(
+     *   targetEntity="ArticlePlace",
+     *   mappedBy="article",
+     *   cascade={"persist", "remove"},
+     *   orphanRemoval=TRUE
+     * )
      */
     protected $placeReferences;
 
     /**
-     *
-     * @ORM\OneToMany(targetEntity="ArticleBibitem", mappedBy="article", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+     * @ORM\OneToMany(
+     *   targetEntity="ArticleBibitem",
+     *   mappedBy="article",
+     *   cascade={"persist", "remove"},
+     *   orphanRemoval=TRUE
+     * )
      */
     protected $bibitemReferences;
 
     /**
      * @var string The creator/author of this CreativeWork.
-     * @ORM\Column(type="string", nullable=true)
      *
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $creator;
+
     /**
      * @var string The date on which the CreativeWork was created.
      *
      * @ORM\Column(type="string", nullable=true)
      */
     protected $dateCreated;
+
     /**
      * @var string Override of the date on which the CreativeWork was created.
      *
      * @ORM\Column(type="string", nullable=true)
      */
     protected $dateCreatedDisplay;
+
     /**
      * @var \DateTime Date of first broadcast/publication.
      *
@@ -164,6 +194,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
      * @ORM\Column(type="date", nullable=true)
      */
     protected $datePublished;
+
     /**
      * @var \DateTime The date on which the CreativeWork was most recently modified or when the item's entry was modified .
      *
@@ -186,24 +217,29 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Article")
      */
     protected $isPartOf;
+
     /**
      * @var Organization Holding institution.
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Organization", inversedBy="providerOf")
      */
     protected $provider;
+
     /**
      * @var string Holding institution's identification number.
+     *
      * @ORM\Column(type="string", nullable=true)
      *
      */
     protected $providerIdno;
+
     /**
      * @var string Keywords or tags used to describe this content. Multiple entries in a keywords list are typically delimited by commas.
      *
      * @ORM\Column(type="simple_array", nullable=true)
      */
     protected $keywords;
+
     /**
      * @var string A license document that applies to this content, typically indicated by URL.
      *
@@ -211,6 +247,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
      * @ORM\Column(nullable=true)
      */
     protected $license;
+
     /**
      * @var string A license document that applies to this content, typically indicated by URL.
      *
@@ -218,6 +255,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
      * @ORM\Column(nullable=true, length=2048)
      */
     protected $rights;
+
     /**
      * @var string The name of the item.
      *
@@ -227,6 +265,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
      * @Solr\Field(type="string")
      */
     protected $name;
+
     /**
      * @var string
      *
@@ -235,6 +274,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
      * @ORM\Column
      */
     protected $language;
+
     /**
      * @var string
      *
@@ -243,6 +283,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
      * @Solr\Field(type="string")
      */
     protected $sourceType;
+
     /**
      * @var string The textual content of this CreativeWork.
      *
@@ -250,6 +291,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
      * @Solr\Field(type="text")
      */
     protected $text;
+
     /**
      * @var string
      *
@@ -258,6 +300,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
      * @Solr\Field(type="string")
      */
     protected $uid;
+
     /**
      * @var string
      *
@@ -266,6 +309,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
      * @Solr\Field(type="string")
      */
     protected $doi;
+
     /**
      * @var string URL of the item.
      *
@@ -273,6 +317,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
      * @ORM\Column(nullable=true)
      */
     protected $url;
+
     /**
      * @var string
      *
@@ -420,9 +465,11 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
         if (0 == $howMany) {
             return '';
         }
+
         if (1 == $howMany) {
             return $this->author[0]->getFullname($givenNameFirst);
         }
+
         if (!empty($this->creator)) {
             // TODO: get from creator so we respect order
             $fullnames = explode('; ', $this->creator);
@@ -438,6 +485,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
                 return $person->getFullname($givenNameFirst);
             }, $this->author->toArray());
         }
+
         return join(', ', $fullnames);
     }
 
@@ -682,27 +730,14 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
     }
 
     /**
-     * Sets genre.
-     *
-     * @param string $genre
-     *
-     * @return $this
-    public function setGenre($genre)
-    {
-        $this->genre = $genre;
-
-        return $this;
-    }
-     */
-
-    /**
      * Gets genre.
      *
      * @return string
      */
     public function getGenre()
     {
-        return $this instanceof SourceArticle ? 'source' : 'interpretation';
+        return $this instanceof SourceArticle
+            ? 'source' : 'interpretation';
     }
 
     /**
@@ -746,7 +781,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
     /**
      * Gets provider.
      *
-     * @return Organization
+     * @return Organization|null
      */
     public function getProvider()
     {
@@ -1048,6 +1083,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
     public function addPersonReference(ArticleEntity $entityReference)
     {
         $entityId = $entityReference->getEntity()->getId();
+
         if (!$this->personReferences->exists(
             function ($key, $element) use ($entityId) {
                 return $element->getEntity()->getId() == $entityId;
@@ -1068,6 +1104,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
     public function addOrganizationReference(ArticleEntity $entityReference)
     {
         $entityId = $entityReference->getEntity()->getId();
+
         if (!$this->organizationReferences->exists(
             function ($key, $element) use ($entityId) {
                 return $element->getEntity()->getId() == $entityId;
@@ -1088,6 +1125,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
     public function addPlaceReference(ArticleEntity $entityReference)
     {
         $entityId = $entityReference->getEntity()->getId();
+
         if (!$this->placeReferences->exists(
             function ($key, $element) use ($entityId) {
                 return $element->getEntity()->getId() == $entityId;
@@ -1108,6 +1146,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
     public function addBibitemReference(ArticleEntity $entityReference)
     {
         $entityId = $entityReference->getEntity()->getId();
+
         if (!$this->bibitemReferences->exists(
             function ($key, $element) use ($entityId) {
                 return $element->getEntity()->getId() == $entityId;
@@ -1182,14 +1221,17 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
             'name' => $this->name,
             'headline' => $this->name,
         ];
+
         if ($omitContext) {
             unset($ret['@context']);
         }
 
         if (!is_null($this->datePublished)) {
             $ret['datePublished'] = \AppBundle\Utils\JsonLd::formatDate8601($this->datePublished);
+
             if (!is_null($this->dateModified)) {
                 $dateModified = \AppBundle\Utils\JsonLd::formatDate8601($this->dateModified);
+
                 if ($dateModified != $ret['datePublished']) {
                     $ret['dateModified'] = $dateModified;
                 }
@@ -1201,6 +1243,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
             foreach ($this->author as $author) {
                 $authors[] = $author->jsonLdSerialize($locale, true);
             }
+
             if (count($authors) > 0) {
                 $ret['author'] = (1 == count($authors)) ? $authors[0] : $authors;
             }
@@ -1277,9 +1320,11 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
         if ('source' == $this->getGenre()) {
             return 'source';
         }
+
         if ('background' == $this->articleSection) {
             return 'topic-background';
         }
+
         return 'article';
     }
 
@@ -1288,6 +1333,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
         if ('source' == $this->getGenre()) {
             return [ 'slug' => $this->getUid() ];
         }
+
         return [ 'slug' => $this->getSlug(true) ];
     }
 
@@ -1296,18 +1342,24 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
         return '';
     }
 
-    // solr-stuf
+    // solr-stuff
+    /**
+     * Solr-core depends on article-language
+     *
+     * @return string
+     */
     public function indexHandler()
     {
         if (!empty($this->language) && 'eng' == $this->language) {
             return 'jgo_presentation-en';
         }
+
         return 'jgo_presentation-de';
     }
 
     /**
      * @return boolean
-    */
+     */
     public function shouldBeIndexed()
     {
         return $this->status == 1; // explicit publishing needed

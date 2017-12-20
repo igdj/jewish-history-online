@@ -22,6 +22,7 @@ class SourceArticle extends Article
             if (!preg_match('/(\d{4})/', $date, $matches)) {
                 return [ $date, $date ];
             }
+
             $date = $matches[1];
         }
         if ($date < 1900) {
@@ -32,6 +33,7 @@ class SourceArticle extends Article
             $bucket = $date - $date % 10; // decade
             $key = 'epoch.decade';
         }
+
         return [ $bucket, $key ];
     }
 
@@ -74,6 +76,7 @@ class SourceArticle extends Article
         if (isset($this->provider)) {
             $ret['provider'] = $this->provider->jsonLdSerialize($locale, true);
         }
+
         return $ret;
     }
 }

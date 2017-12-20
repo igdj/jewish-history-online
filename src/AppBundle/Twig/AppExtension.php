@@ -135,6 +135,7 @@ class AppExtension extends \Twig_Extension
 
         $citeProc = new \AcademicPuma\CiteProc\CiteProc(file_get_contents($path),
                                                         $locale);
+
         return $citeProc->render(json_decode($encoded));
     }
 
@@ -143,6 +144,7 @@ class AppExtension extends \Twig_Extension
         if (is_null($locale)) {
             $locale = $this->getLocale();
         }
+
         return \AppBundle\Entity\Place::buildPluralizedTypeLabel($placeType, $count);
     }
 

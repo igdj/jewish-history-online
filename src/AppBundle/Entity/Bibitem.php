@@ -49,12 +49,14 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
                     $isbn13 = 13 == $type
                         ? $matches[1]
                         : $isbnUtil->translate->to13($matches[1]);
+
                     if (true === $hyphens) {
                         $isbn13 = $isbnUtil->hyphens->fixHyphens($isbn13);
                     }
                     else if (false === $hyphens) {
                         $isbn13 = $isbnUtil->hyphens->removeHyphens($isbn13);
                     }
+
                     if (!in_array($isbn13, $normalized)) {
                         $normalized[] = $isbn13;
                     }
@@ -89,16 +91,19 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
             else if (false === $hyphens) {
                 $isbn10 = $isbnUtil->hyphens->removeHyphens($isbn10);
             }
+
             $variants[] = $isbn10;
         }
 
         $isbn13 = 13 == $type ? $isbn : $isbnUtil->translate->to13($isbn);
+
         if (true === $hyphens) {
             $isbn13 = $isbnUtil->hyphens->fixHyphens($isbn13);
         }
         else if (false === $hyphens) {
             $isbn13 = $isbnUtil->hyphens->removeHyphens($isbn13);
         }
+
         $variants[] = $isbn13;
 
         return $variants;
@@ -114,8 +119,9 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(type="integer", nullable=false)
      */
@@ -123,15 +129,15 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
 
     /**
      * @var string The type of the Bibliographic Item (as in Zotero)
-     * @ORM\Column(type="string", nullable=true)
      *
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $itemType;
 
     /**
      * @var array The author/contributor/editor of this CreativeWork.
-     * @ORM\Column(type="json_array", nullable=true)
      *
+     * @ORM\Column(type="json_array", nullable=true)
      */
     protected $creators;
 
@@ -233,8 +239,9 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
     protected $issn;
 
     /**
-    * @ORM\Column(type="json_array", nullable=true)
-    */
+     * @var array
+     * @ORM\Column(type="json_array", nullable=true)
+     */
     protected $additional;
 
     /**
@@ -309,7 +316,11 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
     use ArticleReferencesTrait;
 
     /**
-     * @ORM\OneToMany(targetEntity="ArticleBibitem", mappedBy="bibitem", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+     * @ORM\OneToMany(targetEntity="ArticleBibitem",
+     *   mappedBy="bibitem",
+     *   cascade={"persist", "remove"},
+     *   orphanRemoval=TRUE
+     * )
      */
     protected $articleReferences;
 
@@ -337,6 +348,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
                  . '_'
                  . $slugify->slugify($matches[2]);
         }
+
         return $slugify->slugify($corresp, '-');
     }
 
@@ -1042,6 +1054,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
         if (empty($this->additional)) {
             return;
         }
+
         // currently only googleapi
         if (array_key_exists('googleapis-books', $this->additional)) {
             $item = $this->additional['googleapis-books'];
@@ -1137,6 +1150,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
             $titleParts = preg_split('/\s*\:\s+/', $title, 2);
             $title = implode('. ', [ $titleParts[0], self::mb_ucfirst($titleParts[1]) ]);
         }
+
         return $title;
     }
 
@@ -1194,11 +1208,13 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
 
         if ('' === $dateStr) {
             $parts[] = $dateStr;
+
             return $parts;
         }
 
         if (!filter_var($dateStr, FILTER_VALIDATE_INT) === false) {
             $parts[] = (int)$dateStr;
+
             return $parts;
         }
 
@@ -1206,6 +1222,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
         if (false === $date) {
             // failed
             $parts[] = $dateStr;
+
             return $parts;
         }
 
@@ -1278,6 +1295,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
                 if (!array_key_exists($key, $data)) {
                     $data[$key] = [];
                 }
+
                 $targetEntry = [];
                 if (array_key_exists('name', $creator)) {
                     $targetEntry['family'] = $creator['name'];
@@ -1291,7 +1309,6 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
                         }
                     }
                 }
-
 
                 $data[$key][] = $targetEntry;
             }
@@ -1361,6 +1378,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
             if (!empty($this->volume)) {
                 $ret['issueNumber'] = $this->volume;
             }
+
             $parent = clone $this;
             $parent->setItemType('journal');
             $ret['isPartOf'] = $parent->jsonLdSerialize($parent);
@@ -1368,6 +1386,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
         else {
             $ret['name'] = $this->name;
         }
+
         if ($omitContext) {
             unset($ret['@context']);
         }
@@ -1384,22 +1403,27 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
                     else if ('editor' == $creator['creatorType'] && in_array($type, [ 'Chapter' ])) {
                         continue;
                     }
+
                     if (!empty($creator['firstName'])) {
                         // we have a person
                         $person = new Person();
                         if (!empty($creator['firstName'])) {
                             $person->setGivenName($creator['firstName']);
                         }
+
                         if (!empty($creator['lastName'])) {
                             $person->setFamilyName($creator['lastName']);
                         }
+
                         if (!array_key_exists($creator['creatorType'], $target)) {
                             $target[$creator['creatorType']] = [];
                         }
+
                         $target[$creator['creatorType']][] = $person->jsonLdSerialize($locale, true);
                     }
                 }
             }
+
             foreach ($target as $key => $values) {
                 $numValues = count($values);
                 if (1 == $numValues) {
@@ -1417,6 +1441,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
                     $ret[$property] = $this->$property;
                 }
             }
+
             if (!empty($this->doi)) {
                 $ret['sameAs'] = 'http://dx.doi.org/' . $this->doi;
             }
@@ -1425,12 +1450,14 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
         if (in_array($type, [ 'Book' ])) {
             $isbns = $this->getIsbnListNormalized(false);
             $numIsbns = count($isbns);
+
             if (1 == $numIsbns) {
                 $ret['isbn'] = $isbns[0];
             }
             else if ($numIsbns > 1) {
                 $ret['isbn'] = $isbns;
             }
+
             if (!empty($this->numberOfPages) && preg_match('/^\d+$/', $this->numberOfPages)) {
                 $ret['numberOfPages'] = (int)$this->numberOfPages;
             }
@@ -1441,16 +1468,19 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
                     $ret[$property] = $this->$property;
                 }
             }
+
             if (!empty($this->containerName)) {
                 $parentItemType = null;
                 switch ($type) {
                     case 'ScholarlyArticle':
                         $parentItemType = 'issue';
                         break;
+
                     case 'Chapter':
                         $parentItemType = 'book';
                         break;
                 }
+
                 if (!is_null($parentItemType)) {
                     $parent = clone $this;
                     $parent->setItemType($parentItemType);
@@ -1475,6 +1505,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
                     $ret[$property] = $this->$property;
                 }
             }
+
             if (!empty($this->publisher)) {
                 $publisher = new Organization();
                 $publisher->setName($this->publisher);
@@ -1499,12 +1530,14 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
     public function ogSerialize($locale, $baseUrl)
     {
         $type = null;
+
         switch ($this->itemType) {
             case 'book':
                 $isbns = $this->getIsbnListNormalized(false);
                 $type = 'books.book';
                 break;
         }
+
         if (is_null($type)) {
             return;
         }
@@ -1545,10 +1578,10 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
     }
 
     /**
-     * TODO: move to a trait
+     * Index everything that isn't deleted (no explicit publishing needed)
      *
      * @return boolean
-    */
+     */
     public function shouldBeIndexed()
     {
         return $this->status >= 0;

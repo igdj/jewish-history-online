@@ -35,5 +35,4 @@ class ArticleBibitem extends ArticleEntity
     {
         return $this->bibitem;
     }
-
 }

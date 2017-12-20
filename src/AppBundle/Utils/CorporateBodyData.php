@@ -9,9 +9,11 @@ class CorporateBodyData extends DnbData
             case 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type':
                 $this->isDifferentiated = true; // 'http://d-nb.info/standards/elementset/gnd#DifferentiatedPerson' == $triple['o'];
                 break;
+
             case 'http://d-nb.info/standards/elementset/gnd#dateOfEstablishment':
                 $this->dateOfEstablishment = $triple['o'];
                 break;
+
             /*
             case 'http://d-nb.info/standards/elementset/gnd#placeOfBirth':
                 $placeOfBirth = self::fetchGeographicLocation($triple['o']);
@@ -19,15 +21,18 @@ class CorporateBodyData extends DnbData
                     $this->placeOfBirth = $placeOfBirth;
                 break;
             */
+
             case 'http://d-nb.info/standards/elementset/gnd#placeOfBusiness':
                 $placeOfBusiness = self::fetchGeographicLocation($triple['o']);
                 if (!empty($placeOfBusiness)) {
                     $this->placeOfBusiness = $placeOfBusiness;
                 }
                 break;
+
             case 'http://d-nb.info/standards/elementset/gnd#dateOfTermination':
                 $this->dateOfTermination = $triple['o'];
                 break;
+
             /*
             case 'http://d-nb.info/standards/elementset/gnd#placeOfDeath':
                 $placeOfDeath = self::fetchGeographicLocation($triple['o']);
@@ -35,6 +40,7 @@ class CorporateBodyData extends DnbData
                     $this->placeOfDeath = $placeOfDeath;
                 break;
             */
+
             case 'http://d-nb.info/standards/elementset/gnd#preferredNameForTheCorporateBody':
                 if (!isset($this->preferredName) && 'literal' == $triple['o_type'])
                     $this->preferredName = self::normalizeString($triple['o']);
@@ -47,15 +53,19 @@ class CorporateBodyData extends DnbData
                 }
                 */
                 break;
+
             case 'http://d-nb.info/standards/elementset/gnd#homepage':
                 $this->homepage = $triple['o'];
                 break;
+
             case 'http://d-nb.info/standards/elementset/gnd#biographicalOrHistoricalInformation':
                 $this->biographicalInformation = self::normalizeString($triple['o']);
                 break;
+
             case 'http://d-nb.info/standards/elementset/gnd#variantNameForTheCorporateBody':
                 // var_dump($triple);
                 break;
+
             case 'http://d-nb.info/standards/elementset/gnd#hierarchicalSuperiorOfTheCorporateBody':
             case 'http://d-nb.info/standards/elementset/gnd#precedingCorporateBody':
                 break;

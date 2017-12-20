@@ -117,7 +117,7 @@ class MicroKernel extends Kernel
      */
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
-        if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
+        if (in_array($this->getEnvironment(), [ 'dev', 'test' ], true)) {
             $routes->mount('/_wdt', $routes->import('@WebProfilerBundle/Resources/config/routing/wdt.xml'));
             $routes->mount(
                 '/_profiler',
@@ -133,12 +133,13 @@ class MicroKernel extends Kernel
             ); */
         }
 
-        // Loading annotated routes; doesn't seem to work with route translation?!
-        $routes->mount('/', $routes->import('@AppBundle/Controller', 'annotation'));
-
         // exports /sitemap.xml
         $routes->mount('/', $routes->import('@PrestaSitemapBundle/Resources/config/routing.yml'));
 
+        // Loading annotated routes
+        $routes->mount('/', $routes->import('@AppBundle/Controller', 'annotation'));
+
+        // TODO: check which of the following can now be removed due to @Route annotations
         $routes->add('/', 'AppBundle:Default:index', 'home');
 
         $routes->add('/about/edition', 'AppBundle:About:about', 'about');

@@ -8,9 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo; // alias for Gedmo extensions annotations
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * A person (alive, dead, undead, or fictional).
- *
- * @see http://schema.org/Person Documentation on Schema.org
+ * A glossary entry.
  *
  * @ORM\Entity
  * @ORM\Table(name="term")
@@ -25,12 +23,14 @@ class GlossaryTerm
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
      * @var integer
      *
      * @ORM\Column(type="integer", nullable=false)
      */
     protected $status = 0;
+
     /**
      * @var string
      *
@@ -39,6 +39,7 @@ class GlossaryTerm
      * @ORM\Column
      */
     protected $language;
+
     /**
      * @var string Term.
      *
@@ -46,6 +47,7 @@ class GlossaryTerm
      * @ORM\Column(nullable=false)
      */
     protected $term;
+
     /**
      * @var string Name.
      *
@@ -53,18 +55,21 @@ class GlossaryTerm
      * @ORM\Column(nullable=true)
      */
     protected $name;
+
     /**
      * @var string Headline of the item.
      *
      * @ORM\Column(type="string", length=1023, nullable=true)
      */
     protected $headline;
+
     /**
      * @var string A short description of the item.
      *
      * @ORM\Column(type="text", length=65535, nullable=true)
      */
     protected $description;
+
     /**
      * @var string URL of the item.
      *
@@ -345,5 +350,4 @@ class GlossaryTerm
     {
         return $this->slug;
     }
-
 }

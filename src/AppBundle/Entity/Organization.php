@@ -88,12 +88,14 @@ implements \JsonSerializable, JsonLdSerializable
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(type="integer", nullable=false)
      */
     protected $status = 0;
+
     /**
      * @var string An alias for the item.
      *
@@ -101,12 +103,14 @@ implements \JsonSerializable, JsonLdSerializable
      * @Solr\Field(type="strings")
      */
     protected $alternateName;
+
     /**
      * @var string A short description of the item.
      *
      * @ORM\Column(type="json_array", nullable=true)
      */
     protected $description;
+
     /**
      * @var string The date that this organization was dissolved.
      *
@@ -114,12 +118,14 @@ implements \JsonSerializable, JsonLdSerializable
      * @ORM\Column(type="string", nullable=true)
      */
     protected $dissolutionDate;
+
     /**
      * @var string The date that this organization was founded.
      *
      * @ORM\Column(type="string", nullable=true)
      */
     protected $foundingDate;
+
     /**
      * @var string The name of the item.
      *
@@ -128,6 +134,7 @@ implements \JsonSerializable, JsonLdSerializable
      * @Solr\Field(type="string")
      */
     protected $name;
+
     /**
      * @var string URL of the item.
      *
@@ -135,6 +142,7 @@ implements \JsonSerializable, JsonLdSerializable
      * @ORM\Column(nullable=true)
      */
     protected $url;
+
     /**
      * @var Place The place where the Organization was founded.
      *
@@ -514,7 +522,6 @@ implements \JsonSerializable, JsonLdSerializable
         )->toArray();
     }
 
-
     /**
      * Sets gnd.
      *
@@ -612,10 +619,11 @@ implements \JsonSerializable, JsonLdSerializable
     public function jsonSerialize()
     {
         return [
-                 'id' => $this->id,
-                 'name' => $this->name,
-                 'gnd' => $this->gnd,
-                 ];
+            'id' => $this->id,
+            'name' => $this->name,
+            'gnd' => $this->gnd,
+            'url' => $this->url,
+        ];
     }
 
     public function jsonLdSerialize($locale, $omitContext = false)
@@ -625,12 +633,14 @@ implements \JsonSerializable, JsonLdSerializable
             '@type' => 'Organization',
             'name' => $this->getNameLocalized($locale),
         ];
+
         if ($omitContext) {
             unset($ret['@context']);
         }
 
         foreach ([ 'founding', 'dissolution'] as $lifespan) {
             $property = $lifespan . 'Date';
+
             if (!empty($this->$property)) {
                 $ret[$property] = \AppBundle\Utils\JsonLd::formatDate8601($this->$property);
             }
@@ -651,7 +661,6 @@ implements \JsonSerializable, JsonLdSerializable
         foreach ([ 'url' ] as $property) {
             if (!empty($this->$property)) {
                 $ret[$property] = $this->$property;
-
             }
         }
 
@@ -670,10 +679,10 @@ implements \JsonSerializable, JsonLdSerializable
     }
 
     /**
-     * TODO: move to a trait
+     * Index everything that isn't deleted (no explicit publishing needed)
      *
      * @return boolean
-    */
+     */
     public function shouldBeIndexed()
     {
         return $this->status >= 0;

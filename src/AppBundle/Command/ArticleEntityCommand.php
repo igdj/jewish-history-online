@@ -3,7 +3,6 @@
 // src/AppBundle/Command/ArticleEntityCommand.php
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -68,6 +67,7 @@ class ArticleEntityCommand extends BaseEntityCommand
                 if (empty($entities[$type])) {
                     continue;
                 }
+
                 foreach ($entities[$type] as $uri => $num) {
                     switch ($type) {
                         case 'person':

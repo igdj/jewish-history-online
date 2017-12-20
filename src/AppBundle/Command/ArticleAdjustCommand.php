@@ -85,6 +85,7 @@ class ArticleAdjustCommand extends BaseEntityCommand
             $data['translator'] = [
                 $result['translator_slug'] => join(' ', [ $result['firstname'], $result['lastname'] ]),
             ];
+
             // admin uses 639-2B ('ger' instead of 'deu')
             $data['translatedFrom'] = \AppBundle\Utils\Iso639::code2bTo3($result['lang']);
         }
@@ -281,9 +282,11 @@ class ArticleAdjustCommand extends BaseEntityCommand
                 }
 
                 $bibl = [];
+
                 if (!empty($result['author'])) {
                     $bibl['author'] = $result['author'];
                 }
+
                 if (!empty($result['place_identifier'])) {
                     $place = $this->findPlaceByUri($result['place_identifier']);
                     if (is_null($place)) {
@@ -297,6 +300,7 @@ class ArticleAdjustCommand extends BaseEntityCommand
                         $bibl['placeName']['@corresp'] = '#' . trim($result['place_geo']);
                     }
                 }
+
                 if (!empty($result['indexingdate'])) {
                     $when = $result['indexingdate'];
                     if (!empty($result['displaydate'])) {
@@ -309,6 +313,7 @@ class ArticleAdjustCommand extends BaseEntityCommand
                     while (preg_match('/(.+)\-00$/', $when, $matches)) {
                         $when = $matches[1];
                     }
+
                     $bibl['date'] = [
                         '@when' => $when,
                         '@value' => $date,
@@ -319,13 +324,16 @@ class ArticleAdjustCommand extends BaseEntityCommand
                     && $result['provider_name'] != 'unbekannt')
                 {
                     $bibl['orgName'] = [ '@value' => $result['provider_name'] ];
+
                     if (!empty($result['provider_gnd'])) {
                         $bibl['orgName']['@ref'] = 'http://d-nb.info/gnd/' . $result['provider_gnd'];
                     }
                 }
+
                 if (!empty($result['archive_location'])) {
                     $bibl['idno'] = $result['archive_location'];
                 }
+
                 $data['bibl'] = $bibl;
 
                 $licenseKey = ''; // restricted
@@ -416,6 +424,7 @@ class ArticleAdjustCommand extends BaseEntityCommand
         if (empty($uid) || empty($langCode1)) {
             die('TODO: determine uid/langCode1 from teiHeader');
         }
+
         $data = [
             'uid' => $uid,
             'lang' => \AppBundle\Utils\Iso639::code1To3($langCode1),

@@ -39,5 +39,6 @@ abstract class ArticleEntity
     }
 
     abstract public function setEntity($entity);
+
     abstract public function getEntity();
 }

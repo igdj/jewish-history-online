@@ -3,10 +3,7 @@
 // src/AppBundle/Command/ImportEntityCommand.php
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
@@ -30,7 +27,7 @@ class ImportEntityCommand extends BaseEntityCommand
 
         if (!$fs->exists($fname)) {
             $output->writeln(sprintf('<error>%s does not exist</error>', $fname));
-            
+
             return 1;
         }
 
@@ -50,8 +47,10 @@ class ImportEntityCommand extends BaseEntityCommand
             if (empty($row['tgn'])) {
                 continue;
             }
+
             $entities['place'][$row['tgn']] = $row;
         }
+
         foreach ([ 'person', 'place', 'organization' ] as $type) {
             // currently only place
             if (empty($entities[$type])) {
