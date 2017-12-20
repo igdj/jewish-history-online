@@ -296,8 +296,13 @@ class Builder implements ContainerAwareInterface
                 $item = $menu->addChild($current_route, [ 'label' => 'Search' ]);
                 break;
 
-            // experimental stuff
             case 'education-index':
+            case 'about-educationguidelines':
+            case 'about-educationsourceinterpretation':
+                $item = $menu->addChild($current_route, [ 'label' => 'Teaching Resources' ]);
+                break;
+
+            // experimental stuff
             case 'labs-index':
             case 'person-by-year':
             case 'person-by-birthplace':
