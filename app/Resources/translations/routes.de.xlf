@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2017-11-14T10:07:03Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2017-12-12T15:34:56Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -45,6 +45,14 @@
       <trans-unit id="1d2f96887a3692c00043fc7c72c292ad11cb8c01" resname="about-editors">
         <source>/about/editors</source>
         <target>/ueber/herausgeberinnen</target>
+      </trans-unit>
+      <trans-unit id="13359d58940e42f2ea9da341f8d33979b524671e" resname="about-educationguidelines">
+        <source>/education/guidelines</source>
+        <target state="new">/unterricht/leitfaden</target>
+      </trans-unit>
+      <trans-unit id="2c7338c813980a1febdbdde7c5af43e780767ff9" resname="about-educationsourceinterpretation">
+        <source>/education/sourceinterpretation</source>
+        <target state="new">/unterricht/quelleninterpretation</target>
       </trans-unit>
       <trans-unit id="9ceb34f3fd6a6688234cbd1147460b66754f4045" resname="about-goals">
         <source>/about/goals</source>
@@ -148,7 +156,7 @@
       </trans-unit>
       <trans-unit id="cca543da51925f710013a921ff419f0d2af3243f" resname="education-index">
         <source>/education</source>
-        <target>/education</target>
+        <target>/unterricht</target>
       </trans-unit>
       <trans-unit id="31febeb1bd09a280b286995d78260c42559c6d5a" resname="glossary-index">
         <source>/glossary</source>
@@ -293,6 +301,10 @@
       <trans-unit id="fc8ab9a4dd2e637bb5a3e2ad4b5cca3b44db1867" resname="source-mets">
         <source>/source/{uid}.mets.xml</source>
         <target>/quelle/{uid}.mets.xml</target>
+      </trans-unit>
+      <trans-unit id="d6c1e487ba5b3d4a41d169b12b40f90e9338f8ef" resname="source-pdf">
+        <source>/source/{uid}.pdf</source>
+        <target>/quelle/{uid}.pdf</target>
       </trans-unit>
       <trans-unit id="e05e7bf953c24ee7391d7bc744869c9f769e23d4" resname="tei2html">
         <source>/source/tei2html/{path}</source>
