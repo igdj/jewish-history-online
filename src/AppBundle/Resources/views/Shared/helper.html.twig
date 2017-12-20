@@ -33,7 +33,7 @@
         {% if 'background' == article.articleSection %}
             {% set path = path('topic-background', { 'slug' : article.getSlug(true) }) %}
         {% else %}
-            {% set path = path('article', { 'slug' : article.getSlug(true) }) %}
+            {% set path = url('article', { 'slug' : article.getSlug(true) }) %}
         {% endif %}
         <a href="{{ path }}">
             {% if article.author|length > 0 %}
@@ -174,13 +174,15 @@
     </div>
 {% endmacro %}
 
-{% macro source_description_footer(name, article, description, license) %}
+{% macro source_description(description) %}
     {% if description is not null %}
     <h2 id="description">{{ 'Source Description'|trans }}</h2>
     {{ description.html|raw }}
     <a href="{{ path('article', { 'slug' : description.article.getSlug(true) }) }}">{{ 'Read on'|trans }} &gt;</a>
     {% endif %}
+{% endmacro %}
 
+{% macro source_footer(name, article, license) %}
     <h3 id="citation">{{ 'Recommended Citation'|trans }}</h3>
     <p>
     {{ name }}{% if article.translator is not empty %} ({{ 'translated by'|trans }} {{ article.translator.fullname(true) }}){% endif%}, {{ 'edited in'|trans }}: {{ siteName|trans }},
@@ -198,18 +200,13 @@
     {% endif %}
 {% endmacro %}
 
-{% macro source_sidebar(meta, description, interpretations, related, mets) %}
-    {% import _self as helper %}
-    {% import 'AppBundle:Shared:map-leaflet.html.twig' as map %}
-            <div class="container-fluid box">
-                <div class="row box-color-title">
-                    <div class="col-sm-12">
-                        <h4>{{ 'Source'|trans }}</h4>
-                    </div>
-                </div>
-                <div class="row box-color-content">
-                    <div class="col-sm-12">
-                        <dl>
+{% macro source_description_footer(name, article, description, license) %}
+    {{ _self.source_description(description) }}
+    {{ _self.source_footer(name, article, license) }}
+{% endmacro %}
+
+{% macro source_meta(meta, description, mets, printview = false, interpretations = null) %}
+                        <dl{% if printview %} class="dl-horizontal"{% endif %}>
                         {% if meta.dateCreated is not empty %}
                             <dt>{{ 'Date'|trans }}</dt>
                             <dd>
@@ -232,7 +229,7 @@
                                 {% endif %}
                             </dd>
                             {% set geo = meta.geo %}
-                            {% if geo is not empty or meta.contentLocation.geo is not empty %}
+                            {% if not printview and (geo is not empty or meta.contentLocation.geo is not empty) %}
                             <dt>{{ 'Geo Coordinates'|trans }}</dt>
                             <dd>
                                 {% if geo is empty %}
@@ -268,14 +265,13 @@
                                             loaded = true;
                                         }
 
-                                        var isHidden = $( '#map' ).is( ":hidden" );
+                                        var isHidden = $('#map').is(":hidden");
                                         $('#mapToggle').attr('title',
                                                              isHidden
                                                              ? {{ 'Show Map'|trans|json_encode|raw }}
                                                              : {{ 'Hide Map'|trans|json_encode|raw }});
                                     }
                                 </script>
-
                             </dd>
                             {% endif %}
                         {% endif %}
@@ -333,12 +329,37 @@
                             </dd>
                             {% endif %}
                         {% endif %}
-                        {% if description is not null %}
+                        {% if printview %}
+                            {% if interpretations is not empty %}
+                            <dt>{{ 'Source Description and Interpretation'|trans }}</dt>
+                            <dd>
+                                {% for article in interpretations %}
+                                    {{ _self.article_linked(article) }}
+                                {% endfor %}
+                            </dd>
+                            {% endif %}
+                        {% else %}
+                            {% if description is not null %}
                             <dt><a href="#description">{{ 'Source Description'|trans }}</a></dt>
-                        {% endif %}
+                            {% endif %}
                             <dt><a href="#citation">{{ 'Recommended Citation'|trans }}</a></dt>
+                        {% endif %}
                         </dl>
                         {#{ dump(meta) }#}
+{% endmacro %}
+
+{% macro source_sidebar(meta, description, interpretations, related, mets) %}
+    {% import _self as helper %}
+    {% import 'AppBundle:Shared:map-leaflet.html.twig' as map %}
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>{{ 'Source'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row box-color-content">
+                    <div class="col-sm-12">
+                        {{ helper.source_meta(meta, description, mets) }}
                     </div>
                 </div>
             </div>
