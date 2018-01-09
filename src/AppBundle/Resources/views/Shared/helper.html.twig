@@ -206,6 +206,7 @@
 {% endmacro %}
 
 {% macro source_meta(meta, description, mets, printview = false, interpretations = null) %}
+    {% import 'AppBundle:Shared:map-leaflet.html.twig' as map %}
                         <dl{% if printview %} class="dl-horizontal"{% endif %}>
                         {% if meta.dateCreated is not empty %}
                             <dt>{{ 'Date'|trans }}</dt>
