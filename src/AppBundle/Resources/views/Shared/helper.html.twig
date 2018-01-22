@@ -374,9 +374,27 @@
                 {% for article in interpretations %}
                 <div class="row box-color-content-inverse">
                     <div class="col-sm-12">
-                        {{ helper.article_linked(article) }}
+                        <b>{{ helper.article_linked(article) }}</b>
                     </div>
                 </div>
+                {% if article.keywords is not empty %}
+                <div class="row box-color-content-inverse">
+                {% for topic in article.keywords %}
+                    {% set img_slug = slugify.slugify(topic|lookupLocalizedTopic) %}
+                    {% set slug = slugify.slugify(topic) %}
+                    {% if loop.first %}
+                    <div class="col-sm-4">
+                        <a href="{{ path('topic-background', { 'slug' : slug }) }}"><img src="{{ asset('img/topic/' ~ img_slug ~ '.jpg') }}" style="width: 100%; height: auto" /></a>
+                    </div>
+                    <div class="col-sm-8">
+                    {% endif %}
+                            <p><a href="{{ path('topic-background', { 'slug' : slug }) }}">{{ topic }}</a></p>
+                    {% if loop.last %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+                </div>
+                {% endif %}
                 {% endfor %}
             </div>
             {% endif %}
