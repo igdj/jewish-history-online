@@ -1,0 +1,465 @@
+.mycoreViewer .iviewThumbnail {
+  line-height: 1.428571429;
+  box-sizing: border-box;
+  position: absolute;
+  padding: 25px;
+  height: 245px;
+  width: 245px;
+}
+.mycoreViewer .iviewThumbnail .imgSpacer {
+  height: 90%;
+}
+.mycoreViewer .iviewThumbnail img {
+  max-width: 90%;
+  max-height: 90%;
+  display: block;
+  height: auto;
+  max-width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+}
+.mycoreViewer .iviewThumbnail .caption {
+  padding: 9px;
+  color: #333333;
+  text-align: center;
+}
+.mycoreViewer .center {
+  background: gray;
+}
+.mycoreViewer .center .horizontalBar,
+.mycoreViewer .center .verticalBar {
+  position: absolute;
+  display: block;
+  background-color: #f1f1f1;
+}
+.mycoreViewer .center .horizontalBar .slider,
+.mycoreViewer .center .verticalBar .slider {
+  background-color: #bcbcbc;
+  position: absolute;
+}
+.mycoreViewer .center .horizontalBar .slider:hover,
+.mycoreViewer .center .verticalBar .slider:hover {
+  background-color: #949494;
+}
+.mycoreViewer .center .horizontalBar .endButton,
+.mycoreViewer .center .verticalBar .endButton {
+  position: absolute;
+  cursor: pointer;
+}
+.mycoreViewer .center .horizontalBar .startButton,
+.mycoreViewer .center .verticalBar .startButton {
+  position: absolute;
+  cursor: pointer;
+}
+.mycoreViewer .center .overViewToggle {
+  display: block;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  width: 16px;
+  height: 16px;
+  z-index: 1;
+  border: 1px solid #a8a8a8;
+  background-color: #f8f8f8;
+  font-size: 12px;
+  cursor: pointer;
+}
+.mycoreViewer .center .overViewToggle.disabled {
+  background: none repeat scroll 0 0 #f1f1f1;
+  border: 0 solid #a8a8a8;
+}
+.mycoreViewer .center .overViewToggle .glyphicon {
+  top: 0px;
+  right: -1px;
+  transform: rotate(-45deg);
+  cursor: pointer;
+}
+.mycoreViewer .center .verticalBar {
+  top: 0px;
+  right: 0px;
+  bottom: 16px;
+  width: 16px;
+}
+.mycoreViewer .center .verticalBar .startButton {
+  width: 0;
+  height: 0;
+  border-left: 5px solid rgba(0, 0, 0, 0);
+  border-right: 5px solid rgba(0, 0, 0, 0);
+  border-bottom: 5px solid #000000;
+  left: 3px;
+  top: 5px;
+}
+.mycoreViewer .center .verticalBar .endButton {
+  width: 0;
+  height: 0;
+  border-left: 5px solid rgba(0, 0, 0, 0);
+  border-right: 5px solid rgba(0, 0, 0, 0);
+  border-top: 5px solid #000000;
+  left: 3px;
+  bottom: 5px;
+}
+.mycoreViewer .center .verticalBar .slider {
+  left: 1px;
+  right: 1px;
+  min-height: 20px;
+  border: 1px solid #a8a8a8;
+  top: 50px;
+}
+.mycoreViewer .center .horizontalBar {
+  left: 0px;
+  right: 16px;
+  bottom: 0px;
+  height: 16px;
+}
+.mycoreViewer .center .horizontalBar .startButton {
+  width: 0;
+  height: 0;
+  border-top: 5px solid rgba(0, 0, 0, 0);
+  border-right: 5px solid #000000;
+  border-bottom: 5px solid rgba(0, 0, 0, 0);
+  left: 5px;
+  top: 3px;
+}
+.mycoreViewer .center .horizontalBar .endButton {
+  width: 0;
+  height: 0;
+  border-bottom: 5px solid rgba(0, 0, 0, 0);
+  border-left: 5px solid #000000;
+  border-top: 5px solid rgba(0, 0, 0, 0);
+  right: 5px;
+  bottom: 3px;
+}
+.mycoreViewer .center .horizontalBar .slider {
+  top: 1px;
+  bottom: 1px;
+  min-width: 20px;
+  border: 1px solid #a8a8a8;
+  left: 50px;
+}
+.mycoreViewer .center canvas {
+  width: 100%;
+  height: 100%;
+  -ms-user-select: none;
+  touch-action: none;
+}
+.mycoreViewer .center canvas.pdfCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+@media (max-width: 800px) {
+  .mycoreViewer .center canvas.overview {
+    display: none;
+  }
+}
+.mycoreViewer .center canvas.overview {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  opacity: 0.9;
+  border: 1px solid #000000;
+}
+.mycoreViewer .metadata {
+  padding: 10px 10px 10px 10px;
+}
+.mycoreViewer .metadata * {
+  padding-left: 3px;
+  padding-right: 3px;
+}
+.mycoreViewer .metadata .titles {
+  font-weight: bold;
+  color: #3276b1;
+}
+.mycoreViewer .metadata .date:before {
+  content: '[';
+}
+.mycoreViewer .metadata .date:after {
+  content: ']';
+}
+.mycoreViewer *[class*="icon-"] {
+  width: 14px;
+  height: 14px;
+  background-size: cover;
+}
+.mycoreViewer .dropdown-toggle *[class*="icon-"] {
+  top: 2px;
+}
+.mycoreViewer .icon-sidebar-right {
+  background-image: url("../img/sidebar-right.svg");
+  background-position: center center;
+}
+.mycoreViewer .icon-sidebar-left {
+  background-image: url("../img/sidebar-left.svg");
+  background-position: center center;
+}
+.mycoreViewer .glyphicon- {
+  display: none;
+}
+.mycoreViewer .matched {
+  font-weight: bold;
+}
+.mycoreViewer textarea.form-control {
+  min-height: 300px;
+}
+.mycoreViewer .textContainer .line {
+  position: absolute;
+}
+.mycoreViewer .textContainer .highlighted.line {
+  background: rgba(0, 0, 255, 0.12);
+}
+.mycoreViewer .textContainer .highlighted.line .highlighted {
+  background: rgba(0, 0, 255, 0.5);
+  color: white;
+}
+.mycoreViewer .textContainer ::selection {
+  background: #65a9e4;
+  color: white;
+}
+.mycoreViewer .textContainer ::-moz-selection {
+  background: #65a9e4;
+  color: white;
+}
+.mycoreViewer .textContainer .line {
+  cursor: text;
+  color: transparent;
+}
+.mycoreViewer > div:not(.navbar) {
+  top: 51px;
+}
+.mycoreViewer .navbar div img {
+  margin-top: 11px;
+}
+.mycoreViewer .navbar .btn-group {
+  margin-left: 25px;
+}
+.mycoreViewer .navbar .btn-group .dropdown-menu {
+  cursor: pointer;
+}
+.mycoreViewer .navbar .btn-group .dropdown-toggle .glyphicon {
+  margin-right: 5px;
+}
+@media (max-width: 620px) {
+  .mycoreViewer .navbar div[data-id=ImageChangeControllGroup] {
+    display: none;
+  }
+}
+.mycoreViewer .navbar .navbar-right {
+  margin-right: 25px;
+  float: right !important;
+}
+.mycoreViewer .navbar .dropdown-menu .dropdown-icon {
+  margin-right: 7px;
+}
+.mycoreViewer .navbar .navbar-fixed-top {
+  margin-bottom: 0px;
+}
+.mycoreViewer .navbar .dropdown {
+  z-index: initial;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-expand: none;
+  appearance: none;
+  height: 34px;
+  max-width: 300px;
+  text-indent: 0.25px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: inline-block;
+}
+.mycoreViewer .navbar .dropdown::-ms-expand {
+  display: none;
+}
+.mycoreViewer .navbar img {
+  max-height: 26px;
+}
+.mycoreViewer .navbar .caret {
+  margin-left: 5px;
+}
+.mycoreViewer .chapterTreeDesktop .expander + *,
+.mycoreViewer .textSearch .expander + * {
+  margin-left: 0.8em;
+}
+.mycoreViewer .chapterTreeDesktop .expander,
+.mycoreViewer .textSearch .expander {
+  cursor: pointer;
+  font-size: 10px;
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+}
+.mycoreViewer .chapterTreeDesktop ol[data-opened=false],
+.mycoreViewer .textSearch ol[data-opened=false] {
+  display: none;
+}
+.mycoreViewer .chapterTreeDesktop ol,
+.mycoreViewer .textSearch ol {
+  border: none;
+  border-radius: 0px;
+  padding-left: 15px;
+}
+.mycoreViewer .chapterTreeDesktop .list-group-item,
+.mycoreViewer .textSearch .list-group-item {
+  padding: 3px 15px;
+}
+.mycoreViewer .chapterTreeDesktop li.list-group-item,
+.mycoreViewer .textSearch li.list-group-item {
+  border: none;
+  border-radius: 0px;
+  margin-bottom: 0px;
+  display: inline-block;
+  width: 100%;
+}
+.mycoreViewer .chapterTreeDesktop li.list-group-item span.childLabel,
+.mycoreViewer .textSearch li.list-group-item span.childLabel {
+  color: gray;
+  float: right;
+}
+.mycoreViewer .chapterTreeDesktop li a,
+.mycoreViewer .textSearch li a {
+  cursor: pointer;
+  margin-left: 20px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: inline-block;
+  width: calc(100% - 72px);
+}
+.mycoreViewer .chapterTreeDesktop li[data-selected=true],
+.mycoreViewer .textSearch li[data-selected=true] {
+  background: #3276b1;
+  border-color: #285e8e;
+  color: white;
+}
+.mycoreViewer .chapterTreeDesktop li[data-selected=true] .expander,
+.mycoreViewer .textSearch li[data-selected=true] .expander {
+  color: white;
+}
+.mycoreViewer .chapterTreeDesktop li[data-selected=true] a,
+.mycoreViewer .textSearch li[data-selected=true] a,
+.mycoreViewer .chapterTreeDesktop li[data-selected=true] span.childLabel,
+.mycoreViewer .textSearch li[data-selected=true] span.childLabel {
+  color: white;
+}
+.mycoreViewer .textSearch li a {
+  white-space: normal;
+  overflow: visible;
+}
+.mycoreViewer .sidebar {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  border-top: none;
+}
+.mycoreViewer .debugCanvas {
+  position: relative;
+}
+.mycoreViewer .resizer {
+  z-index: 10;
+}
+.mycoreViewer .informationBar {
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  position: absolute;
+  padding: 2px;
+  margin: 0;
+  text-align: center;
+}
+.mycoreViewer .informationBar * {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.mycoreViewer .informationBar .scale {
+  float: left;
+}
+.mycoreViewer .informationBar .scale.form-control {
+  width: 10%;
+  height: 100%;
+}
+.mycoreViewer .informationBar .scale.form-control.error {
+  color: darkred;
+  border: 1px darkred solid;
+}
+.mycoreViewer .informationBar .rotation {
+  float: right;
+}
+.mycoreViewer .north,
+.mycoreViewer .south,
+.mycoreViewer .east,
+.mycoreViewer .west {
+  z-index: 10;
+}
+.mycoreViewer .north .list-group,
+.mycoreViewer .south .list-group,
+.mycoreViewer .east .list-group,
+.mycoreViewer .west .list-group {
+  padding-bottom: 35px;
+}
+.mycoreViewer .panel.search {
+  padding: 1em;
+}
+.mycoreViewer .panel.search .progress-bar {
+  transition: width .1s ease;
+}
+.mycoreViewer .iviewThumbnail {
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.mycoreViewer .iviewThumbnail.selected {
+  background-color: #3276b1;
+}
+.mycoreViewer .layer-component {
+  display: table;
+}
+.mycoreViewer .layer-component .layer-view {
+  height: 100%;
+  display: block;
+}
+.mycoreViewer .layer-component .layer-view .layer {
+  display: table-cell;
+  border-right: 1px solid #ddd;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+.mycoreViewer .layer-component .layer-view .layer .layer-heading {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+.mycoreViewer .layer-component .layer-view .layer:last-child {
+  border: none;
+}
+.mycoreViewer .layer-component .layer-view .highlight {
+  color: white;
+  background-color: #3276b1;
+}
+.mycoreViewer .tei .popupTrigger {
+  cursor: pointer;
+}
+.mycoreViewer .tei .noContent {
+  display: block;
+  text-align: center;
+  font-weight: bold;
+}
+.mycoreViewer .tei h1 {
+  margin-top: 5px;
+}
+.mycoreViewer .tei .teiLine {
+  display: block;
+  word-break: normal;
+}
+.mycoreViewer .tei .teiRow {
+  display: table-row;
+}
+.mycoreViewer .tei .teiCell {
+  display: table-cell;
+  padding: 1em;
+}
+.mycoreViewer .tei .teiTable {
+  display: table;
+}
