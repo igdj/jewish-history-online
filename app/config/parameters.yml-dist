@@ -38,6 +38,13 @@ parameters:
     # windows, set your proper path
     # app.xslt.adapter.arguments: "c:\\Run\\Java\\jdk1.8\\bin\\java -jar %kernel.root_dir%\\Resources\\bin\saxon9he.jar -s:%%source%% -xsl:%%xsl%% %%additional%%"
 
+    # xml format
+    app.xml_formatter.adapter.class:  AppBundle\Utils\XmlFormatter\XmlFormatterCommandlineAdapter
+    # use http://www.kitebird.com/software/xmlformat/xmlformat.html
+    # if site is down, https://packages.ubuntu.com/bionic/xmlformat-perl points to
+    #   http://archive.ubuntu.com/ubuntu/pool/universe/x/xmlformat/xmlformat_1.04.orig.tar.gz
+    app.xml_formatter.adapter.arguments: "perl %kernel.root_dir%/Resources/bin/xmlformat.pl --config=%kernel.root_dir%/Resources/bin/xf-tei.conf %%source%% %%additional%%"
+
     # imagemagick settings
     app.imagemagick.processor.arguments:
         # linux
