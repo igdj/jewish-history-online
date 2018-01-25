@@ -276,7 +276,7 @@
       </trans-unit>
       <trans-unit id="67930f23b2c446cf2ec0d6a36f9eb390eb12116c" resname="place-map-popup-content">
         <source>/map/popup-content/{ids}</source>
-        <target>/map/popup-content/{ids}</target>
+        <target>/karte/popup-inhalt/{ids}</target>
       </trans-unit>
       <trans-unit id="a24c6189587e0f225c5028256a04ac51b5fe6667" resname="search-index">
         <source>/search</source>
