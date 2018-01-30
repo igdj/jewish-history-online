@@ -23,6 +23,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Organization
 implements \JsonSerializable, JsonLdSerializable
 {
+    use ArticleReferencesTrait;
+
     static function formatDateIncomplete($dateStr)
     {
         if (preg_match('/^\d{4}$/', $dateStr)) {
@@ -159,6 +161,7 @@ implements \JsonSerializable, JsonLdSerializable
 
     /**
      * @ORM\OneToMany(targetEntity="Article", mappedBy="provider")
+     * @ORM\OrderBy({"dateCreated" = "ASC", "name" = "ASC"})
      */
     protected $providerOf;
 
@@ -495,9 +498,9 @@ implements \JsonSerializable, JsonLdSerializable
         return $this->succeedingOrganization;
     }
 
-    /* instead of
+    /* override method of
      *   use ArticleReferencesTrait;
-     * override since we want to avoid duplicates with getProviderOf
+     * since we want to avoid duplicates with getProviderOf
      */
     public function getArticleReferences($lang = null, $skipProviderOf = true)
     {
@@ -507,7 +510,7 @@ implements \JsonSerializable, JsonLdSerializable
 
         $langCode3 = is_null($lang) ? null : \AppBundle\Utils\Iso639::code1to3($lang);
 
-        return $this->articleReferences->filter(
+        return $this->sortArticleReferences($this->articleReferences->filter(
             function ($entity) use ($langCode3, $skipProviderOf) {
                 $ret = 1 == $entity->getArticle()->getStatus()
                      && (is_null($langCode3) || $entity->getArticle()->getLanguage() == $langCode3);
@@ -519,7 +522,7 @@ implements \JsonSerializable, JsonLdSerializable
 
                 return $ret;
             }
-        )->toArray();
+        )->toArray());
     }
 
     /**
