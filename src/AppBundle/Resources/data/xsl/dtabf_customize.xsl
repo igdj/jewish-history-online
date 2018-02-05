@@ -224,7 +224,7 @@
          <xsl:choose>
            <xsl:when test="descendant::tei:pb">dta-p dta-no-indent</xsl:when>
            <xsl:when test="@prev">dta-p dta-no-indent</xsl:when>
-           <xsl:otherwise>dta-p<xsl:if test="@dir"> dta-p-<xsl:value-of select="@dir"></xsl:value-of></xsl:if></xsl:otherwise>
+           <xsl:otherwise>dta-p</xsl:otherwise>
          </xsl:choose>
        </xsl:variable>
        <p>
@@ -232,7 +232,7 @@
           <xsl:attribute name="dir"><xsl:value-of select="@dir"/></xsl:attribute>
          </xsl:if>
          <xsl:call-template name="applyRendition">
-           <xsl:with-param name="class" select="$class"/>
+           <xsl:with-param name="class"><xsl:value-of select="$class" /><xsl:if test="@dir"> dta-p-<xsl:value-of select="@dir"></xsl:value-of></xsl:if></xsl:with-param>
          </xsl:call-template>
          <xsl:apply-templates/>
        </p>
