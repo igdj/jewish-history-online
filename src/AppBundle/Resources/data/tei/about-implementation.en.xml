@@ -21,20 +21,23 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
     </teiHeader>
     <text>
         <body>
-            <p>
-                This source edition is a model project for testing and improving existing digital
+            <p> This source edition is a model project for testing and improving existing digital
                 infrastructures. The project takes advantage of open source solutions and integrates
                 common standard formats for digital editions. It also includes long-term archiving
                 for MODS (catalog data), METS (digitized content), TEI P5 (text tagging of the
                 transcripts and translations), DOI (persistent identification), GND-Beacon files,
-                and the MyCoRe viewer.<note type="editorial" place="foot"
-                    ><ref target="http://www.mycore.de/documentation/frontend/imageviewer.pdf">www.mycore.de/documentation/frontend/imageviewer.pdf</ref> (Accessed August
+                and the MyCoRe viewer.<note type="editorial" place="foot"><ref
+                        target="http://www.mycore.de/documentation/frontend/imageviewer.pdf"
+                        >www.mycore.de/documentation/frontend/imageviewer.pdf</ref> (Accessed August
                     29, 2016).</note> It combines these with a user-friendly presentation in a
-                common open source framework.<note type="editorial" place="foot"
-                    >The source code is available at <ref target="https://github.com/burki/jewish-history-online">github.com/burki/jewish-history-online</ref> (Accessed April 21, 2017).</note> Digitization has been carried out following the
-                practical guidelines “Digitalisierung” established by the Deutsche
-                Forschungsgemeinschaft (DFG).<note type="editorial" place="foot"
-                    ><ref target="http://www.dfg.de/formulare/12_151/12_151_de.pdf">www.dfg.de/formulare/12_151/12_151_de.pdf</ref> (Accessed August 29,
+                common open source framework.<note type="editorial" place="foot">The source code is
+                    available at <ref target="https://github.com/burki/jewish-history-online"
+                        >github.com/igdj/jewish-history-online</ref> (Accessed February 5,
+                    2018).</note> Digitization has been carried out following the practical
+                guidelines “Digitalisierung” established by the Deutsche Forschungsgemeinschaft
+                    (DFG).<note type="editorial" place="foot"><ref
+                        target="http://www.dfg.de/formulare/12_151/12_151_de.pdf"
+                        >www.dfg.de/formulare/12_151/12_151_de.pdf</ref> (Accessed August 29,
                     2016).</note> All digital files, TEI files, and metadata are also stored for
                 long-term archiving as a METS Container in an instance of the MyCoRe
                     repository.<note type="editorial" place="foot">Due to our cooperation with the

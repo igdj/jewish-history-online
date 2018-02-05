@@ -6,7 +6,7 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
     <teiHeader>
         <fileDesc>
             <titleStmt>
-                <title type="main">Publikationen und Präsentationen</title>
+                <title type="main">Presentations and Publications</title>
             </titleStmt>
             <publicationStmt>
                 <p></p>
@@ -16,7 +16,7 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
             </sourceDesc>
         </fileDesc>
         <profileDesc>
-            <langUsage><language ident="deu">German</language></langUsage>
+            <langUsage><language ident="eng">English</language></langUsage>
         </profileDesc>
     </teiHeader>
     <text>
@@ -67,6 +67,9 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
             <div n="2">
                 <head>Publications</head><lb/>
                 <list>
+                    <item>
+                        Anna Menny / Miriam Rürup, Von der Quelle zur Geschichte. Hamburger Schlüsseldokumente zur deutsch-jüdischen Geschichte, in: Jüdische Geschichte und Kultur, 1 (2017), p. 62-63.                        
+                    </item>
                     <item>
                         Inka Le-Huu / Anna Menny, Hamburger Schlüsseldokumente zur deutsch-jüdischen Geschichte. Eine Online-Quellenedition, in: Archivjournal. Neuigkeiten aus dem Staatsarchiv, 2 (2016), p. 3.                        
                     </item>
