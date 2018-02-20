@@ -11,13 +11,13 @@ class ArticleEvent
 extends ArticleEntity
 {
     /**
-     * @ORM\ManyToOne(targetEntity="Organization", inversedBy="articleReferences")
+     * @ORM\ManyToOne(targetEntity="Event", inversedBy="articleReferences")
      * @ORM\JoinColumn(name="entity_id", referencedColumnName="id", nullable=FALSE)
      */
     protected $event;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Article", inversedBy="organizationReferences")
+     * @ORM\ManyToOne(targetEntity="Article", inversedBy="eventReferences")
      * @ORM\JoinColumn(name="article_id", referencedColumnName="id", nullable=FALSE)
      */
     protected $article;
