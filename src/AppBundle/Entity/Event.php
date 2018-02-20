@@ -10,17 +10,17 @@ use FS\SolrBundle\Doctrine\Annotation as Solr;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * An organization such as a school, NGO, corporation, club, etc.
+ * An event happening at a certain time (and location)
  *
- * @see http://schema.org/Organization Documentation on Schema.org
+ * @see http://schema.org/Event Documentation on Schema.org
  *
  * @Solr\Document(indexHandler="indexHandler")
  * @Solr\SynchronizationFilter(callback="shouldBeIndexed")
  *
  * @ORM\Entity
- * @ORM\Table(name="organization")
+ * @ORM\Table(name="event")
  */
-class Organization
+class Event
 implements \JsonSerializable, JsonLdSerializable
 {
     use ArticleReferencesTrait;
@@ -114,19 +114,27 @@ implements \JsonSerializable, JsonLdSerializable
     protected $description;
 
     /**
-     * @var string The date that this organization was dissolved.
+     * @var string The end date (and time) of the item.
      *
      * @Assert\Date
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $dissolutionDate;
+    protected $endDate;
 
     /**
-     * @var string The date that this organization was founded.
+     * @var string The start date (and time) of the item.
      *
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $foundingDate;
+    protected $startDate;
+
+    /**
+     * @var Place The location of for example where the event is happening, an organization is located, or where an action takes place..
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Place")
+     * @ORM\JoinColumn(name="location_id", referencedColumnName="id")
+     */
+    protected $location;
 
     /**
      * @var string The name of the item.
@@ -138,32 +146,10 @@ implements \JsonSerializable, JsonLdSerializable
     protected $name;
 
     /**
-     * @var string URL of the item.
-     *
-     * @Assert\Url
-     * @ORM\Column(nullable=true)
-     */
-    protected $url;
-
-    /**
-     * @var Place The place where the Organization was founded.
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Place")
-     * @ORM\JoinColumn(name="foundingLocation_id", referencedColumnName="id")
-     */
-    protected $foundingLocation;
-
-    /**
      * @var string
      * @ORM\Column(type="string", length=32, nullable=true)
      */
     protected $gnd;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Article", mappedBy="provider")
-     * @ORM\OrderBy({"dateCreated" = "ASC", "name" = "ASC"})
-     */
-    protected $providerOf;
 
     /**
     * @ORM\Column(type="json_array", nullable=true)
@@ -171,22 +157,7 @@ implements \JsonSerializable, JsonLdSerializable
     protected $additional;
 
     /**
-     * @var Organization The organization that preceded this on.
-     *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Organization", inversedBy="succeedingOrganization")
-     * @ORM\JoinColumn(name="precedingId", referencedColumnName="id")
-     */
-    protected $precedingOrganization;
-
-    /**
-     * @var Organization The organization that suceeded this on.
-     *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Organization", mappedBy="precedingOrganization")
-     */
-    protected $succeedingOrganization;
-
-    /**
-     * @ORM\OneToMany(targetEntity="ArticleOrganization", mappedBy="organization", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+     * @ORM\OneToMany(targetEntity="ArticleEvent", mappedBy="event", cascade={"persist", "remove"}, orphanRemoval=TRUE)
      */
     protected $articleReferences;
 
@@ -327,51 +298,51 @@ implements \JsonSerializable, JsonLdSerializable
     }
 
     /**
-     * Sets dissolutionDate.
+     * Sets endDate.
      *
-     * @param string $dissolutionDate
+     * @param string $endDate
      *
      * @return $this
      */
-    public function setDissolutionDate($dissolutionDate = null)
+    public function setEndDate($endDate = null)
     {
-        $this->dissolutionDate = self::formatDateIncomplete($dissolutionDate);
+        $this->endDate = self::formatDateIncomplete($endDate);
 
         return $this;
     }
 
     /**
-     * Gets dissolutionDate.
+     * Gets endDate.
      *
      * @return string
      */
-    public function getDissolutionDate()
+    public function getEndDate()
     {
-        return $this->dissolutionDate;
+        return $this->endDate;
     }
 
     /**
-     * Sets foundingDate.
+     * Sets startDate.
      *
-     * @param string $foundingDate
+     * @param string $startDate
      *
      * @return $this
      */
-    public function setFoundingDate($foundingDate = null)
+    public function setStartDate($startDate = null)
     {
-        $this->foundingDate = self::formatDateIncomplete($foundingDate);
+        $this->startDate = self::formatDateIncomplete($startDate);
 
         return $this;
     }
 
     /**
-     * Gets foundingDate.
+     * Gets startDate.
      *
      * @return string
      */
-    public function getFoundingDate()
+    public function getStartDate()
     {
-        return $this->foundingDate;
+        return $this->startDate;
     }
 
     /**
@@ -416,113 +387,29 @@ implements \JsonSerializable, JsonLdSerializable
         return self::stripAt($name);
     }
 
+
     /**
-     * Sets url.
+     * Sets socation.
      *
-     * @param string $url
+     * @param Place $socation
      *
      * @return $this
      */
-    public function setUrl($url)
+    public function setLocation(Place $location = null)
     {
-        $this->url = $url;
+        $this->location = $location;
 
         return $this;
     }
 
     /**
-     * Gets url.
-     *
-     * @return string
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
-
-    /**
-     * Sets foundingLocation.
-     *
-     * @param Place $foundingLocation
-     *
-     * @return $this
-     */
-    public function setFoundingLocation(Place $foundingLocation = null)
-    {
-        $this->foundingLocation = $foundingLocation;
-
-        return $this;
-    }
-
-    /**
-     * Gets foundingLocation.
+     * Gets location.
      *
      * @return Place
      */
-    public function getFoundingLocation()
+    public function getLocation()
     {
-        return $this->foundingLocation;
-    }
-
-    /**
-     * Sets precedingOrganization.
-     *
-     * @param Organization $precedingOrganization
-     *
-     * @return $this
-     */
-    public function setPrecedingOrganization(Organization $precedingOrganization = null)
-    {
-        $this->precedingOrganization = $precedingOrganization;
-
-        return $this;
-    }
-
-    /**
-     * Gets precedingOrganization.
-     *
-     * @return Organization
-     */
-    public function getPrecedingOrganization()
-    {
-        return $this->precedingOrganization;
-    }
-
-    /**
-     * Gets succeedingOrganization.
-     *
-     * @return Organization
-     */
-    public function getSucceedingOrganization()
-    {
-        return $this->succeedingOrganization;
-    }
-
-    /* override method of
-     *   use ArticleReferencesTrait;
-     * since we want to avoid duplicates with getProviderOf
-     */
-    public function getArticleReferences($lang = null, $skipProviderOf = true)
-    {
-        if (is_null($this->articleReferences)) {
-            return [];
-        }
-
-        $langCode3 = is_null($lang) ? null : \AppBundle\Utils\Iso639::code1to3($lang);
-
-        return $this->sortArticleReferences($this->articleReferences->filter(
-            function ($entity) use ($langCode3, $skipProviderOf) {
-                $ret = 1 == $entity->getArticle()->getStatus()
-                     && (is_null($langCode3) || $entity->getArticle()->getLanguage() == $langCode3);
-
-                if ($ret && $skipProviderOf && !is_null($this->providerOf)) {
-                    // only return if not in providerOf
-                    $ret = !$this->providerOf->contains($entity->getArticle());
-                }
-
-                return $ret;
-            }
-        )->toArray());
+        return $this->location;
     }
 
     /**
@@ -547,28 +434,6 @@ implements \JsonSerializable, JsonLdSerializable
     public function getGnd()
     {
         return $this->gnd;
-    }
-
-    /**
-     * Gets providerOf.
-     *
-     */
-    public function getProviderOf($lang = null)
-    {
-        if (is_null($this->providerOf)) {
-            return $this->providerOf;
-        }
-
-        $langCode3 = is_null($lang)
-            ? null
-            : \AppBundle\Utils\Iso639::code1to3($lang);
-
-        return $this->providerOf->filter(
-            function($entity) use ($langCode3) {
-               return 1 == $entity->getStatus()
-                && (is_null($langCode3) || $entity->getLanguage() == $langCode3);
-            }
-        );
     }
 
     /**
@@ -625,7 +490,6 @@ implements \JsonSerializable, JsonLdSerializable
             'id' => $this->id,
             'name' => $this->name,
             'gnd' => $this->gnd,
-            'url' => $this->url,
         ];
     }
 
@@ -641,30 +505,23 @@ implements \JsonSerializable, JsonLdSerializable
             unset($ret['@context']);
         }
 
-        foreach ([ 'founding', 'dissolution'] as $lifespan) {
+        foreach ([ 'start', 'end'] as $lifespan) {
             $property = $lifespan . 'Date';
 
             if (!empty($this->$property)) {
                 $ret[$property] = \AppBundle\Utils\JsonLd::formatDate8601($this->$property);
             }
+        }
 
-            if ('founding' == $lifespan) {
-                $property = $lifespan . 'Location';
-                if (!is_null($this->$property)) {
-                    $ret[$property] = $this->$property->jsonLdSerialize($locale, true);
-                }
+        foreach ([ 'location' ] as $property) {
+            if (!is_null($this->$property)) {
+                $ret[$property] = $this->$property->jsonLdSerialize($locale, true);
             }
         }
 
         $description = $this->getDescriptionLocalized($locale);
         if (!empty($description)) {
             $ret['description'] = $description;
-        }
-
-        foreach ([ 'url' ] as $property) {
-            if (!empty($this->$property)) {
-                $ret[$property] = $this->$property;
-            }
         }
 
         if (!empty($this->gnd)) {

@@ -158,6 +158,16 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
 
     /**
      * @ORM\OneToMany(
+     *   targetEntity="ArticleEvent",
+     *   mappedBy="article",
+     *   cascade={"persist", "remove"},
+     *   orphanRemoval=TRUE
+     * )
+     */
+    protected $eventReferences;
+
+    /**
+     * @ORM\OneToMany(
      *   targetEntity="ArticleBibitem",
      *   mappedBy="article",
      *   cascade={"persist", "remove"},
@@ -1141,6 +1151,27 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
     public function getPlaceReferences()
     {
         return $this->placeReferences;
+    }
+
+    public function addEventReference(ArticleEntity $entityReference)
+    {
+        $entityId = $entityReference->getEntity()->getId();
+
+        if (!$this->eventReferences->exists(
+            function ($key, $element) use ($entityId) {
+                return $element->getEntity()->getId() == $entityId;
+            }))
+        {
+            $this->eventReferences->add($entityReference);
+            $entityReference->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function getEventReferences()
+    {
+        return $this->eventReferences;
     }
 
     public function addBibitemReference(ArticleEntity $entityReference)

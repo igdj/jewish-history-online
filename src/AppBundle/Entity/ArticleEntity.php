@@ -12,10 +12,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="article_entity")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({"person" = "ArticlePerson",
- *                        "organization" = "ArticleOrganization",
- *                        "place" = "ArticlePlace",
- *                        "bibitem" = "ArticleBibitem" })
+ * @ORM\DiscriminatorMap({
+ *   "person" = "ArticlePerson",
+ *   "organization" = "ArticleOrganization",
+ *   "place" = "ArticlePlace",
+ *   "event" = "ArticleEvent",
+ *   "bibitem" = "ArticleBibitem"
+ * })
  */
 abstract class ArticleEntity
 {

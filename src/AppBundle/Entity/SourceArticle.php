@@ -25,6 +25,7 @@ class SourceArticle extends Article
 
             $date = $matches[1];
         }
+
         if ($date < 1900) {
             $bucket = $date - $date % 100; // centuries
             $key = 'epoch.century';

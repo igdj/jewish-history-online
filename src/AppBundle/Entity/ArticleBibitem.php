@@ -3,14 +3,12 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo; // alias for Gedmo extensions annotations
-
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  */
-class ArticleBibitem extends ArticleEntity
+class ArticleBibitem
+extends ArticleEntity
 {
     /**
      * @ORM\ManyToOne(targetEntity="Bibitem", inversedBy="articleReferences")

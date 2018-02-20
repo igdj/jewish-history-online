@@ -7,14 +7,14 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  */
-class ArticleOrganization
+class ArticleEvent
 extends ArticleEntity
 {
     /**
      * @ORM\ManyToOne(targetEntity="Organization", inversedBy="articleReferences")
      * @ORM\JoinColumn(name="entity_id", referencedColumnName="id", nullable=FALSE)
      */
-    protected $organization;
+    protected $event;
 
     /**
      * @ORM\ManyToOne(targetEntity="Article", inversedBy="organizationReferences")
@@ -24,13 +24,13 @@ extends ArticleEntity
 
     public function setEntity($entity)
     {
-        $this->organization = $entity;
+        $this->event = $entity;
 
         return $this;
     }
 
     public function getEntity()
     {
-        return $this->organization;
+        return $this->event;
     }
 }
