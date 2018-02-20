@@ -175,9 +175,12 @@ class TeiHelper
             $article->datePublished = $article->dateModified;
         }
         if (!empty($article->datePublished) && !empty($article->dateModified)
-            && $article->datePublished->format('Y-m-d') == $article->dateModified->format("Y-m-d"))
+            && $article->datePublished->format('Y-m-d') == $article->dateModified->format('Y-m-d'))
         {
             unset($article->dateModified);
+        }
+        if (!isset($article->dateModified)) {
+            $article->dateModified = null; // clear previous entries
         }
 
         // license
@@ -638,12 +641,10 @@ class TeiHelper
             $this->addDescendants($header, 'tei:fileDesc/tei:sourceDesc/tei:msDesc/tei:msIdentifier', [
                 'tei:msIdentifier' => function ($parent, $name) use ($data) {
                     $self = $parent->addChild($name);
-                    $this->addChildStructure($self,
-                                             [
-                                               'repository' => $data['bibl']['orgName']['@value'],
-                                               'idno' => [ 'idno' => [ '@type' => 'URLImages', '@value' => $data['URLImages']] ]
-                                             ],
-                                             'tei:');
+                    $this->addChildStructure($self, [
+                            'repository' => $data['bibl']['orgName']['@value'],
+                            'idno' => [ 'idno' => [ '@type' => 'URLImages', '@value' => $data['URLImages']] ]
+                        ], 'tei:');
                 },
             ]);
         }
