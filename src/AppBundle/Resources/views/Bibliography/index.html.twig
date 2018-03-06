@@ -17,7 +17,7 @@
             {% endif %}
             <li>
                 <a href="{% if item.slug is not empty %}{{ path('bibliography', { 'slug' : item.slug }) }}{% else %}{{ path('bibliography', { 'slug' : item.id }) }}{% endif %}">
-                    {{ item.renderCitationAsHtml(citeProc)|raw }}
+                    {{ item.renderCitationAsHtml(citeProc, app.request.locale, false)|raw }}
                 </a>
             </li>
         {% endfor %}

@@ -28,7 +28,7 @@
     <div class="row">
         <div class="col-sm-8">
             <abbr class="unapi-id" title="urn:bibnum:{{ bibitem.slug }}"></abbr>
-            {{ bibitem.renderCitationAsHtml(citeProc, true)|raw }}
+            {{ bibitem.renderCitationAsHtml(citeProc, app.request.locale, true)|raw }}
 
             {{ helper.list_entity_mentioned_in(bibitem.articleReferences(app.request.locale)) }}
         </div>

@@ -1096,9 +1096,9 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
         return $this->slug;
     }
 
-    public function renderCitationAsHtml($citeProc, $purgeSeparator = false)
+    public function renderCitationAsHtml($citeProc, $locale, $purgeSeparator = false)
     {
-        $ret = $citeProc->render(json_decode(json_encode($this->jsonSerialize())));
+        $ret = $citeProc->render(json_decode(json_encode($this->jsonSerialize($locale))));
 
         /* vertical-align: super doesn't render nicely:
            http://stackoverflow.com/a/1530819/2114681
@@ -1122,6 +1122,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
             else if (preg_match('/, <span class="citeproc\-date">/', $ret, $matches)) {
                 $ret = preg_replace('/, (<span class="citeproc\-date">)/', '\1', $ret);
             }
+
             $ret = preg_replace_callback('/(<span class="citeproc\-URL">&lt;)(.*?)(&gt;)/',
                 function ($matches) {
                     return $matches[1]
@@ -1140,6 +1141,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
         $strlen = mb_strlen($string, $encoding);
         $firstChar = mb_substr($string, 0, 1, $encoding);
         $then = mb_substr($string, 1, $strlen - 1, $encoding);
+
         return mb_strtoupper($firstChar, $encoding) . $then;
     }
 
@@ -1152,6 +1154,15 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
         }
 
         return $title;
+    }
+
+    private static function adjustPublisherPlace($place, $locale)
+    {
+        if ('en' == $locale) {
+            $place = preg_replace('/u\.\s*a\./', 'et al.', $place);
+        }
+
+        return $place;
     }
 
     private function parseLocalizedDate($dateStr, $locale = 'de_DE', $pattern = 'dd. MMMM yyyy')
@@ -1240,7 +1251,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
      * We transfer to Citeproc JSON
      * see https://github.com/citation-style-language/schema/blob/master/csl-data.json
      */
-    public function jsonSerialize()
+    public function jsonSerialize($locale = 'de_DE')
     {
         // see http://aurimasv.github.io/z2csl/typeMap.xml
         static $typeMap = [
@@ -1273,7 +1284,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
             'number-of-volumes' => $this->numberOfVolumes,
             'edition' => !is_null($this->bookEdition) && $this->bookEdition != 1
                 ? $this->bookEdition : null,
-            'publisher-place' => $this->publicationLocation,
+            'publisher-place' => self::adjustPublisherPlace($this->publicationLocation, $locale),
             'publisher' => $this->publisher,
             'issued' => [
                 "date-parts" => [ $this->buildDateParts($this->datePublished) ],
@@ -1562,7 +1573,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
     {
         $ret = [];
 
-        $citation = $this->renderCitationAsHtml($params['citeProc'], true);
+        $citation = $this->renderCitationAsHtml($params['citeProc'], $locale, true);
         if (preg_match('/(.*<span class="citeproc\-title">.*?<\/span>)(.*)/', $citation, $matches)) {
             $ret['twitter:title'] = rtrim(html_entity_decode(strip_tags($matches[1])));
             $ret['twitter:description'] = rtrim(html_entity_decode(strip_tags($matches[2])));
