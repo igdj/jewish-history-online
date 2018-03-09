@@ -7,8 +7,7 @@
         {% set last_initial = '' %}
         {% for organization in organizations %}
             {% set name = organization.nameLocalized(app.request.locale) %}
-            {# TODO: sort in solr and move to name|first|upper #}
-            {% set initial = slugify.slugify(organization.name)|first|upper %}
+            {% set initial = slugify.slugify(name)|first|upper %}
             {% if initial != last_initial %}
                 {% if last_initial != '' %}
             </ul>

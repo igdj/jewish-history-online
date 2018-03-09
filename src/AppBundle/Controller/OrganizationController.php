@@ -22,6 +22,18 @@ class OrganizationController extends Controller
                 ->findBy([ 'status' => [ 0, 1 ] ],
                          [ 'name' => 'ASC' ]);
 
+        // the following doesn't work on windows, where we would probably need accent removal
+        // for strcoll, so O-Umlaut sorts like O
+        setlocale(LC_COLLATE, 'de_DE.utf8');
+
+        if (!is_null($organizations)) {
+            $locale = $request->getLocale();
+
+            uasort($organizations, function ($a, $b) use ($locale) {
+                return strcoll($a->getNameLocalized($locale), $b->getNameLocalized($locale));
+            });
+        }
+
         return $this->render('AppBundle:Organization:index.html.twig', [
             'pageTitle' => $this->get('translator')->trans('Organizations'),
             'organizations' => $organizations,
