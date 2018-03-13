@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2017-12-12T15:34:56Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2018-02-22T09:53:44Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -48,11 +48,11 @@
       </trans-unit>
       <trans-unit id="13359d58940e42f2ea9da341f8d33979b524671e" resname="about-educationguidelines">
         <source>/education/guidelines</source>
-        <target state="new">/unterricht/leitfaden</target>
+        <target>/unterricht/leitfaden</target>
       </trans-unit>
       <trans-unit id="2c7338c813980a1febdbdde7c5af43e780767ff9" resname="about-educationsourceinterpretation">
         <source>/education/sourceinterpretation</source>
-        <target state="new">/unterricht/quelleninterpretation</target>
+        <target>/unterricht/quelleninterpretation</target>
       </trans-unit>
       <trans-unit id="9ceb34f3fd6a6688234cbd1147460b66754f4045" resname="about-goals">
         <source>/about/goals</source>
@@ -158,6 +158,26 @@
         <source>/education</source>
         <target>/unterricht</target>
       </trans-unit>
+      <trans-unit id="5006ed0248a019713b762563076292379daf07b4" resname="event">
+        <source>/event/{id}</source>
+        <target state="new">/ereignis/{id}</target>
+      </trans-unit>
+      <trans-unit id="15a530e6561e93b2623cc9756562107d7b3a5055" resname="event-by-gnd">
+        <source>/event/gnd/{gnd}</source>
+        <target state="new">/ereignis/gnd/{gnd}</target>
+      </trans-unit>
+      <trans-unit id="0de9a873fcc751cd60695a036b26109ed130b4e9" resname="event-by-gnd-jsonld">
+        <source>/event/gnd/{gnd}.jsonld</source>
+        <target state="new">/ereignis/gnd/{gnd}.jsonld</target>
+      </trans-unit>
+      <trans-unit id="289144416943a095555ea210f53d3f5e582c569b" resname="event-index">
+        <source>/event</source>
+        <target state="new">/ereignis</target>
+      </trans-unit>
+      <trans-unit id="7c2648bb22ab923068b2eb234343208f81cb7b14" resname="event-jsonld">
+        <source>/event/{id}.jsonld</source>
+        <target state="new">/ereignis/{id}.jsonld</target>
+      </trans-unit>
       <trans-unit id="31febeb1bd09a280b286995d78260c42559c6d5a" resname="glossary-index">
         <source>/glossary</source>
         <target>/glossar</target>
@@ -165,6 +185,10 @@
       <trans-unit id="e83249bd3ba79932e16fb1fb5100dafade9954c2" resname="home">
         <source>/</source>
         <target>/</target>
+      </trans-unit>
+      <trans-unit id="f8e6572d2132fccb120125bb2160b9ebc4241bb7" resname="home-preview">
+        <source>/preview</source>
+        <target>/preview</target>
       </trans-unit>
       <trans-unit id="25d793dbb8b816a2f81fdd7ee262951bf6cf0b17" resname="imginfo">
         <source>/source/imginfo/{path}</source>
