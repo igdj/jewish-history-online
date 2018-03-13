@@ -322,7 +322,7 @@ implements \JsonSerializable, JsonLdSerializable
         $hasPlaceParent = false;
         $ancestorOrSelf = $this;
         while (!is_null($ancestorOrSelf)) {
-            if ($ancestorOrSelf->type == 'inhabited place') {
+            if (in_array($ancestorOrSelf->type, [ 'neighborhood', 'inhabited place' ])) {
                 return true;
             }
 

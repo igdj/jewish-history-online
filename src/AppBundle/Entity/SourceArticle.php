@@ -10,7 +10,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity
  */
-class SourceArticle extends Article
+class SourceArticle
+extends Article
 {
     public static function buildDateBucket($date)
     {
