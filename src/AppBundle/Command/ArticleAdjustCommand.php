@@ -202,6 +202,14 @@ class ArticleAdjustCommand extends BaseEntityCommand
                 if (!empty($result['published'])) {
                     $published = new \DateTime($result['published']);
                     $dates['firstPublication'] = $published->format('Y-m-d');
+
+                    if (!empty($result['modified'])) {
+                        $modified = (new \DateTime($result['modified']))
+                            ->format('Y-m-d');
+                        if ($modified != $dates['firstPublication']) {
+                            $dates['publication'] = $modified;
+                        }
+                    }
                 }
                 if (!empty($dates)) {
                     $data['dates'] = $dates;
@@ -452,7 +460,7 @@ class ArticleAdjustCommand extends BaseEntityCommand
             return 1;
         }
 
-        echo $xml->asXML();
+        $output->write($xml->asXML());
 
         return 0;
     }

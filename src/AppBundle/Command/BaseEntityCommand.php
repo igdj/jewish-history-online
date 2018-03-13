@@ -5,21 +5,41 @@ namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
-abstract class BaseEntityCommand extends ContainerAwareCommand
+abstract class BaseEntityCommand
+extends ContainerAwareCommand
 {
-    protected function buildPersonConditionByUri($uri)
+    protected function jsonPrettyPrint($structure)
+    {
+        return json_encode($structure, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    }
+
+    private function buildGndConditionbyUri($uri, $hyphenAllowed = true)
     {
         $condition = null;
 
-        if (preg_match('/^'
-                       . preg_quote('http://d-nb.info/gnd/', '/')
-                       . '(\d+[xX]?)$/', $uri, $matches))
+        $regExp = '/^'
+            . preg_quote('http://d-nb.info/gnd/', '/')
+            . ($hyphenAllowed ? '(\d+\-?[\dxX]?)' : '(\d+[xX]?)')
+            . '$/';
+
+        if (preg_match($regExp, $uri, $matches))
         {
             $condition = [ 'gnd' => $matches[1] ];
         }
-        else if (preg_match('/^'
-                            . preg_quote('http://www.dasjuedischehamburg.de/inhalt/', '/')
-                            . '(.+)$/', $uri, $matches))
+
+        return $condition;
+    }
+
+    protected function buildPersonConditionByUri($uri)
+    {
+        $condition = $this->buildGndConditionByUri($uri, false);
+        if (!empty($condition)) {
+            return $condition;
+        }
+
+        if (preg_match('/^'
+                       . preg_quote('http://www.dasjuedischehamburg.de/inhalt/', '/')
+                       . '(.+)$/', $uri, $matches))
         {
             $condition = [ 'djh' => urldecode($matches[1]) ];
         }
@@ -113,16 +133,7 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
 
     protected function buildOrganizationConditionByUri($uri)
     {
-        $condition = null;
-
-        if (preg_match('/^'
-                       . preg_quote('http://d-nb.info/gnd/', '/')
-                       . '(\d+\-?[\dxX]?)$/', $uri, $matches))
-        {
-            $condition = [ 'gnd' => $matches[1] ];
-        }
-
-        return $condition;
+        return $this->buildGndConditionByUri($uri);
     }
 
     protected function findOrganizationByUri($uri)
@@ -269,7 +280,9 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
 
                     $parent = null;
                     if (!empty($geo->tgnParent)) {
-                        $parent = $em->getRepository('AppBundle\Entity\Place')->findOneBy([ 'tgn' => $geo->tgnParent ]);
+                        $parent = $em->getRepository('AppBundle\Entity\Place')->findOneBy([
+                            'tgn' => $geo->tgnParent,
+                        ]);
                         if (is_null($parent)) {
                             $res = $this->insertMissingPlace('http://vocab.getty.edu/tgn/' . $geo->tgnParent);
                             if ($res >= 0) {
@@ -320,6 +333,85 @@ abstract class BaseEntityCommand extends ContainerAwareCommand
                         }
                     }
                     $entity->setTgn($value);
+                    break;
+
+                default:
+                    die('TODO: handle field ' . $field);
+            }
+        }
+        $em->persist($entity);
+        $em->flush();
+
+        return 1;
+    }
+
+    protected function buildEventConditionByUri($uri)
+    {
+        return $this->buildGndConditionByUri($uri);
+    }
+
+    protected function findEventByUri($uri)
+    {
+        $condition = $this->buildEventConditionByUri($uri);
+
+        if (is_null($condition)) {
+            die('Currently not handling ' . $uri);
+            return;
+        }
+
+        $em = $this->getContainer()->get('doctrine')->getManager();
+
+        return $em->getRepository('AppBundle\Entity\Event')->findOneBy($condition);
+    }
+
+    protected function insertMissingEvent($uri, $additional = [])
+    {
+        $entity = $this->findEventByUri($uri);
+        if (!is_null($entity)) {
+            return 0;
+        }
+
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        $entity = new \AppBundle\Entity\Event();
+        $condition = $this->buildEventConditionByUri($uri);
+        foreach ($condition as $prefix => $value) {
+            switch ($prefix) {
+                case 'gnd':
+                    $event = \AppBundle\Utils\HistoricEventData::fetchByGnd($value);
+                    if (is_null($event)) {
+                        return -1;
+                    }
+
+                    // TODO: use hydrator
+                    foreach ([
+                            'preferredName',
+                            'dateOfEstablishment',
+                            'dateOfTermination',
+                            'definition',
+                        ] as $src)
+                    {
+                        if (!empty($event->{$src})) {
+                            switch ($src) {
+                                case 'preferredName':
+                                    $entity->setName($event->{$src});
+                                    break;
+
+                                case 'dateOfEstablishment':
+                                    $entity->setStartDate($event->{$src});
+                                    break;
+
+                                case 'dateOfTermination':
+                                    $entity->setEndDate($event->{$src});
+                                    break;
+
+                                case 'definition':
+                                    $entity->setDescription([ 'de' => $event->{$src} ]);
+                                    break;
+
+                            }
+                        }
+                    }
+                    $entity->setGnd($value);
                     break;
 
                 default:

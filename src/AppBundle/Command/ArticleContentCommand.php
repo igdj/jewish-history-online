@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class ArticleContentCommand
-extends ContainerAwareCommand
+extends BaseEntityCommand
 {
     use \AppBundle\Utils\RenderTeiTrait; // use shared method renderTei()
 
@@ -168,7 +168,7 @@ extends ContainerAwareCommand
 
         $entity->setText($text);
 
-        echo json_encode($entity, JSON_PRETTY_PRINT);
+        $output->writeln($this->jsonPrettyPrint($entity));
 
         if (!($input->getOption('update'))) {
             return 0; // done

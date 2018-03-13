@@ -10,7 +10,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
-class ArticleEntityCommand extends BaseEntityCommand
+class ArticleEntityCommand
+extends BaseEntityCommand
 {
     protected function configure()
     {
@@ -63,7 +64,7 @@ class ArticleEntityCommand extends BaseEntityCommand
         }
 
         if ($input->getOption('insert-missing')) {
-            foreach ([ 'person', 'place', 'organization' ] as $type) {
+            foreach ([ 'person', 'place', 'organization', 'event' ] as $type) {
                 if (empty($entities[$type])) {
                     continue;
                 }
@@ -81,6 +82,9 @@ class ArticleEntityCommand extends BaseEntityCommand
                         case 'organization':
                             $this->insertMissingOrganization($uri);
                             break;
+
+                        case 'event':
+                            $this->insertMissingEvent($uri);
                     }
                 }
             }
@@ -117,7 +121,7 @@ class ArticleEntityCommand extends BaseEntityCommand
             }
 
             $persist = false;
-            foreach ([ 'person', 'place', 'organization' ] as $type) {
+            foreach ([ 'person', 'place', 'organization', 'event' ] as $type) {
                 // clear existing before adding them back
                 $method = 'get' . ucfirst($type) . 'References';
                 $references = $article->$method();
@@ -149,6 +153,12 @@ class ArticleEntityCommand extends BaseEntityCommand
                                 $persist = true;
                             }
                             break;
+
+                        case 'event':
+                            if ($this->setEventReference($article, $uri)) {
+                                $persist = true;
+                            }
+                            break;
                     }
                 }
             }
@@ -160,7 +170,7 @@ class ArticleEntityCommand extends BaseEntityCommand
             }
         }
         else {
-            echo json_encode($entities, JSON_PRETTY_PRINT);
+            $output->writeln($this->jsonPrettyPrint($entities));
         }
     }
 
@@ -202,6 +212,20 @@ class ArticleEntityCommand extends BaseEntityCommand
         $entityReference = new \AppBundle\Entity\ArticlePlace();
         $entityReference->setEntity($entity);
         $article->addPlaceReference($entityReference);
+
+        return true;
+    }
+
+    protected function setEventReference($article, $uri)
+    {
+        $entity = $this->findEventByUri($uri);
+        if (is_null($entity)) {
+            return false;
+        }
+
+        $entityReference = new \AppBundle\Entity\ArticleEvent();
+        $entityReference->setEntity($entity);
+        $article->addEventReference($entityReference);
 
         return true;
     }

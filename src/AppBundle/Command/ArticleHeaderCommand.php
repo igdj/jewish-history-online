@@ -17,7 +17,8 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-class ArticleHeaderCommand extends ContainerAwareCommand
+class ArticleHeaderCommand
+extends BaseEntityCommand
 {
     protected function configure()
     {
@@ -75,7 +76,7 @@ class ArticleHeaderCommand extends ContainerAwareCommand
             return 1;
         }
 
-        echo json_encode($article, JSON_PRETTY_PRINT);
+        $output->writeln($this->jsonPrettyPrint($article));
 
         $em = $this->getContainer()->get('doctrine')->getManager();
 
@@ -156,7 +157,7 @@ class ArticleHeaderCommand extends ContainerAwareCommand
         $normalizer = new ObjectNormalizer();
         // exclude object-properties since arrays would be passed in
         $ignoredAttributes = [
-            'datePublished',
+            'datePublished', 'dateModified',
             'author', 'translator',
             'provider', 'contentLocation', 'isPartOf',
         ];
@@ -166,14 +167,15 @@ class ArticleHeaderCommand extends ContainerAwareCommand
         $serializer->deserialize(json_encode($article), get_class($entity), 'json', [ 'object_to_populate' => $entity ]);
 
         foreach ($ignoredAttributes as $attribute) {
-            if (!isset($article->$attribute)) {
+            if (in_array($attribute, [ 'datePublished', 'dateModified' ])) {
+                // \DateTime
+                $method = 'set' . ucfirst($attribute);
+                $entity->$method(isset($article->$attribute) ? $article->$attribute : null);
                 continue;
             }
 
-            // \DateTime
-            if ('datePublished' == $attribute) {
-                $method = 'set' . ucfirst($attribute);
-                $entity->$method($article->$attribute);
+            // not sure if the following is correct if we want to clear previous settings
+            if (!isset($article->$attribute)) {
                 continue;
             }
 
@@ -256,7 +258,7 @@ class ArticleHeaderCommand extends ContainerAwareCommand
             }
         }
 
-        echo json_encode($entity, JSON_PRETTY_PRINT);
+        $output->writeln($this->jsonPrettyPrint($entity));
 
         $em->persist($entity);
         $em->flush();

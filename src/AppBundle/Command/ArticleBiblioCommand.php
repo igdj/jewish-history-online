@@ -11,7 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
-class ArticleBiblioCommand extends ContainerAwareCommand
+class ArticleBiblioCommand
+extends ContainerAwareCommand
 {
     protected function configure()
     {
@@ -140,7 +141,7 @@ class ArticleBiblioCommand extends ContainerAwareCommand
                         // skip on null since multiple $src can set this
                         continue;
                     }
-                    
+
                     $methodName = 'set' . ucfirst($target);
                     $bibitem->$methodName($val);
                 }
@@ -205,7 +206,7 @@ class ArticleBiblioCommand extends ContainerAwareCommand
             }
         }
         else {
-            echo json_encode($items, JSON_PRETTY_PRINT);
+            $output->writeln($this->jsonPrettyPrint($items));
         }
     }
 

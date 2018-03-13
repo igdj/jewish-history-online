@@ -11,7 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
-class ArticleAuthorCommand extends BaseEntityCommand
+class ArticleAuthorCommand
+extends BaseEntityCommand
 {
     protected function configure()
     {
@@ -74,7 +75,7 @@ class ArticleAuthorCommand extends BaseEntityCommand
             $persons[] = $article->translator;
         }
 
-        echo json_encode($persons, JSON_PRETTY_PRINT);
+        $output->writeln($this->jsonPrettyPrint($persons));
 
         if ($input->getOption('insert-missing') || $input->getOption('update')) {
             $em = $this->getContainer()->get('doctrine')->getManager();
