@@ -24,6 +24,8 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
             <div n="2">
                 <head>Talks</head><lb/>
                 <list>
+                    <item>Daniel Burckhardt / Anna Menny: <ref target="//jewish-history-online.net/pdf/poster-dhd2018.pdf">Poster: Key Documents of German-Jewish History. A Digital Source Edition by the Institute for the History of German Jews</ref>.
+                        DHd 2018, Cologne, February 26-March 2, 2018</item>
                     <item>Presentation during the conference 
                         „Deutsch-jüdische Geschichte in Wissenschaft und Unterricht. Bewährte Zugänge. Aktuelle Herausforderungen. Neue Perspektiven“
                         at the Landesinstitut für Lehrerbildung und Schulentwicklung Hamburg, Hamburg, September 15, 2017 (Anna Menny)</item>

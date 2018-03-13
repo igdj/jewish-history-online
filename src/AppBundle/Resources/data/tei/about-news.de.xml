@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
+type="application/xml"
+schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="main">News</title>
+            </titleStmt>
+            <publicationStmt>
+                <p></p>
+            </publicationStmt>
+            <sourceDesc>
+                <p></p>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc><langUsage><language ident="ger">German</language></langUsage></profileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <div n="2">
+                <head>@keydocuments nun auf Twitter</head>
+                <lb/>
+                <p><hi rendition="#b">30.5.2017</hi> Die #Schlüsseldokumente sind nun bei Twitter! Ab jetzt gibt's unter <ref target="https://twitter.com/keydocuments">@keydocuments</ref> Aktuelles zur Online-Quellenedition des @IGdJHH.
+                </p>
+            </div>
+        </body>
+    </text>
+</TEI>

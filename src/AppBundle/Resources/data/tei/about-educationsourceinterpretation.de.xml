@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
+type="application/xml"
+schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="main">Infos zur Quelleninterpretation für Studierende</title>
+            </titleStmt>
+            <publicationStmt>
+                <p></p>
+            </publicationStmt>
+            <sourceDesc>
+                <p></p>
+            </sourceDesc>
+        </fileDesc>
+        <profileDesc>
+            <langUsage><language ident="deu">Deutsch</language></langUsage>
+        </profileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <div n="4">
+                <head>Was ist eine Quelle?</head><lb/>
+                <p>Alles, was über die Vergangenheit Aufschluss gibt, kann als Quelle dienen. Das können sein, Texte, Bilder, Gegenstände, Filme, Radiosendungen etc.</p><lb/>
+                <p>Es kann unterschieden werden zwischen solchen Quellen, die bereits für die Nachwelt verfasst wurden (z.B. Memoiren) und solchen, die zufällig überliefert wurden (z.B. Alltagsgegenstände). Erstere werden als Tradition und letzere als Überrest bezeichnet.</p>
+                <lb/>
+                <p>Nicht jede Quellengattung eignet sich für jedes Thema/jede Epoche. Die Arbeit mit und an der Quelle sollte immer die spezifischen Eigenschaften der Quellengattung berücksichtigen, so unterscheidet sich die kritische Analyse einer Filmquelle von der Arbeit mit einer frühneuzeitlichen Handschrift, es sind jeweils andere Fähigkeiten und Fertigkeiten erforderlich.</p>
+            </div>
+            <div n="4">
+                <head>Wie arbeite ich mit einer Quelle?</head><lb/>
+                <p>An Quellen lassen sich verschiedene Fragen richten. Auch wenn nicht alle Fragen beantwortet werden können, ist es das Ziel, möglichst viele Informationen herauszufinden. Hierzu wird zunächst die Quelle selbst befragt, darüber hinaus aber auch auf weitere Quellen und Sekundärliteratur zurückgegriffen, um die in der Quelle enthaltenen Informationen ergänzen und einordnen zu können.</p>
+                <lb/>
+                <p>
+                    Zunächst muss geklärt werden, um was für eine Quelle es sich handelt:
+                    <list>
+                        <item>Text, Bild, Objekt…?</item><lb/>
+                        <item>Offizieller Bericht, Zeitungsartikel, Ego-Dokument…?</item><lb/>
+                        <item>Aufbewahrungsort</item><lb/>
+                        <item>Überlieferungszustand: Original oder Kopie?</item><lb/>
+                    </list>
+                </p>
+                <p>
+                    Anschließend muss die Quelle gelesen / betrachtet / gehört und verstanden werden. Hierzu gehört etwa auch das Klären von unbekannten Fremdwörtern oder heute unbekannten Begrifflichkeiten / historischen Termini oder Sachzusammenhängen.                    
+                </p><lb/>
+                <p>
+                    Im nächsten Schritt geht es um den Entstehungskontext der Quelle, also etwa:
+                    <list>
+                        <item>Verfasser/in, seinen / ihren Hintergrund (persönlich, familiär,
+                            beruflich) und seine / ihre Absichten</item><lb/>
+                        <item>Entstehungszeitpunkt</item><lb/>
+                        <item>Adressaten / Rezipienten / Verbreitung</item><lb/>
+                        <item>Historischer Kontext</item><lb/>
+                    </list>
+                </p><lb/>
+                <p>
+                    Schließlich steht die Analyse des Inhalts im Mittelpunkt:
+                    <list>
+                        <item>Worum geht es? </item><lb/>
+                        <item>Was wird erwähnt, was verschwiegen?</item><lb/>
+                        <item>Was steht zwischen den Zeilen?</item><lb/>
+                        <item>Wird auf zeitgenössische Ereignisse, Personen etc. Bezug genommen?</item><lb/>
+                        <item>Gibt es Hinweise auf Fälschungen, nachträgliche Veränderungen?</item><lb/>
+                    </list>
+                </p>
+                <p>
+                    Nachdem die Quelle eingehend untersucht und analysiert wurde, geht es um die Frage nach der Aussagekraft für die eigene Fragestellung:
+                    <list>
+                        <item>Welchen Nutzen hat die Quelle für mich?</item><lb/>
+                        <item>Worüber gibt sie Aufschluss, worüber nicht?</item><lb/>
+                        <item>Einordnung in den historischen Kontext</item><lb/>
+                        <item>Welche Schlüsse geben sich daraus für meine weiteren Recherchen /
+                            Forschungen?</item><lb/>
+                    </list>
+                </p><lb/>
+            </div>
+            <div n="4">
+                <p>
+                    Ausführlichere Informationen sowie exemplarische Analysen finden sich zum Beispiel online im „Tutorium Quellenarbeit“:                   
+                </p>
+                <p>Sabine Büttner, Tutorium Arbeiten mit Quellen: Einleitung, in: historicum-estudies.net,
+                    URL: <ref target="http://www.historicum-estudies.net/etutorials/tutorium-quellenarbeit/">www.historicum-estudies.net/etutorials/tutorium-quellenarbeit/</ref> (15.11.2017).</p>
+                                
+            </div>
+            <div n="3"><head>Weiterführende Literatur</head><lb/>
+            <listBibl>
+                <bibl>Peter Borowsky / Barbara Vogel / Heide Wunder, Einführung in die Geschichtswissenschaft. 1: Grundprobleme, Arbeitsorganisation, Hilfsmittel, Opladen <hi rendition="#sup">5</hi>1989.
+                </bibl><lb/>
+                <bibl>Gunilla Budde, Quellen, Quellen, Quellen..., in: Gunilla Budde/Dagmar Freist/Hilke Günther-Arndt (Hrsg.), Geschichte. Studium - Wissenschaft - Beruf, Berlin 2008, S. 52-69. 
+                </bibl><lb/>
+                <bibl>Hans-Jürgen Pandel, Quelleninterpretation: Die schriftliche Quelle im Geschichtsunterricht, Schwalbach/Ts. <hi rendition="#sup">4</hi> 2012.</bibl>
+            </listBibl>
+            </div>
+        </body>
+    </text>
+</TEI>

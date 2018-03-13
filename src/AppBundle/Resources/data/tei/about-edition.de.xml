@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.deutschestextarchiv.de/basisformat.rng"
+type="application/xml"
+schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="dtabf" xml:lang="de">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title type="main">Edition und Editionsrichtlinien</title>
+            </titleStmt>
+            <publicationStmt>
+                <p></p>
+            </publicationStmt>
+            <sourceDesc>
+                <p></p>
+            </sourceDesc>
+        </fileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <p>Die Originaltexte sind buchstaben- und zeichengetreu transkribiert. Dazu gehört auch
+                die weitgehende Beibehaltung der ursprünglichen Interpunktion und Orthographie. Alle
+                editorischen Eingriffe werden gekennzeichnet, dasselbe gilt für Auslassungen. Nur
+                wenn es zum Leseverständnis notwendig ist, werden Ergänzungen und Angleichungen
+                vorgenommen oder Textstellen kommentiert. Diese Vorgehensweise orientiert sich an
+                der Definition einer „dokumentarischen Edition“. <note type="editorial"> Patrick
+                    Sahle, Digitale Editionsformen. Zum Umgang mit der Überlieferung unter den
+                    Bedingungen des Medienwandels, Teil 1: Das typografische Erbe, Norderstedt 2013,
+                    S. 106.</note></p>
+            <lb/>
+            <p>Das Transkript und das digitale Faksimile werden einander gegenübergestellt. Dies
+                ermöglicht die individuelle Überprüfbarkeit der Arbeitsschritte und erweitert die
+                Abschrift um visuelle Zusatzinformationen (Seitengestaltung, Schriftbild, spätere
+                Ergänzungen oder Korrekturen), die bei einer rein alphabetischen Linearisierung der
+                Quelle verloren gehen.</p>
+            <lb/>
+            <p>Die Quellentranskripte (Original und Übersetzung) werden nach den Regeln der Text
+                Encoding Initiative (TEI) ausgezeichnet, wobei ein flaches Schema gewählt wird, das
+                sich auf die grundlegende Textstruktur (etwa Dokumentart, Seiten, Absätze,
+                Überschriften) beschränkt und die Möglichkeit bietet, alle editorischen Eingriffe zu
+                kennzeichnen. Als Ausgangspunkt für die TEI-Kodierung dient TEI P5 gemäß dem
+                Basisformat des Deutschen Textarchivs (DTA-Basisformat [DTABf]). <note
+                    type="editorial">http://www.tei-c.org/Guidelines/P5/ und
+                    http://www.deutschestextarchiv.de/doku/basisformat (Zugriff: 29.8.2016). Vgl.
+                    auch Susanne Haaf/Alexander Geyken/Frank Wiegand, The DTA “Base Format”: A TEI
+                    Subset for the Compilation of a Large Reference Corpus of Printed Text from
+                    Multiple Sources, in: Journal of the Text Encoding Initiative [Online], Issue 8
+                    – December 2014 - December 2015, Selected Papers from the 2013 TEI Conference,
+                    http://jtei.revues.org/1114 ; DOI : 10.4000/jtei.1114 (Zugriff:
+                    29.8.2016).</note></p>
+            <lb/>
+            <p>In den Transkriptionen und Übersetzungen werden Personen, Institutionen und Orte mit
+                Normdaten der Gemeinsamen Normdatei (GND) beziehungsweise dem Getty Thesaurus of
+                Geographic Names (TGN) ausgezeichnet. <note type="editorial"
+                    >http://www.getty.edu/research/tools/vocabularies/tgn/ und
+                    http://www.dnb.de/DE/Standardisierung/GND/gnd_node.html (Zugriff:
+                    29.8.2016).</note> Darüber hinaus wird auf Einträge aus dem „Jüdischen Hamburg“
+                verlinkt. Außerdem konnte JudaicaLink für fast 200 Personeneinträge dieses
+                Online-Nachschlagewerks stabile Uniform Resource Names (URNs) generieren. <note
+                    type="editorial">http://www.dasjuedischehamburg.de und http://judaicalink.org
+                    (Zugriff: 29.8.2016).</note> Dies ermöglicht die bidirektionale Verknüpfung der
+                Edition mit externen Angeboten. So können ergänzende Informationen (Lebensdaten,
+                Kurzbiographien, Portraits) aus dem Linked Data Service sowie dem Entityfacts-Dienst
+                der Deutschen Nationalbibliothek (DNB) automatisiert ergänzt werden. Über
+                SeeAlso-Dienste <note type="editorial">http://beacon.findbuch.de/seealso/pnd-aks
+                    (Zugriff: 29.8.2016).</note> können zudem dynamisch weiterführende Angebote von
+                Drittanbietern wie etwa biographische Artikel in der Allgemeinen und der Neuen
+                Deutschen Biographie (ADB/NDB) sowie entsprechende Nachlässe, Handschriften und
+                gedruckte Publikationen bei Kalliope sowie in den Bibliotheksverbünden mit
+                ausgewiesen werden. <note type="editorial">https://www.deutsche-biographie.de/ sowie
+                    http://kalliope.staatsbibliothek-berlin.de/de/index.html (Zugriff:
+                    29.8.2016).</note> Umgekehrt ermöglicht die Generierung von eigenen
+                GND-Beacon-Listen externen Anbieterinnen oder Anbietern eine einfache Verknüpfung
+                ihrer Angebote mit den entsprechenden Inhalten in der Quellenedition.</p>
+            <lb/>
+            <p>Die Übersetzungen der Quellen ins amerikanische Englisch sind möglichst nah am
+                Original gehalten. Für wiederkehrende Begriffe wurden Wortlisten angelegt, um diese
+                einheitlich zu übersetzen.</p>
+        </body>
+    </text>
+</TEI>
