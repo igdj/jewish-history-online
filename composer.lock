@@ -2899,25 +2899,32 @@
         },
         {
             "name": "presta/sitemap-bundle",
-            "version": "v1.5.2",
+            "version": "v1.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/prestaconcept/PrestaSitemapBundle.git",
-                "reference": "489cdf6604524f5ef02f6c7d24a276c7018b0cb8"
+                "reference": "16a2c0eae7320e3647013e48026a6a6bd14f75df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/prestaconcept/PrestaSitemapBundle/zipball/489cdf6604524f5ef02f6c7d24a276c7018b0cb8",
-                "reference": "489cdf6604524f5ef02f6c7d24a276c7018b0cb8",
+                "url": "https://api.github.com/repos/prestaconcept/PrestaSitemapBundle/zipball/16a2c0eae7320e3647013e48026a6a6bd14f75df",
+                "reference": "16a2c0eae7320e3647013e48026a6a6bd14f75df",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
-                "symfony/symfony": "~2.2|~3.0"
+                "symfony/console": "~2.2|~3.0|~4.0",
+                "symfony/framework-bundle": "~2.2|~3.0|~4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.*",
-                "symfony/phpunit-bridge": "~2.7|~3.0"
+                "doctrine/annotations": "~1.0",
+                "phpunit/phpunit": "5.*",
+                "symfony/browser-kit": "~2.2|~3.0|~4.0",
+                "symfony/form": "~2.2|~3.0|~4.0",
+                "symfony/phpunit-bridge": "~2.7|~3.0|~4.0",
+                "symfony/security-bundle": "~2.2|~3.0|~4.0",
+                "symfony/translation": "~2.2|~3.0|~4.0",
+                "symfony/validator": "~2.2|~3.0|~4.0"
             },
             "suggest": {
                 "doctrine/doctrine-cache-bundle": "Allows to store sitemaps in cache"
@@ -2939,25 +2946,19 @@
             ],
             "authors": [
                 {
-                    "name": "David Epely",
-                    "homepage": "http://www.prestaconcept.net/",
-                    "role": "Initial developer"
-                },
-                {
-                    "name": "Alain Flaus",
-                    "homepage": "http://www.prestaconcept.net/",
-                    "role": "Maintainer, Developer"
+                    "name": "Prestaconcept",
+                    "homepage": "http://www.prestaconcept.net/"
                 }
             ],
-            "description": "A symfony 2 bundle that provides tools to build your application sitemap.",
+            "description": "A Symfony bundle that provides tools to build your application sitemap.",
             "keywords": [
                 "Sitemap",
-                "Symfony2",
                 "bundle",
                 "prestaconcept",
+                "symfony",
                 "xml"
             ],
-            "time": "2017-08-07T08:53:26+00:00"
+            "time": "2018-02-20T11:33:33+00:00"
         },
         {
             "name": "psr/http-message",
@@ -4420,16 +4421,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.34",
+            "version": "v2.8.36",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "0455b5d26c5814062d7e9ea1ac99174ca13ad80e"
+                "reference": "4fdb16d12e1fa746da67d3250a3f3668538e813d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/0455b5d26c5814062d7e9ea1ac99174ca13ad80e",
-                "reference": "0455b5d26c5814062d7e9ea1ac99174ca13ad80e",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/4fdb16d12e1fa746da67d3250a3f3668538e813d",
+                "reference": "4fdb16d12e1fa746da67d3250a3f3668538e813d",
                 "shasum": ""
             },
             "require": {
@@ -4555,7 +4556,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2018-01-29T10:48:31+00:00"
+            "time": "2018-03-05T19:06:36+00:00"
         },
         {
             "name": "technosophos/LibRIS",
@@ -4654,16 +4655,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.35.0",
+            "version": "v1.35.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "daa657073e55b0a78cce8fdd22682fddecc6385f"
+                "reference": "9c24f2cd39dc1906b76879e099970b7e53724601"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/daa657073e55b0a78cce8fdd22682fddecc6385f",
-                "reference": "daa657073e55b0a78cce8fdd22682fddecc6385f",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/9c24f2cd39dc1906b76879e099970b7e53724601",
+                "reference": "9c24f2cd39dc1906b76879e099970b7e53724601",
                 "shasum": ""
             },
             "require": {
@@ -4715,7 +4716,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-09-27T18:06:46+00:00"
+            "time": "2018-03-03T16:21:29+00:00"
         },
         {
             "name": "vnn/wordpress-rest-api-client",
