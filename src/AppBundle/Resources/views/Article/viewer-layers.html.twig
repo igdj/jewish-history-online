@@ -119,6 +119,9 @@
         </div><!-- .col -->
 
         <div class="col-xs-12 col-md-3 sidebar">
+            <h3 class="pdf-link">
+                <a href="{{ path(app.request.attributes.get('_route') ~ '-pdf', app.request.attributes.get('_route_params')) }}">{{ 'Print Version'|trans }}</a>
+            </h3>
             {{ helper.source_sidebar(article, description, interpretations, related) }}
         </div>
     </div>
