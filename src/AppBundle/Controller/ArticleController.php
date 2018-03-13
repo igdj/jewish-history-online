@@ -194,6 +194,8 @@ class ArticleController extends RenderTeiController
     }
 
     /**
+     * @Route("/article/date", name="article-index-date")
+     * @Route("/article.rss", name="article-index-rss")
      * @Route("/article", name="article-index")
      */
     public function indexAction(Request $request)
