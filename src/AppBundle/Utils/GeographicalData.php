@@ -317,6 +317,10 @@ class GeographicalData
                     $values['type'] = 'province'; // first level subdivisions (political entities)
                     break;
 
+                case 'http://vocab.getty.edu/aat/300235099':
+                    $values['type'] = 'prefecture';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300387198':
                     $values['type'] = 'district'; //third level subdivisions (political entities)
                     break;
