@@ -37,7 +37,6 @@ class SourceController extends ArticleController
         $this->renderPdf($html, str_replace(':', '-', $sourceArticle->getSlug(true)) . '.pdf');
     }
 
-
     protected function renderSourceViewer(Request $request, $uid, $sourceArticle)
     {
         if (in_array($request->get('_route'), [ 'source-jsonld' ])) {
@@ -69,7 +68,7 @@ class SourceController extends ArticleController
 
         $interpretation = $sourceArticle->getIsPartOf();
         $sourceDescription = null; // $sourceDescription is part of $interpretation
-        $related = []; // if there are multipe sources for $interpretation
+        $related = []; // if there are multiple sources for $interpretation
         if (isset($interpretation)) {
             $sourceDescription = [
                 'article' => $interpretation,
@@ -80,10 +79,15 @@ class SourceController extends ArticleController
             $entities = array_merge($entities, $entitiesSourceDescription);
             $glossaryTerms += $glossaryTermsSourceDescription;
 
+            $relatedCriteria = new \Doctrine\Common\Collections\Criteria();
+            $relatedCriteria
+                ->where($relatedCriteria->expr()->eq('isPartOf', $interpretation))
+                ->andWhere($relatedCriteria->expr()->neq('uid', $sourceArticle->getUid()));
+            $relatedCriteria->orderBy([ 'dateCreated' => 'ASC', 'name' => 'ASC' ]);
+
             $related = $this->getDoctrine()
                 ->getRepository('AppBundle:Article')
-                ->findBy([ 'isPartOf' => $interpretation ],
-                         [ 'dateCreated' => 'ASC', 'name' => 'ASC']);
+                ->matching($relatedCriteria);
         }
 
         $entityLookup = $this->buildEntityLookup($entities);
