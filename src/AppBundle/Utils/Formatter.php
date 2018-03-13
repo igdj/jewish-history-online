@@ -13,17 +13,27 @@ class Formatter
 
     public static function dateIncomplete($datestr, $locale = 'en')
     {
-        $date_parts = preg_split('/\-/', $datestr);
+        $isBCE = count($datestr) > 0 && '-' == $datestr[0];
+
+        $date_parts = preg_split('/\-/', $datestr, -1, PREG_SPLIT_NO_EMPTY);
 
         $date_parts_formatted = [];
         for ($i = 0; $i < count($date_parts); $i++) {
-            if (0 == $date_parts[$i]) {
+            if ($i > 0 && 0 == $date_parts[$i]) {
                 break;
             }
+
             $date_parts_formatted[] = $date_parts[$i];
         }
+
         if (empty($date_parts_formatted)) {
             return '';
+        }
+
+        // adjust year
+        $date_parts_formatted[0] = ltrim($date_parts_formatted[0], '0');
+        if ($isBCE) {
+            $date_parts_formatted[0] .= ' ' . ('en' == $locale ? 'BCE' : 'v. Chr.');
         }
 
         $separator = '.';
@@ -35,6 +45,7 @@ class Formatter
                 $ret[] = $date_parts_formatted[2] . ','; // day
             }
             $ret[] = $date_parts_formatted[0]; // year
+
             return join(' ', $ret);
         }
 

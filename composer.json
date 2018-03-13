@@ -39,6 +39,7 @@
         "doctrine/orm": "2.5.*",
         "stof/doctrine-extensions-bundle": "~1.2",
         "beberlei/DoctrineExtensions": "1.*",
+        "oro/doctrine-extensions": "^1.2",
 
         "jms/i18n-routing-bundle": "2.0.*",
         "jms/translation-bundle": "1.3.*",

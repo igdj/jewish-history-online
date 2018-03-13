@@ -66,7 +66,8 @@ doctrine:
         auto_mapping: true 
         dql:
             string_functions:
-                REPLACE: DoctrineExtensions\Query\Mysql\Replace
+                REPLACE:    DoctrineExtensions\Query\Mysql\Replace
+                CAST:       Oro\ORM\Query\AST\Functions\Cast
 
 stof_doctrine_extensions:
     orm:

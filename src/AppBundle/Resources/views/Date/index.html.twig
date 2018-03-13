@@ -18,11 +18,11 @@
             {% endif %}
             <li>
                 {% if event.startDate is not empty or event.endDate is not empty %}
-                    {{ event.startDate|dateincomplete }} - {{  event.endDate|dateincomplete  }}
+                    {{ event.startDate|dateincomplete }}&ndash;{{ event.endDate|dateincomplete  }}
                 {% endif %}
 
                 <a href="{% if event.gnd is not empty %}{{ path('event-by-gnd', { 'gnd' : event.gnd }) }}{% else %}{{ path('event', { 'id' : event.id }) }}{% endif %}">
-                {{ event.name }}
+                {{ event.nameLocalized(app.request.locale) }}
                 </a>
 
             </li>

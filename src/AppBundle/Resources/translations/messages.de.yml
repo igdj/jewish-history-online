@@ -95,6 +95,8 @@ sourcearticle.oneormany:            "Quelle|Quellen"
 article.oneormany:                  "Beitrag|Beiträge"
 bibitem.oneormany:                  "Bibliografie"
 epoch.century:                      "%century%. Jahrhundert"
+epoch.century-nd:                   "%century%. Jahrhundert"
+epoch.century-bce:                  "%century%. Jahrhundert v. Chr."
 epoch.decade:                       "%epoch%er-Jahre"
 Image:                              Bild
 Transcript:                         Transkript

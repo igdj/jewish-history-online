@@ -20,7 +20,7 @@ extends Article
             $date = $date->format('Y');
         }
         else {
-            if (!preg_match('/(\d{4})/', $date, $matches)) {
+            if (!preg_match('/(\-?\d{4})/', $date, $matches)) {
                 return [ $date, $date ];
             }
 
@@ -29,7 +29,12 @@ extends Article
 
         if ($date < 1900) {
             $bucket = $date - $date % 100; // centuries
-            $key = 'epoch.century';
+            if ($date < 0) {
+                $key = 'epoch.century-bce';
+            }
+            else {
+                $key = (2 == $bucket / 100) ? 'epoch.century-nd' : 'epoch.century';
+            }
         }
         else {
             $bucket = $date - $date % 10; // decade

@@ -64,8 +64,8 @@ extends Controller
         $qb->select([
                 'E'            ])
             ->from('AppBundle:Event', 'E')
-            ->where('E.status IN (0,1)')
-            ->orderBy('E.startDate')
+            ->where('E.status IN (0,1) AND E.startDate IS NOT NULL')
+            ->orderBy("CAST(E.startDate AS integer), E.startDate")
             ;
 
         $entities = $qb->getQuery()->getResult();
@@ -124,4 +124,3 @@ extends Controller
         ]);
     }
 }
-
