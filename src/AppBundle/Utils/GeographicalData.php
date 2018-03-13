@@ -337,6 +337,10 @@ class GeographicalData
                     $values['type'] = 'city district'; // Ortsteile
                     break;
 
+                case 'http://vocab.getty.edu/aat/300000778':
+                    $values['type'] = 'borough'; //
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300387071':
                     $values['type'] = 'unitary authority';
                     break;

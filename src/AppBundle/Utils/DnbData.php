@@ -16,8 +16,9 @@ abstract class DnbData
 
     protected static function normalizeString($str)
     {
-        if (! class_exists("\Normalizer", false)) {
+        if (!class_exists("\Normalizer", false)) {
             die('DOES NOT EXIST');
+
             return $str;
         }
 
@@ -32,7 +33,7 @@ abstract class DnbData
         if (preg_match('/d\-nb\.info\/gnd\/([^\/]*)$/', $uri, $matches)) {
             $url = sprintf('https://d-nb.info/gnd/%s/about/lds', $matches[1]);
         }
-        $parser->parse($url);
+        @$parser->parse($url);
         $triples = $parser->getTriples();
         $index = \ARC2::getSimpleIndex($triples, true) ; /* true -> flat version */
 
@@ -56,6 +57,7 @@ abstract class DnbData
     static function instantiateResult($index, $gnd = null)
     {
         $type = $index['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0]['value'];
+
         switch ($type) {
             case 'http://d-nb.info/standards/elementset/gnd#DifferentiatedPerson':
             case 'http://d-nb.info/standards/elementset/gnd#Pseudonym':
@@ -71,6 +73,15 @@ abstract class DnbData
                 break;
 
             case 'http://d-nb.info/standards/elementset/gnd#HistoricSingleEventOrEra':
+            case 'http://d-nb.info/standards/elementset/gnd#SubjectHeadingSensoStricto';
+                return new HistoricEventData();
+                break;
+
+            case 'http://d-nb.info/standards/elementset/gnd#ConferenceOrEvent':
+                # TODO: e.g. Wiener Kongress, http://d-nb.info/gnd/2026986-9
+            case 'http://d-nb.info/standards/elementset/gnd#SeriesOfConferenceOrEvent': # e.g. Berlinale
+            case 'http://d-nb.info/standards/elementset/gnd#HistoricSingleEventOrEra':
+            case 'http://d-nb.info/standards/elementset/gnd#SubjectHeadingSensoStricto';
                 break; // currently ignore
 
             default:
