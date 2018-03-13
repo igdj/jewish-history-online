@@ -141,6 +141,11 @@ class Builder implements ContainerAwareInterface
             ->addChild('organization-index', [
                 'label' => $translator->trans('Organizations'), 'route' => 'organization-index',
             ]);
+        /*
+        $menu['_lookup']
+            ->addChild('event-index', [
+                'label' => $translator->trans('Epochs and Events'), 'route' => 'event-index',
+            ]); */
         $menu['_lookup']
             ->addChild('bibliography-index', [
                 'label' => $translator->trans('Bibliography'), 'route' => 'bibliography-index',
@@ -254,6 +259,7 @@ class Builder implements ContainerAwareInterface
             case 'person-index':
             case 'place-index':
             case 'organization-index':
+            case 'event-index':
             case 'bibliography-index':
             case 'glossary-index':
                 $item = $menu['_lookup'][$current_route];
@@ -281,6 +287,12 @@ class Builder implements ContainerAwareInterface
                 $item = $item->addChild($current_route, [ 'label' => 'Detail', 'uri' => '#' ]);
                 break;
 
+            case 'event':
+            case 'event-by-gnd':
+                $item = $menu['_lookup']['event-index'];
+                // $item = $item->addChild($current_route, [ 'label' => 'Detail', 'uri' => '#' ]);
+                break;
+
             case 'article-index':
             case 'article-index-date':
                 $item = $menu['_lookup']['article-index'];
@@ -303,6 +315,7 @@ class Builder implements ContainerAwareInterface
                 break;
 
             // experimental stuff
+            case 'home-preview':
             case 'labs-index':
             case 'person-by-year':
             case 'person-by-birthplace':

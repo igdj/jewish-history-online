@@ -85,8 +85,8 @@ class AppExtension extends \Twig_Extension
 
         return /** @Ignore */ $this->translator->trans($class, [
             '%epoch%' => $epoch,
-            '%century%' => intval($epoch / 100) + 1,
-            '%decade%' => $epoch % 100,
+            '%century%' => is_numeric($epoch) ? intval($epoch / 100) + 1 : '',
+            '%decade%' => is_numeric($epoch) ?  $epoch % 100 : '',
         ]);
     }
 

@@ -1,0 +1,173 @@
+{% extends 'AppBundle:Default:base.html.twig' %}
+
+{% import 'AppBundle:Shared:helper.html.twig' as helper %}
+
+{% macro source_display(source, entry) %}
+    <div class="container-fluid" style="padding: 20px">
+        <div class="row">
+            <div class="col-sm-4 hidden-xs">
+
+        {% set path = path('source', { 'uid' : source.uid }) %}
+        {% set thumb = "/viewer/source-%05d/thumb.jpg"|format(source.uid|replace({'jgo:source-' : ''})) %}
+        {% if file_exists(webDir ~ thumb) %}
+            <a href="{{ path }}"><img src="{{ app.request.basepath }}{{ thumb }}" alt="" style="width: 100%; height: auto;"></a>
+        {% endif %}
+            </div>
+            <div class="col-sm-8 xs-12">
+        <a href="{{ path }}">
+            <b>{{ source.name|truncate(160, true, '...') }}</b>{% if source.contentLocation is not empty %}, {{ source.contentLocation.name }}{% endif %}
+        {% if source.dateCreated is not empty %},
+            {% if source.dateCreatedDisplay is not empty %}{{ source.dateCreatedDisplay }}{% else %}{{ source.dateCreated|dateincomplete }}{% endif %}
+        {% endif %}
+        </a>
+        {% if source.isPartOf is not null %}
+            <p>
+                <a href="{{ path('article', { 'slug' : source.isPartOf.getSlug(true) }) }}">
+                {% if 'en' == app.request.locale %}
+                    <b>Source Interpretation</b> by
+                {% else %}
+                    <b>Interpretation</b> von
+                {% endif %}
+                {{ source.isPartOf.authorDisplay(true) }}
+                {#% if source.isPartOf.datePublished is not empty %}({{ source.isPartOf.datePublished|dateincomplete }}){% endif %#}
+                </a>
+            </p>
+        {% endif %}
+        {% if entry.children is not empty and 'de' ==  app.request.getLocale() %}
+            {% for child in entry.children %}
+                {% set url = 'http://www.geschichtomat.de/' %}
+                {% if child.url_additional is not empty %}{% set url = child.url_additional %}{% endif %}
+            <a href="{{ url }}" target="_blank"><img src="{{ app.request.basepath }}/img/education/geschichtomat.png" style="height: 1.2em; width: auto; padding-bottom: 4px"/></a>
+                <div class="embed-responsive embed-responsive-16by9" style="margin-bottom: 16px"><iframe class="embed-responsive-item" src="{{ child.url }}" frameborder="0" allowfullscreen></iframe></div>
+            {% endfor %}
+        {% endif %}
+            </div>
+        </div>
+        </div>
+{% endmacro %}
+
+{% block head %}
+    <style>
+.thumbnail {
+    border-radius: 0 !important;
+    padding: 0;
+    position: relative;
+}
+
+.caption {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0.9;
+    background-color: #8E8E8E;
+}
+
+.caption h4 {
+    color: white;
+    padding: 0;
+    margin: 0;
+}
+
+.img-responsive {
+    border: none !important;
+}
+
+    </style>
+{% endblock %}
+
+{% block body %}
+    <h1>{{ pageTitle }}</h1>
+    <div class="row">
+        <div class="col-sm-12">
+{% if 'en' == app.request.locale %}
+            <p>The material here presented covers a wide range of thematic aspects and is particularly suitable for use in high school and college education.</p>
+{% else %}
+            <p>Die folgenden Beiträge aus verschiedenen Themenbereichen eignen sich besonders für den Einsatz im schulischen und universitären Unterricht.</p>
+            <p>Wenn möglich verlinken wir auf im Projektunterricht entstandene Beiträge
+des <a href="http://www.geschichtomat.de/">Geschichtomat</a>.</p>
+
+            {#
+            <p>Hinweis: Die mit <img src="./img/education/geschichtsbuch.png" style="height: 1.2em; width: auto"/> markierten Texte und Arbeitsblätter wurden vom <a href="https://geschichtsbuch.hamburg.de/">Hamburg-Geschichtsbuch</a> für den Einsatz auf der Sekundarstufe I und II erstellt.</p>
+            #}
+{% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="panel-group" id="accordion">
+            {% for topic, entries in structure %}
+                {% set slug = topic|slugify %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#{{ slug }}">
+                            {{ topic }}
+                        </a>
+                    </h4>
+                </div><!-- .panel-heading -->
+                <div id="{{ slug }}" class="panel-collapse collapse {% if loop.first %}in{% endif %}">
+                    <div class="container-fluid">
+                        {% set count = 0 %}
+                        {% for entry in entries %}
+                            {% if sourcesByUid[entry.url] is defined or entry.provider == 'Geschichtomat'or entry.title is not empty %}
+                        {% if count % 2 == 0 %}
+                            {% if count != 0 %}
+                        </div><!-- .row -->
+                        {% endif %}
+                        <div class="row">
+                        {% endif %}
+                        {% set count = count + 1 %}
+
+                            <div class="col-sm-6">
+                            {% if sourcesByUid[entry.url] is defined %}
+                                {% set source = sourcesByUid[entry.url] %}
+                                {{ _self.source_display(source, entry) }}
+                            {% elseif entry.provider == 'Geschichtomat' or entry.title is not empty %}
+                                {% if 'de' ==  app.request.getLocale() %}
+                                    <h4>Zusätzliche Materialien</h4>
+                                    {% if entry.provider == 'Geschichtomat' %}
+                                        {% set url = 'http://www.geschichtomat.de/' %}
+                                        {% if entry.url_additional is not empty %}{% set url = entry.url_additional %}{% endif %}
+                                        <a href="{{ url }}" target="_blank"><img src="./img/education/geschichtomat.png" style="height: 1.2em; width: auto; padding-bottom: 4px"/></a>
+                                        <div class="embed-responsive embed-responsive-16by9" style="margin-bottom: 16px"><iframe class="embed-responsive-item" src="{{ entry.url }}" frameborder="0" allowfullscreen></iframe></div>
+                                    {% else %}
+                                        <a href="{{ entry.url }}">{{ entry.title }}</a>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                            </div>
+                        {% endif %}
+
+                        {% if loop.last %}
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div><!-- .panel-collapse -->
+            </div><!-- .panel -->
+            {% endfor %}
+        </div><!-- .panel-group -->
+
+{% if 'en' == app.request.locale %}
+        <h4>Additional Information</h4>
+        <ul>
+            <li><a href="{{ path('about-educationguidelines') }}">Guidelines for the Use of Materials in the Key Documents Edition</a></li>
+            <li><a href="{{ path('about-educationsourceinterpretation') }}">Information on Source Interpretation for Students</a></li>
+        </ul>
+
+        <p>We welcome <a href="{{ path('contact') }}">Feedback and Questions</a>.</p>
+{% else %}
+        <h4>Weitere Informationen</h4>
+        <ul>
+            <li><a href="{{ path('about-educationguidelines') }}">Leitfaden für die Nutzung der Materialien</a></li>
+            <li><a href="{{ path('about-educationsourceinterpretation') }}">Infos zur Quelleninterpretation für Studierende</a></li>
+        </ul>
+
+        <p>Wir freuen uns über <a href="{{ path('contact') }}">Feedback und Fragen</a>.</p>
+{% endif %}
+    </div><!-- .row -->
+{% endblock %}

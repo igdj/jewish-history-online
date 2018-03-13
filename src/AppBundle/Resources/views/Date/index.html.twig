@@ -1,0 +1,54 @@
+{% extends 'AppBundle:Default:base.html.twig' %}
+{% block body %}
+    {% set embedded = false %}
+    <h1>{{ pageTitle }}</h1>
+    <div class="row">
+        <div class="col-xs-12 {% if not embedded %}col-md-9{% endif %}">
+        {% if events is not empty %}
+        {% set last_epoch = '' %}
+        {% set epochs = [] %}
+        {% for event in events %}
+            {% set epochLabel = event.epochLabel %}
+            {% if epochLabel[0] != last_epoch %}
+            </ul>
+            <h2 id="{{ epochLabel[0] }}">{{ epochLabel[0]|epoch(epochLabel[1]) }}</h2>
+            <ul class="list-unstyled">
+                {% set last_epoch = epochLabel[0] %}
+                {% set epochs = epochs|merge([epochLabel])%}
+            {% endif %}
+            <li>
+                {% if event.startDate is not empty or event.endDate is not empty %}
+                    {{ event.startDate|dateincomplete }} - {{  event.endDate|dateincomplete  }}
+                {% endif %}
+
+                <a href="{% if event.gnd is not empty %}{{ path('event-by-gnd', { 'gnd' : event.gnd }) }}{% else %}{{ path('event', { 'id' : event.id }) }}{% endif %}">
+                {{ event.name }}
+                </a>
+
+            </li>
+        {% endfor %}
+            </ul>
+        {% else %}
+            Es wurden keine Ereignisse gefunden
+        {% endif %}
+        </div>
+        <div class="col-md-3 hidden-sm hidden-xs sidebar">
+    {% if not embedded and epochs is not empty %}
+            <div id="epoch-navigation" class="container-fluid box" style="background-color: white">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>{{ 'Go to'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row box-color-content">
+                    <div class="col-sm-12">
+        {% for epochLabel in epochs %}
+                <h5><a href="#{{ epochLabel[0] }}">{{ epochLabel[0]|epoch(epochLabel[1]) }}</a></h5>
+        {% endfor %}
+                    </div>
+                </div>
+            </div>
+    {% endif %}
+        </div>
+    </div><!-- .row -->
+{% endblock %}

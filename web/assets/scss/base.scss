@@ -873,16 +873,30 @@ footer {
     }
 }
 
-.route-home {
+.route-home, .route-home-preview {
+    #col-main {
+        .box-header {
+            margin-top: 2em;
+        }
+
+        .box-content {
+            border-left: 1px solid $color-gray-medium;
+            border-right: 1px solid $color-gray-medium;
+            border-bottom: 1px solid $color-gray-medium;
+        }
+
+        h4 a {
+            color: #fff;
+        }
+    }
+
     .topic {
         margin-bottom: 10px;
 
-        h4 {
+        h4, h5 {
             /* border-top: 1px solid $color-gray-dark; */
-            font-size: 16px;
             padding-top: 5px;
             color: $color-gray-dark;
-            min-height: 36px;
             /* text-transform: uppercase; */
             position: relative;
 
@@ -891,6 +905,40 @@ footer {
                 bottom: 0;
             }
         }
+
+        h4 {
+            font-size: 16px;
+            min-height: 36px;
+        }
+        h5 {
+            font-size: 14px;
+            min-height: 32px;
+        }
+    }
+}
+
+.route-education-index {
+    .panel-group .panel {
+        /* override bootstrap default */
+        border-radius: 0px;
+    }
+
+    .panel-default > .panel-heading {
+        background-color: $color-color-dark;
+    }
+
+    .panel-title > a {
+        color: white !important;
+    }
+
+    .panel-default {
+        border: none;
+    }
+
+    .panel-collapse {
+        border-left: 1px solid $color-gray-medium;
+        border-right: 1px solid $color-gray-medium;
+        border-bottom: 1px solid $color-gray-medium;
     }
 }
 
@@ -952,11 +1000,19 @@ body.route-article-index-date #switch-article-index-date
 body.route-topic-background {
     .article {
         .dta-figure {
-                img {
-                    max-height: 400px;
-                }
+            img {
+                max-height: 400px;
+            }
         }
     }
+}
+
+body.route-about-implementation {
+        .dta-figure {
+            img {
+                max-width: 100%;
+            }
+        }
 }
 
 .list-inline.switch {

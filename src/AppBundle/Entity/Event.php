@@ -531,6 +531,10 @@ implements \JsonSerializable, JsonLdSerializable
         return $ret;
     }
 
+    public function getEpochLabel()
+    {
+        return SourceArticle::buildDateBucket($this->startDate);
+    }
 
     // solr-stuff
     public function indexHandler()
