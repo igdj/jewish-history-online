@@ -28,6 +28,13 @@
    </xsl:choose>
   </xsl:template>
 
+  <!-- from http://www.deutschestextarchiv.de/basisformat_ms.rng -->
+  <xsl:template match="tei:del">
+    <xsl:element name="span">
+      <xsl:call-template name="applyRendition"/>
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
 
 <xsl:output method="html" doctype-system="about:legacy-compat"/>
 

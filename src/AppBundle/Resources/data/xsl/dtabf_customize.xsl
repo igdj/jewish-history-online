@@ -20,7 +20,14 @@
    </xsl:choose>
   </xsl:template>
 
-  <!-- shared with dtabf_base.xsl -->
+  <!-- from http://www.deutschestextarchiv.de/basisformat_ms.rng -->
+  <xsl:template match="tei:del">
+    <xsl:element name="span">
+      <xsl:call-template name="applyRendition"/>
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+
 <xsl:template match='tei:gap'>
   <span class="gap">
     <xsl:text>[</xsl:text>

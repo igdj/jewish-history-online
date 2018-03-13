@@ -121,7 +121,7 @@
 </xsl:template>
 
   <!-- renditions -->
-  <xsl:template match="tei:hi">
+  <xsl:template match="tei:hi|tei:del">
     <xsl:choose>
     <xsl:when test="contains(@rendition,'#right') or contains(@rendition,'#et') or ends-with(@rendition,'#c')">
         <!-- mpdf doesn't respect display:block for span,
@@ -140,6 +140,7 @@
     </xsl:choose>
   </xsl:template>
   <!-- end renditions -->
+
 
   <!-- begin marginals -->
   <!-- mpdf doesn't respect display:block for span,
