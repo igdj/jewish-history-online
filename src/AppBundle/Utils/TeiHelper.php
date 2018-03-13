@@ -179,9 +179,6 @@ class TeiHelper
         {
             unset($article->dateModified);
         }
-        if (!isset($article->dateModified)) {
-            $article->dateModified = null; // clear previous entries
-        }
 
         // license
         $result = $header->xpath('./tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence');
@@ -714,6 +711,7 @@ class TeiHelper
             '{http://www.tei-c.org/ns/1.0}persName' => '\\AppBundle\\Utils\\CollectingReader::collectElement',
             '{http://www.tei-c.org/ns/1.0}placeName' => '\\AppBundle\\Utils\\CollectingReader::collectElement',
             '{http://www.tei-c.org/ns/1.0}orgName' => '\\AppBundle\\Utils\\CollectingReader::collectElement',
+            '{http://www.tei-c.org/ns/1.0}date' => '\\AppBundle\\Utils\\CollectingReader::collectElement',
         ];
 
         $additional = [];
@@ -721,10 +719,14 @@ class TeiHelper
             $reader->xml($input);
             $output = $reader->parse();
             foreach ($output as $entity) {
-                if (empty($entity['attributes']['ref'])) {
+                $attribute = '{http://www.tei-c.org/ns/1.0}date' == $entity['name']
+                    ? 'corresp' : 'ref';
+                if (empty($entity['attributes'][$attribute])) {
                   continue;
                 }
-                $uri = trim($entity['attributes']['ref']);
+
+                $uri = trim($entity['attributes'][$attribute]);
+
                 switch ($entity['name']) {
                     case '{http://www.tei-c.org/ns/1.0}placeName':
                         $type = 'place';
@@ -764,6 +766,19 @@ class TeiHelper
 
                       case '{http://www.tei-c.org/ns/1.0}orgName':
                         $type = 'organization';
+                        if (preg_match('/^'
+                                       . preg_quote('http://d-nb.info/gnd/', '/')
+                                       . '\d+\-?[\dxX]?$/', $uri))
+                        {
+                        }
+                        else {
+                            // die($uri);
+                            unset($uri);
+                        }
+                        break;
+
+                      case '{http://www.tei-c.org/ns/1.0}date':
+                        $type = 'event';
                         if (preg_match('/^'
                                        . preg_quote('http://d-nb.info/gnd/', '/')
                                        . '\d+\-?[\dxX]?$/', $uri))
