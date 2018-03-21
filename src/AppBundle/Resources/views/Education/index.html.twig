@@ -2,6 +2,26 @@
 
 {% import 'AppBundle:Shared:helper.html.twig' as helper %}
 
+{% macro icon_ghdi() %}
+<img src="{{ app.request.basepath }}/img/education/ghdi_{{ app.request.locale }}.jpg" style="float: left; height: 25px; margin-top: 0.2em; padding-right: 0.4em; padding-bottom: 0.3em; width: auto;"/>
+{% endmacro %}
+{% macro children_display(children) %}
+    {% for child in children %}
+        {% if child.provider ==  'Geschichtomat' and 'de' ==  app.request.getLocale() %}
+            {% set url = 'http://www.geschichtomat.de/' %}
+            {% if child.url_additional is not empty %}{% set url = child.url_additional %}{% endif %}
+        <a href="{{ url }}" target="_blank"><img src="{{ app.request.basepath }}/img/education/geschichtomat.png" style="height: 1.2em; width: auto; padding-bottom: 4px"/></a>
+        <div class="embed-responsive embed-responsive-16by9" style="margin-bottom: 16px"><iframe class="embed-responsive-item" src="{{ child.url }}" frameborder="0" allowfullscreen></iframe></div>
+        {% elseif child.title is not empty %}
+            {% if 'de' ==  app.request.getLocale() %}
+                <div style="clear: left">{{ _self.icon_ghdi() }} <a href="{{ child.url }}&amp;language=german" target="_blank">{{ child.title['de'] }}</a></div>
+            {% elseif 'en' ==  app.request.getLocale() %}
+                <div style="clear: left">{{ _self.icon_ghdi() }} <a href="{{ child.url }}&amp;language=english" target="_blank">{{ child.title['en'] }}</a></div>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
 {% macro source_display(source, entry) %}
     <div class="container-fluid" style="padding: 20px">
         <div class="row">
@@ -33,13 +53,8 @@
                 </a>
             </p>
         {% endif %}
-        {% if entry.children is not empty and 'de' ==  app.request.getLocale() %}
-            {% for child in entry.children %}
-                {% set url = 'http://www.geschichtomat.de/' %}
-                {% if child.url_additional is not empty %}{% set url = child.url_additional %}{% endif %}
-            <a href="{{ url }}" target="_blank"><img src="{{ app.request.basepath }}/img/education/geschichtomat.png" style="height: 1.2em; width: auto; padding-bottom: 4px"/></a>
-                <div class="embed-responsive embed-responsive-16by9" style="margin-bottom: 16px"><iframe class="embed-responsive-item" src="{{ child.url }}" frameborder="0" allowfullscreen></iframe></div>
-            {% endfor %}
+        {% if entry.children is not empty %}
+            {{ _self.children_display(entry.children) }}
         {% endif %}
             </div>
         </div>
@@ -85,10 +100,11 @@
         <div class="col-sm-12">
 {% if 'en' == app.request.locale %}
             <p>The material here presented covers a wide range of thematic aspects and is particularly suitable for use in high school and college education.</p>
+            <p>We also provide links to related sources from <a href="http://germanhistorydocs.ghi-dc.org/Index.cfm?language=english">German History in Documents and Images</a>.</p>
 {% else %}
             <p>Die folgenden Beiträge aus verschiedenen Themenbereichen eignen sich besonders für den Einsatz im schulischen und universitären Unterricht.</p>
             <p>Wenn möglich verlinken wir auf im Projektunterricht entstandene Beiträge
-des <a href="http://www.geschichtomat.de/">Geschichtomat</a>.</p>
+des <a href="http://www.geschichtomat.de/">Geschichtomat</a> sowie Quellen aus <a href="http://germanhistorydocs.ghi-dc.org/Index.cfm?language=german">Deutsche Geschichte in Dokumenten und Bildern</a>.</p>
 
             {#
             <p>Hinweis: Die mit <img src="./img/education/geschichtsbuch.png" style="height: 1.2em; width: auto"/> markierten Texte und Arbeitsblätter wurden vom <a href="https://geschichtsbuch.hamburg.de/">Hamburg-Geschichtsbuch</a> für den Einsatz auf der Sekundarstufe I und II erstellt.</p>
@@ -135,7 +151,16 @@ des <a href="http://www.geschichtomat.de/">Geschichtomat</a>.</p>
                                         <a href="{{ url }}" target="_blank"><img src="./img/education/geschichtomat.png" style="height: 1.2em; width: auto; padding-bottom: 4px"/></a>
                                         <div class="embed-responsive embed-responsive-16by9" style="margin-bottom: 16px"><iframe class="embed-responsive-item" src="{{ entry.url }}" frameborder="0" allowfullscreen></iframe></div>
                                     {% else %}
-                                        <a href="{{ entry.url }}">{{ entry.title }}</a>
+                                        {{ _self.icon_ghdi() }} <a href="{{ entry.url }}&amp;language=german" target="_blank">{{ entry.title['de'] }}</a>
+                                    {% endif %}
+                                    {% if entry.children is not empty %}
+                                        {{ _self.children_display(entry.children) }}
+                                    {% endif %}
+                                {% elseif 'en' ==  app.request.getLocale() and entry.title is not empty %}
+                                    <h4>Additional Material</h4>
+                                    {{ _self.icon_ghdi() }} <a href="{{ entry.url }}&amp;language=english" target="_blank">{{ entry.title['en'] }}</a>
+                                    {% if entry.children is not empty %}
+                                        {{ _self.children_display(entry.children) }}
                                     {% endif %}
                                 {% endif %}
                             {% endif %}

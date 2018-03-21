@@ -1,0 +1,386 @@
+{
+    "Emanzipation, rechtliche Gleichstellung und Aufklärung": [
+        {
+            "url": "jgo:article-38"
+        },
+        {
+            "url": "jgo:article-29"
+        },
+        {
+            "url": "jgo:article-11"
+        },
+        {
+            "url": "jgo:article-32"
+        },
+        {
+            "url": "jgo:article-194"
+        },
+        {
+            "url": "jgo:article-91"
+        },
+        {
+            "provider": "GHDI",
+            "url": "http://germanhistorydocs.ghi-dc.org/sub_image.cfm?image_id=1349",
+            "title": {
+                "de": "Gesetzliche Gleichberechtigung für Juden (3. Juli 1869)",
+                "en": "Legal Emancipation of the Jews (July 3, 1869)"
+            }
+        }
+    ],
+    "Jüdische Religion und Kultur, Vereinswesen": [
+        {
+            "url": "jgo:article-79",
+            "children": [
+                {
+                    "url": "https://www.youtube.com/embed/HHLBe0cPsGw",
+                    "provider": "Geschichtomat",
+                    "url_additional": "http://www.geschichtomat.de/orte/geschichten/#89"
+                }
+            ]
+        },
+        {
+            "url": "jgo:article-5"
+        },
+        {
+            "url": "jgo:article-121"
+        },
+        {
+            "url": "jgo:article-167"
+        },
+        {
+            "url": "jgo:article-136"
+        },
+        {
+            "url": "jgo:article-177"
+        },
+        {
+            "url": "jgo:article-35"
+        }
+    ],
+    "Alltag und Familie": [
+        {
+            "url": "jgo:article-79"
+        },
+        {
+            "url": "jgo:article-64",
+            "children": [
+                {
+                    "url": "https://www.youtube.com/embed/VfR2-KweOgs",
+                    "provider": "Geschichtomat",
+                    "url_additional": "http://www.geschichtomat.de/orte/geschichten/#92"
+                }
+            ]
+        },
+        {
+            "url": "jgo:article-63"
+        },
+        {
+            "url": "jgo:article-5",
+            "children": [
+                {
+                    "url": "https://www.youtube.com/embed/h2O9qstsFqU",
+                    "provider": "Geschichtomat",
+                    "url_additional": "http://www.geschichtomat.de/orte/geschichten/#88"
+                }
+            ]
+        },
+        {
+            "url": "jgo:article-195"
+        },
+        {
+            "url": "jgo:article-95"
+        },
+        {
+            "url": "jgo:article-91"
+        },
+        {
+            "url": "jgo:article-85"
+        },
+        {
+            "url": "jgo:article-84",
+            "children": [
+                {
+                    "url": "https://www.youtube.com/embed/2TqqyihL07I",
+                    "provider": "Geschichtomat",
+                    "url_additional": "http://www.geschichtomat.de/orte/geschichten/#46"
+                }
+            ]
+        },
+        {
+            "url": "jgo:article-53"
+        },
+        {
+            "url": "jgo:article-87"
+        },
+        {
+            "url": "jgo:article-177"
+        },
+        {
+            "url": "jgo:article-2"
+        },
+        {
+            "url": "jgo:article-178"
+        },
+        {
+            "url": "jgo:article-211"
+        },
+        {
+            "provider": "Geschichtomat",
+            "url": "https://www.youtube.com/embed/TZat3JNd414",
+            "url_additional": "http://www.geschichtomat.de/orte/geschichten/#87"
+        }
+    ],
+    "Migration": [
+        {
+            "url": "jgo:article-169",
+            "children": [
+                {
+                    "url": "https://www.youtube.com/embed/WMdsQRB-ym8",
+                    "provider": "Geschichtomat",
+                    "url_additional": "http://www.geschichtomat.de/orte/geschichten/#90"
+                }
+            ]
+        },
+        {
+            "url": "jgo:article-82"
+        },
+        {
+            "url": "jgo:article-53"
+        },
+        {
+            "url": "jgo:article-87"
+        },
+        {
+            "url": "jgo:article-159"
+        },
+        {
+            "url": "jgo:article-168",
+            "children": [
+                {
+                    "url": "https://www.youtube.com/embed/2T4g98MmYE4",
+                    "provider": "Geschichtomat",
+                    "url_additional": "http://www.geschichtomat.de/orte/geschichten/#91"
+                }
+            ]
+        }
+    ],
+    "Antisemitismus und Judenverfolgung": [
+        {
+            "url": "jgo:article-63"
+        },
+        {
+            "url": "jgo:article-190"
+        },
+        {
+            "url": "jgo:article-95"
+        },
+        {
+            "url": "jgo:article-120"
+        },
+        {
+            "url": "jgo:article-112"
+        },
+        {
+            "url": "jgo:article-86"
+        },
+        {
+            "url": "jgo:article-6"
+        },
+        {
+            "url": "jgo:article-84"
+        },
+        {
+            "url": "jgo:article-2"
+        },
+        {
+            "url": "jgo:article-150"
+        },
+        {
+            "url": "jgo:article-113"
+        }
+    ],
+    "Nationalsozialismus": [
+        {
+            "url": "jgo:article-86"
+        },
+        {
+            "url": "jgo:article-84"
+        },
+        {
+            "url": "jgo:article-85"
+        },
+        {
+            "url": "jgo:article-149",
+            "children": [
+                {
+                    "url": "https://www.youtube.com/embed/7hkOyyqXxkA",
+                    "provider": "Geschichtomat",
+                    "url_additional": "http://www.geschichtomat.de/orte/geschichten/#125"
+                }
+            ]
+        },
+        {
+            "url": "jgo:article-67"
+        },
+        {
+            "url": "jgo:article-94",
+            "children": [
+                {
+                    "url": "http://germanhistorydocs.ghi-dc.org/sub_image.cfm?image_id=1954",
+                    "provider": "GHDI",
+                    "title": {
+                        "de": "Massendeportation von etwa 17.000 polnischen Juden in das deutsch-polnische Grenzgebiet (1. Dezember 1938)",
+                        "en": "Deportation of about 17,000 Polish Jews to the German-Polish Border (December 1, 1938)"
+                    }
+                }
+            ]
+        },
+        {
+            "url": "jgo:article-150",
+            "children": [
+                {
+                    "url": "https://www.youtube.com/embed/Em71jWZSm2Y",
+                    "provider": "Geschichtomat",
+                    "url_additional": "http://www.geschichtomat.de/orte/geschichten/#10"
+                }
+            ]
+        },
+        {
+            "url": "jgo:article-62",
+            "children": [
+                {
+                    "url": "https://www.youtube.com/embed/dOXp_zsPrIY ",
+                    "provider": "Geschichtomat",
+                    "url_additional": "http://www.geschichtomat.de/orte/geschichten/#107"
+                }
+            ]
+        },
+        {
+            "url": "jgo:article-200"
+        },
+        {
+            "url": "jgo:article-2"
+        },
+        {
+            "provider": "GHDI",
+            "url": "http://germanhistorydocs.ghi-dc.org/sub_document.cfm?document_id=1520",
+            "title": {
+                "de": "Gesetz zur Wiederherstellung des Berufsbeamtentums (7. April 1933)",
+                "en": "Law for the Restoration of the Professional Civil Service (April 7, 1933)"
+            },
+            "children": [
+                {
+                    "url": "http://germanhistorydocs.ghi-dc.org/sub_document.cfm?document_id=1523",
+                    "provider": "GHDI",
+                    "title": {
+                        "de": "Reichsbürgergesetz (15. September 1935) und erste Verordnung zum Reichsbürgergesetz (14. November 1935)",
+                        "en": "The Reich Citizenship Law (September 15, 1935) and the First Regulation to the Reich Citizenship Law (November 14, 1935)"
+                    }
+                }
+            ]
+        }
+    ],
+    "Jüdisches Leben nach 1945": [
+        {
+            "url": "jgo:article-114"
+        },
+        {
+            "url": "jgo:article-89",
+            "children": [
+                {
+                    "url": "http://germanhistorydocs.ghi-dc.org/sub_document.cfm?document_id=4500",
+                    "provider": "GHDI",
+                    "title": {
+                        "de": "Kommuniqué zur Wiedergutmachung gegenüber Israel und den Juden (10. September 1952)",
+                        "en": "Communiqué Regarding Restitution for Israel and the Jews (September 10, 1952)"
+                    }
+                }
+            ]
+        },
+        {
+            "url": "jgo:article-66"
+        },
+        {
+            "url": "jgo:article-188"
+        },
+        {
+            "url": "jgo:article-21"
+        },
+        {
+            "url": "jgo:article-211"
+        }
+    ],
+    "Ego-Dokumente": [
+        {
+            "url": "jgo:article-53"
+        },
+        {
+            "url": "jgo:article-87"
+        },
+        {
+            "url": "jgo:article-94",
+            "children": [
+                {
+                    "url": "http://germanhistorydocs.ghi-dc.org/sub_image.cfm?image_id=1954",
+                    "provider": "GHDI",
+                    "title": {
+                        "de": "Massendeportation von etwa 17.000 polnischen Juden in das deutsch-polnische Grenzgebiet (1. Dezember 1938)",
+                        "en": "Deportation of about 17,000 Polish Jews to the German-Polish Border (December 1, 1938)"
+                    }
+                }
+            ]
+        },
+        {
+            "url": "jgo:article-62"
+        },
+        {
+            "url": "jgo:article-2"
+        }
+    ],
+    "Erinnern und Gedenken": [
+        {
+            "url": "jgo:article-26",
+            "children": [
+                {
+                    "url": "https://www.youtube.com/embed/xao8xmpSeig",
+                    "provider": "Geschichtomat",
+                    "url_additional": "http://www.geschichtomat.de/orte/geschichten/#167"
+                },
+                {
+                    "url": "http://germanhistorydocs.ghi-dc.org/sub_document.cfm?document_id=341",
+                    "provider": "GHDI",
+                    "title": {
+                        "de": "Excerpts from the Pamphlet by Gabriel Riesser proposing the Emancipation of the Jews (1831)",
+                        "en": "Auszüge aus der Flugschrift von Gabriel Riesser zur Emanzipation der Juden (1831)"
+                    }
+                }
+            ]
+        },
+        {
+            "url": "jgo:article-45"
+        },
+        {
+            "url": "jgo:article-171",
+            "children": [
+                {
+                    "url": "https://www.youtube.com/embed/QoQ6s0IhDl0",
+                    "provider": "Geschichtomat",
+                    "url_additional": "http://www.geschichtomat.de/orte/geschichten/#1"
+                },
+                {
+                    "url": "https://www.youtube.com/embed/L71zyCewutc",
+                    "provider": "Geschichtomat",
+                    "url_additional": "http://www.geschichtomat.de/orte/geschichten/#45"
+                }
+            ]
+        },
+        {
+            "url": "jgo:article-188"
+        },
+        {
+            "provider": "Geschichtomat",
+            "url": "https://www.youtube.com/embed/soQ52FfTzSI",
+            "url_additional": "http://www.geschichtomat.de/orte/geschichten/#145"
+        }
+    ]
+}
