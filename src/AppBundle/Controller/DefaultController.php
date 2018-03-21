@@ -18,6 +18,7 @@ extends TopicController
 
     /**
      * @Route("/", name="home")
+     * @Route("/preview", name="home-preview")
      */
     public function indexAction(Request $request)
     {
@@ -37,6 +38,7 @@ extends TopicController
                     'per_page' => 4,
                     'lang' => $request->getLocale(),
                 ]);
+
                 if (!empty($posts)) {
                     foreach ($posts as $post) {
                         $article = new \AppBundle\Entity\Article();
@@ -53,7 +55,8 @@ extends TopicController
             }
         }
 
-        return $this->render('AppBundle:Default:index.html.twig', [
+        return $this->render('home-preview' == $request->get('_route')
+            ? 'AppBundle:Default:home-preview.html.twig' : 'AppBundle:Default:home.html.twig', [
             'pageTitle' => $this->get('translator')->trans('Welcome'),
             'topics' => $this->buildTopicsDescriptions($request->getLocale()),
             'markers' => $markers,

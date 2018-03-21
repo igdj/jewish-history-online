@@ -1,0 +1,454 @@
+{% extends 'AppBundle:Default:base.html.twig' %}
+
+{% import 'AppBundle:Shared:map-leaflet.html.twig' as map %}
+
+{% block head %}
+    {{ map.head() }}
+    {{ map.head_markercluster() }}
+
+    <script>
+    // see https://www.jquery-az.com/boots/demo.php?ex=8.0_4
+    $( document ).ready(function() {
+        $( '.carousel[data-type="multi"] .item' ).each(function(){
+            var next = $( this ).next();
+            if (!next.length) {
+                next = $( this ).siblings(':first');
+            }
+
+            next.children(':first-child').clone().appendTo($( this ));
+
+            for (var i = 0; i < 2; i++) {
+                next = next.next();
+                if (!next.length) {
+                    next = $( this ).siblings(':first');
+                }
+                next.children(':first-child').clone().appendTo($( this ));
+            }
+        });
+    });
+    </script>
+
+    <style>
+        /* topic-carousel */
+
+        @media (min-width: 992px ) {
+            .carousel-inner .active.left {
+                left: -25%;
+            }
+            .carousel-inner .next {
+                left:  25%;
+            }
+            .carousel-inner .prev {
+                left: -25%;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 991px ) {
+            .carousel-inner .active.left {
+                left: -33.3%;
+            }
+            .carousel-inner .next {
+                left:  33.3%;
+            }
+            .carousel-inner .prev {
+                left: -33.3%;
+            }
+            .active > div:first-child {
+                display:block;
+            }
+            .active > div:first-child + div {
+                display:block;
+            }
+            .active > div:last-child {
+                display:none;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .carousel-inner .active.left {
+                left: -100%;
+            }
+            .carousel-inner .next {
+                left:  100%;
+            }
+            .carousel-inner .prev {
+                left: -100%;
+            }
+            .active > div {
+                display:none;
+            }
+            .active > div:first-child {
+                display:block;
+            }
+        }
+
+        #topic .carousel-control.left, #topic .carousel-control.right {
+            background-image: none !important;
+            filter: none !important;
+            opacity: 1 !important;
+            color: #e0e0e0;
+        }
+
+        #topic .carousel-control.left:hover, #topic .carousel-control.right:hover {
+            color: #fff;
+        }
+        </style>
+{% endblock %}
+
+{% block contenttop %}
+{% embed 'AppBundle:Default:contenttop_skeleton.html.twig' %}
+
+{% block carousel %}
+    <div class="row">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel"   data-interval="10000">
+            <!-- Indicators
+            <ol class="carousel-indicators">
+              <li data-target="#carousel-example-generic" data-slide-to="0" class="active hidden-xs"></li>
+              <li data-target="#carousel-example-generic" data-slide-to="1" class="hidden-xs"></li>
+            </ol>
+            -->
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+              <div class="item active">
+                <img src="{{ app.request.basepath }}/img/carousel/home.jpg" alt="" style="width: 100%; height: auto; min-height: 90px;">
+                    <!--
+                <div class="carousel-caption">
+
+                  <h4><a target="_blank" href="http://igdj-hh.de/event-details-kopie/feierlicher-jubilaeums-empfang-zum-50-geburtstag-das-igdj-wird-digital.html">Feierlicher Jubiläums-Empfang: „Zum 50. Geburtstag: Das IGdJ wird digital“</a></h4>
+                </div>-->
+              </div>
+              <!--
+              <div class="item">
+                <img src="{{ app.request.basepath }}/img/carousel/schaechten.jpg" alt="Neue Quelle" style="width: 100%; height: auto; min-height: 90px;">
+                <div class="carousel-caption">
+                  <h4><a href="{{ path('source', { 'uid' : 'jgo:source-15' }) }}">Neue Quelle: Schreiben an Schlachthof- und Viehmarktverwaltung</a></h4>
+                </div>
+              </div>
+              -->
+              <!--
+              <div class="item">
+                <img src="{{ app.request.basepath }}/img/carousel/filmclub.jpg" alt="Filmclub" style="width: 100%; height: auto; min-height: 90px;">
+                <div class="carousel-caption">
+                  <h4 style="background-color: black; opacity:0.9;">Filmclub: Donnerstag, 18.02.2016 19.00 Uhr
+      GOD’S NEIGHBORS - HA-MASHGIHIM</h4>
+                </div>
+              </div>
+              -->
+            </div><!-- .carousel-inner -->
+
+            <!-- Controls -->
+            <!--
+            <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+              <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+            -->
+        </div><!-- .carousel -->
+    </div>
+{% endblock %}
+
+{% endembed %}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div id="col-main" class="col-sm-8">
+            <div class="container-fluid">
+                <h4>{{ 'Welcome'|trans }}</h4>
+                <div class="two-columns justify-hyphens">
+{% if 'en' == app.request.locale %}
+    <p>This online source edition published by the <a href="http://www.igdj-hh.de/home-175.html">Institute for the History of German Jews</a> uses a selection of sources, so-called <a href="{{ path('about-keydocuments') }}">key documents</a>, to thematically highlight central aspects in Hamburg’s Jewish history from the early modern age to the present.</p>
+
+    <p>Transcripts as well as digital facsimiles are provided for all sources, which are placed in historical context by interpretations and background information. The source material is further enriched by information on its provenance, historical responses to it, and scholarly controversies. All content is provided in both German and English.</p>
+
+    <p style="-webkit-column-break-inside: avoid; page-break-inside: avoid; break-inside: avoid;">The <a href="{{ path('about-audience') }}">target audience</a> for this source edition is college students, researchers and teachers, as well as the interested public and high school students. It covers a spectrum ranging from more general, introductory texts to those developing their argument by a close study of the source, and it offers different ways of approaching the texts – through a <a href="{{ path('date-chronology') }}">timeline</a>, a <a href="{{ path('topic-index') }}">specific topic</a> or a <a href="{{ path('place-map') }}">map</a>. The project is supported by an <a href="{{ path('about-board') }}">advisory board</a> consisting of renowned scholars of German-Jewish history and experts in the field of digitization.</p>
+
+    <p>The online edition has been receiving funding from the <a href="http://dfg.de/">Deutsche Forschungsgemeinschaft</a> since July 2015.</p>
+
+    <p><a href="{{ path('about') }}">Additional information about this edition...</a></p>
+{% else %}
+    <p>Diese vom <a href="http://www.igdj-hh.de/">Institut für die Geschichte der deutschen Juden</a> realisierte Online-Quellenedition wirft am Beispiel von ausgewählten Quellen, sogenannten <a href="{{ path('about-keydocuments') }}">Schlüsseldokumenten</a>, thematische Schlaglichter auf zentrale Aspekte der jüdischen Geschichte Hamburgs von der frühen Neuzeit bis in die Gegenwart.</p>
+
+    <p >Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und durch Interpretations- und Hintergrundtexte in ihre historischen Kontexte eingebettet. Angereichert werden die Materialien durch Informationen zur Überlieferung, zur Rezeptionsgeschichte und zu wissenschaftlichen Kontroversen. Alle Inhalte werden sowohl auf Deutsch als auch auf Englisch angeboten.</p>
+
+    <p style="-webkit-column-break-inside: avoid; page-break-inside: avoid; break-inside: avoid;">Die Quellenedition <a href="{{ path('about-audience') }}">richtet sich an Studierende, Forschende und Lehrende, teilweise auch an Laien sowie Schülerinnen und Schüler</a>. Sie deckt dabei ein Spektrum von eher allgemeinen, überblicksartigen bis hin zu eng an der Quelle argumentierenden Texten ab und bietet verschiedene Zugänge zu den Quellen an – über einen <a href="{{ path('date-chronology') }}">Zeitstrahl</a>, <a href="{{ path('topic-index') }}">Themenkategorien</a> oder eine <a href="{{ path('place-map') }}">Karte</a>. Ein <a href="{{ path('about-board') }}">Beirat</a> aus renommierten Wissenschaftlerinnen und Wissenschaftlern der deutsch-jüdischen Geschichte und Expertinnen und Experten aus dem Bereich Digitalisierung unterstützt das Projekt.</p>
+
+    <p>Die Online-Edition wird seit Juli 2015 von der <a href="http://dfg.de/">Deutschen Forschungsgemeinschaft</a> gefördert.</p>
+
+    <p><a href="{{ path('about') }}">Weitere Informationen über diese Edition...</a></p>
+{% endif %}
+                </div>
+            </div>
+
+            <div id="box-education" class="container-fluid box">
+                <div class="row box-header" style="background-color: #070E44">
+                    <div class="col-sm-12">
+                        <h4><a href="{{ path('education-index') }}">{{ 'Teaching Resources'|trans }}</a></h4>
+                    </div>
+                </div>
+                <div class="row box-content">
+                    <div class="col-sm-3 hidden-xs" style="padding-top: 8px;">
+                        <img src="{{ asset('img/education/education.jpg') }}" style="width: 100%; height: auto" />
+
+                    </div>
+                    <div class="col-xs-12 col-sm-9">
+                        <p style="padding-top: 8px; padding-bottom: 8px">
+{% if 'en' == app.request.locale %}
+                    In this section you will find <a href="{{ path('education-index') }}">selected materials from the edition, supplemented by links</a> and <a href="{{ path('about-educationguidelines') }}">guidelines for use in college and high school education</a>.
+{% else %}
+                    In diesem Bereich finden sich <a href="{{ path('education-index') }}">ausgewählte Materialien aus der Edition ergänzt um weiterführende Links</a> und einen <a href="{{ path('about-educationguidelines') }}">Leitfaden für die Nutzung im universitären und schulischen Unterricht</a>.
+{% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid box">
+                <div class="row box-header" style="background-color: #970376">
+                    <div class="col-sm-12">
+                        <h4><a href="{{ path('topic-index') }}">{{ 'Topics'|trans }}</a></h4>
+                    </div>
+                </div>
+                <div class="row box-content" id="topic">
+                    <div class="container-fluid">
+<div class="carousel row" data-ride="carousel" data-type="multi" data-interval="6000" id="topic-carousel">
+                    <div class="carousel-inner">
+                    {% for slug,topicDescr in topics %}
+                        <div class="item{% if loop.first %} active{% endif %}">
+                        <div class="col-md-3 col-sm-4 col-xs-12 topic">
+                            {% if topicDescr.article is not empty %}
+                            <a href="{{ path('topic-background', { 'slug' : topicDescr.article }) }}">
+                            {% endif %}
+                                <h5 style="white-space: normal">
+                                    <div class="topic-label">{{ topicDescr.label }}</div>
+                                </h5>
+                                <img src="{{ asset('img/topic/' ~ slug ~ '.jpg') }}" style="width: 100%; height: auto" />
+                            {% if topicDescr.article is not empty %}
+                            </a>
+                            {% endif %}
+                        </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                    <a class="left carousel-control" href="#topic-carousel" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
+                    <a class="right carousel-control" href="#topic-carousel" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid box">
+                <div class="row box-header" style="background-color: #f29000">
+                    <div class="col-sm-12">
+                        <h4><a href="{{ path('place-map') }}">{{ 'Map'|trans }}</a></h4>
+                    </div>
+                </div>
+                <div class="row box-content">
+                    <div id="map">
+                        <div id="map-container">
+                            <div id="map" style="width: 100%; min-height: 320px"></div>
+                            <script>
+                            $( document).ready(function () {
+                                showMap();
+                            });
+
+                            {{ map.showMap(bounds, markers) }}
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid box">
+                <div class="row box-header" style="background-color: #3da2da">
+                    <div class="col-sm-12">
+                        <h4><a href="{{ path('date-chronology') }}">{{ 'Chronology'|trans }}</a></h4>
+                    </div>
+                </div>
+                <div class="row box-content">
+                    <div id="chronology" data-url="{{ path('date-chronology-partial') }}" style="max-height: 320px; overflow-y: scroll; overflow-x: hidden">
+                        {{ 'Loading...' | trans }}
+                        <script>
+                            var chronologyLoaded = false;
+
+                            $( document).ready(function () {
+                                if (!chronologyLoaded) {
+                                    var pane = $( '#chronology' );
+                                    var url = pane.attr("data-url");
+
+                                    // ajax load from data-url
+                                    $( pane ).load(url,function(result){
+                                        chronologyLoaded = true;
+                                    });
+                                }
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4 sidebar">
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>{{ 'Source of the Month'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse">
+                    <div class="col-sm-4">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-127' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00127/thumb.jpg" style="width: 100%; height: auto" /></a>
+                    </div>
+                    <div class="col-sm-8">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-127' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>By-Laws of the Israelite-Humanitarian Women’s Association of Hamburg, dated March 19, 1911</b>
+                        {% else %}
+                        <b>Satzung des Vereins Israelitischer-humanitärer Frauen-Verein e.V. Hamburg vom 19.3.1911</b>
+                        {% endif %}
+                        </a>
+
+                        <p>
+                        <a href="{{ path('article', { 'slug' : 'jgo:article-121' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Source Interpretation</b> by
+                        {% else %}
+                        <b>Interpretation</b> von
+                        {% endif %}
+                        Magdalena Gehring
+                        </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid box top-buffer">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>{{ 'New Sources'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse">
+                    <div class="col-sm-4">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-165' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00165/thumb.jpg" style="width: 100%; height: auto" /></a>
+                    </div>
+                    <div class="col-sm-8">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-165' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Glikl von Hameln: Memoirs, 1691-1719 [Excerpt]</b>
+                        {% else %}
+                        <b>Glikl von Hameln, Memoiren, 1691-1719 [Auszug]</b>
+                        {% endif %}
+                        </a>
+
+                        <p>
+                        <a href="{{ path('article', { 'slug' : 'jgo:article-195' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Source Interpretation</b> by
+                        {% else %}
+                        <b>Interpretation</b> von
+                        {% endif %}
+                        Joshua Teplitsky
+                        </a>
+                        </p>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse">
+                    <div class="col-sm-4">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-131' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00131/thumb.jpg" style="width: 100%; height: auto" /></a>
+                    </div>
+                    <div class="col-sm-8">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-131' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>B. [probably Max Besser], The Founding of a New Jewish Gymnastics Club "Bar Kochba" in Hamburg</b>, March / April 1910
+                        {% else %}
+                        <b>B. [vermutlich Max Besser], Die Gründung eines neuen Jüdischen Turnvereins „Bar Kochba“ in Hamburg</b>, März / April 1910
+                        {% endif %}
+                        </a>
+
+                        <p>
+                        <a href="{{ path('article', { 'slug' : 'jgo:article-162' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Source Interpretation</b> by
+                        {% else %}
+                        <b>Interpretation</b> von
+                        {% endif %}
+                        Ivonne Meybohm
+                        </a>
+                        </p>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse">
+                    <div class="col-sm-4">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-174' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00174/thumb.jpg" style="width: 100%; height: auto" /></a>
+                    </div>
+                    <div class="col-sm-8">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-174' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Hermann Zvi Guttmann, Drawing for Design of the Synagogue at Hohe Weide</b>, 1956
+                        {% else %}
+                        <b>Hermann Zvi Guttmann, Schaubild der Synagoge Hohe Weide</b>, 1956
+                        {% endif %}
+                        </a>
+
+                        <p>
+                        <a href="{{ path('article', { 'slug' : 'jgo:article-231' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Source Interpretation</b> by
+                        {% else %}
+                        <b>Interpretation</b> von
+                        {% endif %}
+                        Alexandra Klei
+                        </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {% if news is not empty %}
+            <div class="container-fluid box top-buffer">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4><a href="{{ path('about-news') }}">{{ 'Project News'|trans }}</a></h4>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse menu">
+                    <div class="col-sm-12">
+                    <ul>
+                    {% for article in news %}
+                        <li>
+                            {% if loop.last and loop.index >= 4 %}
+                            <a href="{{ path('about-news') }}#{{ article.slug }}">{{ 'More'|trans }} &gt;</a>
+                            {% else %}
+                            <b><a href="{{ path('about-news') }}#{{ article.slug }}">{{ article.name|raw }}</b> ({{ article.datePublished|dateincomplete }})
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                    </ul>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="container-fluid box top-buffer">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4><a href="{{ app.request.basepath }}/pdf/Guide-to-the-Digital-Source-Edition.pdf">{{ 'Guide to the Digital Source Edition'|trans }}</a></h4>
+                    </div>
+                </div>
+                <div class="row box-color-content">
+                    <div class="col-xs-4">
+                        <a href="{{ app.request.basepath }}/pdf/Guide-to-the-Digital-Source-Edition.pdf"><img src="{{ app.request.basepath }}/img/icon/pdf.png" /></a>
+                    </div>
+                    <div class="col-xs-8">
+                        <a href="{{ app.request.basepath }}/pdf/Guide-to-the-Digital-Source-Edition.pdf"><img src="{{ app.request.basepath }}/pdf/Guide-to-the-Digital-Source-Edition.png" style="width: 100%; height: auto" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
