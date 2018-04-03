@@ -11,7 +11,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  *
  */
-class ArticleController extends RenderTeiController
+class ArticleController
+extends RenderTeiController
 {
     /*
      * TODO: maybe move into entity
@@ -85,9 +86,7 @@ class ArticleController extends RenderTeiController
         list($authors, $sectionHeaders, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html);
         $html = $this->adjustRefs($html, $refs, $language);
 
-        $html = $this->adjustMedia($html,
-                                   $request->getBaseURL()
-                                   . '/viewer');
+        $html = $this->adjustMedia($html, $request->getBaseURL() . '/viewer');
 
         $sourceDescription = $this->renderSourceDescription($article);
         if ($generatePrintView) {
@@ -216,7 +215,7 @@ class ArticleController extends RenderTeiController
                 ->createQueryBuilder();
 
         $qb->select([ 'A',
-                     $sort . ' HIDDEN articleSort'
+                $sort . ' HIDDEN articleSort'
             ])
             ->from('AppBundle:Article', 'A')
             ->where('A.status = 1')
