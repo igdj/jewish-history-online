@@ -29,8 +29,14 @@ class OrganizationController extends Controller
         if (!is_null($organizations)) {
             $locale = $request->getLocale();
 
+            // We want everything with
+            //    Hamburg. XXX
+            // grouped together.
+            // Since strcoll ignores . in de_DE.utf8, we replace by something that comes after z
+            //   https://stackoverflow.com/a/25939502
             uasort($organizations, function ($a, $b) use ($locale) {
-                return strcoll($a->getNameLocalized($locale), $b->getNameLocalized($locale));
+                return strcoll(str_replace('.', 'Ω', $a->getNameLocalized($locale)),
+                               str_replace('.', 'Ω', $b->getNameLocalized($locale)));
             });
         }
 
