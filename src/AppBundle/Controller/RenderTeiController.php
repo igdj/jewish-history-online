@@ -150,7 +150,13 @@ extends Controller
 
     protected function buildEntityLookup($entities)
     {
-        $entitiesByType = [ 'person' => [], 'place' => [], 'organization' => [] ];
+        $entitiesByType = [
+            'person' => [],
+            'place' => [],
+            'organization' => [],
+            'date' => [],
+        ];
+
         foreach ($entities as $entity) {
             if (!array_key_exists($entity['type'], $entitiesByType)) {
                 continue;
@@ -185,38 +191,52 @@ extends Controller
                             $personStolpersteine[$matches[1]] = $uri;
                         }
                     }
+
                     if (!empty($personGnds)) {
                         $persons = $this->getDoctrine()
                             ->getRepository('AppBundle:Person')
-                            ->findBy([ 'gnd' => array_keys($personGnds) ]);
+                            ->findBy([ 'gnd' => array_keys($personGnds) ])
+                            ;
                         foreach ($persons as $person) {
                             if ($person->getStatus() >= 0) {
                                 $uri = $personGnds[$person->getGnd()];
-                                $details = [ 'url' => $this->generateUrl('person-by-gnd', [ 'gnd' => $person->getGnd()]) ];
+                                $details = [
+                                    'url' => $this->generateUrl('person-by-gnd', [
+                                        'gnd' => $person->getGnd(),
+                                    ]),
+                                ];
                                 $entitiesByType[$type][$uri] += $details;
                             }
                         }
                     }
+
                     if (!empty($personDjhs)) {
                         $persons = $this->getDoctrine()
                             ->getRepository('AppBundle:Person')
-                            ->findBy([ 'djh' => array_keys($personDjhs) ]);
+                            ->findBy([ 'djh' => array_keys($personDjhs) ])
+                            ;
                         foreach ($persons as $person) {
                             if ($person->getStatus() >= 0) {
                                 $uri = $personDjhs[$person->getDjh()];
-                                $details = [ 'url' => $this->generateUrl('person', [ 'id' => $person->getId()]) ];
+                                $details = [
+                                    'url' => $this->generateUrl('person', [ 'id' => $person->getId() ]),
+                                ];
                                 $entitiesByType[$type][$uri] += $details;
                             }
                         }
                     }
+
                     if (!empty($personStolpersteine)) {
                         $persons = $this->getDoctrine()
                             ->getRepository('AppBundle:Person')
-                            ->findBy([ 'stolpersteine' => array_keys($personStolpersteine) ]);
+                            ->findBy([ 'stolpersteine' => array_keys($personStolpersteine) ])
+                            ;
                         foreach ($persons as $person) {
                             if ($person->getStatus() >= 0) {
                                 $uri = $personStolpersteine[$person->getStolpersteine()];
-                                $details = [ 'url' => $this->generateUrl('person', [ 'id' => $person->getId()]) ];
+                                $details = [
+                                    'url' => $this->generateUrl('person', [ 'id' => $person->getId() ]),
+                                ];
                                 $entitiesByType[$type][$uri] += $details;
                             }
                         }
@@ -233,14 +253,20 @@ extends Controller
                             $placeTgns[$matches[1]] = $uri;
                         }
                     }
+
                     if (!empty($placeTgns)) {
                         $places = $this->getDoctrine()
                             ->getRepository('AppBundle:Place')
-                            ->findBy([ 'tgn' => array_keys($placeTgns) ]);
+                            ->findBy([ 'tgn' => array_keys($placeTgns) ])
+                            ;
                         foreach ($places as $place) {
                             if (true /*$person->getStatus() >= 0 */) {
                                 $uri = $placeTgns[$place->getTgn()];
-                                $details = [ 'url' => $this->generateUrl('place-by-tgn', [ 'tgn' => $place->getTgn()]) ];
+                                $details = [
+                                    'url' => $this->generateUrl('place-by-tgn', [
+                                        'tgn' => $place->getTgn()
+                                    ]),
+                                ];
                                 $entitiesByType[$type][$uri] += $details;
                             }
                         }
@@ -257,14 +283,50 @@ extends Controller
                             $organizationGnds[$matches[1]] = $uri;
                         }
                     }
+
                     if (!empty($organizationGnds)) {
                         $organizations = $this->getDoctrine()
                             ->getRepository('AppBundle:Organization')
-                            ->findBy([ 'gnd' => array_keys($organizationGnds) ]);
+                            ->findBy([ 'gnd' => array_keys($organizationGnds) ])
+                            ;
                         foreach ($organizations as $organization) {
                             if ($organization->getStatus() >= 0) {
                                 $uri = $organizationGnds[$organization->getGnd()];
-                                $details = [ 'url' => $this->generateUrl('organization-by-gnd', [ 'gnd' => $organization->getGnd()]) ];
+                                $details = [
+                                    'url' => $this->generateUrl('organization-by-gnd', [
+                                        'gnd' => $organization->getGnd(),
+                                    ]),
+                                ];
+                                $entitiesByType[$type][$uri] += $details;
+                            }
+                        }
+                    }
+                    break;
+
+                case 'date':
+                    $dateGnds = [];
+                    foreach ($uriCount as $uri => $count) {
+                        if (preg_match('/^'
+                                       . preg_quote('http://d-nb.info/gnd/', '/')
+                                       . '(\d+[\-]?[\dxX]?)$/', $uri, $matches))
+                        {
+                            $dateGnds[$matches[1]] = $uri;
+                        }
+                    }
+
+                    if (!empty($dateGnds)) {
+                        $events = $this->getDoctrine()
+                            ->getRepository('AppBundle:Event')
+                            ->findBy([ 'gnd' => array_keys($dateGnds) ])
+                            ;
+                        foreach ($events as $event) {
+                            if ($event->getStatus() >= 0 && !is_null($event->getStartDate())) {
+                                $uri = $dateGnds[$event->getGnd()];
+                                $details = [
+                                    'url' => $this->generateUrl('event-by-gnd', [
+                                        'gnd' => $event->getGnd(),
+                                    ]),
+                                ];
                                 $entitiesByType[$type][$uri] += $details;
                             }
                         }
@@ -486,9 +548,11 @@ extends Controller
             }
             $query = $this->getDoctrine()
                 ->getManager()
-                ->createQuery('SELECT b.slug FROM AppBundle:Bibitem b WHERE b.slug IN (:slugs) AND b.status >= 0')
-                ->setParameter('slugs', array_values($bibitems_map));
-
+                ->createQuery('SELECT b.slug'
+                              . ' FROM AppBundle:Bibitem b'
+                              . ' WHERE b.slug IN (:slugs) AND b.status >= 0')
+                ->setParameter('slugs', array_values($bibitems_map))
+                ;
             foreach ($query->getResult() as $bibitem) {
                 $corresps = array_keys($bibitems_map, $bibitem['slug']);
                 foreach ($corresps as $corresp) {
@@ -523,10 +587,13 @@ extends Controller
                 $authors_by_slug[] = $author;
             }
         }
+
         if (!empty($author_slugs)) {
             $query = $this->getDoctrine()
                 ->getManager()
-                ->createQuery('SELECT p.slug, p.description, p.gender FROM AppBundle:Person p WHERE p.slug IN (:slugs)')
+                ->createQuery('SELECT p.slug, p.description, p.gender'
+                              . ' FROM AppBundle:Person p'
+                              . ' WHERE p.slug IN (:slugs)')
                 ->setParameter('slugs', $author_slugs);
 
             foreach ($query->getResult() as $person) {
@@ -537,6 +604,14 @@ extends Controller
             }
         }
 
-        return [ $authors_by_slug, $section_headers, $license, $entities, $bibitems_by_corresp, $glossaryTerms, $refs ];
+        return [
+            $authors_by_slug,
+            $section_headers,
+            $license,
+            $entities,
+            $bibitems_by_corresp,
+            $glossaryTerms,
+            $refs,
+        ];
     }
 }

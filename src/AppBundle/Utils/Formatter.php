@@ -33,7 +33,7 @@ class Formatter
         // adjust year
         $date_parts_formatted[0] = ltrim($date_parts_formatted[0], '0');
         if ($isBCE) {
-            $date_parts_formatted[0] .= ' ' . ('en' == $locale ? 'BCE' : 'v. Chr.');
+            $date_parts_formatted[0] .= ' ' . ('en' == $locale ? 'BCE' : 'v.d.Z.');
         }
 
         $separator = '.';

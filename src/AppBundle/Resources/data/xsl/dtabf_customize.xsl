@@ -169,6 +169,15 @@
     </xsl:call-template>
   </xsl:template>
 
+  <xsl:template match="tei:date">
+    <xsl:call-template name="entity-ref">
+      <xsl:with-param name="value">
+        <xsl:value-of select="@corresp"/>
+      </xsl:with-param>
+      <xsl:with-param name="type">date</xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+
   <xsl:template name="entity-ref">
     <xsl:param name="value"/>
     <xsl:param name="type"/>

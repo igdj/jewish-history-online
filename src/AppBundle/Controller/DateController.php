@@ -64,7 +64,7 @@ extends Controller
         $qb->select([
                 'E'            ])
             ->from('AppBundle:Event', 'E')
-            ->where('E.status IN (0,1) AND E.startDate IS NOT NULL')
+            ->where('E.status IN (0,1) AND E.startDate IS NOT NULL AND E.name IS NOT NULL')
             ->orderBy("CAST(E.startDate AS integer), E.startDate")
             ;
 
@@ -98,7 +98,7 @@ extends Controller
         }
 
         if (!isset($event) || $event->getStatus() < 0) {
-            return $this->redirectToRoute('person-index');
+            return $this->redirectToRoute('event-index');
         }
 
         $routeName = 'event'; $routeParams = [];
@@ -112,7 +112,7 @@ extends Controller
         }
 
         return $this->render('AppBundle:Date:detail.html.twig', [
-            'pageTitle' => $event->getName(), // TODO: span in brackets
+            'pageTitle' => $event->getNameLocalized($request->getLocale()), // TODO: span in brackets
             'event' => $event,
             'pageMeta' => [
                 'jsonLd' => $event->jsonLdSerialize($request->getLocale()),
