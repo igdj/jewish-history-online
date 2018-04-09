@@ -71,14 +71,19 @@
         }
         </style>
         {% block head %}{% endblock %}
-        <script src="{{ app.request.basepath }}/vendor/Hyphenator-5.1.0/Hyphenator_Loader.js" type="text/javascript"></script>
+        <script src="{{ app.request.basepath }}/vendor/Hyphenator-5.3.0/Hyphenator_Loader.js" type="text/javascript"></script>
         <script type="text/javascript">
             Hyphenator_Loader.init(
                 {
                     "en": "automatically",
                     "de": "Silbentrennungsalgorithmus"
                 },
-                "{{ app.request.basepath }}/vendor/Hyphenator-5.1.0/Hyphenator.js"
+                "{{ app.request.basepath }}/vendor/Hyphenator-5.3.0/Hyphenator.js",
+                {
+                    'classname': 'dta-p',
+                    'useCSS3hyphenation': true,
+                    // 'hyphenchar': '|' // just for debugging
+                }
             );
         </script>
 
@@ -98,6 +103,7 @@
                 $('body,html').animate({
                     scrollTop: 0
                 }, 800);
+
                 return false;
             });
 
@@ -191,9 +197,11 @@
         {% embed 'AppBundle:Default:contenttop_skeleton.html.twig' %}{% endembed %}
         {% endblock %}
 
+        {% block contentcontainer %}
         <div class="container wrapper">
         {% block body %}{% endblock %}
         </div>
+        {% endblock %}
 
         <footer>
             {% if twitterSite is not empty %}
