@@ -574,12 +574,16 @@ a.break-word, .sidebar dd a {
 @mixin hyphenate {
     hyphens: auto;
     -webkit-hyphens: auto;
-    -ms-hyphens: auto;
     -moz-hyphens: auto;
+    -ms-hyphens: auto;
+}
+
+.hyphenate {
+    @include hyphenate;
 }
 
 .justify-hyphens {
-    text-align:justify;
+    text-align: justify;
     @include hyphenate;
 }
 
@@ -1067,7 +1071,7 @@ body.route-topic-background, body.route-article,
 body[class^="route-about"]
 {
     .dta-p, .source-description {
-        text-align:justify;
+        text-align: justify;
         @include hyphenate;
     }
 }
