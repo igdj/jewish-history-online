@@ -1123,12 +1123,23 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
                 $ret = preg_replace('/, (<span class="citeproc\-date">)/', '\1', $ret);
             }
 
+            // make links clickable
             $ret = preg_replace_callback('/(<span class="citeproc\-URL">&lt;)(.*?)(&gt;)/',
                 function ($matches) {
                     return $matches[1]
-                    . sprintf('<a href="%s" target="_blank">%s</a>',
-                              $matches[2], $matches[2])
-                    . $matches[3];
+                        . sprintf('<a href="%s" target="_blank">%s</a>',
+                                  $matches[2], $matches[2])
+                        . $matches[3];
+                },
+                $ret);
+
+            // make doi: clickable
+            $ret = preg_replace_callback('/(<span class="citeproc\-DOI">&lt;)doi\:(.*?)(&gt;)/',
+                function ($matches) {
+                    return $matches[1]
+                        . sprintf('<a href="https://dx.doi.org/%s" target="_blank">doi:%s</a>',
+                                  $matches[2], $matches[2])
+                        . $matches[3];
                 },
                 $ret);
         }
