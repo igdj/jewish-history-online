@@ -308,19 +308,39 @@
                                 <a href="{{ meta.url }}" class="break-word" target="_blank">{{ meta.url|prettifyurl }}</a>
                             </dd>
                         {% endif %}
+                        {% set labelDownload = 'Download for scholarly or private use'|trans %}
                         {% if meta.rights is not empty %}
                             <dt>{{ 'Rights Statements'|trans }}</dt>
                             <dd>
                                 {{ meta.rights|converturls|nl2br  }}
+                            {% if '#public-domain' == meta.license %}
+                                {% set labelDownload = 'Download source'|trans %}
+                                {% if not printview %}
+                                <a href="{{ 'https://creativecommons.org/publicdomain/mark/1.0/deed.en'|trans }}" target="_blank">
+                                    <img src="{{ app.request.basepath }}/img/license/public-domain.svg" height="24" style="display: block" />
+                                </a>
+                                {% endif %}
+                            {% endif %}
                             </dd>
                         {% endif %}
                         {% if meta.licenseAllowsDownload()  %}
                             <dt>{{ 'Download'|trans }}</dt>
                             <dd>
                                 <a href="{{ path('source-download', { 'uid': meta.uid }) }}">
-                                    {{ 'Download for scholarly or private use'|trans }}
+                                    {{ labelDownload }}
                                 </a>
                             </dd>
+                            {% if not printview %}
+                            <dt><a href="#" onClick="$('#metadata').toggle(); return false">{{ 'Download Metadata'|trans }}</a></dt>
+                            <dd id="metadata" style="display: none;">
+                                <ul class="list-unstyled" style="margin-bottom: 0">
+                                <li><a href="{{ url('source-jsonld', { 'uid': meta.uid }) }}">JSON-LD</a></li>
+                                {% if mets is not empty %}
+                                <li><a href="{{ url('source-mets', { 'uid': meta.uid }) }}">METS-XML</a></li>
+                                {% endif %}
+                                </ul>
+                            </dd>
+                            {% endif %}
                             {% if mets is not empty %}
                             <dt>{{ 'DFG-Viewer'|trans }}</dt>
                             <dd>
