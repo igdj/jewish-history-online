@@ -7,25 +7,39 @@ use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
- *
+ * Use Picturae OAI-PMH package to implement an OAI-endpoint /oai
  */
-class OaiController extends Controller
+class OaiController
+extends Controller
 {
     /**
      * @Route("/oai", name="oai")
      */
     public function dispatchAction()
     {
-        // Where $repository is an instance of \Picturae\OaiPmh\Interfaces\Repository
-        $repository = new Repository($this);
-        $provider = new \Picturae\OaiPmh\Provider($repository);
-
         $request = \Zend\Diactoros\ServerRequestFactory::fromGlobals();
-        $provider = new \Picturae\OaiPmh\Provider($repository, $request);
+
+        // repositoryName is localized siteName
+        $translator = $this->container->get('translator');
+        $twig = $this->container->get('twig');
+        $globals = $twig->getGlobals();
+
+        // $repository is an instance of \Picturae\OaiPmh\Interfaces\Repository
+        $repository = new Repository($this, [
+            'repositoryName' => $translator->trans($globals['siteName']),
+            'administrationEmails' => [ 'info@juedische-geschichte-online.net' ],
+        ]);
+
+        // Instead of
+        //   $provider = new \Picturae\OaiPmh\Provider($repository, $request);
+        // we use a derived class referencing oai.xsl
+        $provider = new \AppBundle\Utils\OaiProvider($repository, $request);
+
         $psrResponse = $provider->getResponse();
 
-        // convert $psrResponse
+        // use HttpFoundationFactory to convert $psrResponse
         $httpFoundationFactory = new HttpFoundationFactory();
+
         return $httpFoundationFactory->createResponse($psrResponse);
     }
 }
@@ -48,9 +62,11 @@ use Picturae\OaiPmh\Interfaces\Repository as InterfaceRepository;
 use Picturae\OaiPmh\Interfaces\Repository\Identity;
 use Picturae\OaiPmh\Interfaces\SetList as InterfaceSetList;
 
-class Repository implements InterfaceRepository
+class Repository
+implements InterfaceRepository
 {
     protected $controller = null;
+    protected $options = [];
     protected $limit = 20;
 
     static function xmlEncode($str)
@@ -58,9 +74,10 @@ class Repository implements InterfaceRepository
         return htmlspecialchars(rtrim($str), ENT_XML1, 'utf-8');
     }
 
-    public function __construct($controller)
+    public function __construct($controller, $options = [])
     {
         $this->controller = $controller;
+        $this->options = $options;
     }
 
     /**
@@ -88,10 +105,12 @@ class Repository implements InterfaceRepository
     public function identify()
     {
         return new ImplementationIdentity(
-            $this->controller->getRequest()->getHost(),
+            array_key_exists('repositoryName', $this->options)
+                ? $this->options['repositoryName'] : $this->controller->getRequest()->getHost(),
             $this->getEarliestDateStamp(),
             \Picturae\OaiPmh\Interfaces\Repository\Identity::DELETED_RECORD_PERSISTENT,
-            [ 'info@juedische-geschichte-online.net' ],
+            array_key_exists('administrationEmails', $this->options)
+                ? $this->options['administrationEmails'] : [],
             $this->getGranularity()
         );
     }
@@ -117,6 +136,7 @@ class Repository implements InterfaceRepository
     public function listSetsByToken($token)
     {
         $params = $this->decodeResumptionToken($token);
+
         return $this->listSets();
     }
 
@@ -295,6 +315,7 @@ class Repository implements InterfaceRepository
             'status' => [ 1 ], // explicit publishing needed
             'language' => \AppBundle\Utils\Iso639::code1to3($locale),
         ];
+
         if (!empty($params['set'])
             && in_array($params['set'], [ 'background', 'interpretation', 'source' ]))
         {
@@ -365,7 +386,7 @@ class Repository implements InterfaceRepository
             return;
         }
 
-        $identifier = 'oai:' . $uid;
+        $identifier = 'oai:' . $article->getUid() . '.' . $locale;
 
         $title = self::xmlEncode($article->getName());
 
@@ -408,6 +429,7 @@ class Repository implements InterfaceRepository
         else {
             $url = $this->controller->generateUrl($route, $params, true);
         }
+
         $description = self::xmlEncode($description);
         $subject = self::xmlEncode(implode(', ', $subjectParts));
         $creator = self::xmlEncode(implode(', ', $creatorParts));
@@ -431,7 +453,7 @@ class Repository implements InterfaceRepository
                 <dc:title>{$title}</dc:title>
                 <dc:identifier>{$url}</dc:identifier>
                 <dc:creator>{$creator}</dc:creator>
-                <dc:publisher>Institit f&#252;r die Geschichte der deutschen Juden</dc:publisher>
+                <dc:publisher>Institut f&#252;r die Geschichte der deutschen Juden</dc:publisher>
                 <dc:subject>{$subject}</dc:subject>
                 <dc:type>Online Ressource</dc:type>
                 <dc:description>{$description}</dc:description>
@@ -439,8 +461,9 @@ class Repository implements InterfaceRepository
             </oai_dc:dc>
 EOT;
 
-        $recordMetadata = new \DOMDocument();
+        $recordMetadata = new \DOMDocument('1.0', 'UTF-8');
         $recordMetadata->loadXML($xml);
+
         $someRecord = new \Picturae\OaiPmh\Implementation\Record(
             new \Picturae\OaiPmh\Implementation\Record\Header($identifier, $datePublished, [], $article->getStatus() != 1),
             $recordMetadata);

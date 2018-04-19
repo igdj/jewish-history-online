@@ -334,10 +334,11 @@
                             <dt><a href="#" onClick="$('#metadata').toggle(); return false">{{ 'Download Metadata'|trans }}</a></dt>
                             <dd id="metadata" style="display: none;">
                                 <ul class="list-unstyled" style="margin-bottom: 0">
-                                <li><a href="{{ url('source-jsonld', { 'uid': meta.uid }) }}">JSON-LD</a></li>
+                                <li><a target="_blank" href="{{ url('source-jsonld', { 'uid': meta.uid }) }}">JSON-LD</a></li>
                                 {% if mets is not empty %}
-                                <li><a href="{{ url('source-mets', { 'uid': meta.uid }) }}">METS-XML</a></li>
+                                <li><a target="_blank" href="{{ url('source-mets', { 'uid': meta.uid }) }}">METS-XML</a></li>
                                 {% endif %}
+                                <li><a target="_blank" href="{{ url('oai', { 'verb': 'GetRecord', 'metadataPrefix': 'oai_dc', 'identifier': 'oai:' ~ meta.uid ~ '.' ~ app.request.locale }) }}">OAI-PMH</a></li>
                                 </ul>
                             </dd>
                             {% endif %}

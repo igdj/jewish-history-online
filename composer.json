@@ -80,7 +80,7 @@
         "presta/sitemap-bundle": "~1.5",
         "eko/feedbundle": "dev-master",
 
-        "picturae/oai-pmh": "dev-master",
+        "picturae/oai-pmh": "0.5.18",
         "symfony/psr-http-message-bridge": "@stable",
         "zendframework/zend-diactoros": "@stable",
 
