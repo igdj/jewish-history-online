@@ -8,7 +8,8 @@ use Knp\Menu\FactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class Builder implements ContainerAwareInterface
+class Builder
+implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
@@ -102,6 +103,19 @@ class Builder implements ContainerAwareInterface
             $menu->addChild('contact', [
                 'label' => $translator->trans('Contact'), 'route' => 'contact',
             ]);
+
+            if (array_key_exists('position', $options) && 'footer' == $options['position']) {
+                $router = $this->container->get('router');
+
+                $menu['contact']->addChild('imprint', [
+                    'label' => $translator->trans('Imprint'),
+                    'uri' => $router->generate('contact') . '#imprint',
+                ]);
+                $menu['contact']->addChild('dataprotection', [
+                    'label' => $translator->trans('Data Protection'),
+                    'uri' => $router->generate('contact') . '#dataprotection',
+                ]);
+            }
         }
 
         return $menu;
@@ -141,11 +155,10 @@ class Builder implements ContainerAwareInterface
             ->addChild('organization-index', [
                 'label' => $translator->trans('Organizations'), 'route' => 'organization-index',
             ]);
-        /*
         $menu['_lookup']
             ->addChild('event-index', [
                 'label' => $translator->trans('Epochs and Events'), 'route' => 'event-index',
-            ]); */
+            ]);
         $menu['_lookup']
             ->addChild('bibliography-index', [
                 'label' => $translator->trans('Bibliography'), 'route' => 'bibliography-index',
@@ -159,7 +172,12 @@ class Builder implements ContainerAwareInterface
                 'label' => $translator->trans('Glossary'), 'route' => 'glossary-index',
             ]);
 
-        if (!(array_key_exists('position', $options) && 'footer' == $options['position'])) {
+        if (array_key_exists('position', $options) && 'footer' == $options['position']) {
+            $menu->addChild('education', [
+                'label' => $translator->trans('Teaching Resources'), 'route' => 'education-index',
+            ]);
+        }
+        else {
             $menu['topic-index']->setAttribute('id', 'menu-item-topic');
             $menu['place-map']->setAttribute('id', 'menu-item-map');
             $menu['date-chronology']->setAttribute('id', 'menu-item-chronology');
@@ -244,7 +262,10 @@ class Builder implements ContainerAwareInterface
                 break;
 
             case 'topic-background':
-                $item = $menu['topic-index']->addChild($current_route, [ 'label' => 'Introduction', 'uri' => '#' ]);
+                $item = $menu['topic-index']->addChild($current_route, [
+                    'label' => 'Introduction',
+                    'uri' => '#',
+                ]);
                 break;
 
             case 'article':
@@ -316,6 +337,7 @@ class Builder implements ContainerAwareInterface
 
             // experimental stuff
             case 'home-preview':
+            case 'exhibition':
             case 'labs-index':
             case 'person-by-year':
             case 'person-by-birthplace':

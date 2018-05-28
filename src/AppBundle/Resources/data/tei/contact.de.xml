@@ -65,6 +65,10 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
                     Drehbahn 36, 20354 Hamburg</p>
                 </div>
 
+                <div n="3">
+                    <head>Datenschutz</head><lb/>
+                    <p>Dies ist ein Online-Angebot des Instituts für die Geschichte der deutschen Juden (IGdJ). Für die Verarbeitung aller personenbezogenen Daten, die im Zuge des Betriebs dieses Angebots anfallen, gilt die <ref target="http://igdj-hh.de/impressum.html">allgemeine Datenschutzerklärung des IGdJ</ref>.</p>
+                </div>
 
                 <div n="3">
                     <head>Haftungshinweis</head><lb/>

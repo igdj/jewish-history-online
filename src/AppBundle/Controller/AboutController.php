@@ -285,21 +285,43 @@ class AboutController extends RenderTeiController
      */
     public function contactAction()
     {
+        $translator = $this->get('translator');
+
         $form = $this->createForm(new \AppBundle\Form\Type\ContactType());
         $form->handleRequest($this->get('request'));
         if ($form->isSubmitted() && $form->isValid()) {
-            $translator = $this->get('translator');
             return $this->render('AppBundle:Default:contact-sent.html.twig', [
                 'pageTitle' => $translator->trans('Contact'),
                 'success' => $this->sendMessage($form->getData()),
             ]);
         }
+
         $response = $this->renderTitleContent('Contact', 'AppBundle:Default:sitetext.html.twig');
 
+        // add anchors to sub-headings
+        $anchors = [
+            'imprint' =>  $translator->trans('Imprint'),
+            'dataprotection' =>  $translator->trans('Data Protection'),
+        ];
+
+        $crawler = new \Symfony\Component\DomCrawler\Crawler();
+        $crawler->addHtmlContent($response->getContent());
+
+        $crawler->filter('h3.dta-head')->each(function ($node, $i) use ($anchors) {
+            foreach ($anchors as $id => $label) {
+                if ($label == $node->text()) {
+                    $node->getNode(0)->setAttribute('id', $id);
+                    break;
+                }
+            }
+        });
+
+
         return new Response(str_replace('%form%',
-                            $this->get('twig')
-                            ->render('AppBundle:Default:contact-form.html.twig', [
-                                'form' => $form->createView(),
-                           ]), $response->getContent()));
+                                        $this->get('twig')
+                                            ->render('AppBundle:Default:contact-form.html.twig', [
+                                                'form' => $form->createView(),
+                                            ]),
+                                        $crawler->html()));
     }
 }

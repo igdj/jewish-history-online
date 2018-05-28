@@ -56,6 +56,10 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
                         Drehbahn 36, 20354 Hamburg</p>
                 </div>
 
+                <div n="3">
+                    <head>Data Protection</head><lb/>
+                    <p>This is an online-service of the Institute for the History of German Jews (IGdJ). The <ref target="http://igdj-hh.de/impressum.html">general data protection declaration</ref> of the IGdJ applies to the processing of all personal data arising in the course of the operation of this site.</p>
+                </div>
 
                 <div n="3">
                     <head>Liability for Links</head><lb/>

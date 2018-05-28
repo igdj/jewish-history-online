@@ -18,7 +18,7 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
                 <date type="publication">2016-09-22</date>
                 <availability>
                     <licence target="http://creativecommons.org/licenses/by-nc/3.0/de/">
-                        <p>This text is based on the <ref target="http://www.deutschestextarchiv.de/doku/nutzungsbedingungen">Terms of Use of Deutsches Textarchiv</ref> and 
+                        <p>This text is based on the <ref target="http://www.deutschestextarchiv.de/doku/nutzungsbedingungen">Terms of Use of Deutsches Textarchiv</ref> and
                             may be copied and redistributed in accordance with the provisions of the <ref target="https://creativecommons.org/licenses/by-nc/3.0/de/deed.en">CC-BY-NC 3.0</ref> for non-commercial purposes in any format or medium.</p>
                     </licence>
                 </availability>
@@ -68,21 +68,19 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
             </div>
             <div n="2">
                 <head>4. Long-term Preservation</head><lb/>
-                <p>This project is a long-term undertaking, and regular updates and additions are intended. In order to ensure the permanent display of its content, it will be archived in the MyCore repository at Hamburg University’s Regionales Rechenzentrum (RRZ). URN and DOI ensure the long-term citability of digital content independent of specific institutional responsibility or technical infrastructure. </p>
+                <p>This project is a long-term undertaking, and regular updates and additions are intended. In order to ensure the permanent display of its content, it will be archived in the MyCore repository at Hamburg University’s Regionales Rechenzentrum (RRZ). DOI ensure the long-term citability of digital content independent of specific institutional responsibility or technical infrastructure. </p>
             </div>
             <div n="2">
                 <head>5. Rights and Permissions</head><lb/>
-                <p>.Copyright information is given for all material, all texts created for the project have been assigned CC licenses, and information on the holding institution is provided for all sources in order to create the highest possible level of transparency for users. </p>
+                <p>Copyright information is given for all material, all texts created for the project have been assigned CC licenses, and information on the holding institution is provided for all sources in order to create the highest possible level of transparency for users. </p>
                 <p>Sources and transcripts include information on permissions and copyright as stipulated by the respective holding institution. Downloads of sources are permitted for research purposes but not for further distribution or publication. For material protected by copyright the options for use are limited. The Institute for the History of German Jews is not liable for violations against existing terms of use. </p>
             </div>
             <div n="2">
                 <head>6. Disclaimer</head><lb/>
                 <p>The Institute for the History of the German Jews does not guarantee the completeness or accuracy of the content provided, nor does it guarantee uninterrupted functioning of the website or permanent accessibility of the internet application.</p>
-                <p>With particular regard to paragraphs 86a and 130 of the Criminal Code (StGB) of the Federal Republic of Germany, we state that the content displayed on these pages does not serve a propagandistic purpose, advertise for banned organizations or associations, deny or downplay National Socialist crimes, nor is it displayed with the purpose of debasing human dignity. The content displayed on these pages (in words and images) exclusively serves the purposes of research in the areas of history, the social sciences, and cultural studies as defined in paragraph 86 StGB, section 3. It is published with the intention of imparting knowledge that will encourage intellectual independence and a willingness to take responsibility among all citizens and thus serve the purpose of promoting their political maturity. 
+                <p>With particular regard to paragraphs 86a and 130 of the Criminal Code (StGB) of the Federal Republic of Germany, we state that the content displayed on these pages does not serve a propagandistic purpose, advertise for banned organizations or associations, deny or downplay National Socialist crimes, nor is it displayed with the purpose of debasing human dignity. The content displayed on these pages (in words and images) exclusively serves the purposes of research in the areas of history, the social sciences, and cultural studies as defined in paragraph 86 StGB, section 3. It is published with the intention of imparting knowledge that will encourage intellectual independence and a willingness to take responsibility among all citizens and thus serve the purpose of promoting their political maturity.
                 </p>
             </div>
         </body>
     </text>
 </TEI>
-
-
