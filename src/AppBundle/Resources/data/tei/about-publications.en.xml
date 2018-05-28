@@ -70,6 +70,9 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
                 <head>Publications</head><lb/>
                 <list>
                     <item>
+                        Daniel Burckhardt / Anna Menny, From Source to Document: “Key Documents of German-Jewish History”, in: href - A Link to Digitized Primary Source Projects in German and Global History, May 1, 2018, <ref target="https://href.hypotheses.org/55">href.hypotheses.org/55</ref>  (Last Access: May 10, 2018).                        
+                    </item>
+                    <item>
                         Anna Menny / Miriam Rürup, Von der Quelle zur Geschichte. Hamburger Schlüsseldokumente zur deutsch-jüdischen Geschichte, in: Jüdische Geschichte und Kultur, 1 (2017), p. 62-63.                        
                     </item>
                     <item>
@@ -94,7 +97,7 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
                     <item>Jonas Jung, Review of: Institut für die Geschichte der deutschen
                         Juden, Hamburg DE: &lt;http://www.igdj-hh.de&gt; (Hrsg.): Hamburger
                         Schlüsseldokumente zur deutsch-jüdischen Geschichte. Eine
-                        Online-Quellenedition, in: H-Soz-Kult, 03.06.2017, <ref
+                        Online-Quellenedition, in: H-Soz-Kult, June 3, 2017, <ref
                             target="http://www.hsozkult.de/webreview/id/rezwww-171"
                             >www.hsozkult.de/webreview/id/rezwww-171</ref> (Last Access: November 3, 2017).
                     </item>
