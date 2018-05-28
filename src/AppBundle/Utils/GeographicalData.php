@@ -205,6 +205,10 @@ class GeographicalData
                     $values['type'] = 'river';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300008795':
+                    $values['type'] = 'mountain';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300128207':
                     $values['type'] = 'nation';
                     break;
@@ -235,6 +239,10 @@ class GeographicalData
 
                 case 'http://vocab.getty.edu/aat/300235107':
                     $values['type'] = 'oblast';
+                    break;
+
+                case 'http://vocab.getty.edu/aat/300395501':
+                    $values['type'] = 'kray';
                     break;
 
                 case 'http://vocab.getty.edu/aat/300000774':
@@ -275,6 +283,10 @@ class GeographicalData
 
                 case 'http://vocab.getty.edu/aat/300235112':
                     $values['type'] = 'voivodeship';
+                    break;
+
+                case 'http://vocab.getty.edu/aat/300387052':
+                    $values['type'] = 'semi-independent political entity';
                     break;
 
                 case 'http://vocab.getty.edu/aat/300387069':
