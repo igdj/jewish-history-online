@@ -9,15 +9,15 @@
   <xsl:variable name="strings" select="document('translation.xml')/strings"/>
 
   <xsl:template name="translate">
-   <xsl:param name="label" />
-   <xsl:choose>
+    <xsl:param name="label" />
+    <xsl:choose>
       <xsl:when test="$strings/string[@key=$label and @language=$lang]">
         <xsl:value-of select="$strings/string[@key=$label and @language=$lang]" />
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="$label" />
       </xsl:otherwise>
-   </xsl:choose>
+    </xsl:choose>
   </xsl:template>
 
   <!-- from http://www.deutschestextarchiv.de/basisformat_ms.rng -->
@@ -32,7 +32,7 @@
   <span class="gap">
     <xsl:text>[</xsl:text>
     <xsl:if test="@reason='lost'"><xsl:call-template name="translate">
-              <xsl:with-param name="label" select="'verlorenes Material'" />
+      <xsl:with-param name="label" select="'verlorenes Material'" />
     </xsl:call-template></xsl:if>
     <xsl:if test="@reason='insignificant'"><span><xsl:attribute name="title">
         <xsl:call-template name="translate">
