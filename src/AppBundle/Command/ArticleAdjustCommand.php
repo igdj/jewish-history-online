@@ -17,7 +17,8 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-class ArticleAdjustCommand extends BaseEntityCommand
+class ArticleAdjustCommand
+extends BaseEntityCommand
 {
     protected function configure()
     {
@@ -423,8 +424,8 @@ class ArticleAdjustCommand extends BaseEntityCommand
             $uid = sprintf('jgo:%s-%d', $matches[1], $matches[2]);
             $langCode1 = $matches[3];
         }
-        else if (preg_match('/(source)\-(\d+)\.(yi|yl)\.(xml|tei)$/', $fname, $matches)) {
-            // yiddish
+        else if (preg_match('/(source)\-(\d+)\.(yi|yl|ja|la|pt)\.(xml|tei)$/', $fname, $matches)) {
+            // yiddish (hebrew), yiddish (latin), japanese, latin
             $uid = sprintf('jgo:%s-%d', $matches[1], $matches[2]);
             $langCode1 = $matches[3];
         }

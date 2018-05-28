@@ -51,31 +51,6 @@ extends Controller
         return $res;
     }
 
-    function removeByCssSelector($html, $selectorsToRemove)
-    {
-        $crawler = new \Symfony\Component\DomCrawler\Crawler();
-        $crawler->addHtmlContent($html);
-
-        foreach ($selectorsToRemove as $selector) {
-            $crawler->filter($selector)->each(function ($crawler) {
-                foreach ($crawler as $node) {
-                    // var_dump($node);
-                    $node->parentNode->removeChild($node);
-                }
-            });
-
-            /*
-            // TODO: switch to reduce - doesn't work yet
-            $crawler->filter($selector)->reduce(function ($crawler, $i) {
-                return false;
-
-            });
-            */
-        }
-
-        return $crawler->html();
-    }
-
     protected function buildRefLookup($refs, $language)
     {
         $refMap = [];

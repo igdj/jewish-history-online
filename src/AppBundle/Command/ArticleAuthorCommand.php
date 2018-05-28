@@ -157,8 +157,9 @@ extends BaseEntityCommand
         }
 
         if (count($users) > 1) {
-            $output->writeln(sprintf('<error>More than one user found for %s</error>',
-                                     trim($slug)));
+            $output->writeln(sprintf('<error>More than one user found for %s (IDs %s)</error>',
+                                     trim($slug),
+                                     join(', ', array_map(function ($user) { return $user['id']; }, $users))));
         }
 
         return $users[0];

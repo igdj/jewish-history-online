@@ -41,23 +41,6 @@ extends BaseEntityCommand
         ;
     }
 
-    function removeByCssSelector($html, $selectorsToRemove)
-    {
-        $crawler = new \Symfony\Component\DomCrawler\Crawler();
-        $crawler->addHtmlContent($html);
-
-        foreach ($selectorsToRemove as $selector) {
-            $crawler->filter($selector)->each(function ($crawler) {
-                foreach ($crawler as $node) {
-                    // var_dump($node);
-                    $node->parentNode->removeChild($node);
-                }
-            });
-        }
-
-        return $crawler->html();
-    }
-
     protected function html2text($html, $do_links = false)
     {
         $html2text = new \Html2Text\Html2Text($html, [

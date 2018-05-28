@@ -28,6 +28,24 @@ trait RenderTeiTrait
         $proc = $this->getContainer()->get('app.xslt');
         $pathToXslt = $kernel->locateResource('@AppBundle/Resources/data/xsl/' . $fnameXslt);
         $res = $proc->transformFileToXml($pathToXml, $pathToXslt, $options);
+
         return $res;
+    }
+
+    function removeByCssSelector($html, $selectorsToRemove)
+    {
+        $crawler = new \Symfony\Component\DomCrawler\Crawler();
+        $crawler->addHtmlContent($html);
+
+        foreach ($selectorsToRemove as $selector) {
+            $crawler->filter($selector)->each(function ($crawler) {
+                foreach ($crawler as $node) {
+                    // var_dump($node);
+                    $node->parentNode->removeChild($node);
+                }
+            });
+        }
+
+        return $crawler->html();
     }
 }
