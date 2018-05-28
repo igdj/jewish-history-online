@@ -306,7 +306,7 @@ SeeAlsoView.prototype.escapeHTML = function(s) {
  */
 SeeAlsoView.prototype.getClasses = function(elem) {
     var classes = {};
-    if (elem && elem.className) {
+    if (elem && elem.className && typeof elem.className == "string") {
         var c = elem.className.split(/\s+/);
         for ( var i = 0, length = c.length; i < length; i++ ) {
             if (c[i].length > 0) {
