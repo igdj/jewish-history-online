@@ -11,6 +11,8 @@ class PdfGenerator extends \mPDF
 
         parent::__construct();
 
+        $this->autoScriptToLang = true;
+
         $this->SetDisplayMode('fullpage');
     }
 }

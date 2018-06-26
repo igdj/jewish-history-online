@@ -137,8 +137,12 @@
         color: #6E6E6E;
     }
 
-    .article p.dta-p-rtl {
-        font-family: 'DejaVu Sans';  /* since Roboto currently lacks Hebrew glyphs */
+    /* the following spans are set through $mpdf->autoScriptToLang = true */
+    span.lang_he {
+        font-family: 'DejaVu Sans';
+    }
+    span.lang_und-Hans {
+        font-family: 'sun-exta';
     }
 
     .article .dta-fn-intext { vertical-align:super; font-size: 11px }
