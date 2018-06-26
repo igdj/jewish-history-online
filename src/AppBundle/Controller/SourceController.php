@@ -11,7 +11,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  *
  */
-class SourceController extends ArticleController
+class SourceController
+extends ArticleController
 {
     protected function renderSourcePdf($parts)
     {
@@ -30,6 +31,7 @@ class SourceController extends ArticleController
         ]);
 
         /*
+        // debug
         echo $html;
         exit;
         */
@@ -113,7 +115,7 @@ class SourceController extends ArticleController
         $firstFacs = $teiHelper->getFirstPbFacs($this->locateTeiResource($fname));
 
         $sourceType = $sourceArticle->getSourceType();
-        if ($generatePrintView && 'Text' == $sourceType) {
+        if ($generatePrintView) {
             // PDF-view is currently only the transcript without facsimile
             $sourceType = 'Transcript';
         }
@@ -697,7 +699,7 @@ class SourceController extends ArticleController
         $parts = explode('/', $path, 2);
         $lang = 'de';
 
-        if (preg_match('/^tei\/(translation|transcription)\.(de|en|yi|yl)\/(page\-(\d+)(\.xml))$/', $parts[1], $matches)) {
+        if (preg_match('/^tei\/(translation|transcription)\.(de|en|yi|yl|ja|la|pt)\/(page\-(\d+)(\.xml))$/', $parts[1], $matches)) {
             $lang = $matches[2];
             $page = $matches[3];
         }
