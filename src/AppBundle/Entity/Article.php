@@ -506,7 +506,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
      *
      * @return $this
      */
-    public function setTranslator(Person $translator)
+    public function setTranslator(Person $translator = null)
     {
         $this->translator = $translator;
 
@@ -554,7 +554,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
      *
      * @return $this
      */
-    public function setContentLocation(Place $contentLocation)
+    public function setContentLocation(Place $contentLocation = null)
     {
         $this->contentLocation = $contentLocation;
 
@@ -781,7 +781,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
      *
      * @return $this
      */
-    public function setProvider(Organization $provider)
+    public function setProvider(Organization $provider = null)
     {
         $this->provider = $provider;
 
@@ -1285,7 +1285,14 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
         }
 
         if (!empty($this->license)) {
-            $ret['license'] = $this->license;
+            switch ($this->license) {
+                case '#public-domain':
+                    $ret['license'] = 'https://creativecommons.org/publicdomain/mark/1.0/deed.' . $locale;
+                    break;
+
+                default:
+                    $ret['license'] = $this->license;
+            }
         }
 
         return $ret;

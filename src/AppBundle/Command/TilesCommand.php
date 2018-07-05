@@ -11,7 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
-class TilesCommand extends ContainerAwareCommand
+class TilesCommand
+extends ContainerAwareCommand
 {
     protected function configure()
     {
@@ -167,6 +168,7 @@ class TilesCommand extends ContainerAwareCommand
                             if (!is_dir($rowPath)) {
                                 mkdir($rowPath, 0777, true);
                             }
+
                             rename($tilename, $rowPath . DIRECTORY_SEPARATOR . $column. '.jpg');
                         }
                     }

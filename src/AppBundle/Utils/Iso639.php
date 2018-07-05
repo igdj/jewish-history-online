@@ -20,6 +20,7 @@ class Iso639
         if (is_null(self::$languages)) {
             self::$languages = new \Gmo\Iso639\Languages();
         }
+
         return self::$languages;
     }
 
@@ -36,8 +37,9 @@ class Iso639
         if ('yl' == $code1) {
             // yl is our custom two-letter placeholder for yi-Latn
             $code1 = 'yi';
-            $append = '-Latn';
+            $scriptAppend = '-Latn';
         }
+
         return $languages->findByCode1($code1)
             ->code3()
             . $scriptAppend;
@@ -52,6 +54,7 @@ class Iso639
     public static function code2bTo3($code2)
     {
         $languages = self::getLanguages();
+
         return $languages->findByCode2b($code2)->code3();
     }
 
@@ -65,6 +68,7 @@ class Iso639
     public static function code3To1($code3)
     {
         $languages = self::getLanguages();
+
         return $languages->findByCode3($code3)->code1();
     }
 
@@ -78,7 +82,7 @@ class Iso639
     public static function nameByCode3($code3)
     {
         $languages = self::getLanguages();
+
         return $languages->findByCode3($code3)->name();
     }
-
 }

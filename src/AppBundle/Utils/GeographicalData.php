@@ -18,13 +18,16 @@ class GeographicalData
         if (empty($headers)) {
             $headers['Accept'] = 'application/rdf+xml';
         }
+
         foreach ($headers as $name => $value) {
             $client->setHeaders($name, $value);
         }
+
         $response = $client->request();
         if (!$response->isSuccessful()) {
             return null;
         }
+
         $content = $response->getBody();
         // the graph is too big for stuff like http://vocab.getty.edu/tgn/7003669
         $content = preg_replace('/\s*<skos\:narrower rdf\:resource\=\"[^"]*\"\s*\/>\s*/', '', $content);

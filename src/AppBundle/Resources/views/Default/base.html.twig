@@ -71,6 +71,7 @@
         }
         </style>
         {% block head %}{% endblock %}
+        {# TODO: switch to https://github.com/mnater/Hyphenopoly #}
         <script src="{{ app.request.basepath }}/vendor/Hyphenator-5.3.0/Hyphenator_Loader.js" type="text/javascript"></script>
         <script type="text/javascript">
             Hyphenator_Loader.init(
@@ -82,6 +83,7 @@
                 {
                     'classname': 'dta-p',
                     'useCSS3hyphenation': true,
+            		// displaytogglebox : true,
                     // 'hyphenchar': '|' // just for debugging
                 }
             );
@@ -147,6 +149,10 @@
     </head>
 
     <body role="document" class="route-{{ app.request.get('_route') | replace({'_' : '-'}) }}">
+        <div id="displaybox" style="display: none;">
+            <a href="#" style="display: block; position: absolute; top: 8px; right: 8px;" onclick="$('#displaybox').toggle(); return false;"><svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="2em" width="2em" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m31.6 10.7l-9.3 9.3 9.3 9.3-2.3 2.3-9.3-9.3-9.3 9.3-2.3-2.3 9.3-9.3-9.3-9.3 2.3-2.3 9.3 9.3 9.3-9.3z"></path></g></svg></a>
+            <div id="displayBoxContent" style="background-color: white; margin-top: 2em; margin-left: auto; margin-right: auto; width: 90%; height: 90%; overflow: auto;"></div>
+        </div>
         <header>
             <div class="container">
                 <div class="row">

@@ -162,23 +162,23 @@
                 <h4>{{ 'Welcome'|trans }}</h4>
                 <div class="two-columns justify-hyphens">
 {% if 'en' == app.request.locale %}
-    <p>This online source edition published by the <a href="http://www.igdj-hh.de/home-175.html">Institute for the History of German Jews</a> uses a selection of sources, so-called <a href="{{ path('about-keydocuments') }}">key documents</a>, to thematically highlight central aspects in Hamburg’s Jewish history from the early modern age to the present.</p>
+    <p class="dta-p">This online source edition published by the <a href="http://www.igdj-hh.de/home-175.html">Institute for the History of German Jews</a> uses a selection of sources, so-called <a href="{{ path('about-keydocuments') }}">key documents</a>, to thematically highlight central aspects in Hamburg’s Jewish history from the early modern age to the present.</p>
 
-    <p>Transcripts as well as digital facsimiles are provided for all sources, which are placed in historical context by interpretations and background information. The source material is further enriched by information on its provenance, historical responses to it, and scholarly controversies. All content is provided in both German and English.</p>
+    <p class="dta-p">Transcripts as well as digital facsimiles are provided for all sources, which are placed in historical context by interpretations and background information. The source material is further enriched by information on its provenance, historical responses to it, and scholarly controversies. All content is provided in both German and English.</p>
 
-    <p style="-webkit-column-break-inside: avoid; page-break-inside: avoid; break-inside: avoid;">The <a href="{{ path('about-audience') }}">target audience</a> for this source edition is college students, researchers and teachers, as well as the interested public and high school students. It covers a spectrum ranging from more general, introductory texts to those developing their argument by a close study of the source, and it offers different ways of approaching the texts – through a <a href="{{ path('date-chronology') }}">timeline</a>, a <a href="{{ path('topic-index') }}">specific topic</a> or a <a href="{{ path('place-map') }}">map</a>. The project is supported by an <a href="{{ path('about-board') }}">advisory board</a> consisting of renowned scholars of German-Jewish history and experts in the field of digitization.</p>
+    <p class="dta-p avoid-break">The <a href="{{ path('about-audience') }}">target audience</a> for this source edition is college students, researchers and teachers, as well as the interested public and high school students. It covers a spectrum ranging from more general, introductory texts to those developing their argument by a close study of the source, and it offers different ways of approaching the texts – through a <a href="{{ path('date-chronology') }}">timeline</a>, a <a href="{{ path('topic-index') }}">specific topic</a> or a <a href="{{ path('place-map') }}">map</a>. The project is supported by an <a href="{{ path('about-board') }}">advisory board</a> consisting of renowned scholars of German-Jewish history and experts in the field of digitization.</p>
 
-    <p>The online edition has been receiving funding from the <a href="http://dfg.de/">Deutsche Forschungsgemeinschaft</a> since July 2015.</p>
+    <p class="dta-p">The online edition has been receiving funding from the <a href="http://dfg.de/">Deutsche Forschungsgemeinschaft</a> since July 2015.</p>
 
-    <p><a href="{{ path('about') }}">Additional information about this edition...</a></p>
+    <p class="dta-p"><a href="{{ path('about') }}">Additional information about this edition...</a></p>
 {% else %}
-    <p>Diese vom <a href="http://www.igdj-hh.de/">Institut für die Geschichte der deutschen Juden</a> realisierte Online-Quellenedition wirft am Beispiel von ausgewählten Quellen, sogenannten <a href="{{ path('about-keydocuments') }}">Schlüsseldokumenten</a>, thematische Schlaglichter auf zentrale Aspekte der jüdischen Geschichte Hamburgs von der frühen Neuzeit bis in die Gegenwart.</p>
+    <p class="dta-p">Diese vom <a href="http://www.igdj-hh.de/">Institut für die Geschichte der deutschen Juden</a> realisierte Online-Quellenedition wirft am Beispiel von ausgewählten Quellen, sogenannten <a href="{{ path('about-keydocuments') }}">Schlüsseldokumenten</a>, thematische Schlaglichter auf zentrale Aspekte der jüdischen Geschichte Hamburgs von der frühen Neuzeit bis in die Gegenwart.</p>
 
-    <p >Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und durch Interpretations- und Hintergrundtexte in ihre historischen Kontexte eingebettet. Angereichert werden die Materialien durch Informationen zur Überlieferung, zur Rezeptionsgeschichte und zu wissenschaftlichen Kontroversen. Alle Inhalte werden sowohl auf Deutsch als auch auf Englisch angeboten.</p>
+    <p class="dta-p">Alle Quellen werden als Transkript und digitales Faksimile bereitgestellt und durch Interpretations- und Hintergrundtexte in ihre historischen Kontexte eingebettet. Angereichert werden die Materialien durch Informationen zur Überlieferung, zur Rezeptionsgeschichte und zu wissenschaftlichen Kontroversen. Alle Inhalte werden sowohl auf Deutsch als auch auf Englisch angeboten.</p>
 
-    <p style="-webkit-column-break-inside: avoid; page-break-inside: avoid; break-inside: avoid;">Die Quellenedition <a href="{{ path('about-audience') }}">richtet sich an Studierende, Forschende und Lehrende, teilweise auch an Laien sowie Schülerinnen und Schüler</a>. Sie deckt dabei ein Spektrum von eher allgemeinen, überblicksartigen bis hin zu eng an der Quelle argumentierenden Texten ab und bietet verschiedene Zugänge zu den Quellen an – über einen <a href="{{ path('date-chronology') }}">Zeitstrahl</a>, <a href="{{ path('topic-index') }}">Themenkategorien</a> oder eine <a href="{{ path('place-map') }}">Karte</a>. Ein <a href="{{ path('about-board') }}">Beirat</a> aus renommierten Wissenschaftlerinnen und Wissenschaftlern der deutsch-jüdischen Geschichte und Expertinnen und Experten aus dem Bereich Digitalisierung unterstützt das Projekt.</p>
+    <p class="dta-p avoid-break">Die Quellenedition <a href="{{ path('about-audience') }}">richtet sich an Studierende, Forschende und Lehrende, teilweise auch an Laien sowie Schülerinnen und Schüler</a>. Sie deckt dabei ein Spektrum von eher allgemeinen, überblicksartigen bis hin zu eng an der Quelle argumentierenden Texten ab und bietet verschiedene Zugänge zu den Quellen an – über einen <a href="{{ path('date-chronology') }}">Zeitstrahl</a>, <a href="{{ path('topic-index') }}">Themenkategorien</a> oder eine <a href="{{ path('place-map') }}">Karte</a>. Ein <a href="{{ path('about-board') }}">Beirat</a> aus renommierten Wissenschaftlerinnen und Wissenschaftlern der deutsch-jüdischen Geschichte und Expertinnen und Experten aus dem Bereich Digitalisierung unterstützt das Projekt.</p>
 
-    <p>Die Online-Edition wird seit Juli 2015 von der <a href="http://dfg.de/">Deutschen Forschungsgemeinschaft</a> gefördert.</p>
+    <p class="dta-p">Die Online-Edition wird seit Juli 2015 von der <a href="http://dfg.de/">Deutschen Forschungsgemeinschaft</a> gefördert.</p>
 
     <p><a href="{{ path('about') }}">Weitere Informationen über diese Edition...</a></p>
 {% endif %}
@@ -224,7 +224,7 @@
                             {% if topicDescr.article is not empty %}
                             <a href="{{ path('topic-background', { 'slug' : topicDescr.article }) }}">
                             {% endif %}
-                                <h5 style="white-space: normal">
+                                <h5 style="white-space: normal; font-size: 13px;">
                                     <div class="topic-label">{{ topicDescr.label }}</div>
                                 </h5>
                                 <img src="{{ asset('img/topic/' ~ slug ~ '.jpg') }}" style="width: 100%; height: auto" />
@@ -301,25 +301,25 @@
                 </div>
                 <div class="row box-color-content-inverse">
                     <div class="col-sm-4">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-127' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00127/thumb.jpg" style="width: 100%; height: auto" /></a>
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-69' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00069/thumb.jpg" style="width: 100%; height: auto" /></a>
                     </div>
                     <div class="col-sm-8">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-127' }) }}">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-69' }) }}">
                         {% if 'en' == app.request.locale %}
-                        <b>By-Laws of the Israelite-Humanitarian Women’s Association of Hamburg, dated March 19, 1911</b>
+                        <b>Minutes of a Meeting to Reconstitute the Jewish Congregation</b>, Hamburg, July 1945
                         {% else %}
-                        <b>Satzung des Vereins Israelitischer-humanitärer Frauen-Verein e.V. Hamburg vom 19.3.1911</b>
+                        <b>Niederschrift einer Zusammenkunft zur Neugründung der Jüdischen Gemeinde</b>, Hamburg, Juli 1945
                         {% endif %}
                         </a>
 
                         <p>
-                        <a href="{{ path('article', { 'slug' : 'jgo:article-121' }) }}">
+                        <a href="{{ path('article', { 'slug' : 'jgo:article-66' }) }}">
                         {% if 'en' == app.request.locale %}
                         <b>Source Interpretation</b> by
                         {% else %}
                         <b>Interpretation</b> von
                         {% endif %}
-                        Magdalena Gehring
+                        Ina Lorenz
                         </a>
                         </p>
                     </div>
@@ -334,75 +334,100 @@
                 </div>
                 <div class="row box-color-content-inverse">
                     <div class="col-sm-4">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-165' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00165/thumb.jpg" style="width: 100%; height: auto" /></a>
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-188' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00188/thumb.jpg" style="width: 100%; height: auto" /></a>
                     </div>
                     <div class="col-sm-8">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-165' }) }}">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-188' }) }}">
                         {% if 'en' == app.request.locale %}
-                        <b>Glikl von Hameln: Memoirs, 1691-1719 [Excerpt]</b>
+                        <b>Pass for Stateless Refugees from the Designated Area Hongkew issued by the Stateless Refugees Bureau</b>, Shanghai, June 02, 1944
                         {% else %}
-                        <b>Glikl von Hameln, Memoiren, 1691-1719 [Auszug]</b>
+                        <b>Passierschein für jüdische Flüchtlinge aus dem Ghetto Hongkew für James Iwan Wolf, ausgestellt von der Behörde für staatenlose Flüchtlinge</b>, Shanghai, 02.06.1944
                         {% endif %}
                         </a>
 
                         <p>
-                        <a href="{{ path('article', { 'slug' : 'jgo:article-195' }) }}">
+                        <a href="{{ path('article', { 'slug' : 'jgo:article-245' }) }}">
                         {% if 'en' == app.request.locale %}
                         <b>Source Interpretation</b> by
                         {% else %}
                         <b>Interpretation</b> von
                         {% endif %}
-                        Joshua Teplitsky
+                        Xin Tong
                         </a>
                         </p>
                     </div>
                 </div>
                 <div class="row box-color-content-inverse">
                     <div class="col-sm-4">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-131' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00131/thumb.jpg" style="width: 100%; height: auto" /></a>
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-179' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00179/thumb.jpg" style="width: 100%; height: auto" /></a>
                     </div>
                     <div class="col-sm-8">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-131' }) }}">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-179' }) }}">
                         {% if 'en' == app.request.locale %}
-                        <b>B. [probably Max Besser], The Founding of a New Jewish Gymnastics Club "Bar Kochba" in Hamburg</b>, March / April 1910
+                        <b>The Synagogues of Hamburg by Ruben Maleachi (cont.), in: Mitteilungen des Verbandes Ehemaliger Breslauer und Schlesier in Israel</b>, Tel Aviv, May 1980
                         {% else %}
-                        <b>B. [vermutlich Max Besser], Die Gründung eines neuen Jüdischen Turnvereins „Bar Kochba“ in Hamburg</b>, März / April 1910
+                        <b>Die Synagogen in Hamburg von Ruben Maleachi (Fortsetzung), in: Mitteilungen des Verbandes Ehemaliger Breslauer und Schlesier in Israel</b>, Tel Aviv, Mai 1980
                         {% endif %}
                         </a>
 
                         <p>
-                        <a href="{{ path('article', { 'slug' : 'jgo:article-162' }) }}">
+                        <a href="{{ path('article', { 'slug' : 'jgo:article-236' }) }}">
                         {% if 'en' == app.request.locale %}
                         <b>Source Interpretation</b> by
                         {% else %}
                         <b>Interpretation</b> von
                         {% endif %}
-                        Ivonne Meybohm
+                        Constanze Kolbe
                         </a>
                         </p>
                     </div>
                 </div>
                 <div class="row box-color-content-inverse">
                     <div class="col-sm-4">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-174' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00174/thumb.jpg" style="width: 100%; height: auto" /></a>
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-67' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00067/thumb.jpg" style="width: 100%; height: auto" /></a>
                     </div>
                     <div class="col-sm-8">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-174' }) }}">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-67' }) }}">
                         {% if 'en' == app.request.locale %}
-                        <b>Hermann Zvi Guttmann, Drawing for Design of the Synagogue at Hohe Weide</b>, 1956
+                        <b>By-laws of the Franz Rosenzweig Memorial Foundation</b>, Hamburg, November 1930
                         {% else %}
-                        <b>Hermann Zvi Guttmann, Schaubild der Synagoge Hohe Weide</b>, 1956
+                        <b>Die Statuten der Franz-Rosenzweig-Gedächtnis-Stiftung</b>, Hamburg, November 1930
                         {% endif %}
                         </a>
 
                         <p>
-                        <a href="{{ path('article', { 'slug' : 'jgo:article-231' }) }}">
+                        <a href="{{ path('article', { 'slug' : 'jgo:article-65' }) }}">
                         {% if 'en' == app.request.locale %}
                         <b>Source Interpretation</b> by
                         {% else %}
                         <b>Interpretation</b> von
                         {% endif %}
-                        Alexandra Klei
+                        Ina Lorenz
+                        </a>
+                        </p>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse">
+                    <div class="col-sm-4">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-176' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00176/thumb.jpg" style="width: 100%; height: auto" /></a>
+                    </div>
+                    <div class="col-sm-8">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-176' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>A Conversation with Arnold Bernstein, in: Sonntagsblatt Staats-Zeitung und Herold, November 24, 1957</b>, New York
+                        {% else %}
+                        <b>Gespräch mit Arnold Bernstein, in: Sonntagsblatt Staats-Zeitung und Herold, 24.11.1957</b>, New York
+                        {% endif %}
+                        </a>
+
+                        <p>
+                        <a href="{{ path('article', { 'slug' : 'jgo:article-242' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Source Interpretation</b> by
+                        {% else %}
+                        <b>Interpretation</b> von
+                        {% endif %}
+                        Björn Siegel
                         </a>
                         </p>
                     </div>

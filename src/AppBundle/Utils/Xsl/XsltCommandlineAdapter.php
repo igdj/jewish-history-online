@@ -25,6 +25,7 @@ class XsltCommandlineAdapter
                 throw new \InvalidArgumentException("$fname does not exist");
             }
         }
+
         return escapeshellarg($fname);
     }
 
@@ -39,17 +40,17 @@ class XsltCommandlineAdapter
                 }
             }
         }
+
         return join(' ', $nameValue);
     }
 
     function transformToXml($srcFilename, $xslFilename, $options = [])
     {
-        $cmd = trim(Sprintf::f($this->cmdTemplate,
-                          [
-                            'source' => $this->escapeFilename($srcFilename),
-                            'xsl' => $this->escapeFilename($xslFilename),
-                            'additional' => $this->buildAdditional($options),
-                          ]));
+        $cmd = trim(Sprintf::f($this->cmdTemplate, [
+                'source' => $this->escapeFilename($srcFilename),
+                'xsl' => $this->escapeFilename($xslFilename),
+                'additional' => $this->buildAdditional($options),
+            ]));
         $res = `$cmd`;
 
         // TODO: implement some form of error-handling

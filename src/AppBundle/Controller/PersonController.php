@@ -9,7 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  *
  */
-class PersonController extends Controller
+class PersonController
+extends Controller
 {
     use SharingBuilderTrait;
 

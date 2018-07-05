@@ -328,8 +328,8 @@ class ArticleDoiCommand extends ContainerAwareCommand
         // rights
         $rightsAttr = [];
         $rights = $entity->getRights();
-        if (!empty($entity->getLicense())) {
-            $license = $entity->getLicense();
+        $license = $entity->getLicense();
+        if (!empty($license)) {
             if ('#' != $license[0]) {
                 $rightsAttr['rightsURI'] = $license;
             }
@@ -342,8 +342,8 @@ class ArticleDoiCommand extends ContainerAwareCommand
                 }
             }
         }
-        if (empty($rights) && !empty($entity->getLicense())) {
-            die('TODO: determine rights-statement for ' . $entity->getLicense());
+        if (empty($rights) && !empty($license)) {
+            die('TODO: determine rights-statement for ' . $license);
         }
         if (!empty($rights)) {
             $root->addChild('rightsList', true)

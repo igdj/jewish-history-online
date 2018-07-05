@@ -8,7 +8,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
-class ImportEntityCommand extends BaseEntityCommand
+class ImportEntityCommand
+extends BaseEntityCommand
 {
     protected function configure()
     {

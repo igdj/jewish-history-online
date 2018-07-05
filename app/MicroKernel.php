@@ -7,7 +7,8 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
 // see https://github.com/ikoene/symfony-micro
-class MicroKernel extends Kernel
+class MicroKernel
+extends Kernel
 {
     /*
      * Set an Environment Variable in Apache Configuration

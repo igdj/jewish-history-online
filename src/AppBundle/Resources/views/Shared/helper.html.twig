@@ -316,8 +316,15 @@
                             {% if '#public-domain' == meta.license %}
                                 {% set labelDownload = 'Download source'|trans %}
                                 {% if not printview %}
-                                <a href="{{ 'https://creativecommons.org/publicdomain/mark/1.0/deed.en'|trans }}" target="_blank">
+                                <a href="{{ 'https://creativecommons.org/publicdomain/mark/1.0/' ~ 'deed.' ~ app.request.locale  }}" target="_blank">
                                     <img src="{{ app.request.basepath }}/img/license/public-domain.svg" height="24" style="display: block" />
+                                </a>
+                                {% endif %}
+                            {% elseif 'http://creativecommons.org/licenses/by-nc-sa/4.0/' == meta.license %}
+                                {% set labelDownload = 'Download source'|trans %}
+                                {% if not printview %}
+                                <a href="{{ meta.license ~ 'deed.' ~ app.request.locale }}" target="_blank">
+                                    <img src="{{ app.request.basepath }}/img/license/by-nc-sa.svg" height="24" style="display: block" />
                                 </a>
                                 {% endif %}
                             {% endif %}

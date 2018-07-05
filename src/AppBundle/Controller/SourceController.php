@@ -31,7 +31,7 @@ extends ArticleController
         ]);
 
         /*
-        // debug
+        // debug $html generation
         echo $html;
         exit;
         */

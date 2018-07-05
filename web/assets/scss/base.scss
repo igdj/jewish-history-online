@@ -816,17 +816,19 @@ footer {
         text-align: right;
     }
 
-    /* see https://gist.github.com/JayHoltslander/9998612 */
     div.two-columns {
+        column-fill: balance;
         -webkit-column-count: 2; /* Chrome, Safari, Opera */
         -moz-column-count:    2; /* Firefox */
         column-count:         2;
         -webkit-column-gap:   20px; /* Chrome, Safari, Opera */
         -moz-column-gap:      20px; /* Firefox */
         column-gap:           20px;
-        /* column-rule-color: #ccc; */ /* Optional */
-        /* column-rule-style:solid; */ /* Optional */
-        /* column-rule-width: 1px; */ /* Optional */
+
+        /* for filling evenly on Chrome */
+        p {
+            display: inline-block;
+        }
     }
 
     /* .epoch-label is hidden on xs-screens */

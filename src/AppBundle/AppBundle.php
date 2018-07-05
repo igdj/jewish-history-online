@@ -8,7 +8,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
 use Presta\SitemapBundle\Sitemap\Url\UrlConcrete;
 
-class AppBundle extends Bundle
+class AppBundle
+extends Bundle
 {
     // see http://stackoverflow.com/a/10473026
     private function startsWith($haystack, $needle)
@@ -28,6 +29,7 @@ class AppBundle extends Bundle
         if (!array_key_exists($key, $urlDescriptions)) {
             $urlDescriptions[$key] = [];
         }
+
         $urlDescriptions[$key][$routeLocale] = $localeUrlDescription;
     }
 

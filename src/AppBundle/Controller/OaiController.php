@@ -26,7 +26,7 @@ extends Controller
 
         // $repository is an instance of \Picturae\OaiPmh\Interfaces\Repository
         $repository = new Repository($this, [
-            'repositoryName' => $translator->trans($globals['siteName']),
+            'repositoryName' => /** @Ignore */ $translator->trans($globals['siteName']),
             'administrationEmails' => [ 'info@juedische-geschichte-online.net' ],
         ]);
 

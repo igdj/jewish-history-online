@@ -11,9 +11,7 @@
     <script src="{{ app.request.basepath }}/viewer/shared/iview2/js/iview-client-base.min.js"></script>
     <script src="{{ app.request.basepath }}/viewer/shared/iview2/js/iview-client-desktop.min.js"></script>
     <script src="{{ app.request.basepath }}/viewer/shared/iview2/js/iview-client-mets.js"></script>
-    <!--<script src=".{{ app.request.basepath }}/viewer/shared/iview2/js/iview-client-metadata.js"></script>  -->
     <link href="{{ app.request.basepath }}/viewer/shared/iview2/css/default.css" type="text/css" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="../META-INF/resources/components/iview/templates/mobile/jquery.mobile-1.3.2.min.css" />     -->
 
     {# TODO: move to some shared style-sheet #}
     <style>
@@ -74,18 +72,16 @@
              *  startImage: string;
              */
             var viewer_options = {
-                "mobile": false,
+                mobile: false,
                 doctype: "mets",
                 metsURL: "{{ app.request.basepath }}/viewer/{{ path }}/{{ mets }}",
-                "imageXmlPath": "{{ path('imginfo', {'path' : ''}) }}",
-                "derivateContentTransformerServlet": "{{ path('tei2html', {'path' : ''}) }}",
-                "tileProviderPath": "{{ app.request.basepath }}/viewer/",
-                "filePath": "/{{ firstFacs }}.jpg", // initial facs
+                imageXmlPath: "{{ path('imginfo', {'path' : ''}) }}",
+                derivateContentTransformerServlet: "{{ path('tei2html', {'path' : ''}) }}",
+                tileProviderPath: "{{ app.request.basepath }}/viewer/",
+                filePath: "/{{ firstFacs }}.jpg", // initial facs
                 derivate: "{{ path }}",
-                i18nURL: "{{ app.request.basepath }}/viewer/shared/iview2/i18n/{lang}.json",
+                i18nURL: "{{ app.request.basepath }}/viewer/shared/iview2-i18n/{lang}.json",
                 lang: "{{ app.request.locale }}",
-                // pdfCreatorStyle: "pdf",
-                // pdfCreatorURI: "http://wrackdm17.thulb.uni-jena.de/mets-printer/pdf",
                 text: {
                     // showOnStart: ["transcription"], // we set this below depending on viewer width
                     enabled: true
@@ -101,10 +97,7 @@
                     showOnStart: false
                 },
                 permalink: {
-                    enabled: false /*,
-                    updateHistory: true,
-                    viewerLocationPattern : "/common-heritage/static/DP9UZA52/viewer/"
-                    */
+                    enabled: false
                 },
                 canvas: {
                     overview: {
@@ -123,13 +116,13 @@
             };
 
             if ($( '#image-viewer' ).width() > 800) {
-                viewer_options.text.showOnStart = ["transcription"];
+                viewer_options.text.showOnStart = [ 'transcription' ];
             }
 
-            window["viewer"] = new mycore.viewer.MyCoReViewer($( "#image-viewer" ), viewer_options);
+            window['viewer'] = new mycore.viewer.MyCoReViewer($( '#image-viewer' ), viewer_options);
 
             // a bit of a hack - some event or setting would be nicer
-            setTimeout(function(){
+            setTimeout(function() {
                 $( '[data-id="CloseViewerGroup"]' ).show();
                 setViewerClose('image-viewer');
 
@@ -147,7 +140,7 @@
             $.ajax({
                 type: "GET",
                 dataType: "json",
-                url: "{{ app.request.basepath }}/viewer/shared/iview2/i18n/{{ app.request.locale }}.json",
+                url: "{{ app.request.basepath }}/viewer/shared/iview2-i18n/{{ app.request.locale }}.json",
                 success: function (data) {
                     createViewer();
                 }
@@ -166,6 +159,9 @@
         </div><!-- .col -->
 
         <div class="col-xs-12 col-md-3 sidebar">
+            <h3 class="pdf-link">
+                <a href="{{ path(app.request.attributes.get('_route') ~ '-pdf', app.request.attributes.get('_route_params')) }}">{{ 'Print Version'|trans }}</a>
+            </h3>
             {{ helper.source_sidebar(article, description, interpretations, related, mets) }}
         </div>
     </div>

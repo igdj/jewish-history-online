@@ -96,7 +96,6 @@ extends RenderTeiController
             }
         }
 
-
         $queryBuilder = $this->getDoctrine()
                 ->getManager()
                 ->createQueryBuilder()

@@ -174,8 +174,13 @@ extends BaseEntityCommand
                 continue;
             }
 
-            // not sure if the following is correct if we want to clear previous settings
             if (!isset($article->$attribute)) {
+                if (in_array($attribute, [ 'translator', 'provider', 'contentLocation' ])) {
+                    // clear previously set value
+                    // TODO: maybe extend to further properties
+                    $method = 'set' . ucfirst($attribute);
+                    $entity->$method(null);
+                }
                 continue;
             }
 

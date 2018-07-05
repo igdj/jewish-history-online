@@ -149,6 +149,7 @@ class TeiHelper
         }
 
         // translator
+        $article->translator = null;
         $result = $header->xpath('./tei:fileDesc/tei:titleStmt/tei:editor[@role="translator"]/tei:persName');
         if (!empty($result)) {
             $element = $result[0];
@@ -267,7 +268,8 @@ class TeiHelper
             $article->url = (string)$result[0];
         }
 
-        // classification
+        // genre, classification and translatedFrom
+        $article->translatedFrom = null; // so legacy value gets cleared if now longer set
         $keywords = [];
         $result = $header->xpath('./tei:profileDesc/tei:textClass/tei:classCode');
         foreach ($result as $element) {

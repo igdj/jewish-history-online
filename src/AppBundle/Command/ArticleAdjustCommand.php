@@ -81,14 +81,14 @@ extends BaseEntityCommand
 
         // common stuff
         if (!empty($result['lang'])
-            && \AppBundle\Utils\Iso639::code2bTo3($result['lang']) != $data['lang'])
+            && ($translatedFrom = \AppBundle\Utils\Iso639::code2bTo3($result['lang'])) != $data['lang'])
         {
             $data['translator'] = [
                 $result['translator_slug'] => join(' ', [ $result['firstname'], $result['lastname'] ]),
             ];
 
             // admin uses 639-2B ('ger' instead of 'deu')
-            $data['translatedFrom'] = \AppBundle\Utils\Iso639::code2bTo3($result['lang']);
+            $data['translatedFrom'] = $translatedFrom;
         }
 
         switch ($result['query_type']) {

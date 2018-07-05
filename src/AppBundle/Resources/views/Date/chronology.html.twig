@@ -4,6 +4,8 @@
 %}
 {% import 'AppBundle:Shared:helper.html.twig' as helper %}
 
+{% set embedded = app.request.attributes.get('_route') == 'date-chronology-partial' %}
+
 {% block head %}
     <script src="{{ app.request.basepath }}/vendor/waypoints/jquery.waypoints.min.js"></script>
     <script src="{{ app.request.basepath }}/vendor/waypoints/shortcuts/sticky.min.js"></script>
@@ -21,6 +23,55 @@
             }
 
             $(window).on('resize', resizeStuck);
+
+            {% if not embedded %}
+            // activate sidebar menu based on scroll
+            // see https://stackoverflow.com/a/9980042
+
+            // Cache selectors
+            var lastId,
+                menu = $('#epoch-navigation'),
+                menuHeight = 5,
+                // All list items
+                menuItems = menu.find('h5 > a[href^="#"]'),
+                // Anchors corresponding to menu items
+                scrollItems = menuItems.map(function() {
+                    var item = $($(this).attr('href'));
+                    if (item.length) { return item; }
+                });
+
+            $(window).scroll(function(){
+                // Get container scroll position
+                var fromTop = $(this).scrollTop();
+
+                // Get id of current scroll item
+                var cur = scrollItems.map(function(){
+                  if ($(this).offset().top-menuHeight+1 < fromTop)
+                    return this;
+                });
+                // Get the id of the current element
+                cur = cur[cur.length-1];
+                var id = cur && cur.length ? cur[0].id : "";
+
+                //code
+                if (lastId !== id) {
+                    lastId = id;
+                    // Set/remove active class
+                    var items = menuItems
+                        .parent()
+                        .removeClass("active");
+
+                    if (id != "") {
+                        items
+                            .end()
+                            .filter("[href='#"+id+"']")
+                            .parent()
+                            .addClass("active");
+                    }
+                }
+            });
+            {% endif %}
+
         });
     </script>
     <style>
@@ -30,11 +81,14 @@
             padding-left: 15px;
             top: 0;
         }
+
+        #epoch-navigation h5.active a {
+            color: #3da2da;
+        }
     </style>
 {% endblock %}
 
 {% block body %}
-    {% set embedded = app.request.attributes.get('_route') == 'date-chronology-partial' %}
     {% if not embedded %}
     <h1>{{ 'Chronology'|trans }}</h1>
     {% endif %}
@@ -71,7 +125,7 @@
         </div><!-- .col-xs-12 col-md-9 -->
         <div class="col-md-3 hidden-sm hidden-xs sidebar">
     {% if not embedded and epochs is not empty %}
-            <div id="epoch-navigation" class="container-fluid box" style="background-color: white">
+            <div id="epoch-navigation" class="container-fluid box" style="background-color: white;  z-index: 1">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
                         <h4>{{ 'Go to'|trans }}</h4>
