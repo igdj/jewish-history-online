@@ -64,16 +64,16 @@
         },
         {
             "name": "beberlei/DoctrineExtensions",
-            "version": "v1.0.22",
+            "version": "v1.0.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/DoctrineExtensions.git",
-                "reference": "8f15f14518904b59603e007233b53b51c36cd1ae"
+                "reference": "dacd609f1fefb0e59054f2d09be594dfed9a46a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/DoctrineExtensions/zipball/8f15f14518904b59603e007233b53b51c36cd1ae",
-                "reference": "8f15f14518904b59603e007233b53b51c36cd1ae",
+                "url": "https://api.github.com/repos/beberlei/DoctrineExtensions/zipball/dacd609f1fefb0e59054f2d09be594dfed9a46a6",
+                "reference": "dacd609f1fefb0e59054f2d09be594dfed9a46a6",
                 "shasum": ""
             },
             "require": {
@@ -122,7 +122,7 @@
                 "doctrine",
                 "orm"
             ],
-            "time": "2018-05-19T04:01:37+00:00"
+            "time": "2018-05-28T08:54:30+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -2373,21 +2373,21 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/burki/LiipUrlAutoConverterBundle.git",
-                "reference": "088e5a620bfbc0c6bd4a4fc12faed8bbd5d6417f"
+                "reference": "e99d519fb51a721e9127503faad7e845c40baa2b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/burki/LiipUrlAutoConverterBundle/zipball/088e5a620bfbc0c6bd4a4fc12faed8bbd5d6417f",
-                "reference": "088e5a620bfbc0c6bd4a4fc12faed8bbd5d6417f",
+                "url": "https://api.github.com/repos/burki/LiipUrlAutoConverterBundle/zipball/e99d519fb51a721e9127503faad7e845c40baa2b",
+                "reference": "e99d519fb51a721e9127503faad7e845c40baa2b",
                 "shasum": ""
             },
             "require": {
                 "php": "^5.3.9|^7.0",
-                "symfony/framework-bundle": "~2.3|~3.0",
+                "symfony/framework-bundle": "~2.3|~3.0|~4.0",
                 "twig/twig": "~1.12|~2.0"
             },
             "require-dev": {
-                "symfony/symfony": "~2.3|~3.0"
+                "symfony/symfony": "~2.3|~3.0|~4.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -2421,7 +2421,7 @@
             "support": {
                 "source": "https://github.com/burki/LiipUrlAutoConverterBundle/tree/master"
             },
-            "time": "2017-11-10T17:29:07+00:00"
+            "time": "2018-06-02T10:57:36+00:00"
         },
         {
             "name": "ml/iri",
@@ -2807,16 +2807,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.12",
+            "version": "v2.0.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "258c89a6b97de7dfaf5b8c7607d0478e236b04fb"
+                "reference": "29af24f25bab834fcbb38ad2a69fa93b867e070d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/258c89a6b97de7dfaf5b8c7607d0478e236b04fb",
-                "reference": "258c89a6b97de7dfaf5b8c7607d0478e236b04fb",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/29af24f25bab834fcbb38ad2a69fa93b867e070d",
+                "reference": "29af24f25bab834fcbb38ad2a69fa93b867e070d",
                 "shasum": ""
             },
             "require": {
@@ -2848,10 +2848,11 @@
             "description": "PHP 5.x polyfill for random_bytes() and random_int() from PHP 7",
             "keywords": [
                 "csprng",
+                "polyfill",
                 "pseudorandom",
                 "random"
             ],
-            "time": "2018-04-04T21:24:14+00:00"
+            "time": "2018-07-04T16:31:37+00:00"
         },
         {
             "name": "phpoffice/phpexcel",
@@ -3117,16 +3118,16 @@
         },
         {
             "name": "react/promise",
-            "version": "v2.5.1",
+            "version": "v2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/promise.git",
-                "reference": "62785ae604c8d69725d693eb370e1d67e94c4053"
+                "reference": "f4edc2581617431aea50430749db55cc3fc031b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/promise/zipball/62785ae604c8d69725d693eb370e1d67e94c4053",
-                "reference": "62785ae604c8d69725d693eb370e1d67e94c4053",
+                "url": "https://api.github.com/repos/reactphp/promise/zipball/f4edc2581617431aea50430749db55cc3fc031b3",
+                "reference": "f4edc2581617431aea50430749db55cc3fc031b3",
                 "shasum": ""
             },
             "require": {
@@ -3159,7 +3160,7 @@
                 "promise",
                 "promises"
             ],
-            "time": "2017-03-25T12:08:31+00:00"
+            "time": "2018-06-13T15:59:06+00:00"
         },
         {
             "name": "sabre/uri",
@@ -4535,16 +4536,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.41",
+            "version": "v2.8.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "24fc640d544a67869a4106de5fc303c597398629"
+                "reference": "0084ec5bb6614688f547ef80bf1ef8a900c4e350"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/24fc640d544a67869a4106de5fc303c597398629",
-                "reference": "24fc640d544a67869a4106de5fc303c597398629",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/0084ec5bb6614688f547ef80bf1ef8a900c4e350",
+                "reference": "0084ec5bb6614688f547ef80bf1ef8a900c4e350",
                 "shasum": ""
             },
             "require": {
@@ -4671,7 +4672,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2018-05-25T12:03:11+00:00"
+            "time": "2018-06-25T12:02:18+00:00"
         },
         {
             "name": "technosophos/LibRIS",
