@@ -1,9 +1,7 @@
-/// <reference path="..\..\..\js\iview-client-base.d.ts" />
-var __extends = this.__extends || function (d, b) {
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var mycore;
 (function (mycore) {
@@ -15,19 +13,17 @@ var mycore;
             (function (mets) {
                 var MetsStructureModel = (function (_super) {
                     __extends(MetsStructureModel, _super);
-                    function MetsStructureModel(_rootChapter, _imageList, _chapterToImageMap, _imageToChapterMap, altoPresent) {
-                        _super.call(this, _rootChapter, _imageList, _chapterToImageMap, _imageToChapterMap, altoPresent);
+                    function MetsStructureModel(_rootChapter, _imageList, _chapterToImageMap, _imageToChapterMap, _imageHrefImageMap, altoPresent) {
+                        _super.call(this, _rootChapter, _imageList, _chapterToImageMap, _imageToChapterMap, _imageHrefImageMap, altoPresent);
                         this.altoPresent = altoPresent;
                     }
                     return MetsStructureModel;
-                })(viewer.model.StructureModel);
+                }(viewer.model.StructureModel));
                 mets.MetsStructureModel = MetsStructureModel;
             })(mets = widgets.mets || (widgets.mets = {}));
         })(widgets = viewer.widgets || (viewer.widgets = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
 })(mycore || (mycore = {}));
-/// <reference path="..\..\..\js\iview-client-base.d.ts" />
-/// <reference path="MetsStructureModel.ts" />
 var mycore;
 (function (mycore) {
     var viewer;
@@ -40,11 +36,15 @@ var mycore;
                     function MetsStructureBuilder(metsDocument, tilePathBuilder) {
                         this.metsDocument = metsDocument;
                         this.tilePathBuilder = tilePathBuilder;
+                        this.hrefResolverElement = document.createElement("a");
                     }
                     MetsStructureBuilder.prototype.processMets = function () {
                         var logicalStructMap = this.getStructMap("LOGICAL");
                         var physicalStructMap = this.getStructMap("PHYSICAL");
-                        var files = this.getFiles("MASTER");
+                        var files = this.getFiles("IVIEW2");
+                        if (files.length == 0) {
+                            files = this.getFiles("MASTER");
+                        }
                         var altoFiles = this.getFiles("ALTO");
                         var teiTranscriptionFiles = this.getFiles("TRANSCRIPTION");
                         var teiTranslationFiles = this.getFiles("TRANSLATION");
@@ -62,22 +62,19 @@ var mycore;
                         }
                         this._chapterImageMap = new MyCoReMap();
                         this._imageChapterMap = new MyCoReMap();
-                        this._metsChapter = this.processChapter(null, this.getFirstElementChild(this.getStructMap("LOGICAL")));
+                        this._improvisationMap = new MyCoReMap();
+                        this._metsChapter = this.processChapter(null, this.getFirstElementChild(this.getStructMap("LOGICAL")), 1);
+                        this._imageHrefImageMap = new MyCoReMap();
                         this._imageList = new Array();
                         this._idImageMap = new MyCoReMap();
                         this.processImages();
-                        this._structureModel = new mycore.viewer.widgets.mets.MetsStructureModel(this._metsChapter, this._imageList, this._chapterImageMap, this._imageChapterMap, altoFiles != null && altoFiles.length > 0);
+                        this._structureModel = new widgets.mets.MetsStructureModel(this._metsChapter, this._imageList, this._chapterImageMap, this._imageChapterMap, this._imageHrefImageMap, altoFiles != null && altoFiles.length > 0);
                         return this._structureModel;
                     };
                     MetsStructureBuilder.prototype.getStructMap = function (type) {
                         var logicalStructMapPath = "//mets:structMap[@TYPE='" + type + "']";
                         return singleSelectShim(this.metsDocument, logicalStructMapPath, MetsStructureBuilder.NS_MAP);
                     };
-                    /**
-                     * Reads all files from a specific group
-                     * @param group {string} the group from wich the files should be selected
-                     * return the files a Array of nodes
-                     */
                     MetsStructureBuilder.prototype.getFiles = function (group) {
                         var fileGroupPath = "//mets:fileSec//mets:fileGrp[@USE='" + group + "']";
                         var fileSectionResult = singleSelectShim(this.metsDocument, fileGroupPath, MetsStructureBuilder.NS_MAP);
@@ -100,8 +97,11 @@ var mycore;
                         });
                         return nodeArray;
                     };
-                    MetsStructureBuilder.prototype.processChapter = function (parent, chapter) {
-                        var chapterObject = new viewer.model.StructureChapter(parent, chapter.getAttribute("TYPE"), chapter.getAttribute("ID"), parseInt(chapter.getAttribute("ORDER")), chapter.getAttribute("LABEL"));
+                    MetsStructureBuilder.prototype.processChapter = function (parent, chapter, defaultOrder) {
+                        if (chapter.nodeName.toString() == "mets:mptr") {
+                            return;
+                        }
+                        var chapterObject = new viewer.model.StructureChapter(parent, chapter.getAttribute("TYPE"), chapter.getAttribute("ID"), chapter.getAttribute("LABEL"));
                         var chapterChildren = chapter.childNodes;
                         this._chapterIdMap.set(chapterObject.id, chapterObject);
                         var that = this;
@@ -109,10 +109,10 @@ var mycore;
                             var elem = chapterChildren[i];
                             if ((elem instanceof Element || "getAttribute" in elem)) {
                                 if (elem.nodeName.indexOf("fptr") != -1) {
-                                    this.processFPTR(parent, elem);
+                                    this.processFPTR(chapterObject, elem);
                                 }
                                 else if (elem.nodeName.indexOf("div")) {
-                                    chapterObject.chapter.push(that.processChapter(chapterObject, elem));
+                                    chapterObject.chapter.push(that.processChapter(chapterObject, elem, i + 1));
                                 }
                             }
                         }
@@ -134,7 +134,6 @@ var mycore;
                         }
                     };
                     MetsStructureBuilder.prototype.parseArea = function (parent, area) {
-                        // create blocklist if not exist
                         var blockList;
                         if (!parent.additional.has("blocklist")) {
                             blockList = new Array();
@@ -145,8 +144,9 @@ var mycore;
                         }
                         var beType = area.getAttribute("BETYPE");
                         if (beType == "IDREF") {
+                            var href = this.getAttributeNs(this.getFirstElementChild(this._idFileMap.get(area.getAttribute("FILEID"))), "xlink", "href");
                             blockList.push({
-                                fileId: area.getAttribute("FILEID"),
+                                fileId: href,
                                 fromId: area.getAttribute("BEGIN"),
                                 toId: area.getAttribute("END")
                             });
@@ -195,15 +195,20 @@ var mycore;
                     };
                     MetsStructureBuilder.prototype.processImages = function () {
                         var _this = this;
+                        var count = 1;
                         this._idPhysicalFileMap.forEach(function (k, v) {
                             var physFileDiv = _this._idPhysicalFileMap.get(k);
-                            var image = _this.parseFile(physFileDiv);
+                            var image = _this.parseFile(physFileDiv, count++);
                             _this._imageList.push(image);
                             _this._idImageMap.set(k, image);
                         });
                         this._imageList = this._imageList.sort(function (x, y) { return x.order - y.order; });
-                        this._imageList.forEach(function (o, i) { return o.order = i + 1; });
                         this.makeLinks();
+                        this._imageList = this._imageList.filter((function (el) { return _this._imageChapterMap.has(el.id); }));
+                        this._imageList.forEach(function (image, i) {
+                            image.order = i + 1;
+                            _this._imageHrefImageMap.set(image.href, image);
+                        });
                     };
                     MetsStructureBuilder.prototype.makeLinks = function () {
                         var _this = this;
@@ -216,30 +221,33 @@ var mycore;
                     };
                     MetsStructureBuilder.prototype.makeLink = function (chapter, image) {
                         if (chapter.parent != null && !this._chapterImageMap.has(chapter.parent.id)) {
+                            this._improvisationMap.set(chapter.parent.id, true);
                             this._chapterImageMap.set(chapter.parent.id, image);
                         }
-                        if (!this._chapterImageMap.has(chapter.id)) {
+                        if (!this._chapterImageMap.has(chapter.id) || this._imageList.indexOf(this._chapterImageMap.get(chapter.id)) > this._imageList.indexOf(image) || (this._improvisationMap.has(chapter.id) && this._improvisationMap.get(chapter.id))) {
                             this._chapterImageMap.set(chapter.id, image);
+                            this._improvisationMap.set(chapter.id, false);
                         }
                         if (!this._imageChapterMap.has(image.id)) {
                             this._imageChapterMap.set(image.id, chapter);
                         }
                     };
-                    // tei/translation.de/THULB_129846422_1801_1802_LLZ_001_18010701_001.xml -> de
                     MetsStructureBuilder.prototype.extractTranslationLanguage = function (href) {
                         return href.split("/")[1].split(".")[1];
                     };
-                    MetsStructureBuilder.prototype.parseFile = function (physFileDiv) {
+                    MetsStructureBuilder.prototype.parseFile = function (physFileDiv, defaultOrder) {
                         var _this = this;
                         var img;
                         var type = physFileDiv.getAttribute("TYPE");
                         var id = physFileDiv.getAttribute("ID");
-                        var order = parseInt(physFileDiv.getAttribute("ORDER"), 10);
+                        var order = parseInt(physFileDiv.getAttribute("ORDER") || "" + defaultOrder, 10);
                         var orderLabel = physFileDiv.getAttribute("ORDERLABEL");
                         var contentIds = physFileDiv.getAttribute("CONTENTIDS");
                         var additionalHrefs = new MyCoReMap();
                         var imgHref = null;
                         var imgMimeType = null;
+                        this.hrefResolverElement.href = "./";
+                        var base = this.hrefResolverElement.href;
                         XMLUtil.iterateChildNodes(physFileDiv, function (child) {
                             if (child instanceof Element || "getAttribute" in child) {
                                 var childElement = child;
@@ -247,8 +255,10 @@ var mycore;
                                 var file = _this._idFileMap.get(fileId);
                                 var href = _this.getAttributeNs(_this.getFirstElementChild(file), "xlink", "href");
                                 var mimetype = file.getAttribute("MIMETYPE");
+                                _this.hrefResolverElement.href = href;
+                                href = _this.hrefResolverElement.href.substr(base.length);
                                 var use = file.parentNode.getAttribute("USE");
-                                if (use == "MASTER") {
+                                if (use == "MASTER" || use == "IVIEW2") {
                                     imgHref = href;
                                     imgMimeType = mimetype;
                                 }
@@ -266,7 +276,6 @@ var mycore;
                                 }
                             }
                         });
-                        // TODO: Fix in mycore (we need a valid URL)
                         if (imgHref.indexOf("http:") + imgHref.indexOf("file:") + imgHref.indexOf("urn:") != -3) {
                             var parser = document.createElement('a');
                             parser.href = imgHref;
@@ -297,15 +306,12 @@ var mycore;
                         return nsMap;
                     })();
                     return MetsStructureBuilder;
-                })();
+                }());
                 mets.MetsStructureBuilder = MetsStructureBuilder;
             })(mets = widgets.mets || (widgets.mets = {}));
         })(widgets = viewer.widgets || (viewer.widgets = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
 })(mycore || (mycore = {}));
-/// <reference path="..\..\..\js\iview-client-base.d.ts" />
-/// <reference path="MetsStructureModel.ts" />
-/// <reference path="MetsStructureBuilder.ts" />
 var mycore;
 (function (mycore) {
     var viewer;
@@ -323,23 +329,22 @@ var mycore;
                             url: metsDocumentLocation,
                             success: function (response) {
                                 var builder = new mets.MetsStructureBuilder(response, tilePathBuilder);
-                                (promise.resolve)({ model: builder.processMets(), metsObject: response });
+                                promise.resolve({ model: builder.processMets(), document: response });
                             },
                             error: function (request, status, exception) {
-                                (promise.resolve)(exception);
+                                promise.reject(exception);
                             }
                         };
                         jQuery.ajax(settings);
                         return promise;
                     };
                     return IviewMetsProvider;
-                })();
+                }());
                 mets.IviewMetsProvider = IviewMetsProvider;
             })(mets = widgets.mets || (widgets.mets = {}));
         })(widgets = viewer.widgets || (viewer.widgets = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
 })(mycore || (mycore = {}));
-/// <reference path="..\..\..\..\js\iview-client-base.d.ts" />
 var mycore;
 (function (mycore) {
     var viewer;
@@ -356,28 +361,43 @@ var mycore;
                     }
                     MetsLoadedEvent.TYPE = "MetsLoadedEvent";
                     return MetsLoadedEvent;
-                })(events.MyCoReImageViewerEvent);
+                }(events.MyCoReImageViewerEvent));
                 events.MetsLoadedEvent = MetsLoadedEvent;
             })(events = components.events || (components.events = {}));
         })(components = viewer.components || (viewer.components = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
 })(mycore || (mycore = {}));
-/// <reference path="..\..\..\js\iview-client-base.d.ts" />
-/// <reference path="..\..\..\js\iview-client-base.d.ts" />
-/// <reference path="../widgets/IviewMetsProvider.ts" />
-/// <reference path="../components/events/MetsLoadedEvent.ts" />
-/// <reference path="MetsSettings.ts" />
 var mycore;
 (function (mycore) {
     var viewer;
     (function (viewer) {
         var components;
         (function (components) {
+            var ShowContentEvent = mycore.viewer.components.events.ShowContentEvent;
             var MyCoReMetsComponent = (function (_super) {
                 __extends(MyCoReMetsComponent, _super);
-                function MyCoReMetsComponent(_settings) {
+                function MyCoReMetsComponent(_settings, container) {
+                    var _this = this;
                     _super.call(this);
                     this._settings = _settings;
+                    this.container = container;
+                    this.errorSync = Utils.synchronize([function (context) {
+                            return context.lm != null && context.error;
+                        }], function (context) {
+                        new mycore.viewer.widgets.modal.ViewerErrorModal(_this._settings.mobile, context.lm.getTranslation("noMetsShort"), context.lm.getFormatedTranslation("noMets", "<a href='mailto:"
+                            + _this._settings.adminMail + "'>" + _this._settings.adminMail + "</a>"), _this._settings.webApplicationBaseURL + "/modules/iview2/img/sad-emotion-egg.jpg", _this.container[0]).show();
+                        context.trigger(new ShowContentEvent(_this, jQuery(), mycore.viewer.widgets.layout.IviewBorderLayout.DIRECTION_WEST, 0));
+                    });
+                    this.metsAndLanguageSync = Utils.synchronize([
+                        function (context) { return context.mm != null; },
+                        function (context) { return context.lm != null; }
+                    ], function (context) {
+                        _this.metsLoaded(_this.mm.model);
+                        _this.trigger(new components.events.MetsLoadedEvent(_this, _this.mm));
+                    });
+                    this.error = false;
+                    this.lm = null;
+                    this.mm = null;
                 }
                 MyCoReMetsComponent.prototype.init = function () {
                     var _this = this;
@@ -395,19 +415,44 @@ var mycore;
                             return that._settings.tileProviderPath.split(",")[0] + that._settings.derivate + "/" + image + "/0/0/0.jpg";
                         };
                         var metsPromise = mycore.viewer.widgets.mets.IviewMetsProvider.loadModel(this._settings.metsURL, tilePathBuilder);
-                        metsPromise.resolve = function (resolved) {
+                        metsPromise.then(function (resolved) {
                             var model = resolved.model;
+                            _this.trigger(new components.events.WaitForEvent(_this, components.events.LanguageModelLoadedEvent.TYPE));
                             if (model == null) {
-                                console.log("mets model not found");
+                                _this.error = true;
+                                _this.errorSync(_this);
                                 return;
                             }
-                            that.metsLoaded(model);
-                            _this.trigger(new components.events.MetsLoadedEvent(_this, resolved.metsObject));
-                        };
+                            _this.mm = resolved;
+                            _this.metsAndLanguageSync(_this);
+                        });
+                        metsPromise.onreject(function () {
+                            _this.trigger(new components.events.WaitForEvent(_this, components.events.LanguageModelLoadedEvent.TYPE));
+                            _this.error = true;
+                            _this.errorSync(_this);
+                        });
                         this.trigger(new components.events.ComponentInitializedEvent(this));
                     }
                 };
+                MyCoReMetsComponent.prototype.postProcessChapter = function (chapter) {
+                    var _this = this;
+                    if (chapter.label == null || typeof chapter.label == "undefined" || chapter.label == "") {
+                        if (chapter.type != null && typeof chapter.type != "undefined" && chapter.type != "") {
+                            var translationKey = this.buildTranslationKey(chapter.type || "");
+                            if (this.lm.hasTranslation(translationKey)) {
+                                chapter._label = this.lm.getTranslation(translationKey);
+                            }
+                        }
+                    }
+                    chapter.chapter.forEach(function (chapter) {
+                        _this.postProcessChapter(chapter);
+                    });
+                };
+                MyCoReMetsComponent.prototype.buildTranslationKey = function (type) {
+                    return "dfgStructureSet." + type.replace('- ', '');
+                };
                 MyCoReMetsComponent.prototype.metsLoaded = function (structureModel) {
+                    this.postProcessChapter(structureModel._rootChapter);
                     var ev = new components.events.StructureModelLoadedEvent(this, structureModel);
                     this.trigger(ev);
                     this._metsLoaded = true;
@@ -425,22 +470,27 @@ var mycore;
                 };
                 Object.defineProperty(MyCoReMetsComponent.prototype, "handlesEvents", {
                     get: function () {
-                        return [];
+                        return [components.events.LanguageModelLoadedEvent.TYPE];
                     },
                     enumerable: true,
                     configurable: true
                 });
                 MyCoReMetsComponent.prototype.handle = function (e) {
+                    if (e.type == components.events.LanguageModelLoadedEvent.TYPE) {
+                        var languageModelLoadedEvent = e;
+                        this.lm = languageModelLoadedEvent.languageModel;
+                        this.errorSync(this);
+                        this.metsAndLanguageSync(this);
+                    }
                     return;
                 };
                 return MyCoReMetsComponent;
-            })(components.ViewerComponent);
+            }(components.ViewerComponent));
             components.MyCoReMetsComponent = MyCoReMetsComponent;
         })(components = viewer.components || (viewer.components = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
 })(mycore || (mycore = {}));
 addViewerComponent(mycore.viewer.components.MyCoReMetsComponent);
-/// <reference path="..\..\..\js\iview-client-base.d.ts" />
 var mycore;
 (function (mycore) {
     var viewer;
@@ -474,11 +524,8 @@ var mycore;
                         return new XMLImageInformation(node.attr("derivate"), path, parseInt(node.attr("tiles")), parseInt(node.attr("width")), parseInt(node.attr("height")), parseInt(node.attr("zoomLevel")));
                     };
                     return XMLImageInformationProvider;
-                })();
+                }());
                 image.XMLImageInformationProvider = XMLImageInformationProvider;
-                /**
-                 * Represents information of a Image
-                 */
                 var XMLImageInformation = (function () {
                     function XMLImageInformation(_derivate, _path, _tiles, _width, _height, _zoomlevel) {
                         this._derivate = _derivate;
@@ -531,13 +578,12 @@ var mycore;
                         configurable: true
                     });
                     return XMLImageInformation;
-                })();
+                }());
                 image.XMLImageInformation = XMLImageInformation;
             })(image = widgets.image || (widgets.image = {}));
         })(widgets = viewer.widgets || (viewer.widgets = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
 })(mycore || (mycore = {}));
-/// <reference path="..\..\..\js\iview-client-base.d.ts" />
 var mycore;
 (function (mycore) {
     var viewer;
@@ -599,6 +645,27 @@ var mycore;
                         }
                         ctx.restore();
                     };
+                    TileImagePage.prototype.setAltoContent = function (value) {
+                        if (value != this._altoContent) {
+                            this._altoContent = value;
+                            this.updateHTML();
+                        }
+                    };
+                    TileImagePage.prototype.registerHTMLPage = function (elem) {
+                        this._rootElem = elem;
+                        this.updateHTML();
+                    };
+                    TileImagePage.prototype.updateHTML = function () {
+                        if (this._altoContent != null && this._rootElem != null) {
+                            while (this._rootElem.children.length > 0) {
+                                this._rootElem.removeChild(this._rootElem.children.item(0));
+                            }
+                            this._rootElem.appendChild(this._altoContent);
+                        }
+                        if (typeof this.refreshCallback != "undefined" && this.refreshCallback != null) {
+                            this.refreshCallback();
+                        }
+                    };
                     TileImagePage.prototype.clear = function () {
                         this._abortLoadingTiles();
                         this._backBuffer.width = 1;
@@ -632,12 +699,10 @@ var mycore;
                         }
                         else {
                             if (this._backBufferArea !== null && !this._imgNotPreviewLoaded && this._backBufferArea.equals(newBackBuffer) && zoomLevel == this._backBufferAreaZoom) {
-                                // backbuffer content is the same
                                 return;
                             }
                             else {
                                 this._abortLoadingTiles();
-                                // need to draw the full buffer, because zoom level changed or never drawed before
                                 this._backBuffer.width = newBackBuffer.size.width * 256;
                                 this._backBuffer.height = newBackBuffer.size.height * 256;
                                 this._drawToBackbuffer(startX, startY, endX, endY, zoomLevel, false);
@@ -646,26 +711,6 @@ var mycore;
                             this._backBufferAreaZoom = zoomLevel;
                             this._imgNotPreviewLoaded = false;
                         }
-                        /*
-                         else {
-                         // zoom level is the same, so look for copy old contents
-                         var reusableContent = this._backBufferArea.getIntersection(newBackBuffer);
-                         if (reusableContent == null) {
-                         // content complete changed :(
-                         this._drawToBackbuffer(startX, startY, endX, endY, zoomLevel);
-                         } else {
-                         // we can copy old content \o/
-                         // calculate were the old content is in the new backbuffer (in px)
-                         var xTranslate = reusableContent.pos.x - newBackBuffer.pos.x * 256;
-                         var yTranslate = reusableContent.pos.y - newBackBuffer.pos.y * 256;
-
-                         var ctx = this._backBuffer.getContext("2d");
-                         ctx.save();
-                         ctx.translate(xTranslate, yTranslate);
-                         this._drawToBackbuffer(reusableContent.pos.x, reusableContent.pos.y, reusableContent.pos.x + reusableContent.size.width, reusableContent.pos.y + reusableContent.size.height, zoomLevel);
-                         ctx.restore();
-                         }
-                         }         */
                     };
                     TileImagePage.prototype._abortLoadingTiles = function () {
                         this._loadingTiles.forEach(function (k, v) {
@@ -727,11 +772,6 @@ var mycore;
                         }
                         return null;
                     };
-                    /**
-                     * Gets a preview draw instruction for a specific tile.
-                     * @param tilePos the tile
-                     * @returns { tile:HTMLImageElement; areaToDraw: Rect } tile contains the Image to draw and areaToDraw contains the coordinates in the Image.
-                     */
                     TileImagePage.prototype.getPreview = function (tilePos, scale) {
                         if (scale === void 0) { scale = 1; }
                         if (this._tiles.has(tilePos)) {
@@ -762,7 +802,7 @@ var mycore;
                         }
                     };
                     TileImagePage.prototype.maxZoomLevel = function () {
-                        return Math.ceil(Math.log(Math.max(this._width, this._height) / TileImagePage.TILE_SIZE) / Math.LN2);
+                        return Math.max(Math.ceil(Math.log(Math.max(this._width, this._height) / TileImagePage.TILE_SIZE) / Math.LN2), 0);
                     };
                     TileImagePage.prototype.getZoomLevel = function (scale) {
                         return Math.max(0, Math.ceil(this.maxZoomLevel() - Math.log(scale) / Utils.LOG_HALF));
@@ -792,111 +832,82 @@ var mycore;
                     TileImagePage.EMPTY_FUNCTION = function () {
                     };
                     return TileImagePage;
-                })();
+                }());
                 canvas.TileImagePage = TileImagePage;
             })(canvas = widgets.canvas || (widgets.canvas = {}));
         })(widgets = viewer.widgets || (viewer.widgets = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
 })(mycore || (mycore = {}));
-/// <reference path="..\..\..\js\iview-client-base.d.ts" />
-/// <reference path="../widgets/XMLImageInformationProvider.ts" />
-/// <reference path="../widgets/TileImagePage.ts" />
-/// <reference path="MetsSettings.ts" />
+var json = {
+    "resources": {
+        "script": ["http://archive.thulb.uni-jena.de/hisbest/modules/iview2/js/iview-client-base.js", "http://archive.thulb.uni-jena.de/hisbest/modules/iview2/js/iview-client-desktop.js", "http://archive.thulb.uni-jena.de/hisbest/modules/iview2/js/iview-client-mets.js", "http://archive.thulb.uni-jena.de/hisbest/modules/iview2/js/iview-client-logo.js", "http://archive.thulb.uni-jena.de/hisbest/modules/iview2/js/iview-client-metadata.js"],
+        "css": ["http://archive.thulb.uni-jena.de/hisbest/modules/iview2/css/default.css", "http://archive.thulb.uni-jena.de/hisbest/css/urmelLogo.css"]
+    },
+    "properties": {
+        "derivateURL": "http://archive.thulb.uni-jena.de/hisbest/servlets/MCRFileNodeServlet/HisBest_derivate_00016280/",
+        "metsURL": "http://archive.thulb.uni-jena.de/hisbest/servlets/MCRMETSServlet/HisBest_derivate_00016280",
+        "i18nURL": "http://archive.thulb.uni-jena.de/hisbest/servlets/MCRLocaleServlet/{lang}/component.iview2.*",
+        "derivate": "HisBest_derivate_00016280",
+        "filePath": "/2_8_30.tif",
+        "mobile": false,
+        "tileProviderPath": "http://archive.thulb.uni-jena.de/hisbest/servlets/MCRTileServlet/",
+        "imageXmlPath": "http://archive.thulb.uni-jena.de/hisbest/servlets/MCRTileServlet/",
+        "pdfCreatorURI": "http://wrackdm17.thulb.uni-jena.de/mets-printer/pdf",
+        "text.enabled": "false",
+        "logoURL": "http://archive.thulb.uni-jena.de/hisbest/images/Urmel_Logo_leicht_grau.svg",
+        "doctype": "mets",
+        "webApplicationBaseURL": "http://archive.thulb.uni-jena.de/hisbest/",
+        "metadataURL": "http://archive.thulb.uni-jena.de/hisbest/receive/HisBest_cbu_00029645?XSL.Transformer\u003dmycoreobject-viewer",
+        "pdfCreatorStyle": "pdf",
+        "objId": "HisBest_cbu_00029645",
+        "lang": "de"
+    }
+};
 var mycore;
 (function (mycore) {
     var viewer;
     (function (viewer) {
-        var components;
-        (function (components) {
-            var MyCoReTiledImagePageProviderComponent = (function (_super) {
-                __extends(MyCoReTiledImagePageProviderComponent, _super);
-                function MyCoReTiledImagePageProviderComponent(_settings) {
-                    _super.call(this);
-                    this._settings = _settings;
-                    this._imageInformationMap = new MyCoReMap();
-                    this._imagePageMap = new MyCoReMap();
-                }
-                MyCoReTiledImagePageProviderComponent.prototype.init = function () {
-                    if (this._settings.doctype == 'mets') {
-                        this.trigger(new components.events.WaitForEvent(this, components.events.RequestPageEvent.TYPE));
+        var widgets;
+        (function (widgets) {
+            var alto;
+            (function (alto) {
+                var AltoStyle = (function () {
+                    function AltoStyle(_id, _fontFamily, _fontSize, _fontStyle) {
+                        this._id = _id;
+                        this._fontFamily = _fontFamily;
+                        this._fontSize = _fontSize;
+                        this._fontStyle = _fontStyle;
                     }
-                };
-                MyCoReTiledImagePageProviderComponent.prototype.getPage = function (image, resolve) {
-                    var _this = this;
-                    if (this._imagePageMap.has(image)) {
-                        resolve(this.createPageFromMetadata(image, this._imageInformationMap.get(image)));
-                    }
-                    else {
-                        this.getPageMetadata(image, function (metadata) {
-                            resolve(_this.createPageFromMetadata(image, metadata));
-                        });
-                    }
-                };
-                MyCoReTiledImagePageProviderComponent.prototype.createPageFromMetadata = function (imageId, metadata) {
-                    var _this = this;
-                    var tiles = this._settings.tileProviderPath.split(",");
-                    var paths = new Array();
-                    tiles.forEach(function (path) {
-                        paths.push(path + _this._settings.derivate + metadata.path + "/{z}/{y}/{x}.jpg");
-                    });
-                    return new viewer.widgets.canvas.TileImagePage(imageId, metadata.width, metadata.height, paths);
-                };
-                MyCoReTiledImagePageProviderComponent.prototype.getPageMetadata = function (image, resolve) {
-                    var _this = this;
-                    image = (image.charAt(0) == "/") ? image.substr(1) : image;
-                    if (this._imageInformationMap.has(image)) {
-                        resolve(this._imageInformationMap.get(image));
-                    }
-                    else {
-                        var path = "/" + image;
-                        mycore.viewer.widgets.image.XMLImageInformationProvider.getInformation(this._settings.imageXmlPath + this._settings.derivate, path, function (info) {
-                            _this._imageInformationMap.set(image, info);
-                            resolve(info);
-                        }, function (error) {
-                            console.log("Error while loading ImageInformations", +error.toString());
-                        });
-                    }
-                };
-                Object.defineProperty(MyCoReTiledImagePageProviderComponent.prototype, "handlesEvents", {
-                    get: function () {
-                        if (this._settings.doctype == 'mets') {
-                            return [components.events.RequestPageEvent.TYPE];
-                        }
-                        else {
-                            return [];
-                        }
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                MyCoReTiledImagePageProviderComponent.prototype.handle = function (e) {
-                    if (e.type == components.events.RequestPageEvent.TYPE) {
-                        var rpe = e;
-                        this.getPage(rpe._pageId, function (page) {
-                            rpe._onResolve(rpe._pageId, page);
-                        });
-                    }
-                    return;
-                };
-                return MyCoReTiledImagePageProviderComponent;
-            })(components.ViewerComponent);
-            components.MyCoReTiledImagePageProviderComponent = MyCoReTiledImagePageProviderComponent;
-        })(components = viewer.components || (viewer.components = {}));
+                    AltoStyle.prototype.getId = function () {
+                        return this._id;
+                    };
+                    AltoStyle.prototype.getFontFamily = function () {
+                        return this._fontFamily;
+                    };
+                    AltoStyle.prototype.getFontSize = function () {
+                        return this._fontSize;
+                    };
+                    AltoStyle.prototype.getFontStyle = function () {
+                        return this._fontStyle;
+                    };
+                    return AltoStyle;
+                }());
+                alto.AltoStyle = AltoStyle;
+            })(alto = widgets.alto || (widgets.alto = {}));
+        })(widgets = viewer.widgets || (viewer.widgets = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
 })(mycore || (mycore = {}));
-addViewerComponent(mycore.viewer.components.MyCoReTiledImagePageProviderComponent);
-/// <reference path="..\..\..\..\js\iview-client-base.d.ts" />
-var AltoPageElement;
-(function (AltoPageElement) {
-    AltoPageElement[AltoPageElement["ComposedBlock"] = 0] = "ComposedBlock";
-    AltoPageElement[AltoPageElement["Illustration"] = 1] = "Illustration";
-    AltoPageElement[AltoPageElement["GraphicalElement"] = 2] = "GraphicalElement";
-    AltoPageElement[AltoPageElement["TextBlock"] = 3] = "TextBlock";
-    AltoPageElement[AltoPageElement["TextLine"] = 4] = "TextLine";
-    AltoPageElement[AltoPageElement["String"] = 5] = "String";
-    AltoPageElement[AltoPageElement["SP"] = 6] = "SP";
-    AltoPageElement[AltoPageElement["HYP"] = 7] = "HYP";
-})(AltoPageElement || (AltoPageElement = {}));
+var AltoElementType;
+(function (AltoElementType) {
+    AltoElementType[AltoElementType["ComposedBlock"] = 0] = "ComposedBlock";
+    AltoElementType[AltoElementType["Illustration"] = 1] = "Illustration";
+    AltoElementType[AltoElementType["GraphicalElement"] = 2] = "GraphicalElement";
+    AltoElementType[AltoElementType["TextBlock"] = 3] = "TextBlock";
+    AltoElementType[AltoElementType["TextLine"] = 4] = "TextLine";
+    AltoElementType[AltoElementType["String"] = 5] = "String";
+    AltoElementType[AltoElementType["SP"] = 6] = "SP";
+    AltoElementType[AltoElementType["HYP"] = 7] = "HYP";
+})(AltoElementType || (AltoElementType = {}));
 var mycore;
 (function (mycore) {
     var viewer;
@@ -906,23 +917,17 @@ var mycore;
             var alto;
             (function (alto) {
                 var AltoElement = (function () {
-                    function AltoElement(elementORtype, id, width, height, horizontalPositon, verticalPosition) {
-                        if (typeof elementORtype === "number") {
-                            this._type = elementORtype;
-                            this._id = id;
-                            this._height = height;
-                            this._width = width;
-                            this._hpos = horizontalPositon;
-                            this._vpos = verticalPosition;
-                        }
-                        else {
-                            this._type = elementORtype.getType();
-                            this._id = elementORtype.getId();
-                            this._height = elementORtype.getHeight();
-                            this._width = elementORtype.getWidth();
-                            this._hpos = elementORtype.getHPos();
-                            this._vpos = elementORtype.getVPos();
-                        }
+                    function AltoElement(_parent, _type, _id, _width, _height, _hpos, _vpos) {
+                        this._parent = _parent;
+                        this._type = _type;
+                        this._id = _id;
+                        this._width = _width;
+                        this._height = _height;
+                        this._hpos = _hpos;
+                        this._vpos = _vpos;
+                        this._children = new Array();
+                        this._content = null;
+                        this._style = null;
                     }
                     AltoElement.prototype.getHeight = function () {
                         return this._height;
@@ -942,14 +947,40 @@ var mycore;
                     AltoElement.prototype.getWidth = function () {
                         return this._width;
                     };
+                    AltoElement.prototype.getChildren = function () {
+                        return this._children;
+                    };
+                    AltoElement.prototype.setChildren = function (childs) {
+                        this._children = childs;
+                    };
+                    AltoElement.prototype.getContent = function () {
+                        return this._content;
+                    };
+                    AltoElement.prototype.setContent = function (content) {
+                        this._content = content;
+                    };
+                    AltoElement.prototype.getStyle = function () {
+                        return this._style;
+                    };
+                    AltoElement.prototype.setAltoStyle = function (style) {
+                        this._style = style;
+                    };
+                    AltoElement.prototype.getParent = function () {
+                        return this._parent;
+                    };
+                    AltoElement.prototype.getBlockHPos = function () {
+                        return this._hpos;
+                    };
+                    AltoElement.prototype.getBlockVPos = function () {
+                        return this._vpos;
+                    };
                     return AltoElement;
-                })();
+                }());
                 alto.AltoElement = AltoElement;
             })(alto = widgets.alto || (widgets.alto = {}));
         })(widgets = viewer.widgets || (viewer.widgets = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
 })(mycore || (mycore = {}));
-/// <reference path="..\..\..\..\js\iview-client-base.d.ts" />
 var mycore;
 (function (mycore) {
     var viewer;
@@ -958,140 +989,136 @@ var mycore;
         (function (widgets) {
             var alto;
             (function (alto) {
-                var AltoContainerElement = (function (_super) {
-                    __extends(AltoContainerElement, _super);
-                    function AltoContainerElement(elementORtpye, id, width, height, horizontalPositon, verticalPosition) {
-                        if (typeof elementORtpye === "number") {
-                            _super.call(this, elementORtpye, id, width, height, horizontalPositon, verticalPosition);
+                var AltoFile = (function () {
+                    function AltoFile(styles, layout) {
+                        this._allStyles = {};
+                        this._rootChilds = new Array();
+                        this._allElements = new Array();
+                        this._allTextBlocks = new Array();
+                        this._allIllustrations = new Array();
+                        this._allLines = new Array();
+                        this._allComposedBlock = new Array();
+                        this._allGraphicalElements = new Array();
+                        this._pageWidth = -1;
+                        this._pageHeight = -1;
+                        var styleList = styles.getElementsByTagName("TextStyle");
+                        for (var index = 0; index < styleList.length; index++) {
+                            var style = styleList.item(index);
+                            var altoStyle = this.createAltoStyle(style);
+                            this._allStyles[altoStyle.getId()] = altoStyle;
                         }
-                        else {
-                            _super.call(this, elementORtpye);
+                        var pages = layout.getElementsByTagName("Page");
+                        var page = pages.item(0);
+                        if (page == null) {
+                            return;
                         }
-                        this._children = new Array();
+                        this._pageWidth = parseInt(page.getAttribute("WIDTH"));
+                        this._pageHeight = parseInt(page.getAttribute("HEIGHT"));
+                        var printSpaces = page.getElementsByTagName("PrintSpace");
+                        var printSpace = printSpaces.item(0);
+                        if (printSpace == null) {
+                            return;
+                        }
+                        this._rootChilds = this.extractElements(printSpace);
+                        this._allElements = this._allTextBlocks.concat(this._allIllustrations).concat(this._allComposedBlock).concat(this._allLines).concat(this._allGraphicalElements);
                     }
-                    AltoContainerElement.prototype.getChildren = function () {
-                        return this._children;
+                    Object.defineProperty(AltoFile.prototype, "allElements", {
+                        get: function () {
+                            return this._allElements;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+                    AltoFile.prototype.createAltoStyle = function (src) {
+                        var id = src.getAttribute("ID");
+                        var fontFamily = src.getAttribute("FONTFAMILY");
+                        var fontSize = parseFloat(src.getAttribute("FONTSIZE"));
+                        var fontStyle = src.getAttribute("FONTSTYLE");
+                        return new alto.AltoStyle(id, fontFamily, fontSize, fontStyle);
                     };
-                    AltoContainerElement.prototype.setChildren = function (childs) {
-                        this._children = childs;
-                    };
-                    return AltoContainerElement;
-                })(alto.AltoElement);
-                alto.AltoContainerElement = AltoContainerElement;
-            })(alto = widgets.alto || (widgets.alto = {}));
-        })(widgets = viewer.widgets || (viewer.widgets = {}));
-    })(viewer = mycore.viewer || (mycore.viewer = {}));
-})(mycore || (mycore = {}));
-/// <reference path="..\..\..\..\js\iview-client-base.d.ts" />
-var mycore;
-(function (mycore) {
-    var viewer;
-    (function (viewer) {
-        var widgets;
-        (function (widgets) {
-            var alto;
-            (function (alto) {
-                var AltoContentElement = (function (_super) {
-                    __extends(AltoContentElement, _super);
-                    function AltoContentElement(content, elementORtpye, id, width, height, horizontalPositon, verticalPosition) {
-                        if (typeof elementORtpye === "number") {
-                            _super.call(this, elementORtpye, id, width, height, horizontalPositon, verticalPosition);
-                        }
-                        else {
-                            _super.call(this, elementORtpye);
-                        }
-                        this._content = content;
-                    }
-                    AltoContentElement.prototype.getContent = function () {
-                        return this._content;
-                    };
-                    AltoContentElement.prototype.setContent = function (content) {
-                        this._content = content;
-                    };
-                    return AltoContentElement;
-                })(alto.AltoElement);
-                alto.AltoContentElement = AltoContentElement;
-            })(alto = widgets.alto || (widgets.alto = {}));
-        })(widgets = viewer.widgets || (viewer.widgets = {}));
-    })(viewer = mycore.viewer || (mycore.viewer = {}));
-})(mycore || (mycore = {}));
-/// <reference path="..\..\..\..\js\iview-client-base.d.ts" />
-/// <reference path="AltoElement.ts" />
-/// <reference path="AltoContainerElement.ts" />
-/// <reference path="AltoContentElement.ts" />
-var mycore;
-(function (mycore) {
-    var viewer;
-    (function (viewer) {
-        var widgets;
-        (function (widgets) {
-            var alto;
-            (function (alto) {
-                var AltoContainer = (function () {
-                    function AltoContainer() {
-                        this._blocks = new Array();
-                        this._lines = new Array();
-                    }
-                    //erstellt ein neues Alto-Element mit Mindestanforderungen
-                    AltoContainer.prototype.createAltoElement = function (src, type) {
+                    AltoFile.prototype.createAltoElement = function (src, type, parent) {
                         var width = parseFloat(src.getAttribute("WIDTH"));
                         var height = parseFloat(src.getAttribute("HEIGHT"));
                         var hpos = parseFloat(src.getAttribute("HPOS"));
                         var vpos = parseFloat(src.getAttribute("VPOS"));
                         var id = src.getAttribute("ID");
-                        return new alto.AltoElement(type, id, width, height, hpos, vpos);
+                        var styleID = src.getAttribute("STYLEREFS");
+                        var altoElement = new alto.AltoElement(parent, type, id, width, height, hpos, vpos);
+                        if (styleID != null) {
+                            var style = this._allStyles[styleID];
+                            if (style != null) {
+                                altoElement.setAltoStyle(style);
+                            }
+                        }
+                        return altoElement;
                     };
-                    //Aufruf: PrintSpace->ermittle alle Kinder des Typs Textblock -> ermittle davon alle Kinder (TextLines) -> hole die Kinder der Textlines
-                    AltoContainer.prototype.extractElements = function (elem, elementType) {
+                    AltoFile.prototype.extractElements = function (elem, parent) {
+                        if (parent === void 0) { parent = null; }
                         var childrenOfElement = new Array();
-                        //da enums mit reverse mapping erstellt werden kann zu der passende Nummer der entsprechende String ausgegeben werden
-                        var childList = elem.getElementsByTagName(AltoPageElement[elementType]);
-                        //durchlaufe die Kinder
+                        var childList = elem.childNodes;
                         for (var index = 0; index < childList.length; index++) {
                             var currentElement = childList.item(index);
-                            var item = this.createAltoElement(currentElement, elementType);
-                            switch (elementType) {
-                                case AltoPageElement.TextBlock:
-                                    var blockChildren = this.extractElements(currentElement, AltoPageElement.TextLine);
-                                    var newBlock = new alto.AltoContainerElement(item);
-                                    newBlock.setChildren(blockChildren);
-                                    childrenOfElement.push(newBlock);
-                                    this._blocks.push(newBlock);
-                                    break;
-                                case AltoPageElement.TextLine:
-                                    var listChildrens = this.extractElements(currentElement, AltoPageElement.String);
-                                    var newList = new alto.AltoContainerElement(item);
-                                    newList.setChildren(listChildrens);
-                                    childrenOfElement.push(newList);
-                                    this._lines.push(newList);
-                                    break;
-                                case AltoPageElement.String:
-                                case AltoPageElement.SP:
-                                case AltoPageElement.HYP:
-                                    var newWord = new alto.AltoContentElement(currentElement.getAttribute("CONTENT"), item);
-                                    childrenOfElement.push(newWord);
-                                    break;
+                            if (currentElement instanceof Element) {
+                                var elementType = this.detectElementType(currentElement);
+                                if (elementType != null) {
+                                    var currentAltoElement = this.createAltoElement(currentElement, elementType, parent);
+                                    switch (elementType) {
+                                        case AltoElementType.ComposedBlock:
+                                        case AltoElementType.TextBlock:
+                                            var blockChildren = this.extractElements(currentElement, currentAltoElement);
+                                            currentAltoElement.setChildren(blockChildren);
+                                            childrenOfElement.push(currentAltoElement);
+                                            if (elementType == AltoElementType.TextBlock) {
+                                                this._allTextBlocks.push(currentAltoElement);
+                                            }
+                                            if (elementType == AltoElementType.ComposedBlock) {
+                                                this._allComposedBlock.push(currentAltoElement);
+                                            }
+                                            break;
+                                        case AltoElementType.Illustration:
+                                        case AltoElementType.GraphicalElement:
+                                            if (elementType == AltoElementType.Illustration) {
+                                                this._allIllustrations.push(currentAltoElement);
+                                            }
+                                            if (elementType == AltoElementType.GraphicalElement) {
+                                                this._allGraphicalElements.push(currentAltoElement);
+                                            }
+                                            break;
+                                        case AltoElementType.TextLine:
+                                            var listChildrens = this.extractElements(currentElement, currentAltoElement);
+                                            currentAltoElement.setChildren(listChildrens);
+                                            childrenOfElement.push(currentAltoElement);
+                                            this._allLines.push(currentAltoElement);
+                                            break;
+                                        case AltoElementType.String:
+                                        case AltoElementType.SP:
+                                        case AltoElementType.HYP:
+                                            currentAltoElement.setContent(currentElement.getAttribute("CONTENT"));
+                                            childrenOfElement.push(currentAltoElement);
+                                            break;
+                                    }
+                                }
                             }
                         }
                         return childrenOfElement;
                     };
-                    AltoContainer.prototype.getBlocks = function () {
-                        return this._blocks;
+                    AltoFile.prototype.getBlocks = function () {
+                        return this._allTextBlocks;
                     };
-                    AltoContainer.prototype.getBlockContent = function (id) {
+                    AltoFile.prototype.getBlockContent = function (id) {
                         var content = "";
-                        for (var index = 0; index < this._blocks.length; index++) {
-                            if (this._blocks[index].getId() == id) {
-                                var lines = this._blocks[index].getChildren();
+                        for (var index = 0; index < this._allTextBlocks.length; index++) {
+                            if (this._allTextBlocks[index].getId() == id) {
+                                var lines = this._allTextBlocks[index].getChildren();
                                 for (var i = 0; i < lines.length; i++) {
-                                    content += this.getContainerContent(lines[i].getId(), this._lines);
+                                    content += this.getContainerContent(lines[i].getId(), this._allLines);
                                 }
                                 break;
                             }
                         }
                         return content;
                     };
-                    AltoContainer.prototype.getContainerContent = function (id, container) {
+                    AltoFile.prototype.getContainerContent = function (id, container) {
                         var content = "";
                         for (var index = 0; index < container.length; index++) {
                             if (container[index].getId() == id) {
@@ -1110,17 +1137,57 @@ var mycore;
                         }
                         return content;
                     };
-                    AltoContainer.prototype.getLines = function () {
-                        return this._lines;
+                    AltoFile.prototype.getLines = function () {
+                        return this._allLines;
                     };
-                    return AltoContainer;
-                })();
-                alto.AltoContainer = AltoContainer;
+                    Object.defineProperty(AltoFile.prototype, "pageWidth", {
+                        get: function () {
+                            return this._pageWidth;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+                    Object.defineProperty(AltoFile.prototype, "pageHeight", {
+                        get: function () {
+                            return this._pageHeight;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+                    AltoFile.prototype.detectElementType = function (currentElement) {
+                        if (currentElement.nodeName.toLowerCase() == "string") {
+                            return AltoElementType.String;
+                        }
+                        if (currentElement.nodeName.toLowerCase() == "sp") {
+                            return AltoElementType.SP;
+                        }
+                        if (currentElement.nodeName.toLowerCase() == "hyp") {
+                            return AltoElementType.HYP;
+                        }
+                        if (currentElement.nodeName.toLowerCase() == "textline") {
+                            return AltoElementType.TextLine;
+                        }
+                        if (currentElement.nodeName.toLowerCase() == "textblock") {
+                            return AltoElementType.TextBlock;
+                        }
+                        if (currentElement.nodeName.toLowerCase() == "composedblock") {
+                            return AltoElementType.ComposedBlock;
+                        }
+                        if (currentElement.nodeName.toLowerCase() == "illustration") {
+                            return AltoElementType.Illustration;
+                        }
+                        if (currentElement.nodeName.toLowerCase() == "graphicalelement") {
+                            return AltoElementType.GraphicalElement;
+                        }
+                        return null;
+                    };
+                    return AltoFile;
+                }());
+                alto.AltoFile = AltoFile;
             })(alto = widgets.alto || (widgets.alto = {}));
         })(widgets = viewer.widgets || (viewer.widgets = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
 })(mycore || (mycore = {}));
-/// <reference path="..\..\..\..\js\iview-client-base.d.ts" />
 var mycore;
 (function (mycore) {
     var viewer;
@@ -1138,18 +1205,12 @@ var mycore;
                     }
                     RequestAltoModelEvent.TYPE = "RequestAltoModelEvent";
                     return RequestAltoModelEvent;
-                })(events.MyCoReImageViewerEvent);
+                }(events.MyCoReImageViewerEvent));
                 events.RequestAltoModelEvent = RequestAltoModelEvent;
             })(events = components.events || (components.events = {}));
         })(components = viewer.components || (viewer.components = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
 })(mycore || (mycore = {}));
-/// <reference path="..\..\..\js\iview-client-base.d.ts" />
-/// <reference path="../widgets/XMLImageInformationProvider.ts" />
-/// <reference path="../widgets/TileImagePage.ts" />
-/// <reference path="MetsSettings.ts" />
-/// <reference path="../widgets/alto/AltoContainer.ts" />
-/// <reference path="events/RequestAltoModelEvent.ts" />
 var mycore;
 (function (mycore) {
     var viewer;
@@ -1163,23 +1224,28 @@ var mycore;
                     this._settings = _settings;
                     this.structureModel = null;
                     this.pageHrefAltoHrefMap = new MyCoReMap();
+                    this.altoHrefPageHrefMap = new MyCoReMap();
+                    this.altoModelRequestTempStore = new Array();
                 }
                 MyCoReAltoModelProvider.prototype.init = function () {
                     if (this._settings.doctype == "mets") {
                         this.trigger(new components.events.WaitForEvent(this, components.events.StructureModelLoadedEvent.TYPE));
+                        this.trigger(new components.events.WaitForEvent(this, components.events.RequestAltoModelEvent.TYPE));
                     }
                 };
                 MyCoReAltoModelProvider.prototype.handle = function (e) {
+                    var _this = this;
                     if (e.type == components.events.RequestAltoModelEvent.TYPE) {
                         if (this.structureModel == null || this.structureModel._textContentPresent) {
                             var rtce = e;
-                            if (this.pageHrefAltoHrefMap.has(rtce._href)) {
-                                this.resolveAltoModel(rtce._href, function (mdl) {
-                                    rtce._onResolve(rtce._href, mdl);
+                            var _a = this.detectHrefs(rtce._href), altoHref_1 = _a.altoHref, imgHref_1 = _a.imgHref;
+                            if (this.pageHrefAltoHrefMap.has(imgHref_1)) {
+                                this.resolveAltoModel(imgHref_1, function (mdl) {
+                                    rtce._onResolve(imgHref_1, altoHref_1, mdl);
                                 });
                             }
-                            else {
-                                console.warn("RPE : altoHref not found!");
+                            else if (this.structureModel == null) {
+                                this.altoModelRequestTempStore.push(rtce);
                             }
                         }
                     }
@@ -1188,17 +1254,46 @@ var mycore;
                         this.structureModel = smle.structureModel;
                         if (smle.structureModel._textContentPresent) {
                             this.fillAltoHrefMap();
+                            for (var rtceIndex in this.altoModelRequestTempStore) {
+                                var rtce = this.altoModelRequestTempStore[rtceIndex];
+                                var _b = this.detectHrefs(rtce._href), altoHref = _b.altoHref, imgHref = _b.imgHref;
+                                (function (altoHref, imgHref, cb) {
+                                    if (_this.pageHrefAltoHrefMap.has(imgHref)) {
+                                        _this.resolveAltoModel(imgHref, function (mdl) {
+                                            cb(imgHref, altoHref, mdl);
+                                        });
+                                    }
+                                    else {
+                                        console.warn("RPE : altoHref not found!");
+                                    }
+                                })(altoHref, imgHref, rtce._onResolve);
+                            }
+                            this.altoModelRequestTempStore = [];
                             this.trigger(new components.events.WaitForEvent(this, components.events.RequestTextContentEvent.TYPE));
                         }
                     }
                     return;
+                };
+                MyCoReAltoModelProvider.prototype.detectHrefs = function (href) {
+                    var altoHref, imgHref;
+                    if (this.altoHrefPageHrefMap.has(href)) {
+                        altoHref = href;
+                        imgHref = this.altoHrefPageHrefMap.get(altoHref);
+                    }
+                    else {
+                        imgHref = href;
+                        altoHref = this.pageHrefAltoHrefMap.get(imgHref);
+                    }
+                    return { altoHref: altoHref, imgHref: imgHref };
                 };
                 MyCoReAltoModelProvider.prototype.fillAltoHrefMap = function () {
                     var _this = this;
                     this.structureModel.imageList.forEach(function (image) {
                         var hasTextHref = image.additionalHrefs.has(MyCoReAltoModelProvider.TEXT_HREF);
                         if (hasTextHref) {
-                            _this.pageHrefAltoHrefMap.set(image.href, image.additionalHrefs.get(MyCoReAltoModelProvider.TEXT_HREF));
+                            var altoHref = image.additionalHrefs.get(MyCoReAltoModelProvider.TEXT_HREF);
+                            _this.pageHrefAltoHrefMap.set(image.href, altoHref);
+                            _this.altoHrefPageHrefMap.set(altoHref, image.href);
                         }
                     });
                 };
@@ -1240,11 +1335,12 @@ var mycore;
                     jQuery.ajax(requestObj);
                 };
                 MyCoReAltoModelProvider.prototype.loadedAltoModel = function (parentId, altoHref, xml, callback) {
-                    var altoContainer = new viewer.widgets.alto.AltoContainer();
-                    var pageContent = xml.getElementsByTagName("PrintSpace");
-                    var printSpace = pageContent.item(0);
-                    if (printSpace != null) {
-                        var elements = altoContainer.extractElements(printSpace, AltoPageElement.TextBlock);
+                    var pageStyles = xml.getElementsByTagName("Styles");
+                    var styles = pageStyles.item(0);
+                    var layouts = xml.getElementsByTagName("Layout");
+                    var layout = layouts.item(0);
+                    if (styles != null && layout != null) {
+                        var altoContainer = new viewer.widgets.alto.AltoFile(styles, layout);
                         MyCoReAltoModelProvider.altoHrefModelMap.set(altoHref, altoContainer);
                         callback(altoContainer);
                     }
@@ -1252,51 +1348,189 @@ var mycore;
                 MyCoReAltoModelProvider.altoHrefModelMap = new MyCoReMap();
                 MyCoReAltoModelProvider.TEXT_HREF = "AltoHref";
                 return MyCoReAltoModelProvider;
-            })(components.ViewerComponent);
+            }(components.ViewerComponent));
             components.MyCoReAltoModelProvider = MyCoReAltoModelProvider;
         })(components = viewer.components || (viewer.components = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
 })(mycore || (mycore = {}));
 addViewerComponent(mycore.viewer.components.MyCoReAltoModelProvider);
-/// <reference path="..\..\..\js\iview-client-base.d.ts" />
-/// <reference path="../widgets/XMLImageInformationProvider.ts" />
-/// <reference path="../widgets/TileImagePage.ts" />
-/// <reference path="MetsSettings.ts" />
-/// <reference path="../widgets/alto/AltoContainer.ts" />
-/// <reference path="events/RequestAltoModelEvent.ts" />
+var mycore;
+(function (mycore) {
+    var viewer;
+    (function (viewer) {
+        var widgets;
+        (function (widgets) {
+            var alto;
+            (function (alto_1) {
+                var AltoHTMLGenerator = (function () {
+                    function AltoHTMLGenerator() {
+                    }
+                    AltoHTMLGenerator.prototype.generateHtml = function (alto) {
+                        var _this = this;
+                        var fontFamily = "sans-serif";
+                        var element = document.createElement("div");
+                        element.style.position = "absolute";
+                        element.style.whiteSpace = "nowrap";
+                        element.style.fontFamily = "sans-serif";
+                        var endecoderElem = document.createElement("span");
+                        var mesureCanvas = document.createElement("canvas");
+                        var ctx = mesureCanvas.getContext("2d");
+                        var outline = alto.pageHeight * 0.002;
+                        var blockBefore = null;
+                        var buff = alto.getBlocks().map(function (block) {
+                            var drawOutline = blockBefore !== null &&
+                                (blockBefore.getVPos() + blockBefore.getHeight() + outline < block.getVPos() ||
+                                    blockBefore.getHPos() + blockBefore.getWidth() + outline < block.getHPos());
+                            var blockFontSize = _this.getFontSize(ctx, block, fontFamily);
+                            blockFontSize *= 0.9;
+                            var blockDiv = "<div";
+                            blockDiv += " class='altoBlock'";
+                            blockDiv += " style='top: " + block.getVPos() + "px;";
+                            blockDiv += " left: " + block.getHPos() + "px;";
+                            blockDiv += " width: " + block.getWidth() + "px;";
+                            blockDiv += " height: " + block.getHeight() + "px;";
+                            blockDiv += " font-size: " + blockFontSize + "px;";
+                            if (drawOutline) {
+                                blockDiv += " outline: " + outline + "px solid white;";
+                            }
+                            blockDiv += "'>";
+                            block.getChildren().map(function (line) {
+                                endecoderElem.innerHTML = _this.getLineAsString(line);
+                                var lineDiv = "<p";
+                                lineDiv += " class='altoLine'";
+                                lineDiv += " style='height: " + line.getHeight() + "px;";
+                                lineDiv += " width: " + line.getWidth() + "px;";
+                                lineDiv += " left: " + line.getHPos() + "px;";
+                                lineDiv += " top: " + line.getVPos() + "px;";
+                                var lineStyle = line.getStyle();
+                                if (lineStyle != null) {
+                                    var lineFontStyle = lineStyle.getFontStyle();
+                                    if (lineFontStyle != null) {
+                                        if (lineFontStyle == "italic") {
+                                            lineDiv += " font-style: italic;";
+                                        }
+                                        else if (lineFontStyle == "bold") {
+                                            lineDiv += " font-weight: bold;";
+                                        }
+                                    }
+                                }
+                                lineDiv += "'>" + endecoderElem.innerHTML + "</p>";
+                                blockDiv += lineDiv;
+                            });
+                            blockDiv += "</div>";
+                            blockBefore = block;
+                            return blockDiv;
+                        });
+                        element.innerHTML = buff.join("");
+                        return element;
+                    };
+                    AltoHTMLGenerator.prototype.getWordsArray = function (line) {
+                        var tmpElement = document.createElement("span");
+                        return line.getChildren()
+                            .filter(function (elementInLine) { return elementInLine.getType() === AltoElementType.String; })
+                            .map(function (word, wordCount, allWords) {
+                            tmpElement.innerText = word.getContent();
+                            return tmpElement.innerHTML;
+                        });
+                    };
+                    AltoHTMLGenerator.prototype.getLineAsString = function (line) {
+                        return this.getWordsArray(line).join(" ");
+                    };
+                    AltoHTMLGenerator.prototype.getFontSize = function (ctx, block, fontFamily) {
+                        var _this = this;
+                        var getFontStyle = function (line) {
+                            var lineStyle = line.getStyle();
+                            if (lineStyle !== null) {
+                                var lineFontStyle = lineStyle.getFontStyle();
+                                return lineFontStyle !== null ? (lineFontStyle + " ") : "";
+                            }
+                            return "";
+                        };
+                        var getLineHeight = function (line, startSize) {
+                            var lineString = _this.getLineAsString(line);
+                            ctx.font = getFontStyle(line) + startSize + "px " + fontFamily;
+                            var widthScale = block.getWidth() / ctx.measureText(lineString).width;
+                            return widthScale > 1 ? startSize : startSize * widthScale;
+                        };
+                        if (block.getChildren().length === 1) {
+                            var line = block.getChildren()[0];
+                            return getLineHeight(line, line.getHeight());
+                        }
+                        var maxSize = 9999;
+                        block.getChildren().forEach(function (line) {
+                            maxSize = getLineHeight(line, maxSize);
+                        });
+                        return maxSize;
+                    };
+                    return AltoHTMLGenerator;
+                }());
+                alto_1.AltoHTMLGenerator = AltoHTMLGenerator;
+            })(alto = widgets.alto || (widgets.alto = {}));
+        })(widgets = viewer.widgets || (viewer.widgets = {}));
+    })(viewer = mycore.viewer || (mycore.viewer = {}));
+})(mycore || (mycore = {}));
 var mycore;
 (function (mycore) {
     var viewer;
     (function (viewer) {
         var components;
         (function (components) {
-            var MyCoReAltoTextProvider = (function (_super) {
-                __extends(MyCoReAltoTextProvider, _super);
-                function MyCoReAltoTextProvider(_settings) {
+            var RequestAltoModelEvent = mycore.viewer.components.events.RequestAltoModelEvent;
+            var AltoHTMLGenerator = mycore.viewer.widgets.alto.AltoHTMLGenerator;
+            var MyCoReMetsPageProviderComponent = (function (_super) {
+                __extends(MyCoReMetsPageProviderComponent, _super);
+                function MyCoReMetsPageProviderComponent(_settings) {
                     _super.call(this);
                     this._settings = _settings;
-                    this._model = null;
+                    this._imageInformationMap = new MyCoReMap();
+                    this._imagePageMap = new MyCoReMap();
+                    this._altoHTMLGenerator = new AltoHTMLGenerator();
                 }
-                MyCoReAltoTextProvider.prototype.init = function () {
-                    if (this._settings.doctype == "mets") {
-                        this.trigger(new components.events.WaitForEvent(this, components.events.StructureModelLoadedEvent.TYPE));
+                MyCoReMetsPageProviderComponent.prototype.init = function () {
+                    if (this._settings.doctype == 'mets') {
+                        this.trigger(new components.events.WaitForEvent(this, components.events.RequestPageEvent.TYPE));
                     }
                 };
-                MyCoReAltoTextProvider.prototype.handle = function (e) {
-                    if (e.type == components.events.RequestTextContentEvent.TYPE) {
-                        if (this._model == null || this._model._textContentPresent) {
-                            var rtce = e;
-                            this.resolveTextContent(rtce._href, function (mdl) {
-                                rtce._onResolve(rtce._href, mdl);
-                            });
-                        }
+                MyCoReMetsPageProviderComponent.prototype.getPage = function (image, resolve) {
+                    var _this = this;
+                    if (this._imagePageMap.has(image)) {
+                        resolve(this.createPageFromMetadata(image, this._imageInformationMap.get(image)));
                     }
-                    return;
+                    else {
+                        this.getPageMetadata(image, function (metadata) {
+                            resolve(_this.createPageFromMetadata(image, metadata));
+                        });
+                    }
                 };
-                Object.defineProperty(MyCoReAltoTextProvider.prototype, "handlesEvents", {
+                MyCoReMetsPageProviderComponent.prototype.createPageFromMetadata = function (imageId, metadata) {
+                    var _this = this;
+                    var tiles = this._settings.tileProviderPath.split(",");
+                    var paths = new Array();
+                    tiles.forEach(function (path) {
+                        paths.push(path + _this._settings.derivate + metadata.path + "/{z}/{y}/{x}.jpg");
+                    });
+                    return new viewer.widgets.canvas.TileImagePage(imageId, metadata.width, metadata.height, paths);
+                };
+                MyCoReMetsPageProviderComponent.prototype.getPageMetadata = function (image, resolve) {
+                    var _this = this;
+                    image = (image.charAt(0) == "/") ? image.substr(1) : image;
+                    if (this._imageInformationMap.has(image)) {
+                        resolve(this._imageInformationMap.get(image));
+                    }
+                    else {
+                        var path = "/" + image;
+                        mycore.viewer.widgets.image.XMLImageInformationProvider.getInformation(this._settings.imageXmlPath + this._settings.derivate, path, function (info) {
+                            _this._imageInformationMap.set(image, info);
+                            resolve(info);
+                        }, function (error) {
+                            console.log("Error while loading ImageInformations", +error.toString());
+                        });
+                    }
+                };
+                Object.defineProperty(MyCoReMetsPageProviderComponent.prototype, "handlesEvents", {
                     get: function () {
-                        if (this._settings.doctype == "mets") {
-                            return [components.events.RequestTextContentEvent.TYPE];
+                        if (this._settings.doctype == 'mets') {
+                            return [components.events.RequestPageEvent.TYPE];
                         }
                         else {
                             return [];
@@ -1305,60 +1539,37 @@ var mycore;
                     enumerable: true,
                     configurable: true
                 });
-                MyCoReAltoTextProvider.prototype.resolveTextContent = function (pageId, callback) {
+                MyCoReMetsPageProviderComponent.prototype.handle = function (e) {
                     var _this = this;
-                    if (MyCoReAltoTextProvider._pageHrefTextContentModelMap.has(pageId)) {
-                        callback(MyCoReAltoTextProvider._pageHrefTextContentModelMap.get(pageId));
-                    }
-                    else {
-                        this.trigger(new components.events.RequestAltoModelEvent(this, pageId, function (href, content) {
-                            _this.loadedAltoModelCallback(pageId, pageId, content, callback);
+                    if (e.type == components.events.RequestPageEvent.TYPE) {
+                        var rpe = e;
+                        var pageAltoSynchronize = Utils.synchronize([
+                            function (synchronizeObj) { return synchronizeObj.page != null; },
+                            function (synchronizeObj) { return synchronizeObj.altoModel != null; },
+                        ], function (synchronizeObj) {
+                            var htmlElement = _this._altoHTMLGenerator.generateHtml(synchronizeObj.altoModel);
+                            synchronizeObj.page.setAltoContent(htmlElement);
+                        });
+                        var synchronizeObj = { page: null, altoModel: null };
+                        this.getPage(rpe._pageId, function (page) {
+                            synchronizeObj.page = page;
+                            pageAltoSynchronize(synchronizeObj);
+                            rpe._onResolve(rpe._pageId, page);
+                        });
+                        this.trigger(new RequestAltoModelEvent(this, rpe._pageId, function (page, altoHref, altoModel) {
+                            synchronizeObj.altoModel = altoModel;
+                            pageAltoSynchronize(synchronizeObj);
                         }));
                     }
+                    return;
                 };
-                MyCoReAltoTextProvider.prototype.loadedAltoModelCallback = function (parentId, altoHref, altoContainer, callback) {
-                    var textContent = {
-                        content: this.extractTextContent(parentId, altoContainer.getLines())
-                    };
-                    MyCoReAltoTextProvider._pageHrefTextContentModelMap.set(altoHref, textContent);
-                    callback(textContent);
-                };
-                MyCoReAltoTextProvider.prototype.extractTextContent = function (parentId, lines) {
-                    var textContentArray = new Array();
-                    lines.forEach(function (line) { return line.getChildren().forEach(function (word, wordCount, allWords) {
-                        var isLastWordInLine = allWords.length == wordCount;
-                        var ele = new AltoTextContent(word, parentId, isLastWordInLine);
-                        textContentArray.push(ele);
-                    }); });
-                    return textContentArray;
-                };
-                MyCoReAltoTextProvider._pageHrefTextContentModelMap = new MyCoReMap();
-                MyCoReAltoTextProvider.TEXT_HREF = "AltoHref";
-                return MyCoReAltoTextProvider;
-            })(components.ViewerComponent);
-            components.MyCoReAltoTextProvider = MyCoReAltoTextProvider;
-            var AltoTextContent = (function () {
-                function AltoTextContent(word, parentId, isLastWordInLine) {
-                    this.angle = 0;
-                    this.size = new Size2D(word.getWidth(), word.getHeight());
-                    this.pos = new Position2D(word.getHPos(), word.getVPos());
-                    this.fontFamily = "arial";
-                    this.fontSize = word.getHeight();
-                    this.fromBottomLeft = false;
-                    this.pageHref = parentId;
-                    this.text = word.getContent() + ((isLastWordInLine) ? "\n" : " ");
-                }
-                AltoTextContent.prototype.toString = function () {
-                    return this.pageHref.toString + "-" + this.pos.toString() + "-" + this.size.toString();
-                };
-                return AltoTextContent;
-            })();
-            components.AltoTextContent = AltoTextContent;
+                return MyCoReMetsPageProviderComponent;
+            }(components.ViewerComponent));
+            components.MyCoReMetsPageProviderComponent = MyCoReMetsPageProviderComponent;
         })(components = viewer.components || (viewer.components = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
 })(mycore || (mycore = {}));
-addViewerComponent(mycore.viewer.components.MyCoReAltoTextProvider);
-/// <reference path="..\..\..\..\js\iview-client-base.d.ts" />
+addViewerComponent(mycore.viewer.components.MyCoReMetsPageProviderComponent);
 var mycore;
 (function (mycore) {
     var viewer;
@@ -1368,11 +1579,12 @@ var mycore;
             var tei;
             (function (tei) {
                 var TEILayer = (function () {
-                    function TEILayer(_id, _label, mapping, contentLocation) {
+                    function TEILayer(_id, _label, mapping, contentLocation, teiStylesheet) {
                         this._id = _id;
                         this._label = _label;
                         this.mapping = mapping;
                         this.contentLocation = contentLocation;
+                        this.teiStylesheet = teiStylesheet;
                     }
                     TEILayer.prototype.getId = function () {
                         return this._id;
@@ -1387,23 +1599,19 @@ var mycore;
                             settings.success = function (data, textStatus, jqXHR) {
                                 callback(true, jQuery(data));
                             };
-                            jQuery.ajax(this.contentLocation + this.mapping.get(pageHref) + "?XSL.Style=html", settings);
+                            jQuery.ajax(this.contentLocation + this.mapping.get(pageHref) + "?XSL.Style=" + this.teiStylesheet, settings);
                         }
                         else {
                             callback(false);
                         }
                     };
                     return TEILayer;
-                })();
+                }());
                 tei.TEILayer = TEILayer;
             })(tei = widgets.tei || (widgets.tei = {}));
         })(widgets = viewer.widgets || (viewer.widgets = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
 })(mycore || (mycore = {}));
-/// <reference path="..\..\..\js\iview-client-base.d.ts" />
-/// <reference path="../widgets/XMLImageInformationProvider.ts" />
-/// <reference path="../widgets/tei/TEILayer.ts" />
-/// <reference path="MetsSettings.ts" />
 var mycore;
 (function (mycore) {
     var viewer;
@@ -1416,13 +1624,12 @@ var mycore;
                     _super.call(this);
                     this._settings = _settings;
                     this._model = null;
-                    this.contentLocation = null;
+                    // dbu
                     if (this._settings.derivateContentTransformerServlet == null) {
                         this._settings.derivateContentTransformerServlet =
                         this._settings.webApplicationBaseURL + "servlets/MCRDerivateContentTransformerServlet/";
                     }
                     this.contentLocation = this._settings.derivateContentTransformerServlet + this._settings.derivate + "/";
-
                 }
                 MyCoReTEILayerProvider.prototype.init = function () {
                     if (this._settings.doctype == "mets") {
@@ -1456,8 +1663,8 @@ var mycore;
                                 }
                             });
                         });
-                        if (transcriptions.keys.length != 0) {
-                            this.trigger(new components.events.ProvideLayerEvent(this, new viewer.widgets.tei.TEILayer("transcription", "transcription", transcriptions, this.contentLocation)));
+                        if (!transcriptions.isEmpty()) {
+                            this.trigger(new components.events.ProvideLayerEvent(this, new viewer.widgets.tei.TEILayer("transcription", "transcription", transcriptions, this.contentLocation, this._settings.teiStylesheet || "html")));
                         }
                         var order = ["de", "en"];
                         if (languages.length != 0) {
@@ -1469,7 +1676,7 @@ var mycore;
                             })
                                 .forEach(function (language) {
                                 var translationMap = translations.get(language);
-                                _this.trigger(new components.events.ProvideLayerEvent(_this, new viewer.widgets.tei.TEILayer("translation_" + language, "translation_" + language, translationMap, _this.contentLocation)));
+                                _this.trigger(new components.events.ProvideLayerEvent(_this, new viewer.widgets.tei.TEILayer("translation_" + language, "translation_" + language, translationMap, _this.contentLocation, _this._settings.teiStylesheet || "html")));
                             });
                         }
                         return;
@@ -1490,154 +1697,12 @@ var mycore;
                 MyCoReTEILayerProvider.TEI_TRANSCRIPTION = "TeiTranscriptionHref";
                 MyCoReTEILayerProvider.TEI_TRANSLATION = "TeiTranslationHref";
                 return MyCoReTEILayerProvider;
-            })(components.ViewerComponent);
+            }(components.ViewerComponent));
             components.MyCoReTEILayerProvider = MyCoReTEILayerProvider;
         })(components = viewer.components || (viewer.components = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
 })(mycore || (mycore = {}));
 addViewerComponent(mycore.viewer.components.MyCoReTEILayerProvider);
-/// <reference path="..\..\..\..\js\iview-client-base.d.ts" />
-var mycore;
-(function (mycore) {
-    var viewer;
-    (function (viewer) {
-        var widgets;
-        (function (widgets) {
-            var alto;
-            (function (alto) {
-                var AltoLayer = (function () {
-                    function AltoLayer(_id, _label, mapping, altoTextProvider, markerCallback) {
-                        this._id = _id;
-                        this._label = _label;
-                        this.mapping = mapping;
-                        this.altoTextProvider = altoTextProvider;
-                        this.markerCallback = markerCallback;
-                    }
-                    AltoLayer.prototype.getId = function () {
-                        return this._id;
-                    };
-                    AltoLayer.prototype.getLabel = function () {
-                        return this._label;
-                    };
-                    AltoLayer.prototype.resolveLayer = function (pageHref, callback) {
-                        var _this = this;
-                        if (this.mapping.has(pageHref)) {
-                            this.altoTextProvider(pageHref, function (pageHref, textContent) {
-                                var documentFragment = document.createDocumentFragment();
-                                var idDataMap = new MyCoReMap();
-                                textContent.content.forEach(function (te) {
-                                    var spanElement = document.createElement("span");
-                                    spanElement.innerText = spanElement.textContent = te.text;
-                                    documentFragment.appendChild(spanElement);
-                                    var id = Math.random().toString(36).substring(2, 15);
-                                    idDataMap.set(id, te);
-                                    te.mouseenter = function () {
-                                        spanElement.classList.add("highlight");
-                                    };
-                                    te.mouseleave = function () {
-                                        if (spanElement.classList.contains("highlight")) {
-                                            spanElement.classList.remove("highlight");
-                                        }
-                                    };
-                                    spanElement.setAttribute("data-id", id);
-                                });
-                                var content = jQuery("<div></div>");
-                                content.append(documentFragment);
-                                content.mousemove(function (e) {
-                                    var id = jQuery(e.target).attr("data-id");
-                                    if (idDataMap.has(id)) {
-                                        var workMarker = new MyCoReMap();
-                                        var word = idDataMap.get(id);
-                                        _this.markerCallback([word]);
-                                    }
-                                });
-                                //jQuery(window).mousedown((e)=> {
-                                //    this.markerCallback([]);
-                                //});
-                                callback(true, content);
-                            });
-                        }
-                        else {
-                            callback(false);
-                        }
-                    };
-                    return AltoLayer;
-                })();
-                alto.AltoLayer = AltoLayer;
-            })(alto = widgets.alto || (widgets.alto = {}));
-        })(widgets = viewer.widgets || (viewer.widgets = {}));
-    })(viewer = mycore.viewer || (mycore.viewer = {}));
-})(mycore || (mycore = {}));
-/// <reference path="..\..\..\js\iview-client-base.d.ts" />
-/// <reference path="../widgets/XMLImageInformationProvider.ts" />
-/// <reference path="../widgets/alto/AltoLayer.ts" />
-/// <reference path="MetsSettings.ts" />
-var mycore;
-(function (mycore) {
-    var viewer;
-    (function (viewer) {
-        var components;
-        (function (components) {
-            var MyCoReAltoLayerProvider = (function (_super) {
-                __extends(MyCoReAltoLayerProvider, _super);
-                function MyCoReAltoLayerProvider(_settings) {
-                    _super.call(this);
-                    this._settings = _settings;
-                    this._model = null;
-                }
-                MyCoReAltoLayerProvider.prototype.init = function () {
-                    if (this._settings.doctype == "mets") {
-                        this.trigger(new components.events.WaitForEvent(this, components.events.StructureModelLoadedEvent.TYPE));
-                    }
-                };
-                MyCoReAltoLayerProvider.prototype.handle = function (e) {
-                    var _this = this;
-                    if (e.type == components.events.StructureModelLoadedEvent.TYPE) {
-                        var smle = e;
-                        this._model = smle.structureModel;
-                        var altos = new MyCoReMap();
-                        var hasAny = false;
-                        smle.structureModel._imageList.forEach(function (image) {
-                            var additionalHrefs = image.additionalHrefs;
-                            additionalHrefs.forEach(function (name, href) {
-                                if (name == MyCoReAltoLayerProvider.TEXT_HREF) {
-                                    altos.set(image.href, href);
-                                    hasAny = true;
-                                }
-                            });
-                        });
-                        var altoLayer = new viewer.widgets.alto.AltoLayer(MyCoReAltoLayerProvider.TEXT_HREF, "ALTO", altos, function (pageHref, callback) {
-                            _this.trigger(new components.events.RequestTextContentEvent(_this, pageHref, callback));
-                        }, function (textToMark) {
-                            _this.trigger(new components.events.HighlightTextEvent(_this, textToMark));
-                        });
-                        if (hasAny) {
-                            this.trigger(new components.events.ProvideLayerEvent(this, altoLayer));
-                        }
-                        return;
-                    }
-                };
-                Object.defineProperty(MyCoReAltoLayerProvider.prototype, "handlesEvents", {
-                    get: function () {
-                        if (this._settings.doctype == "mets") {
-                            return [components.events.StructureModelLoadedEvent.TYPE];
-                        }
-                        else {
-                            return [];
-                        }
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                MyCoReAltoLayerProvider.TEXT_HREF = "AltoHref";
-                return MyCoReAltoLayerProvider;
-            })(components.ViewerComponent);
-            components.MyCoReAltoLayerProvider = MyCoReAltoLayerProvider;
-        })(components = viewer.components || (viewer.components = {}));
-    })(viewer = mycore.viewer || (mycore.viewer = {}));
-})(mycore || (mycore = {}));
-addViewerComponent(mycore.viewer.components.MyCoReAltoLayerProvider);
-/// <reference path="..\..\..\..\js\iview-client-base.d.ts" />
 var mycore;
 (function (mycore) {
     var viewer;
@@ -1654,12 +1719,6 @@ var mycore;
                         this.rangeInputEventHandler = null;
                         this.okayClickHandler = null;
                         var that = this;
-                        /*this.wrapper.removeClass("bs-modal-sm")
-                        this.wrapper.addClass("bs-modal-lg")
-
-                        this.box.removeClass("modal-sm")
-                        this.box.addClass("modal-lg")
-                         */
                         this._inputRow = jQuery("<div></div>");
                         this._inputRow.addClass("row");
                         this._inputRow.appendTo(this.modalBody);
@@ -1927,15 +1986,12 @@ var mycore;
                     IviewPrintModalWindow.INPUT_RANGE_VALUE = "range";
                     IviewPrintModalWindow.INPUT_CURRENT_VALUE = "current";
                     return IviewPrintModalWindow;
-                })(modal.IviewModalWindow);
+                }(modal.IviewModalWindow));
                 modal.IviewPrintModalWindow = IviewPrintModalWindow;
             })(modal = widgets.modal || (widgets.modal = {}));
         })(widgets = viewer.widgets || (viewer.widgets = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
 })(mycore || (mycore = {}));
-/// <reference path="..\..\..\js\iview-client-base.d.ts" />
-/// <reference path="MetsSettings.ts" />
-/// <reference path="../widgets/modal/IviewPrintModalWindow.ts" />
 var mycore;
 (function (mycore) {
     var viewer;
@@ -1947,20 +2003,20 @@ var mycore;
                 function MyCoRePrintComponent(_settings) {
                     _super.call(this);
                     this._settings = _settings;
-                    this._enabled = this._settings.pdfCreatorStyle != null && this._settings.pdfCreatorStyle.length != 0;
+                    this._enabled = (this._settings.pdfCreatorStyle != null && this._settings.pdfCreatorStyle.length != 0) ||
+                        this._settings.pdfCreatorURI;
                 }
-                MyCoRePrintComponent.prototype.buildRequestLink = function (pages) {
-                    var metsLocation = "{location}/mets.xml?XSL.Style={creatorStyle}";
-                    var formatString = "{creator}?mets={metsLocation}&pages={pages}";
-                    var params = {
-                        creator: this._settings.pdfCreatorURI,
-                        metsLocation: encodeURIComponent(ViewerFormatString(metsLocation, {
-                            location: this._settings.metsURL,
-                            creatorStyle: this._settings.pdfCreatorStyle
-                        })),
-                        pages: pages
-                    };
-                    return ViewerFormatString(formatString, params);
+                MyCoRePrintComponent.prototype.buildPDFRequestLink = function (pages) {
+                    var metsLocationFormatString = "{metsURL}/mets.xml?XSL.Style={pdfCreatorStyle}";
+                    var defaultFormatString = "{pdfCreatorURI}?mets={metsLocation}&pages={pages}";
+                    var metsLocation = encodeURIComponent(ViewerFormatString(metsLocationFormatString, this._settings));
+                    this._settings["metsLocation"] = metsLocation;
+                    this._settings["pages"] = pages;
+                    return ViewerFormatString(this._settings.pdfCreatorFormatString || defaultFormatString, this._settings);
+                };
+                MyCoRePrintComponent.prototype.buildRestrictionLink = function () {
+                    var defaultFormatString = "{pdfCreatorURI}?getRestrictions";
+                    return ViewerFormatString(this._settings.pdfCreatorRestrictionFormatString || defaultFormatString, this._settings);
                 };
                 MyCoRePrintComponent.prototype.init = function () {
                     if (this._settings.doctype == 'mets' && this._enabled) {
@@ -1981,7 +2037,12 @@ var mycore;
                             this._printButton.icon = "file-pdf-o";
                             this._printButton.label = "";
                         }
-                        ptme.model._actionControllGroup.addComponent(this._printButton);
+                        if (ptme.model.name == "MyCoReFrameToolbar") {
+                            ptme.model._zoomControllGroup.addComponent(this._printButton);
+                        }
+                        else {
+                            ptme.model._actionControllGroup.addComponent(this._printButton);
+                        }
                     }
                     if (e.type == components.events.LanguageModelLoadedEvent.TYPE) {
                         var languageModelLoadedEvent = e;
@@ -2054,7 +2115,7 @@ var mycore;
                             if (that._modalWindow.rangeChecked) {
                                 page = that._modalWindow.rangeInputVal;
                             }
-                            window.location.href = that.buildRequestLink(page);
+                            window.location.href = that.buildPDFRequestLink(page);
                         };
                         this._modalWindow.currentChecked = true;
                     }
@@ -2090,10 +2151,9 @@ var mycore;
                     jQuery.ajax({
                         type: 'GET',
                         dataType: 'json',
-                        url: this._settings.pdfCreatorURI + "?getRestrictions",
+                        url: this.buildRestrictionLink(),
                         crossDomain: true,
                         complete: function (jqXHR, textStatus) {
-                            //jQuery.support.cors = corsSupport;
                         },
                         success: function (data) {
                             that._maxPages = parseInt(data.maxPages);
@@ -2101,16 +2161,6 @@ var mycore;
                         }
                     });
                 };
-                /**
-                 * Validates the range input
-                 * ranges: range+;
-                 * range:  page | pageRange;
-                 * pageRange: page + ' '* + '-' + ' '* + page;
-                 * page: [0-10]+;
-                 *
-                 * @param range
-                 * @returns {valid:boolean;text:string;firstPage?:number}
-                 */
                 MyCoRePrintComponent.prototype.validateRange = function (range) {
                     var ranges = range.split(",");
                     var firstPage = 99999;
@@ -2121,9 +2171,7 @@ var mycore;
                     var maxRange = this._maxPages;
                     for (var rangeIndex in ranges) {
                         var range = ranges[rangeIndex];
-                        // check page or pageRange
                         if (range.indexOf("-") == -1) {
-                            // page
                             if (!this.isValidPage(range)) {
                                 return {
                                     valid: false,
@@ -2195,19 +2243,453 @@ var mycore;
                     configurable: true
                 });
                 return MyCoRePrintComponent;
-            })(components.ViewerComponent);
+            }(components.ViewerComponent));
             components.MyCoRePrintComponent = MyCoRePrintComponent;
         })(components = viewer.components || (viewer.components = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
 })(mycore || (mycore = {}));
 addViewerComponent(mycore.viewer.components.MyCoRePrintComponent);
-/// <reference path="..\..\js\iview-client-base.d.ts" />
-/// <reference path="components/MyCoReMetsComponent.ts" />
-/// <reference path="components/MyCoReTiledImagePageProviderComponent.ts" />
-/// <reference path="components/MyCoReAltoModelProvider.ts" />
-/// <reference path="components/MyCoReAltoTextProvider.ts" />
-/// <reference path="components/MyCoReTEILayerProvider.ts" />
-/// <reference path="components/MyCoReAltoLayerProvider.ts" />
-/// <reference path="components/MyCoRePrintComponent.ts" />
+var mycore;
+(function (mycore) {
+    var viewer;
+    (function (viewer) {
+        var widgets;
+        (function (widgets) {
+            var canvas;
+            (function (canvas) {
+                var HighlightAltoCanvasPageLayer = (function () {
+                    function HighlightAltoCanvasPageLayer() {
+                        this.selectedChapter = null;
+                        this.highlightedChapter = null;
+                        this.fadeAnimation = null;
+                        this.chaptersToClear = new MyCoReMap();
+                    }
+                    HighlightAltoCanvasPageLayer.prototype.draw = function (ctx, id, pageSize, drawOnHtml) {
+                        if (drawOnHtml === void 0) { drawOnHtml = false; }
+                        var selected = this.isChapterSelected();
+                        var highlighted = this.isHighlighted();
+                        var animated = this.fadeAnimation != null && this.fadeAnimation.isRunning;
+                        if (!animated && !selected && !highlighted) {
+                            this.chaptersToClear.clear();
+                        }
+                        if (selected) {
+                            this.chaptersToClear.set("selected", this.selectedChapter);
+                        }
+                        if (highlighted) {
+                            this.chaptersToClear.set("highlighted", this.highlightedChapter);
+                        }
+                        else if (selected) {
+                            this.chaptersToClear.remove("highlighted");
+                        }
+                        if (animated || selected || highlighted) {
+                            var rgba = selected ? "rgba(0,0,0,0.4)" : "rgba(0,0,0,0.15)";
+                            if (this.fadeAnimation != null) {
+                                rgba = "rgba(0,0,0," + this.fadeAnimation.value + ")";
+                            }
+                            this.darkenPage(ctx, pageSize, rgba);
+                            this.clearRects(ctx, id);
+                        }
+                        if (highlighted && selected) {
+                            this.drawRects(ctx, id, this.highlightedChapter.pages, "rgba(0,0,0,0.2)");
+                        }
+                    };
+                    HighlightAltoCanvasPageLayer.prototype.isChapterSelected = function () {
+                        return this.selectedChapter != null && !this.selectedChapter.pages.isEmpty();
+                    };
+                    HighlightAltoCanvasPageLayer.prototype.isHighlighted = function () {
+                        var highlighted = this.highlightedChapter != null && !this.highlightedChapter.pages.isEmpty();
+                        if (highlighted && this.isChapterSelected()) {
+                            return this.highlightedChapter.chapterId !== this.selectedChapter.chapterId;
+                        }
+                        return highlighted;
+                    };
+                    HighlightAltoCanvasPageLayer.prototype.darkenPage = function (ctx, pageSize, rgba) {
+                        ctx.save();
+                        {
+                            ctx.strokeStyle = rgba;
+                            ctx.fillStyle = rgba;
+                            ctx.beginPath();
+                            ctx.rect(0, 0, pageSize.width, pageSize.height);
+                            ctx.closePath();
+                            ctx.fill();
+                        }
+                        ctx.restore();
+                    };
+                    HighlightAltoCanvasPageLayer.prototype.clearRects = function (ctx, id) {
+                        ctx.save();
+                        {
+                            this.chaptersToClear.values.forEach(function (chapterArea) {
+                                chapterArea.pages.hasThen(id, function (rects) {
+                                    rects.forEach(function (rect) {
+                                        ctx.clearRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+                                    });
+                                });
+                            });
+                        }
+                        ctx.restore();
+                    };
+                    HighlightAltoCanvasPageLayer.prototype.drawRects = function (ctx, pageId, pages, rgba) {
+                        ctx.save();
+                        {
+                            ctx.strokeStyle = rgba;
+                            ctx.fillStyle = rgba;
+                            ctx.beginPath();
+                            pages.hasThen(pageId, function (rects) {
+                                rects.forEach(function (rect) {
+                                    ctx.rect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+                                });
+                            });
+                            ctx.closePath();
+                            ctx.fill();
+                        }
+                        ctx.restore();
+                    };
+                    return HighlightAltoCanvasPageLayer;
+                }());
+                canvas.HighlightAltoCanvasPageLayer = HighlightAltoCanvasPageLayer;
+            })(canvas = widgets.canvas || (widgets.canvas = {}));
+        })(widgets = viewer.widgets || (viewer.widgets = {}));
+    })(viewer = mycore.viewer || (mycore.viewer = {}));
+})(mycore || (mycore = {}));
+var mycore;
+(function (mycore) {
+    var viewer;
+    (function (viewer) {
+        var components;
+        (function (components) {
+            var RequestAltoModelEvent = components.events.RequestAltoModelEvent;
+            var WaitForEvent = components.events.WaitForEvent;
+            var MyCoReHighlightAltoComponent = (function (_super) {
+                __extends(MyCoReHighlightAltoComponent, _super);
+                function MyCoReHighlightAltoComponent(_settings, container) {
+                    _super.call(this);
+                    this._settings = _settings;
+                    this.container = container;
+                    this.pageLayout = null;
+                    this.highlightLayer = new viewer.widgets.canvas.HighlightAltoCanvasPageLayer();
+                    this._chapterAreaContainer = null;
+                    this.selectedChapter = null;
+                    this.highlightedChapter = null;
+                }
+                MyCoReHighlightAltoComponent.prototype.init = function () {
+                    if (this._settings.doctype == 'mets') {
+                        this.trigger(new WaitForEvent(this, components.events.PageLayoutChangedEvent.TYPE));
+                        this.trigger(new WaitForEvent(this, components.events.RequestPageEvent.TYPE));
+                        this.trigger(new components.events.AddCanvasPageLayerEvent(this, 0, this.highlightLayer));
+                    }
+                };
+                Object.defineProperty(MyCoReHighlightAltoComponent.prototype, "handlesEvents", {
+                    get: function () {
+                        if (this._settings.doctype == 'mets') {
+                            return [components.events.ChapterChangedEvent.TYPE,
+                                components.events.PageLayoutChangedEvent.TYPE,
+                                components.events.RequestPageEvent.TYPE,
+                                components.events.MetsLoadedEvent.TYPE
+                            ];
+                        }
+                        else {
+                            return [];
+                        }
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                MyCoReHighlightAltoComponent.prototype.getPageLayout = function () {
+                    return this.pageLayout;
+                };
+                MyCoReHighlightAltoComponent.prototype.getPageController = function () {
+                    return this.pageLayout.getPageController();
+                };
+                MyCoReHighlightAltoComponent.prototype.getChapterAreaContainer = function () {
+                    return this._chapterAreaContainer;
+                };
+                MyCoReHighlightAltoComponent.prototype.setChapter = function (chapterId, triggerChapterChangeEvent, forceChange) {
+                    if (triggerChapterChangeEvent === void 0) { triggerChapterChangeEvent = false; }
+                    if (forceChange === void 0) { forceChange = false; }
+                    if (!forceChange && this.selectedChapter === chapterId) {
+                        return;
+                    }
+                    this.selectedChapter = chapterId;
+                    if (this._chapterAreaContainer === null) {
+                        return;
+                    }
+                    var chapterArea = chapterId != null ? this._chapterAreaContainer.chapters.get(chapterId) : null;
+                    this.highlightLayer.selectedChapter = chapterArea;
+                    this.handleDarkenPageAnimation();
+                    this.trigger(new components.events.RedrawEvent(this));
+                    if (triggerChapterChangeEvent) {
+                        var chapter = this._chapterAreaContainer.getChapter(chapterId);
+                        this.trigger(new components.events.ChapterChangedEvent(this, chapter));
+                    }
+                };
+                MyCoReHighlightAltoComponent.prototype.setHighlightChapter = function (chapterId) {
+                    if (this._chapterAreaContainer === null || this.highlightedChapter === chapterId) {
+                        return;
+                    }
+                    var chapterArea = chapterId != null ? this._chapterAreaContainer.chapters.get(chapterId) : null;
+                    this.highlightLayer.highlightedChapter = chapterArea;
+                    this.highlightedChapter = chapterId;
+                    if (this.selectedChapter == null) {
+                        this.handleDarkenPageAnimation();
+                    }
+                    this.trigger(new components.events.RedrawEvent(this));
+                };
+                MyCoReHighlightAltoComponent.prototype.handleDarkenPageAnimation = function () {
+                    var selected = this.selectedChapter != null;
+                    var highlighted = this.highlightedChapter != null;
+                    var oldValue = 0;
+                    if (this.highlightLayer.fadeAnimation != null) {
+                        oldValue = this.highlightLayer.fadeAnimation.value;
+                        this.getPageController().removeAnimation(this.highlightLayer.fadeAnimation);
+                    }
+                    if (!selected && !highlighted) {
+                        if (oldValue == 0) {
+                            return;
+                        }
+                        this.highlightLayer.fadeAnimation = new viewer.widgets.canvas.InterpolationAnimation(1000, oldValue, 0);
+                        this.getPageController().addAnimation(this.highlightLayer.fadeAnimation);
+                        return;
+                    }
+                    var alpha = selected ? 0.4 : 0.15;
+                    this.highlightLayer.fadeAnimation = new viewer.widgets.canvas.InterpolationAnimation(1000, oldValue, alpha);
+                    this.getPageController().addAnimation(this.highlightLayer.fadeAnimation);
+                };
+                MyCoReHighlightAltoComponent.prototype.handle = function (e) {
+                    var _this = this;
+                    if (e.type == components.events.MetsLoadedEvent.TYPE) {
+                        var mle = e;
+                        this._model = mle.mets.model;
+                        this._chapterAreaContainer = new ChapterAreaContainer(this._model);
+                        if (this.selectedChapter != null) {
+                            this.setChapter(this.selectedChapter, false, true);
+                        }
+                    }
+                    if (e.type == components.events.RequestPageEvent.TYPE) {
+                        var rpe_1 = e;
+                        this.trigger(new RequestAltoModelEvent(this, rpe_1._pageId, function (page, altoHref, altoModel) {
+                            _this._chapterAreaContainer.addPage(rpe_1._pageId, altoHref, altoModel);
+                        }));
+                    }
+                    if (e.type == components.events.ChapterChangedEvent.TYPE) {
+                        var cce = e;
+                        if (cce == null || cce.chapter == null) {
+                            return;
+                        }
+                        this.setChapter(cce.chapter.id);
+                    }
+                    if (e.type == components.events.PageLayoutChangedEvent.TYPE) {
+                        this.pageLayout = e.pageLayout;
+                        this.trigger(new components.events.RequestDesktopInputEvent(this, new HighlightAltoInputListener(this)));
+                    }
+                };
+                return MyCoReHighlightAltoComponent;
+            }(components.ViewerComponent));
+            components.MyCoReHighlightAltoComponent = MyCoReHighlightAltoComponent;
+            var HighlightAltoInputListener = (function (_super) {
+                __extends(HighlightAltoInputListener, _super);
+                function HighlightAltoInputListener(component) {
+                    _super.call(this);
+                    this.component = component;
+                }
+                HighlightAltoInputListener.prototype.mouseClick = function (position) {
+                    var chapterId = this.getChapterId(position);
+                    this.component.setChapter(chapterId, true);
+                };
+                HighlightAltoInputListener.prototype.mouseMove = function (position) {
+                    var chapterId = this.getChapterId(position);
+                    this.component.setHighlightChapter(chapterId);
+                };
+                HighlightAltoInputListener.prototype.getChapterId = function (position) {
+                    var pageHitInfo = this.component.getPageLayout().getPageHitInfo(position);
+                    if (pageHitInfo.id == null) {
+                        return null;
+                    }
+                    var chapterAreaContainer = this.component.getChapterAreaContainer();
+                    if (chapterAreaContainer === null) {
+                        return null;
+                    }
+                    var chapters = chapterAreaContainer.chapters;
+                    var pageChapterMap = chapterAreaContainer.pageChapterMap;
+                    var chapterIdsOnPage = pageChapterMap.get(pageHitInfo.id);
+                    if (chapterIdsOnPage == null || chapterIdsOnPage.length <= 0) {
+                        return null;
+                    }
+                    for (var _i = 0, chapterIdsOnPage_1 = chapterIdsOnPage; _i < chapterIdsOnPage_1.length; _i++) {
+                        var chapterId = chapterIdsOnPage_1[_i];
+                        var chapterArea = chapters.get(chapterId);
+                        var rectsOfChapter = chapterArea.pages.get(pageHitInfo.id);
+                        if (rectsOfChapter == null) {
+                            continue;
+                        }
+                        for (var _a = 0, rectsOfChapter_1 = rectsOfChapter; _a < rectsOfChapter_1.length; _a++) {
+                            var rectOfChapter = rectsOfChapter_1[_a];
+                            var rect = rectOfChapter.scale(pageHitInfo.pageAreaInformation.scale);
+                            if (rect.intersects(pageHitInfo.hit)) {
+                                return chapterId;
+                            }
+                        }
+                    }
+                    return null;
+                };
+                return HighlightAltoInputListener;
+            }(viewer.widgets.canvas.DesktopInputAdapter));
+            var ChapterAreaContainer = (function () {
+                function ChapterAreaContainer(_model) {
+                    var _this = this;
+                    this._model = _model;
+                    this.chapters = new MyCoReMap();
+                    this.pageChapterMap = new MyCoReMap();
+                    this._loadedPages = {};
+                    this._model.chapterToImageMap.keys.forEach(function (chapterId) {
+                        _this.chapters.set(chapterId, new ChapterArea(chapterId));
+                    });
+                    var blocklistChapters = this.getAllBlocklistChapters(this._model.rootChapter);
+                    this._model.imageList.forEach(function (image) {
+                        var chaptersOfPage = _this.pageChapterMap.get(image.href);
+                        if (chaptersOfPage == null) {
+                            chaptersOfPage = new Array();
+                            _this.pageChapterMap.set(image.href, chaptersOfPage);
+                        }
+                        var altoHref = image.additionalHrefs.get("AltoHref");
+                        blocklistChapters.filter(function (chapter) {
+                            var blocklist = chapter.additional.get("blocklist");
+                            for (var _i = 0, blocklist_1 = blocklist; _i < blocklist_1.length; _i++) {
+                                var block = blocklist_1[_i];
+                                if (block.fileId == altoHref) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }).forEach(function (chapter) {
+                            chaptersOfPage.push(chapter.id);
+                        });
+                    });
+                }
+                ChapterAreaContainer.prototype.getBlocklistOfChapter = function (chapterId) {
+                    var chapter = this.getChapter(chapterId);
+                    if (chapter == null) {
+                        return;
+                    }
+                    return chapter.additional.get("blocklist");
+                };
+                ChapterAreaContainer.prototype.getChapter = function (chapterId) {
+                    return this.findChapter(this._model.rootChapter, chapterId);
+                };
+                ChapterAreaContainer.prototype.findChapter = function (from, chapterId) {
+                    if (from.id == chapterId) {
+                        return from;
+                    }
+                    for (var _i = 0, _a = from.chapter; _i < _a.length; _i++) {
+                        var childChapter = _a[_i];
+                        var foundChapter = this.findChapter(childChapter, chapterId);
+                        if (foundChapter != null) {
+                            return foundChapter;
+                        }
+                    }
+                    return null;
+                };
+                ChapterAreaContainer.prototype.getBlocklistOfChapterAndAltoHref = function (chapterId, altoHref) {
+                    return this.getBlocklistOfChapter(chapterId).filter(function (_a) {
+                        var fileId = _a.fileId, fromId = _a.fromId, toId = _a.toId;
+                        return fileId == altoHref;
+                    });
+                };
+                ChapterAreaContainer.prototype.getAllBlocklistChapters = function (from) {
+                    var _this = this;
+                    var chapters = [];
+                    if (from.additional.get("blocklist") != null) {
+                        chapters.push(from);
+                    }
+                    from.chapter.forEach(function (childChapter) {
+                        chapters = chapters.concat(_this.getAllBlocklistChapters(childChapter));
+                    });
+                    return chapters;
+                };
+                ChapterAreaContainer.prototype.addPage = function (pageId, altoHref, alto) {
+                    var _this = this;
+                    if (this._loadedPages[pageId] != null) {
+                        return;
+                    }
+                    this._loadedPages[pageId] = true;
+                    this.pageChapterMap.hasThen(pageId, function (chapterIds) {
+                        chapterIds.map(function (chapterId) { return _this.chapters.get(chapterId); }).forEach(function (chapter) {
+                            chapter.addPage(pageId, alto, _this.getBlocklistOfChapterAndAltoHref(chapter.chapterId, altoHref));
+                        });
+                    });
+                };
+                return ChapterAreaContainer;
+            }());
+            components.ChapterAreaContainer = ChapterAreaContainer;
+            var ChapterArea = (function () {
+                function ChapterArea(chapterId) {
+                    this.chapterId = chapterId;
+                    this.pages = new MyCoReMap();
+                }
+                ChapterArea.prototype.addPage = function (pageId, altoFile, metsBlocklist) {
+                    var altoBlocks = this.getAltoBlocks(altoFile, metsBlocklist);
+                    var areas = this.getAreas(altoFile, altoBlocks);
+                    this.pages.set(pageId, areas);
+                };
+                ChapterArea.prototype.getAltoBlocks = function (altoFile, metsBlocklist) {
+                    var allBlocks = altoFile.allElements;
+                    var ids = allBlocks.map(function (block) { return block.getId(); });
+                    var blocks = [];
+                    metsBlocklist.map(function (blockFromTo) { return [ids.indexOf(blockFromTo.fromId), ids.indexOf(blockFromTo.toId)]; })
+                        .forEach(function (_a) {
+                        var fromIndex = _a[0], toIndex = _a[1];
+                        for (var i = fromIndex; i <= toIndex; i++) {
+                            var blockToHighlight = allBlocks[i];
+                            if (blockToHighlight == null) {
+                                continue;
+                            }
+                            blocks.push(blockToHighlight);
+                        }
+                    });
+                    return blocks;
+                };
+                ChapterArea.prototype.getAreas = function (altoFile, blocks) {
+                    var areas = [];
+                    var area = null;
+                    var maxBottom = null;
+                    var maxRight = null;
+                    var padding = Math.ceil(altoFile.pageHeight * 0.004);
+                    var blockFaultiness = Math.ceil(altoFile.pageHeight * 0.005);
+                    blocks.forEach(function (block) {
+                        var blockX = block.getBlockHPos();
+                        var blockY = block.getBlockVPos();
+                        var blockW = block.getWidth();
+                        var blockH = block.getHeight();
+                        if (area == null) {
+                            newArea();
+                            return;
+                        }
+                        if (isAssignable()) {
+                            area = area.maximize(blockX, blockY, blockW, blockH);
+                            return;
+                        }
+                        area = area.increase(padding);
+                        areas.push(area);
+                        newArea();
+                        function newArea() {
+                            area = Rect.fromXYWH(blockX, blockY, blockW, blockH);
+                            maxRight = area.getX() + area.getWidth();
+                            maxBottom = area.getY() + area.getHeight();
+                        }
+                        function isAssignable() {
+                            return (blockY >= maxBottom - blockFaultiness) && (blockX <= maxRight);
+                        }
+                    });
+                    if (area != null) {
+                        area = area.increase(padding);
+                        areas.push(area);
+                    }
+                    return areas;
+                };
+                return ChapterArea;
+            }());
+            components.ChapterArea = ChapterArea;
+        })(components = viewer.components || (viewer.components = {}));
+    })(viewer = mycore.viewer || (mycore.viewer = {}));
+})(mycore || (mycore = {}));
+addViewerComponent(mycore.viewer.components.MyCoReHighlightAltoComponent);
 console.log("METS MODULE");
-//# sourceMappingURL=iview-client-mets.js.map

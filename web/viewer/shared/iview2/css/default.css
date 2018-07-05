@@ -28,6 +28,7 @@
 }
 .mycoreViewer .center .horizontalBar,
 .mycoreViewer .center .verticalBar {
+  z-index: 5;
   position: absolute;
   display: block;
   background-color: #f1f1f1;
@@ -136,7 +137,21 @@
   border: 1px solid #a8a8a8;
   left: 50px;
 }
+@media (max-width: 800px) {
+  .mycoreViewer .center .overview {
+    display: none;
+  }
+}
+.mycoreViewer .center .overview {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  opacity: 0.9;
+  border: 1px solid #000000;
+}
 .mycoreViewer .center canvas {
+  left: 0px;
+  top: 0px;
   width: 100%;
   height: 100%;
   -ms-user-select: none;
@@ -146,18 +161,6 @@
   width: 100%;
   height: 100%;
   display: block;
-}
-@media (max-width: 800px) {
-  .mycoreViewer .center canvas.overview {
-    display: none;
-  }
-}
-.mycoreViewer .center canvas.overview {
-  position: absolute;
-  bottom: 1px;
-  right: 1px;
-  opacity: 0.9;
-  border: 1px solid #000000;
 }
 .mycoreViewer .metadata {
   padding: 10px 10px 10px 10px;
@@ -201,8 +204,15 @@
 .mycoreViewer textarea.form-control {
   min-height: 300px;
 }
+.mycoreViewer .textContainer {
+  z-index: 3;
+}
+.mycoreViewer .textContainer * {
+  z-index: 3;
+}
 .mycoreViewer .textContainer .line {
   position: absolute;
+  text-rendering: optimizeSpeed;
 }
 .mycoreViewer .textContainer .highlighted.line {
   background: rgba(0, 0, 255, 0.12);
@@ -211,11 +221,11 @@
   background: rgba(0, 0, 255, 0.5);
   color: white;
 }
-.mycoreViewer .textContainer ::selection {
+.mycoreViewer .textContainer .line::selection {
   background: #65a9e4;
   color: white;
 }
-.mycoreViewer .textContainer ::-moz-selection {
+.mycoreViewer .textContainer .line::-moz-selection {
   background: #65a9e4;
   color: white;
 }
@@ -225,6 +235,9 @@
 }
 .mycoreViewer > div:not(.navbar) {
   top: 51px;
+}
+.mycoreViewer .navbar {
+  z-index: 15;
 }
 .mycoreViewer .navbar div img {
   margin-top: 11px;
@@ -302,6 +315,12 @@
 .mycoreViewer .chapterTreeDesktop .list-group-item,
 .mycoreViewer .textSearch .list-group-item {
   padding: 3px 15px;
+  transition: background-color 0.5s, color 0.5s;
+}
+.mycoreViewer .chapterTreeDesktop .list-group-item.blink,
+.mycoreViewer .textSearch .list-group-item.blink {
+  background: lightgray;
+  border-color: #285e8e;
 }
 .mycoreViewer .chapterTreeDesktop li.list-group-item,
 .mycoreViewer .textSearch li.list-group-item {
@@ -342,6 +361,13 @@
 .mycoreViewer .textSearch li[data-selected=true] span.childLabel {
   color: white;
 }
+.mycoreViewer .textSearch li.list-group-item.active {
+  background: #3276b1;
+  border-color: #285e8e;
+}
+.mycoreViewer .textSearch li.list-group-item.active a {
+  color: white;
+}
 .mycoreViewer .textSearch li a {
   white-space: normal;
   overflow: visible;
@@ -350,6 +376,13 @@
   margin-top: 0px;
   margin-bottom: 0px;
   border-top: none;
+}
+.mycoreViewer .sidebar .spinner {
+  text-align: center;
+}
+.mycoreViewer .sidebar .spinner img {
+  width: 30px;
+  margin: 1em auto;
 }
 .mycoreViewer .debugCanvas {
   position: relative;
@@ -414,6 +447,13 @@
 .mycoreViewer .iviewThumbnail.selected {
   background-color: #3276b1;
 }
+.mycoreViewer .modal .error-image-holder {
+  text-align: center;
+}
+.mycoreViewer .modal .error-image {
+  width: 200px;
+  margin: 10px auto;
+}
 .mycoreViewer .layer-component {
   display: table;
 }
@@ -437,6 +477,17 @@
 .mycoreViewer .layer-component .layer-view .highlight {
   color: white;
   background-color: #3276b1;
+}
+.mycoreViewer .altoBlock {
+  position: absolute;
+  z-index: 3;
+  background-color: white;
+}
+.mycoreViewer .altoLine {
+  position: fixed;
+  margin: 0;
+  transform-origin: left top;
+  white-space: nowrap;
 }
 .mycoreViewer .tei .popupTrigger {
   cursor: pointer;
