@@ -55,13 +55,21 @@ extends Bundle
                         // skip routes from other bundles
                         continue;
                     }
+
                     if (!array_key_exists('_locale', $defaults)) {
                         continue;
                     }
+
                     $urlset = 'default';
                     // name is $locale__RG__$routeName
                     $parts = explode('__', $name);
                     $routeName = $parts[count($parts) - 1];
+
+                    if (in_array($routeName, [ 'home-preview', 'labs-index', 'bibliography-unapi', 'search-suggest', 'oai'])) {
+                        // omit certain routes from sitemap
+                        continue;
+                    }
+
                     if (preg_match('/\{.*?\}/', $route->getPath())) {
                         // handle the ones with parameters
 
@@ -77,6 +85,20 @@ extends Bundle
                                                                 '_locale' => $defaults['_locale'],
                                                              ], UrlGeneratorInterface::ABSOLUTE_URL);
                                     $this->addUrlDescription($urlDescriptions, $routeName . $topic, $defaults['_locale'], [ 'url' => $url, 'urlset' => $urlset ]);
+                                }
+                                break;
+
+                            case 'exhibition':
+                                $slugify = $container->get('cocur_slugify');
+                                $translator = $container->get('translator');
+
+                                foreach (\AppBundle\Controller\ExhibitionController::$EXHIBITIONS as $exhibition => $descr) {
+                                    $translator->setLocale($defaults['_locale']);
+                                    $url = $router->generate($routeName, [
+                                                                'slug' => $slugify->slugify(/** @Ignore */ $translator->trans($exhibition)),
+                                                                '_locale' => $defaults['_locale'],
+                                                             ], UrlGeneratorInterface::ABSOLUTE_URL);
+                                    $this->addUrlDescription($urlDescriptions, $routeName . $exhibition, $defaults['_locale'], [ 'url' => $url, 'urlset' => $urlset ]);
                                 }
                                 break;
 
@@ -113,6 +135,7 @@ extends Bundle
                                         ->getRepository('AppBundle:Place')
                                         ->findBy([ 'type' => 'inhabited place' ],
                                                  [ 'name' => 'ASC' ]);
+
                                 foreach ($places as $entity) {
                                     $tgn = $entity->getTgn();
                                     if (!empty($tgn)) {
@@ -189,12 +212,14 @@ extends Bundle
                         }
                     }
                     else {
-                        $url = $router->generate($routeName, [ '_locale' => $defaults['_locale'] ], UrlGeneratorInterface::ABSOLUTE_URL);
+                        $url = $router->generate($routeName, [
+                                '_locale' => $defaults['_locale'],
+                            ], UrlGeneratorInterface::ABSOLUTE_URL);
+
                         if (!$this->endsWith($url, '/beacon')) {
                             $this->addUrlDescription($urlDescriptions, $routeName, $defaults['_locale'], [ 'url' => $url, 'urlset' => $urlset ]);
                         }
                     }
-
                 }
 
                 foreach ($urlDescriptions as $urlDescription) {
