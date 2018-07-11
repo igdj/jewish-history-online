@@ -223,10 +223,10 @@
                             <dd>
                                 {% if meta.contentLocation.id is not empty %}
                                 <a href="{% if meta.contentLocation.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : meta.contentLocation.tgn }) }}{% else %}{{ path('place', { 'id' : meta.contentLocation.id }) }}{% endif %}">
-                                {{ meta.contentLocation.name }}
+                                {{ meta.contentLocation.nameLocalized(app.request.locale) }}
                                 </a>
                                 {% else %}
-                                {{ meta.contentLocation.name }}
+                                {{ meta.contentLocation.nameLocalized(app.request.locale) }}
                                 {% endif %}
                             </dd>
                             {% set geo = meta.geo %}
@@ -427,11 +427,11 @@
             </div>
             {% endif %}
 
-            {% if related|length > 1 %}
+            {% if related|length >= 1 %}
             <div class="container-fluid box top-buffer">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
-                        <h4>{{ 'additionalsource.oneormany'|transchoice(related|length - 1) }}</h4>
+                        <h4>{{ 'additionalsource.oneormany'|transchoice(related|length) }}</h4>
                     </div>
                 </div>
                 {% for source in related if source.id != article.id %}
