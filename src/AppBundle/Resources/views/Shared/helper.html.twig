@@ -89,6 +89,10 @@
             <a href="{{ license.url }}" target="_blank">
                 <img src="{{ app.request.basepath }}/img/license/by-nc-nd.eu.svg" height="30" style="float: left; padding-right: 6px;" />
             </a>
+            {% elseif license.url == "http://creativecommons.org/licenses/by-sa/4.0/" %}
+            <a href="{{ license.url }}" target="_blank">
+                <img src="{{ app.request.basepath }}/img/license/by-sa.svg" height="30" style="float: left; padding-right: 6px;" />
+            </a>
             {% endif %}
         {% endif %}
         {{ license.text }}
