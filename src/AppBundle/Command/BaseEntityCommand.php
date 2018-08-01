@@ -59,6 +59,7 @@ extends ContainerAwareCommand
 
         if (is_null($condition)) {
             die('Currently not handling ' . $uri);
+
             return -1;
         }
 

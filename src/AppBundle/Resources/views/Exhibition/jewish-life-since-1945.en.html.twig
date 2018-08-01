@@ -40,7 +40,7 @@
             navigationPosition: 'right',
             // navigationColor: '#fff', // not supported yet
             navigationTooltips: [
-				'Jüdisches Leben seit 1945',
+				'Jewish Life since 1945',
 				'Inhalt',
 				'Erste Anfänge',
 				'Die erste Synagoge',
@@ -72,7 +72,7 @@
 						slide
 							.find('.fp-tableCell .container')
 							.first()
-							.prepend('<div class="go-to-section-overview"><a class="glyphicon glyphicon-step-backward" href="#" onClick="$.fn.fullpage.moveTo(\'' + anchorLink + '\', 0);" title="Zur Kapitelübersicht"> </a></div>')
+							.prepend('<div class="go-to-section-overview"><a class="glyphicon glyphicon-step-backward" href="#" onClick="$.fn.fullpage.moveTo(\'' + anchorLink + '\', 0);" title="{{ 'To the Chapter Overview'|trans }}"> </a></div>')
 							;
 					}
 				}
@@ -82,7 +82,7 @@
             // menu: '#menu',
 		});
 
-		$('.fp-next').attr('title', 'mehr zu diesem Thema');
+		$('.fp-next').attr('title', "{{ 'More on this Topic'|trans }}");
 
 
         $(function () {
@@ -106,7 +106,7 @@
         background-repeat: no-repeat;
         background-size: cover;
         background-position: bottom right;
-        background-image: url(../viewer/source-00069/f0001_2.jpg);
+        background-image: url(../viewer/source-00069/f0001_3.jpg);
 	}
 
     #section-synagogue-img {
@@ -170,8 +170,9 @@
 {% block contentcontainer %}
 <div id="fullpage">
 	<div class="section" id="section-home">
-        <h1>Jüdisches Leben<br />
-			seit 1945<br />
+        <h1>Jewish Life<br />
+			since 1945<br />
+			<span style="padding-left: 24px; font-size: 36px; color: white">The English version of this online-exhibition is still in translation.</span>
 			<a href="#intro" style="padding-left: 24px; font-size: 36px; color: #f0f0f0"> Inhalt &gt;</a>
 		</h1>
 		<div style="position: absolute; left: 24px; bottom: 70px; min-width: 20em;">
@@ -201,13 +202,13 @@
 					</div>
 				</div>
                 <div class="col col-xs-7 col-xs-offset-1 vertical-center">
-					<div class="vertical-center-content two-columns justify-hyphens">
+					<div class="vertical-center-content two-columns">
 						<h2>Inhalt</h2>
-						<p class="dta-p" style="display: block">
+						<p>
 							In dieser ersten Online-Ausstellung im Rahmen der Schlüsseldokumente-Edition werfen wir ein Schlaglicht auf die jüdische Geschichte nach dem Holocaust und dem Nationalsozialismus. Wie auch bei den auf der Website präsentierten Quellen dient die jüdische Geschichte Hamburgs als Ausgangspunkt, um größere Entwicklungen und Fragen der deutsch-jüdischen Geschichte zu beleuchten. Die Online-Ausstellung bietet neben einem thematisch-chronologisch verlaufenden Narrativ (vertikal) die Möglichkeit, einzelne Aspekte in eigenen „Stationen“ (horizontal) zu vertiefen und Zusammenhänge zwischen einzelnen Quellen herauszuarbeiten.
 						</p>
 
-						<p class="dta-p">
+						<p>
 							Keineswegs unumstritten entstanden bereits unmittelbar nach Kriegsende die ersten jüdischen Gemeinden in Westdeutschland, <a href="#" onClick="$.fn.fullpage.moveTo('beginning', 1);">so auch im Sommer 1945 in Hamburg</a>. Bis jüdisches Leben in Deutschland selbstverständlich werden konnte – sowohl für die dort lebenden Jüdinnen und Juden selbst als auch für die nichtjüdische Mehrheitsgesellschaft – sollte es jedoch mehrere Jahrzehnte dauern. Wie fragil das Verhältnis war, zeigte sich etwa an der sehr langsamen Entwicklung einer dauerhaften Infrastruktur – erst Anfang der 1960er-Jahre konnte in Hamburg die Synagoge eingeweiht werden – ebenso wie an den fortdauernden Vorurteilen und antisemitischen Einstellungen in der westdeutschen Bevölkerung. Neue Impulse, die in den letzten Jahren zu einer Pluralisierung und (religiösen) Ausdifferenzierung der Gemeinden führten,  erhielt das jüdische Leben durch die Einwanderung der sogenannten Kontigentflüchtlinge aus der ehemaligen Sowjetunion Anfang der 1990er-Jahre.
 						</p>
 					</div><!-- .vertical-center-content -->
@@ -232,14 +233,14 @@
 								<li><a href="#" onClick="$.fn.fullpage.moveTo('beginning', 8);"><span class="glyphicon glyphicon-chevron-right"></span> Rede zum 9. November 1948</a></li>
 								<li><a href="#" onClick="$.fn.fullpage.moveTo('beginning', 9);"><span class="glyphicon glyphicon-chevron-right"></span> Hannah Arendt in Hamburg</a></li>
 							</ul>
-						<a href="#" data-toggle="tooltip" data-placement="top" title="Quelle: StAHH, 522-2 Jüdische Gemeinde in Hamburg, Nr. 1364. Mit freundlicher Genehmigung des Staatsarchivs Hamburg und der Jüdischen Gemeinde Hamburg.">
+						<a href="#" data-toggle="tooltip" data-placement="top" title="Source: StAHH, 522-2 Jüdische Gemeinde in Hamburg, Nr. 1364. Mit freundlicher Genehmigung des Staatsarchivs Hamburg und der Jüdischen Gemeinde Hamburg.">
 						<span class="glyphicon glyphicon-info-sign" style="color: white;"></span>
 						</a>
 					</div><!-- #section-intro-img -->
 					<div class="col-xs-8 col-md-9 no-float" style="vertical-align: middle;">
 						<div style="padding: 40px; max-width: 50em;">
 							<h2>Erste Anfänge: Die unmittelbare Nachkriegszeit</h2>
-							<p>Bei Kriegsende befanden sich auf deutschem Territorium etwa 15.000 deutsche Juden, einige Tausend von ihnen hatten in Verstecken überlebt. Die meisten konnten überleben, weil sie in einer sogenannten „privilegierten Mischehe“ (wenn die Ehefrau Jüdin war oder die Kinder christlich erzogen wurden) lebten, die sie in den meisten Fällen vor der Deportation geschützt hatte. Etwa 9.000 deutsche Juden, die die Gettos und Konzentrationslagerhaft außerhalb Deutschlands oder in den eingedeutschten Gebieten wie beispielsweise in Theresienstadt überlebt hatten, kehrten ebenfalls zurück. Dazu kamen noch jüdische Displaced Persons (DPs) aus Osteuropa, im September 1945 waren dies 53.000 jüdische DPs. Die Zahl der jüdischen DPs auf deutschem Territorium stieg an, sie machten die größte jüdische Gruppe auf deutschem Territorium nach dem Ende des Zweiten Weltkrieges aus und konzentrierten sich vor allem im amerikanisch besetzten Bayern. In Norddeutschland war Bergen Belsen das größte Zentrum. Deutschland stellte für die meisten dieser DPs nicht mehr als eine Zwischenstation dar. Doch lange nicht alle von ihnen wanderten tatsächlich in das 1948 gegründete Israel oder in die USA aus. Viele blieben in Deutschland und gründeten dort erste neue jüdische Gemeinden. Ein Auswanderungswunsch wurde jedoch häufig noch sehr lange gehegt. In Hamburg lebten nach Kriegsende 1945 noch 647 Juden, fast alle in „Mischehen“ verheiratet. Weitere 50 bis 80 Personen hatten Verfolgung und Krieg im Versteck oder unter falscher Identität überlebt. (Quelle: <a href="{{ path('topic-background', { 'slug' : 'demographie-und-soziale-strukturen' })}}#section-7" target="_blank">Einführungstext: Demographie und soziale Strukturen)</a></p>
+							<p>At the end of the war there were about 15,000 German Jews on German territory, several thousand of whom had survived in hiding. Most of them had managed to survive because they lived in a so-called “privileged mixed marriage” [„privilegierte Mischehe“] (if the wife was Jewish or if the children were raised as Christians), which protected them from deportation in most cases. About 9,000 Jews who had survived ghettos and imprisonment in a concentration camp outside Germany or in the German-occupied territories such as Theresienstadt returned as well. In addition, there were Jewish Displaced Persons (DP) from eastern Europe, whose number was 53,000 in September 1945. The number of Jewish DPs on German territory grew further, and they came to constitute the largest Jewish group on German territory after the end of the Second World War, concentrated mostly in American-occupied Bavaria. In northern Germany, Bergen-Belsen was the largest center. For most of these DPs Germany was no more than a transit stop. Yet not all of them actually immigrated to the state of Israel founded in 1948 or to the United States. Many remained in Germany, where they founded the first new Jewish congregations. However, the wish to emigrate often continued to persist for a long time. In Hamburg there were 647 Jews after the end of the war in 1945, almost all of them part of a “mixed marriage.” A further 50 or 80 individuals had survived persecution and war in hiding or by assuming a false identity. (Source: <a href="{{ path('topic-background', { 'slug' : 'demographics-and-social-structure' })}}#section-7" target="_blank">Introductory Text: Demographics and Social Structure)</a></p>
 						</div><!-- -->
 					</div><!-- #col-xs-8 -->
 				</div><!-- .row -->
@@ -251,20 +252,21 @@
 				<div class="row">
 					<div class="col col-xs-5 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
-							<a href="../viewer/source-00069/f0001_3.jpg" data-lightbox="beginning-neugruendung-gallery" title="Protokoll, S. 1"><img style="width: 45%" src="../viewer/source-00069/f0001_1.jpg" /></a>
-							<a href="../viewer/source-00069/f0002_3.jpg" data-lightbox="beginning-neugruendung-gallery" title="Protokoll, S. 2"><img style="width: 45%" src="../viewer/source-00069/f0002_1.jpg" /></a><br />
+							<a href="../viewer/source-00069/f0001_3.jpg" data-lightbox="beginning-neugruendung-gallery" title="Minutes, p. 1"><img style="width: 45%" src="../viewer/source-00069/f0001_1.jpg" /></a>
+							<a href="../viewer/source-00069/f0002_3.jpg" data-lightbox="beginning-neugruendung-gallery" title="Minutes, p. 2"><img style="width: 45%" src="../viewer/source-00069/f0002_1.jpg" /></a><br />
 							<div class="credits">
-								Quelle: StAHH, 522-2 Jüdische Gemeinde in Hamburg, Nr. 1364.<br />
-								Mit freundlicher Genehmigung des Staatsarchivs Hamburg und der Jüdischen Gemeinde Hamburg. <a href="{{ path('source', { 'uid' : 'jgo:source-69' }) }}" target="_blank">Quelle und Transkript &gt;</a>
+								Source: StAHH, 522-2 Jüdische Gemeinde in Hamburg, Nr. 1364.<br />
+								With the kind permission of State Archive Hamburg and the Jewish Community Hamburg. <a href="{{ path('source', { 'uid' : 'jgo:source-69' }) }}" target="_blank">Source and Transcription &gt;</a>
 							</div>
 						</a>
 						</div>
 		            </div><!-- .col -->
 					<div class="col col-xs-5 vertical-center">
 						<div class="vertical-center-content">
-							<h3>Neugründung der Jüdischen Gemeinde in Hamburg, Juli 1945</h3>
+							<h3>Reconstitution of the Jewish Congregation in Hamburg, July 1945</h3>
 							<p>
-								Am 8.7.1945, einem Sonntag, trafen sich zwölf Hamburger Juden in der Wohnung von Chaim Golenzer, Rutschbahn 25a, einem sogenannten „Judenhaus“, in der Absicht, die durch das NS-Regime vernichtete Gemeinde zu reorganisieren. Sie waren ehemalige Mitglieder der Deutsch-Israelitischen Gemeinde zu Hamburg. Die Aussprache eröffnete Josef Gottlieb, der vermutlich den Anstoß zur Gründung der jüdischen Gemeinde in Hamburg gegeben hat. Die Versammelten waren jedoch nicht die einzigen, die sich für eine Reorganisation der ehemaligen Gemeinde interessierten. Das Versammlungsprotokoll vom 8. Juli verweist auf etwa 80 Juden, die sich „gemeldet“ hätten. <a href="{{ path('article', { 'slug' : 'jgo:article-66' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Auszug aus: Ina Lorenz, Der Neuanfang der Jüdischen Gemeinde in Hamburg (1945). Die zwölf Gründungsväter"></span> weiterlesen &gt;</a>
+							On July 8, 1945, a Sunday, twelve Hamburg Jews gathered in the apartment of Chaim Golenzer at Rutschbahn 25a, a so-called “Judenhaus,” with the intention to reorganize the congregation that had previously been eradicated by the National Socialist regime. They were all former members of Hamburg's German-Israelite Congregation. The meeting was opened by Josef Gottlieb, who had probably initiated the founding of a new Jewish congregation in Hamburg. However, those present were not the only ones interested in a reorganization of the former congregation. The meeting's minutes of July 8 mention roughly 80 Jews who had “been in touch.”
+								<a href="{{ path('article', { 'slug' : 'jgo:article-66' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Excerpt from: Ina Lorenz, The Founding of a new Jewish Congregation in Hamburg (1945). The Twelve “Founding Fathers.”"></span> Read on &gt;</a>
 							</p>
 						</div>
 		            </div><!-- .col -->
@@ -279,21 +281,22 @@
 						<div class="vertical-center-content">
 							<h3>Schwieriger Alltag I: Wohnungsnot im Nachkriegs-Deutschland</h3>
 							<p>
-								Drei Jahre nach Ende des Zweiten Weltkrieges, am 13.9.1948, schrieb Heinrich Alexander, ein Berliner Jude, der den Krieg in der Emigration überlebt hatte, diesen Brief an den Vorsitzenden der Hamburger jüdischen Gemeinde. In seinem kurzen Schreiben erklärt er, dass er nicht in Berlin bleiben wolle und bat den Vorsitzenden der Hamburger Gemeinde, Harry Goldstein,  ihm beim Wohnortwechsel nach Hamburg behilflich zu sein. Goldsteins Antwort erfolgte gut zwei Wochen später. In seinem Antwortschreiben erklärt Goldstein, dass er wegen der Wohnungsnot sowie der Schwierigkeit, eine Aufenthaltsgenehmigung für Hamburg zu erhalten, nicht in der Lage sei, ihm  behilflich zu sein und bittet Alexander, seine Pläne zu überdenken. <a href="{{ path('article', { 'slug' : 'jgo:article-207' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Auszug aus: Anna Koch, Eine schwierige Rückkehr: Brief eines jüdischen Rückwanderers an den Vorsitzenden der jüdischen Gemeinde in Hamburg"></span> weiterlesen &gt;</a>
+							Three years after the end of Second World War, on September 13, 1948, Heinrich Alexander, a Berlin Jew who survived the war in emigration wrote this letter to the head of Hamburg’s Jewish congregation. In his brief letter he explained that he did not want to remain in Berlin and asked Harry Goldstein, the head of the Hamburg congregation to support his relocation to Hamburg. A couple of weeks later Goldstein replied. In his letter Goldstein explained that because of the housing shortage and the difficulties to receive a residence permit for Hamburg he would not be able to help, and he asks Alexander to reconsider his plan.
+								(Text: Anna Koch)
 							</p>
 							<div class="credits">
-								Quelle: StAHH, 522-2 Jüdische Gemeinde in Hamburg, Nr. 1205.<br />
-								Mit freundlicher Genehmigung des Staatsarchivs Hamburg und der Jüdischen Gemeinde Hamburg. <a href="{{ path('source', { 'uid' : 'jgo:source-177' }) }}" target="_blank">Quelle und Transkript &gt;</a>
+								Source: StAHH, 522-2 Jüdische Gemeinde in Hamburg, Nr. 1205.<br />
+								With the kind permission of the State Archive Hamburg and the Jewish community Hamburg.
 							</div>
 						</div>
 		            </div><!-- .col -->
 					<div class="col col-xs-3 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
-							<a href="../viewer/source-00177/f0001_3.jpg" data-lightbox="beginning-wohnungsnot-gallery" title="Schreiben an den Vorsitzenden der jüdischen Gemeinde Hamburg vom 27.8.1948">
-								<img style="width: 100%" src="../viewer/source-00177/f0001_2.jpg" />
+							<a href="../viewer/source-00177/f0001_3.jpg" data-lightbox="beginning-wohnungsnot-gallery" title="Letter to the President of the Hamburg Jewish Congregation, Dated August 27, 1948">
+								<img style="width: 100%" src="../viewer/source-00177/f0001_3.jpg" />
 							</a>
-							<a href="../viewer/source-00178/f0001_3.jpg" data-lightbox="beginning-wohnungsnot-gallery" title="Antwortschreiben der Jüdischen Gemeinde Hamburg an Herrn Heinrich Alexander vom 13.9.1948">
-								<img style="width: 100%" src="../viewer/source-00178/f0001_2.jpg" />
+							<a href="../viewer/source-00178/f0001_3.jpg" data-lightbox="beginning-wohnungsnot-gallery" title="Letter by the Hamburg Jewish Congregation in Reply to Heinrich Alexander, September 13, 1948">
+								<img style="width: 100%" src="../viewer/source-00178/f0001_3.jpg" />
 							</a>
 						</div>
 		            </div><!-- .col -->
@@ -306,17 +309,17 @@
 				<div class="row">
 					<div class="col col-xs-4 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
-							<a href="../viewer/source-00145/f0001_3.jpg" data-lightbox="beginning-eberstadt-gallery" title="Zugangsberechtigung für das Redaktionsgebäude des Studio Hamburg für Major Everitt, ausgestellt von der Broadcasting Control Unit Hamburg, 1946">
+							<a href="../viewer/source-00145/f0001_3.jpg" data-lightbox="beginning-eberstadt-gallery" title="Access Authorization to the Broadcasting Studio Hamburg for Major Everitt, issued by the Broadcasting Control Unit Hamburg 1946">
 								<img style="width: 100%" src="../viewer/source-00145/f0001_1.jpg" />
 							</a>
-						<div class="credits">© Mit freundlicher Genehmigung des Privatarchivs Eberstadt, New York. <a href="{{ path('source', { 'uid' : 'jgo:source-145' }) }}" target="_blank">Quelle und Transkript &gt;</a></div>
+						<div class="credits">© With the kind permission of the private family archive Eberstadt, New York. <a href="{{ path('source', { 'uid' : 'jgo:source-145' }) }}" target="_blank">Source and Transcription &gt;</a></div>
 						</div>
 		            </div><!-- .col -->
 					<div class="col col-xs-5 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
-			            <h3>Jüdische Rückkehrer: Walter A. Eberstadt</h3>
+			            <h3>Jewish returnees: Walter A. Eberstadt</h3>
 						<p>
-							Nur wenige jüdische Männer und Frauen kehrten nach dem Ende des Zweiten Weltkrieges aus dem Exil nach Deutschland zurück. Dies gilt auch für den Bereich der Medien, der nach dem Zusammenbruch des „Dritten Reichs“ unter Kontrolle der jeweiligen alliierten Besatzungsmacht neu geordnet werden sollte. Walter Albert Eberstadt (1921–2014), Sohn jüdischer Eltern und ehemaliger Schüler des Hamburger Johanneums, war einer von den wenigen jüdischen Rückkehrern, die am Wiederaufbau des deutschen Rundfunks beteiligt waren. Eberstadts Ausweis vom 23.2.1946 macht deutlich, dass er ein sogenannter „Rückkehrer in Uniform“ war, also ein ehemaliger jüdischer Flüchtling, der jetzt als Mitarbeiter der Besatzungsbehörden nach Deutschland kam. <a href="{{ path('article', { 'slug' : 'jgo:article-114' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Auszug aus: Hans-Ulrich Wagner, Rückkehr in Uniform. Walter Albert Eberstadt und der Aufbau von Radio Hamburg"></span> weiterlesen &gt;</a>
+							After the end of the Second World War only few Jewish men and women returned from exile to Germany. The same is true for the media sector which was to be newly organized under the supervision of the respective Allied occupation forces after the collapse of the “Third Reich.” Walter Albert Eberstadt (1921–2014), son of Jewish parents and a former student at Hamburg's Johanneum school, was one of the few Jewish returnees who participated in the rebuilding of German radio broadcasting. Eberstadt's access pass issued on February 23, 1946 illustrates that he was a so-called “returnee in uniform,” i. e. a refugee who came back to Germany as an employee of the British occupation authorities. <a href="{{ path('article', { 'slug' : 'jgo:article-114' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Excerpt from: Hans-Ulrich Wagner, Return in Uniform. Walter Albert Eberstadt and the Beginning of Radio Hamburg"></span> Read on &gt;</a>
 						</p>
 						</div>
 		            </div><!-- .col -->
@@ -341,7 +344,7 @@
 							In diesem Schreiben vom 25.11.1946 ruft der Vorstand der Jüdischen Gemeinde Hamburg, die sich erst ein gutes Jahr zuvor gegründet hatte, alle Mitglieder derselben auf, an den religiösen und kulturellen Veranstaltungen teilzunehmen. Einerseits zeugt das Dokument davon, dass es der Gemeinde gelungen war, sich zu etablieren, andererseits wird die Diskrepanz zwischen der sich als orthodox gegründeten Einheitsgemeinde und ihren Mitgliedern deutlich. Auch zeugt das Schreiben von dem Rechtfertigungsdruck, unter dem die jüdische Gemeinde sowohl im In- als auch im Ausland stand.
 						</p>
 						<div class="credits">
-							Quelle: StAHH, 522-2 Jüdische Gemeinde in Hamburg, Nr. 1034.<br />
+							Source: StAHH, 522-2 Jüdische Gemeinde in Hamburg, Nr. 1034.<br />
 							Mit freundlicher Genehmigung des Staatsarchivs Hamburg und der Jüdischen Gemeinde Hamburg.
 							</div>
 						</div>
@@ -357,7 +360,7 @@
 						<div class="vertical-center-content">
 							<h3>Schwieriger Alltag II: Schächten und Versorgung mit Pessach-Lebensmitteln</h3>
 							<p>
-								Zu den Alltagsproblemen zählte neben der Unterbringung die  Versorgung mit (koscheren) Lebensmitteln, zu der auch die Bezugsmöglichkeit von koscherem Fleisch gehörte. Wie Rabbi Joel Halpern, Mitglied des Oberrabbinats in der britischen Zone, in seiner Antwort an Harry Goldstein, den Vorsitzenden der jüdischen Gemeinde in Hamburg erläutert, stand der jüdischen Gemeinde einmal pro Woche der Schochet für die rituelle Schlachtung zu. Das Schächten war in Hamburg erst im März 1946 wieder erlaubt worden. Die entsprechende Bekanntmachung des Bürgermeisters enthielt die Auflage, die Schmerzen für das Tier so gering wie möglich zu halten. Aus der Korrespondenz wird ferner deutlich, wie schwierig es war, den Transport des Schochet von Bergen-Belsen nach Hamburg zu organisieren und welche Rolle Hilfsorganisationen wie dem American  Joint Distribution Committee  oder der britischen Jewish Relief Unit bei der Versorgung der jüdischen Gemeinschaften im Nachkriegsdeutschland zukamen. Beide Organisationen hatten ihre Unterstützung für die jüdischen DPs schnell auf die deutsch-jüdischen Überlebenden und die jungen jüdischen Gemeinden ausgeweitet.
+								Zu den Alltagsproblemen zählte neben der Unterbringung die  Versorgung mit (koscheren) Lebensmitteln, zu der auch die Bezugsmöglichkeit von koscherem Fleisch gehörte. Wie Rabbi Joel Halpern, Mitglied des Oberrabbinats in der britischen Zone, in seiner Antwort an Harry Goldstein, den Vorsitzenden der jüdischen Gemeinde in Hamburg erläutert, stand der jüdischen Gemeinde einmal pro Woche der Schochet für die rituelle Schlachtung zu. Das Schächten war in Hamburg erst im März 1946 wieder erlaubt worden. Die entsprechende Bekanntmachung des Bürgermeisters enthielt die Auflage, die Schmerzen für das Tier so gering wie möglich zu halten. Aus der Korrespondenz wird ferner deutlich, wie schwierig es war, den Transport des Schochet von Bergen-Belsen nach Hamburg zu organisieren und welche Rolle Hilfsorganisationen wie dem American  Joint Distribution Committee  oder der britisichen Jewish Relief Unit bei der Versorgung der jüdischen Gemeinschaften im Nachkriegsdeutschland zukamen. Beide Organisationen hatten ihre Unterstützung für die jüdischen DPs schnell auf die deutsch-jüdischen Überlebenden und die jungen jüdischen Gemeinden ausgeweitet.
 							</p>
 							<a href="../viewer/source-00192/f0001_3.jpg" class="fancybox" title="">
 								<img style="height: 150px" src="../viewer/source-00192/f0001_2.jpg" />
@@ -369,7 +372,7 @@
 								<img style="height: 150px" src="../viewer/source-00192/f0003_2.jpg" />
 							</a>
 							<div class="credits">
-								Quelle: StAHH, 522-2 Jüdische Gemeinde in Hamburg, Nr. 1165_03_01+02, Nr. 1165_04.<br />
+								Source: StAHH, 522-2 Jüdische Gemeinde in Hamburg, Nr. 1165_03_01+02, Nr. 1165_04.<br />
 								Mit freundlicher Genehmigung des Staatsarchivs Hamburg und der Jüdischen Gemeinde Hamburg.
 							</div>
 						</div>
@@ -384,12 +387,12 @@
 					<div class="col col-xs-3 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
 			            <h3>Kulturleben: Ida Ehres „Theater der Menschlichkeit“</h3>
-						<p>Das Bild zeigt die österreichisch-deutsch-jüdische Theaterfrau Ida Ehre, die 1945 die zweiten Hamburger Kammerspiele gründete, diese zu einer der führenden Bühnen im Nachkriegsdeutschland ausbaute und gegen alle mit der Währungsreform einsetzenden Schwierigkeiten über mehr als vier Jahrzehnte, bis zu ihrem Tode leitete.
-						<a href="{{ path('article', { 'slug' : 'jgo:article-210' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Auszug aus: Michaela Giesing, Ida Ehre und die Hamburger Kammerspiele"></span> weiterlesen &gt;</a>
+						<p>The image shows Austrian-German Jewish actress Ida Ehre, who founded the second Kammerspiele theater company in 1945, leading it to become one of the major stages in postwar West Germany. Despite all the challenges arising with currency reform, she led the theater for more than four decades until her death.
+						<a href="{{ path('article', { 'slug' : 'jgo:article-210' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Excerpt from: Michaela Giesing, Ida Ehre and Hamburg's Kammerspiele Theater"></span> Read on &gt;</a>
 						</p>
 						<div class="credits">
-							Quelle: Archiv Rosemarie Clausen in der Staats- und Universitätsbibliothek Hamburg, Signatur: Cl 186-d, 5.<br />
-							Mit freundlicher Genehmigung von Prof. Dr. Bettina Clausen. <a href="{{ path('source', { 'uid' : 'jgo:source-163' }) }}" target="_blank">Quellenansicht &gt;</a>
+							Source: Archive Rosemarie Clausen in the State- and University Library of Hamburg, call number: Cl 186-d, 5.<br />
+							With kind permission of Prof. Dr. Bettina Clausen. <a href="{{ path('source', { 'uid' : 'jgo:source-163' }) }}" target="_blank">Source View &gt;</a>
 						</div>
 						</div>
 		            </div><!-- .col -->
@@ -409,10 +412,10 @@
 						<div class="vertical-center-content">
 							<h3>Schwieriger Alltag III: Jugendarbeit</h3>
 							<p>
-								Das Kulturamt des Zentralkomitees der Befreiten Juden in der britischen Zone in Bergen-Belsen antwortete am 17.3.1948 auf eine vorangegangene Anfrage der noch jungen jüdischen Gemeinde in Hamburg. Diese hatte um Unterstützung beim Aufbau einer Jugendgruppe gebeten. Die vom Kulturamt aufgelisteten Gegenstände, die der Gemeinde zur Verfügung gestellt werden könnten – etwa ein Fußball oder vier Tischtennisschläger – zeugen von der Mangelsituation, die die Gestaltung eines (jüdischen) Alltags prägte.
+								Das Kulturamt des Zentralkommittees der Befreiten Juden in der britischen Zone in Bergen-Belsen antwortete am 17.3.1948 auf eine vorangegange Anfrage der noch jungen jüdischen Gemeinde in Hamburg. Diese hatte um Unterstützung beim Aufbau einer Jugendgruppe gebeten. Die vom Kulturamt aufgelisteten Gegenstände, die der Gemeinde zur Verfügung gestellt werden könnten – etwa ein Fußball oder vier Tischtennisschläger – zeugen von der Mangelsituation, die die Gestaltung eines (jüdischen) Alltags prägte.
 							</p>
 							<div class="credits">
-								Quelle: StAHH, 522-2 Jüdische Gemeinde in Hamburg, Nr. 1165_02.<br />
+								Source: StAHH, 522-2 Jüdische Gemeinde in Hamburg, Nr. 1165_02.<br />
 								Mit freundlicher Genehmigung des Staatsarchivs Hamburg und der Jüdischen Gemeinde Hamburg.
 							</div>
 						</div>
@@ -447,7 +450,7 @@ des jüdischen Lebens in Deutschland und trat öffentlich für das Gedenken an d
 Opfer ein. Ihm kam in verschiedenen Prozessen, insbesondere gegen die IG Farben, eine
 wichtige Rolle zu.</p>
 							<div class="credits">
-								Quelle: Norbert Wollheim, Zum 9. November 1948, hrsg. vom Zentral-Komitee der Befreiten Juden in der Britischen-Zone Deutschlands, Bergen-Belsen 1948.
+								Source: Norbert Wollheim, Zum 9. November 1948, Hrsg. vom Zentral-Komitee der Befreiten Juden in der Britischen-Zone Deutschlands, Bergen-Belsen 1948.
 							</div>
 						</div>
 	                </div><!-- .col -->
@@ -460,21 +463,21 @@ wichtige Rolle zu.</p>
 				<div class="row">
 					<div class="col col-xs-3 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
-							<a href="../viewer/source-00126/f0001_3.jpg" data-lightbox="beginning-ahrendt-gallery" title="Bericht, S. 1"><img style="height: 140px; padding: 4px" src="../viewer/source-00126/f0001_1.jpg" /></a>
-							<a href="../viewer/source-00126/f0002_3.jpg" data-lightbox="beginning-ahrendt-gallery" title="Bericht, S. 2"><img style="height: 140px; padding: 4px" src="../viewer/source-00126/f0002_1.jpg" /></a><br />
-							<a href="../viewer/source-00126/f0003_3.jpg" data-lightbox="beginning-ahrendt-gallery" title="Bericht, S. 3"><img style="height: 140px; padding: 4px" src="../viewer/source-00126/f0003_1.jpg" /></a>
-							<a href="../viewer/source-00126/f0004_3.jpg" data-lightbox="beginning-ahrendt-gallery" title="Bericht, S. 4"><img style="height: 140px; padding: 4px" src="../viewer/source-00126/f0004_1.jpg" /></a>
+							<a href="../viewer/source-00126/f0001_3.jpg" data-lightbox="beginning-ahrendt-gallery" title="Report, p. 1"><img style="height: 140px; padding: 4px" src="../viewer/source-00126/f0001_1.jpg" /></a>
+							<a href="../viewer/source-00126/f0002_3.jpg" data-lightbox="beginning-ahrendt-gallery" title="Report, p. 2"><img style="height: 140px; padding: 4px" src="../viewer/source-00126/f0002_1.jpg" /></a><br />
+							<a href="../viewer/source-00126/f0003_3.jpg" data-lightbox="beginning-ahrendt-gallery" title="Report, p. 3"><img style="height: 140px; padding: 4px" src="../viewer/source-00126/f0003_1.jpg" /></a>
+							<a href="../viewer/source-00126/f0004_3.jpg" data-lightbox="beginning-ahrendt-gallery" title="Report, p. 4"><img style="height: 140px; padding: 4px" src="../viewer/source-00126/f0004_1.jpg" /></a>
 							<div class="credits">
-								Quelle: Field Report No. 18 by Hannah Arendt, February 15 – March 10, 1950; Wiener Library Document Archive; Reel 26, Doc. 561: JCR. Inc. Minutes, Reports, and Memos 1943, 1949-1950; Leo Baeck Institute.<br />
-&copy; Leo Baeck Institute. <a href="{{ path('source', { 'uid' : 'jgo:source-126' }) }}" target="_blank">Quelle und Transkript &gt;</a>
+								Source: Field Report No. 18 by Hannah Arendt, February 15 – March 10, 1950; Wiener Library Document Archive; Reel 26, Doc. 561: JCR. Inc. Minutes, Reports, and Memos 1943, 1949-1950; Leo Baeck Institute.<br />
+&copy; Leo Baeck Institute. <a href="{{ path('source', { 'uid' : 'jgo:source-126' }) }}" target="_blank">Source and Transcription &gt;</a>
 							</div>
 						</div>
 		            </div><!-- .col -->
 					<div class="col col-xs-6 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
 			            <h3>Hannah Arendt in Hamburg: eine Bestandsaufnahme</h3>
-						<p>Hannah Arendt kam Ende 1949 für vier Monate nach Deutschland und fuhr auch in die britische Besatzungszone, um sich dort einen Überblick über restituierbare Kulturgüter in Hamburg, Hannover, Köln und Lübeck zu verschaffen. Insbesondere in Hamburg lagerten zahlreiche Sammlungen, die unter der Naziherrschaft konfisziert worden waren und einer Erbnachfolgeregelung harrten.</p>
-						<p>Auf ihrer Reise verfasste Arendt fünf offizielle Berichte für die Jewish Cultural Reconstruction, Inc. (JCR), die von New York aus an alle Mitglieder des Vorstands verteilt wurden. Diese internen Verständigungspapiere waren nicht für die Öffentlichkeit bestimmt. Sie vermitteln Einblicke in die umfangreichen Aktivitäten jüdischer Organisationen im Umgang mit den Folgen des Holocaust und legen Zeugnis von den Schwierigkeiten ab, denen jüdische Interessenvertreter im Kampf um die Wiederherstellung von Recht und Gerechtigkeit nach 1945 ausgesetzt waren. <a href="{{ path('article', { 'slug' : 'jgo:article-89' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Auszug aus: Elisabeth Gallas, Jüdische Kulturgüter in der Nachkriegszeit. Hannah Arendts Bericht zur Situation in Hamburg"></span> weiterlesen &gt;</a></p>
+						<p>In late 1949, Hannah Arendt traveled to Germany for four months, during which time she visited the British occupation zone in order to survey restitutable cultural assets in the cities of Hamburg, Hannover, Köln, and Lübeck. In Hamburg in particular, she found numerous collections previously confiscated by the Nazis whose legal heirs had yet to be determined.</p>
+						<p>During her trip, Arendt wrote five official reports for Jewish Cultural Reconstruction, Inc. (JCR) which were distributed to all its board members once they reached New York. These were internal communications not intended to be made public. They give an insight into the extent of Jewish organizations’ activities in dealing with the aftermath of the Holocaust and attest to the difficulty faced by Jewish advocates in their fight for the reinstatement of the rule of law and justice after 1945. <a href="{{ path('article', { 'slug' : 'jgo:article-89' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Excerpt from: Elisabeth Gallas, Jewish cultural assets in the postwar period. Hannah Arendt’s report on the situation in Hamburg"></span> Read on &gt;</a></p>
 						</div>
 		            </div><!-- .col -->
 				</div><!-- .row -->
@@ -500,7 +503,8 @@ wichtige Rolle zu.</p>
 					<div class="col-xs-8 col-md-9 no-float" style="vertical-align: middle;">
 						<div style="padding: 40px; max-width: 50em;">
 							<h2>Wiederaufbau: Die erste Synagoge</h2>
-							1945, nach dem Ende des Zweiten Weltkrieges, <a href="#" onClick="$.fn.fullpage.moveTo('beginning', 1);">wurde die jüdische Gemeinde von einer kleinen Zahl Hamburger Juden neu gegründet</a>. Die meisten von ihnen hatten die Jahre der NS-Herrschaft deshalb überlebt, weil ihnen die Ehe mit einem nichtjüdischen Partner einen gewissen Schutz geboten hatte. Die jüdische Gemeinde Hamburg konstituierte sich als Einheitsgemeinde, die auf Kultusverbände verzichtete und sich stattdessen für eine gemäßigt orthodoxe Gestaltung des Gottesdienstes und der religiösen Institutionen entschied. Höhepunkt des Neuaufbaus war die Eröffnung der neuen Synagoge 1960 in der Hohen Weide. Eine echte Wiederbelebung liberaler und konservativer Traditionen konnte aber lange Jahrzehnte nicht stattfinden. (Quelle: <a href="{{ path('topic-background', { 'slug' : 'religion-und-identitaet' })}}#section-5" target="_blank">Einführungstext: Religion und Identität)</a>
+							In 1945, after World War II had ended, <a href="#" onClick="$.fn.fullpage.moveTo('beginning', 1);">a Jewish congregation was newly founded by a small number of Hamburg Jews</a>. Most of them had survived the years of National Socialist rule because of their marriage to a non-Jewish spouse, which had afforded them a certain amount of protection. Hamburg’s Jewish congregation conceived itself as a uniform congregation which had no need for ritual associations and instead decided on a moderately orthodox structure in both its liturgy and its religious institutions. The new congregation’s establishment culminated in the opening of a new synagogue at Hohe Weide in 1960. However, a true revival of both liberal and conservative tradition was not able to take place for many decades.
+							(Source: <a href="{{ path('topic-background', { 'slug' : 'religion-and-identity' })}}#section-5" target="_blank">Introductory Text: Religion and Identity)</a>
 						</div><!-- -->
 					</div><!-- #col-xs-8 -->
 				</div><!-- .row -->
@@ -513,7 +517,7 @@ wichtige Rolle zu.</p>
 					<div class="col col-xs-3 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
 			            <h3>Bauen um zu Bleiben: Hermann Zvi Guttmanns Entwurf für eine neue Synagoge</h3>
-						<p>Mutmaßlich ab 1956 wurden die Planungen der 1945 neu gegründeten jüdischen Gemeinde Hamburgs für den Neubau einer Synagoge mit Gemeindezentrum an der Hohen Weide konkret. Um einen Architekten und einen Entwurf zu finden, veranstaltete die Gemeinde einen Wettbewerb. Bei dem hier gezeigten Plan handelt es sich um den Beitrag, den der Frankfurter Architekt Hermann Zvi Guttmann einreichte. <a href="{{ path('article', { 'slug' : 'jgo:article-231' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Auszug aus: Alexandra Klei, Hermann Zvi Guttmann und sein Entwurf für den Neubau der Synagoge Hohe Weide"></span> weiterlesen &gt;</a></p>
+						<p>It was probably in 1956 that plans made by Hamburg's Jewish congregation, re-established in 1945, for building a new synagogue with a community center at Hohe Weide became concrete. In order to find an architect and an appropriate design, the congregation held a competition. The plan presented here is the design submitted by Frankfurt architect Hermann Zvi Guttmann. <a href="{{ path('article', { 'slug' : 'jgo:article-231' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Excerpt from: Alexandra Klei, Hermann Zvi Guttmann and His Design for the New Synagogue at Hohe Weide"></span> Read on &gt;</a></p>
 						</div>
 		            </div><!-- .col -->
 					<div class="col col-xs-6 col-xs-offset-1 vertical-center">
@@ -521,8 +525,8 @@ wichtige Rolle zu.</p>
 							<a href="../viewer/source-00174/media.jpg" class="fancybox" title="">
 								<img style="width: 80%" src="../viewer/source-00174/media.jpg" />
 							</a>
-							<div class="credits">Quelle: Signatur 522-2 Jüdische Gemeinde in Hamburg, Nr. 997.<br />
-							Staatsarchiv Hamburg, mit freundlicher Genehmigung der jüdischen Gemeinde Hamburg. <a href="{{ path('source', { 'uid' : 'jgo:source-174' }) }}" target="_blank">Quellenansicht &gt;</a></div>
+							<div class="credits">Source: Signatur 522-2 Jüdische Gemeinde in Hamburg, Nr. 997.<br />
+							State Archive Hamburg, with the kind permission of the Jewish Community Hamburg.  <a href="{{ path('source', { 'uid' : 'jgo:source-174' }) }}" target="_blank">Source View &gt;</a></div>
 						</div>
 		            </div><!-- .col -->
 				</div><!-- .row -->
@@ -535,7 +539,7 @@ wichtige Rolle zu.</p>
 					<div class="col col-xs-2 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
 							<a href="../img/exhibition/jewish-life-since-1945/bau00210.jpg" data-lightbox="synagogue-bornplatz-gallery" title="Bornplatzsynagoge, Neujahrspostkarte">
-								<img style="width: 100%" src="../img/exhibition/jewish-life-since-1945/bau00210_thumb.jpg" />
+								<img style="width: 100%" src="../img/exhibition/jewish-life-since-1945/bau00210.jpg" />
 							</a>
 							<div class="credits">Bilddatenbank des Instituts für die Geschichte der deutschen Juden, BAU00210.</div>
 						</div>
@@ -545,16 +549,16 @@ wichtige Rolle zu.</p>
 			            <h3>Die historische Bornplatz-Synagoge</h3>
 						<p>
 							Die Postkarte mit Neujahrswünschen zeigt die Hauptsynagoge der jüdischen Gemeinde Hamburg auf dem Bornplatz.  Von den Architekten Ernst Friedheim und Semmy Engel entworfen und im September 1906 feierlich eingeweiht, war es die erste frei stehende Synagoge in der Stadt, die ein neues Selbstbewusstsein der jüdischen Gemeinde ausdrückte. Die im neuromanischen Stil erbaute Synagoge mit ihrer 40 Meter hohen Kuppel bot Platz für 700 Männer und 500 Frauen. Zusätzlich gab es eine Tages- bzw. Wintersynagoge und eine Mikwe.<br />
-In der Pogromnacht 1938 wurde die Synagoge schwer beschädigt, 1939 musste sie auf Kosten der jüdischen Gemeinde zwangsabgerissen und das Grundstück an die Stadt Hamburg übertragen werden. Nach dem Abriss wurde auf einem Teil des Geländes ein Hochbunker errichtet, der andere Teil wurde bis in die 1980er-Jahre als Parkplatz genutzt. Erst auf Drängen von Bürgerinitiativen hin <a href="#" onClick="$.fn.fullpage.moveTo('remembrance', 1);">wurde der Platz zu einem Gedenkort umgestaltet</a>. Nach einem Entwurf der Künstlerin Margrit Kahl sind dort die Umrisse des Deckengewölbes der ehemaligen Synagoge visualisiert. Der Platz wurde nach dem letzten Oberrabbiner der jüdischen Gemeinde in Joseph-Carlebach-Platz umbenannt.
+In der Pogromnacht 1938 wurde die Synagoge schwer beschädigt, 1939 musste sie auf Kosten der jüdischen Gemeinde zwangsabgerissen und das Grundstück an die Stadt Hamburg übertragen werden. Nach dem Abriss wurde auf einem Teil des Geländes ein Hochbunker errichtet, der andere Teil wurde bis in die 1980er-Jahre als Parkplatz genutzt. Erst auf Drängen von Bürgerinitiativen hin <a href="#" onClick="$.fn.fullpage.moveTo('remembrance', 1);">wurde der Platz zu einem Gedenkort umgestaltet</a>. Nach einem Entwurf der Künstlerin Margit Kahl sind dort die Umrisse des Deckengewölbes der ehemaligen Synagoge visualisiert. Der Platz wurde nach dem letzten Oberrabbiner der jüdischen Gemeinde in Joseph-Carlebach-Platz umbenannt.
 						</p>
 						</div>
 		            </div><!-- .col -->
 					<div class="col col-xs-3 vertical-center">
 						<div class="vertical-center-content">
 							<a href="../img/exhibition/jewish-life-since-1945/Schmid_Bornplatz_YadVashem_2957_6.jpg" data-lightbox="synagogue-bornplatz-gallery" title="Bodenmosaik Joseph-Carlebach-Platz">
-								<img style="width: 100%" src="../img/exhibition/jewish-life-since-1945/Schmid_Bornplatz_YadVashem_2957_6_thumb.jpg" />
+								<img style="width: 100%" src="../img/exhibition/jewish-life-since-1945/Schmid_Bornplatz_YadVashem_2957_6.jpg" />
 							</a>
-						<div class="credits">Foto: Margrit Kahl, <a href="https://photos.yadvashem.org/photo-details.html?language=en&item_id=61124" target="_blank">photos.yadvashem.org/photo-details.html?language=en&item_id=61124</a>.<br />
+						<div class="credits">Foto: Margit Kahl, <a href="https://photos.yadvashem.org/photo-details.html?language=en&item_id=61124" target="_blank">photos.yadvashem.org/photo-details.html?language=en&item_id=61124</a>.<br />
 								Mit freundlicher Genehmigung von Yad Vashem Photo Archive.</div>
 						</div>
 		            </div><!-- .col -->
@@ -569,13 +573,13 @@ In der Pogromnacht 1938 wurde die Synagoge schwer beschädigt, 1939 musste sie a
 						<div class="vertical-center-content">
 							<h3>Die Grundsteinlegung: ein symbolischer Akt für die Gemeinde und die Stadt</h3>
 							<p>
-								Zur Grundsteinlegung des Synagogenneubaus hielt der Erste Bürgermeister Hamburgs, Max Brauer, am 9.11.1958 eine Rede. In der Hohen Weide wurde in Hamburg das erste Synagogengebäude der Nachkriegszeit errichtet. Zuvor hatte die kleine jüdische Gemeinde ihre Gottesdienste in provisorisch eingerichteten Beträumen abhalten müssen. In seiner etwa 12-minütigen Rede gedachte Max Brauer einerseits der Verfolgung und Ermordung jüdischer Hamburger während der NS-Zeit, würdigte aber andererseits auch die Anstrengungen zum Wiederaufbau jüdischen Lebens nach 1945.
-								<a href="{{ path('article', { 'slug' : 'jgo:article-188' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Auszug aus: Anna Menny, Zwischen Erinnern und Neuanfang – die Grundsteinlegung der Synagoge in der Hohen Weide am 9.11.1958"></span> weiterlesen &gt;</a>
+								When the foundation stone of the new synagogue was laid on November 9, 1958, Hamburg’s mayor, Max Brauer, was present to give a speech. Hamburg’s first synagogue of the postwar period was built at Hohe Weide. Previously the small Jewish congregation had to hold prayer services in provisional prayer halls. In his speech, which was about twelve minutes long, Max Brauer commemorated the persecution and murder of Hamburg’s Jewish citizens during National Socialism and honored the efforts made to rebuild Jewish life after 1945.
+								<a href="{{ path('article', { 'slug' : 'jgo:article-188' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Excerpt from: Anna Menny, Between Remembrance and a New Beginning – the Groundbreaking of the Synagogue at Hohe Weide on November 9, 1958"></span> Read on &gt;</a>
 							</p>
 							<audio controls><source data-src="../viewer/source-00146/media.mp3" type="audio/mpeg"></source></audio>
 							<div class="credits">
-								Quelle: Ansprache Max Brauers (16'45'') anlässlich der Grundsteinlegung der Synagoge an der Hohen Weide, Erstsendedatum: 09.11.1958.<br />
-				Mit freundlicher Genehmigung des Norddeutschen Rundfunks. Die Urheberpersönlichkeitsrechte bleiben gewahrt. <a href="{{ path('source', { 'uid' : 'jgo:source-146' }) }}" target="_blank">Quelle und Transkript &gt;</a>
+								Source: Max Brauer's speech on occasion of the laying of the foundation stone of the synagogue at Hohe Weide, first broadcasted 9 November 1958.<br />
+				With kind permission of Norddeutscher Rundfunk (NDR). The moral rights remain protected.  <a href="{{ path('source', { 'uid' : 'jgo:source-146' }) }}" target="_blank">Source and Transcription &gt;</a>
 							</div>
 						</div>
 					</div>
@@ -595,7 +599,7 @@ In der Pogromnacht 1938 wurde die Synagoge schwer beschädigt, 1939 musste sie a
 					<div class="col col-xs-6 vertical-center">
 						<div class="vertical-center-content">
 			            <h3>Ein Stück Orient: Die Einwanderung iranischer Juden nach Hamburg</h3>
-						<p>Bereits Ende der 1940er-Jahre kamen die ersten Jüdinnen und Juden aus dem Iran nach Hamburg und gründeten die einzige persisch-jüdische Gemeinschaft im Nachkriegsdeutschland. Mehrheitlich kamen sie als Händler für Teppiche und Gewürze. Der Hamburger Freihafen sollte sich daher in den  kommenden Jahrzehnten zu einem der wichtigsten Umschlagplätze für den europäischen Teppichhandel entwickeln. Der prosperierende Handel in der Speicherstadt führte seit den 1950er-Jahren dazu, dass sich eine wachsende Zahl von persisch-jüdischen Familien in Hamburg ansiedelte, die nach der iranischen Revolution 1979 weiter anwuchs. Lebensmittelpunkt der rund 200 bis 300 Personen starken Gemeinschaft war der Hamburger Westen, wo die Familien in den Stadtteilen längs der Außenalster wohnten. Der starke soziale Zusammenhalt innerhalb der Gruppe war geprägt durch ein konservativ bis traditionell verstandenes und praktiziertes Judentum (welches insbesondere von den aus Mashhad stammenden Familien gepflegt wurde). Die Familien gehörten der Hamburger Jüdischen Gemeinde an und besuchten gemeinsam die Gottesdienste in der Synagoge Hohe Weide. <a href="#" onClick="$('#displayBoxContent').html($('#orientModal').html()).parent().toggle(); return false;" title=""><span class="glyphicon glyphicon-plus"></span> mehr</a></p>
+						<p>Bereits Ende der 1940er-Jahre kamen die ersten Jüdinnen und Juden aus dem Iran nach Hamburg und gründeten die einzige persisch-jüdische Gemeinschaft im Nachkriegsdeutschland. Mehrheitlich kamen sie als Händler für Teppiche und Gewürze. Der Hamburger Freihafen sollte sich daher in den  kommenden Jahrzehnten zu einem der wichtigsten Umschlagplätze für den europäischen Teppichhandel entwickeln. Der prosperierende Handel in der Speicherstadt führte seit den 1950er-Jahren dazu, dass sich eine wachsende Zahl von persisch-jüdischen Familien in Hamburg ansiedelte, die nach der iranischen Revolution 1979 weiter anwuchs. Lebensmittelpunkt der rund 200 bis 300 Personen starken Gemeinschaft war der Hamburger Westen, wo die Familien in den Stadtteilen längs der Außenalster wohnten. Der starke soziale Zusammenhalt innerhalb der Gruppe war geprägt durch ein konservativ bis traditionell verstandenes und praktiziertes Judentum, (welches insbesondere von den aus Mashhad stammenden Familien gepflegt wurde). Die Familien gehörten der Hamburger Jüdischen Gemeinde an und besuchten gemeinsam die Gottesdienste in der Synagoge Hohe Weide. <a href="#" onClick="$('#displayBoxContent').html($('#orientModal').html()).parent().toggle(); return false;" title=""><span class="glyphicon glyphicon-plus"></span> mehr</a></p>
 						<div id="orientModal" style="display: none">
 							<div style="padding: 2em;">
 								<p>
@@ -636,7 +640,8 @@ Untereinander lud man sich wechselseitig zum Shabbat und zu den jüdischen Feste
 					<div class="col-xs-8 col-md-9 no-float" style="vertical-align: middle;">
 						<div style="padding: 40px; max-width: 50em;">
 							<h2>Kontinuitäten: Antisemitismus und Judenfeindschaft in der Nachkriegszeit</h2>
-							<p>Nach Kriegsende bestanden, wie die frühen Bevölkerungsbefragungen in Deutschland zeigen, nun „privatisierte“ antisemitische Einstellungen in weiten Teilen der Bevölkerung fort, die sich in Friedhofschändungen, Schmierereien und beleidigenden Äußerungen zeigten. Der „Antisemitismus nach Auschwitz“ trug und trägt einerseits weiterhin Züge des „klassischen“ Antisemitismus. Andererseits hat er aber auch einen Formenwandel erlebt, da die Antisemiten nun auf den Völkermord reagieren mussten, sei es durch dessen Leugnung, durch eine Schuldabwehr oder durch eine Schuldprojektion auf die Juden oder den Staat Israel. Dies war häufig mit älteren Verschwörungstheorien im Anschluss an die „Protokolle der Weisen von Zion“ verbunden. Zwar war das öffentliche Äußern antisemitischer Überzeugungen in der Bundesrepublik geächtet, doch führten solche Äußerungen in den frühen Nachkriegsjahren sowie in den späten 1950er-Jahren wiederholt zu antisemitischen Skandalen, weil die Justiz nur geringe Bereitschaft zeigte, solche Beleidigungen zu ahnden und das Publikum in den Gerichtsverhandlungen seine antisemitischen Einstellungen auch offen zeigte, etwa in den Ovationen für den in Hamburg wegen seines NS-Hetzfilms „Jud Süß“ vor Gericht gestellten, aber freigesprochenen Regisseurs Veit Harlan. (Quelle: <a href="{{ path('topic-background', { 'slug' : 'judenfeindschaft-und-verfolgung' })}}#section-10" target="_blank">Einführungstext: Judenfeindschaft und Verfolgung)</a></p>
+							<p>
+								Early opinion polls carried out in Germany show that after the end of the war, antisemitic attitudes, now “privatized,” continued to exist among large segments of the population; they manifested themselves in vandalism of cemeteries, graffiti, and verbal insults. On the one hand, “post-Auschwitz antisemitism” still bears all the characteristics of “classic” antisemitism. Yet the forms it took underwent a change since antisemites now had to react to the genocide either by denial, by rejecting responsibility or by projecting guilt onto the Jews or the state of Israel. These projections were often linked to earlier conspiracy theories in the wake of the publication of the “Protocols of the Elders of Zion.” While public expressions of antisemitic convictions were proscribed in the Federal Republic, they repeatedly caused antisemitic scandals in the early postwar years and into the late 1950s because the courts showed little willingness to prosecute such deliberate insults and the public openly displayed their antisemitic attitudes during court trials, for example by ovations for film director Veit Harlan, who was put on trial in Hamburg for his Nazi propaganda film “Jud Süß” but was eventually acquitted. (Source: <a href="{{ path('topic-background', { 'slug' : 'antisemitism-and-persecution' })}}#section-10" target="_blank">Introductory Text: Antisemitism and Persecution)</a></p>
 						</div><!-- -->
 					</div><!-- #col-xs-8 -->
 				</div><!-- .row -->
@@ -651,14 +656,14 @@ Untereinander lud man sich wechselseitig zum Shabbat und zu den jüdischen Feste
 							<a href="../viewer/source-00125/f0003_3.jpg" data-lightbox="antisemitism-nieland-gallery" title="S. 3"><img style="width: 45%; padding: 4px" src="../viewer/source-00125/f0003_1.jpg" /></a>
 							<a href="../viewer/source-00125/f0004_3.jpg" data-lightbox="antisemitism-nieland-gallery" title="S. 4"><img style="width: 45%; padding: 4px" src="../viewer/source-00125/f0004_1.jpg" /></a>
 							<div class="credits">
-								Quelle: StAHH, 131-1 II Senatskanzlei – Gesamtregistratur, Nr. 5336.<br />
-								Mit freundlicher Genehmigung des Staatsarchivs Hamburg. <a href="{{ path('source', { 'uid' : 'jgo:source-125' }) }}" target="_blank">Quelle und Transkript &gt;</a></div>
+								Source: StAHH, 131-1 II Senatskanzlei – Gesamtregistratur, Nr. 5336.<br />
+								Mit freundlicher Genehmigung des Staatsarchivs Hamburg. <a href="{{ path('source', { 'uid' : 'jgo:source-125' }) }}" target="_blank">Source and Transcription &gt;</a></div>
 						</div>
 		            </div><!-- .col -->
 					<div class="col col-xs-4 vertical-center">
 						<div class="vertical-center-content">
-			            <h3>Antisemitische Verschwörungstheorie: der Fall Friedrich Nieland</h3>
-						<p>Anfang 1957 verschickte der Hamburger Holzhändler Friedrich Nieland die 39-seitige Broschüre „Wieviel Welt (Geld)-Kriege müssen die Völker noch verlieren? Offener Brief an alle Bundesminister und Parlamentarier der Bundesrepublik“. Der „offene Brief“ besteht aus einer Collage aus fremden, teils von obskuren, teils von seriösen Autoren stammenden Publikationen entlehnten Textzitaten und Abbildungen. Nieland kritisiert das Schweigen der Politik und nennt als Motiv für die Schrift, über die wahren Hintergründe des Holocaust aufklären zu wollen. Gegen ihn und seinen völkischen Verleger Adolf Ernst Peter Heimberg wurde Klage wegen Verfassungsfeindlichkeit und Beleidigung erhoben, doch wurde kein Hauptverfahren eröffnet. 1959 wurde die Broschüre wegen ihres staatsgefährdenden Charakters vom BGH eingezogen. <a href="{{ path('article', { 'slug' : 'jgo:article-113' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Auszug aus: Werner Bergmann, Antisemitismus in der Nachkriegszeit. Das Beispiel Friedrich Nieland"></span> weiterlesen &gt;</a></p>
+			            <h3>Antisemitische Verschwörungstheorie: The Case of Friedrich Nieland</h3>
+						<p>In early 1957, Hamburg timber merchant Friedrich Nieland distributed a 39-page brochure titled “How Many World (Money) Wars Must the Peoples of the World Lose? Open Letter to All Government Ministers and Members of Parliament of the Federal Republic.” His “open letter” consists of a collage of quotes and illustrations taken from publications by various authors, some of them obscure, some serious. Nieland joins these together by passages of his own writing in which he declares the Holocaust the work of Jews and characterizes “the international Jews” as some sort of secret government steering world politics. Both Nieland and his nationalist publisher Adolf Ernst Peter Heimberg were charged with anti-constitutional acts and libel, but a full trial was never held. In 1959, the brochure was confiscated by the Federal Court of Justice (BGH) due to its seditious content.  <a href="{{ path('article', { 'slug' : 'jgo:article-113' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Excerpt from: Werner Bergmann, Antisemitism in the Postwar Period. The Case of Friedrich Nieland"></span> Read on &gt;</a></p>
 						</div>
 		            </div><!-- .col -->
 				</div><!-- .row -->
@@ -671,9 +676,9 @@ Untereinander lud man sich wechselseitig zum Shabbat und zu den jüdischen Feste
 					<div class="col col-xs-6 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
 							<h3>Die antisemitische Welle 1959/60</h3>
-							<p>Nach den Hakenkreuzschmierereien in der Kölner Synagoge in der Nacht vom 24. auf den 25.12.1959, über die medial umfassend berichtet wurde, kam es zu einer Reihe von Nachahmungstaten in der gesamten Bundesrepublik – so auch in Hamburg. Der Polizeibericht vom Februar 1960 erwähnt allein 74 Fälle bis zu diesem Datum, dazu gehörten antisemitische Beleidigungen oder Hakenkreuzschmierereien im öffentlichen Raum. Die Fotos aus dem Conti-Press-Bestand zeigen Klingelschilder in der Eimsbütteler Bellealliancestraße, vermeintlich jüdische Namen wurden mit Hakenkreuzen beschmiert.</p>
+							<p>Nach den Hakenkreuzschmiereien in der Kölner Synagoge in der Nacht vom 24. auf den 25.12.1959, über die medial umfassend berichtet wurde, kam es zu einer Reihe von Nachahmungstaten in der gesamten Bundesrepublik – so auch in Hamburg. Der Polizeibericht vom Februar 1960 erwähnt allein 74 Fälle bis zu diesem Datum, dazu gehörten antisemitische Beleidigungen oder Hakenkreuzschmiereien im öffentlichen Raum. Die Fotos aus dem Conti-Press-Bestand zeigen Klingelschilder in der Eimsbütteler Bellealliancestraße, vermeintlich jüdische Namen wurden mit Hakenkreuzen beschmiert.</p>
 							<p>In Folge der Vorfälle wurde im Sommer 1960 der Entwurf eines Gesetzes gegen Volksverhetzung, der bereits seit dem <a href="#" onClick="$.fn.fullpage.moveTo('antisemitism', 1);">Fall Nieland</a> vorlag und deswegen auch als „Lex Nieland“ bezeichnet wurde, sowie die Neufassung des Straftatbestands der Verwendung verfassungsfeindlicher Symbole beschlossen.</p>
-							<p>(Quelle: <a href="https://vfhg.de/publikationen/lehrmaterialien.html" target="_blank">Marc-Simon Lengowski (in Zusammenarbeit mit Gülay Gün, Anton F. Guhl und Thomas Rost), Wiederkehr der Nazis oder Kinderkritzeleien. Lehrmaterial und Unterrichtseinheit zur antisemitischen Welle von 1959/1960 in Hamburg, Hamburg 2016.)</a>
+							<p>(Source: <a href="https://vfhg.de/publikationen/lehrmaterialien.html" target="_blank">Marc-Simon Lengowski (in Zusammenarbeit mit Gülay Gün, Anton F. Guhl und Thomas Rost), Wiederkehr der Nazis oder Kinderkritzeleien. Lehrmaterial und Unterrichtseinheit zur antisemitischen Welle von 1959/1960 in Hamburg, Hamburg 2016.)</a>
 							</p>
 							<div class="credits">
 								Fotos: StaHH, Plankammer 720-1 388-00, Conti-Press Nr.  21214_1A,  21214_2A,  21214_37A,  21214_42A.<br />
@@ -702,15 +707,16 @@ Untereinander lud man sich wechselseitig zum Shabbat und zu den jüdischen Feste
 							<a href="../viewer/source-00097/f0001_3.jpg" data-lightbox="antisemitism-kellenbenz-gallery" title="Vorwort, S. XI"><img style="width: 48%; padding: 4px" src="../img/exhibition/jewish-life-since-1945/kellenbenz-1.jpg" /></a>
 							<a href="../viewer/source-00097/f0001_3.jpg" data-lightbox="antisemitism-kellenbenz-gallery" title="S. XII"><img style="width: 48%; padding: 4px" src="../img/exhibition/jewish-life-since-1945/kellenbenz-2.jpg" /></a>
 							<div class="credits">
-								Quelle: Hermann Kellenbenz, Sephardim an der unteren Elbe. Ihre wirtschaftliche und politische Bedeutung vom Ende des 16. bis zum Beginn des 18. Jahrhunderts, Wiesbaden 1958, S. XI-XII.<br />
-								Mit freundlicher Genehmigung der DAV Verlagsgruppe: Deutscher Apotheker Verlag. <a href="{{ path('source', { 'uid' : 'jgo:source-97' }) }}" target="_blank">Quelle und Transkript &gt;</a>
+								Source: Hermann Kellenbenz, Sephardim an der unteren Elbe. Ihre wirtschaftliche und politische Bedeutung vom Ende des 16. bis zum Beginn des 18. Jahrhunderts, Wiesbaden 1958, S. XI-XII.<br />
+								Mit freundlicher Genehmigung der DAV Verlagsgruppe: Deutscher Apotheker Verlag. <a href="{{ path('source', { 'uid' : 'jgo:source-97' }) }}" target="_blank">Source and Transcription &gt;</a>
 							</div>
 						</div>
 		            </div><!-- .col -->
 					<div class="col col-xs-5 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
 							<h3>Kontinuitäten in der Wissenschaft: Hermann Kellenbenz</h3>
-							<p>Die 1958 im Franz Steiner-Verlag (Wiesbaden) als Band 40 der Beihefte zur Vierteljahresschrift für Sozial- und Wirtschaftsgeschichte (herausgegeben von Hermann Aubin) erschienene Studie „Sephardim an der unteren Elbe“ kann wohl als ein zentraler Beitrag zur hamburgisch-jüdischen Geschichte in der frühen Nachkriegszeit gelten. Ihr Autor Hermann Kellenbenz war einer der einflussreichsten deutschen Wirtschaftshistoriker seiner Generation. Er beschäftigte sich in seinem 600 Seiten umfassenden Werk mit der wirtschaftlichen Bedeutung der sefardischen Juden, die zu Beginn des 16. Jahrhunderts aus Spanien vertrieben und in Hamburg aufgenommen worden waren. Der Ursprung der Publikation geht allerdings auf die NS-Zeit zurück, als Kellenbenz einen Forschungsauftrag des „Reichsinstituts für Geschichte des neuen Deutschlands“ erhalten hatte. Im Vorwort wird dies – für die Zeit wenig überraschend – verschleiert. <a href="{{ path('article', { 'slug' : 'jgo:article-88' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Auszug aus: Dirk Rupnow, Kontinuitäten der NS-Judenforschung?"></span> weiterlesen &gt;</a></p>
+							<p>The study “Sephardic Jews on the Lower Elbe” published by Franz Steiner Verlag in 1958 as volume 40 of their supplement to the academic journal Vierteljahresschrift für Sozial- und Wirtschaftsgeschichte (edited by Hermann Aubin) may be considered a central contribution to Hamburg’s Jewish history of the early postwar period. Its author, Hermann Kellenbenz, was one of the most influential German economic historians of his generation. In his 600-page book, he studied the economic significance of the Sephardic Jews who were expelled from Spain in the early 16th century and had been allowed to settle in Hamburg. However, the publication’s origins date back to the National Socialist period, when Kellenbenz had received a research assignment by the Reich Institute for the History of the New Germany . This fact is omitted in the study’s preface – which is hardly surprising for this time period.
+							<a href="{{ path('article', { 'slug' : 'jgo:article-88' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Excerpt from: Dirk Rupnow, Continuities in a Historiography Overshadowed by Its National Socialist Past?"></span> Read on &gt;</a></p>
 						</div>
 		            </div><!-- .col -->
 				</div><!-- .row -->
@@ -723,7 +729,8 @@ Untereinander lud man sich wechselseitig zum Shabbat und zu den jüdischen Feste
 					<div class="col col-xs-5 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
 							<h3>Darf es Judenmission noch geben? Eine Kontroverse zwischen Senator Helmut Schmidt und Bischof Hans-Otto Wölber</h3>
-							<p>Der sozialdemokratische Hamburger Innensenator Helmut Schmidt hatte als Vorstandsmitglied der Gesellschaft für Christlich-Jüdische Zusammenarbeit in Hamburg im Frühjahr 1964 erfahren, dass die evangelische Landeskirche Judenmission betrieb. Dies wurde von ihm wie auch von Juden mit Sorge betrachtet. Er ließ sich persönlich vom Bischof der Evangelisch-lutherischen Kirche im Hamburgischen Staate Dr. Hans-Otto Wölber über den Sachstand informieren und nahm kritisch zu jeglicher Form von Judenmission Stellung. <a href="{{ path('article', { 'slug' : 'jgo:article-21' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Auszug aus: Rainer Hering, Umstrittene Judenmission. Ein Briefwechsel aus dem Jahr 1964 zwischen dem Hamburger Innensenator Helmut Schmidt und dem Bischof Hans-Otto Wölber"></span> weiterlesen &gt;</a></p>
+							<p>In the spring of 1964, Helmut Schmidt, Social Democrat and Senator for Interior Affairs in the city state of Hamburg, who also served as a board member to the Society of Christian-Jewish Cooperation  in Hamburg, learned that the local Protestant church was engaged in missionary work among Jews. This was cause for concern for both Schmidt and the Jewish community. He contacted the Protestant-Lutheran Bishop of Hamburg, Dr. Hans-Otto Wölber, personally in order to gather information on the matter and expressed his criticism of missionary work of any kind among Jews.
+							<a href="{{ path('article', { 'slug' : 'jgo:article-21' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Excerpt from: Rainer Hering, The Controversial Mission to the Jews. A 1964 Correspondence between Helmut Schmidt, Hamburg’s Senator for Interior Affairs, and Bishop Hans-Otto Wölber"></span> Read on &gt;</a></p>
 						</div>
 		            </div><!-- .col -->
 					<div class="col col-xs-4 col-xs-offset-1 vertical-center">
@@ -735,8 +742,8 @@ Untereinander lud man sich wechselseitig zum Shabbat und zu den jüdischen Feste
 							<a href="../viewer/source-00113/f0001_3.jpg" data-lightbox="antisemitism-schmidt-woelber-gallery" title="Brief von Senator Helmut Schmidt an Bischof Hans-Otto Wölber, Hamburg, 26.8.1964"><img style="height: 140px; padding: 4px" src="../viewer/source-00113/f0001_1.jpg" /></a>
 							<a href="../viewer/source-00113/f0002_3.jpg" data-lightbox="antisemitism-schmidt-woelber-gallery" title="Brief von Senator Helmut Schmidt an Bischof Hans-Otto Wölber, Hamburg, 26.8.1964, S. 2"><img style="height: 140px; padding: 4px" src="../viewer/source-00113/f0002_1.jpg" /></a>
 							<div class="credits">
-								Quelle: Landeskirchliches Archiv der Evangelisch-Lutherischen Kirche in Norddeutschland, Kiel, Nachlass Wölber, Signatur 11.02, 1693.<br />
-								Mit freundlicher Genehmigung von Helmut Schmidt. <a href="{{ path('source', { 'uid' : 'jgo:source-111' }) }}" target="_blank">Quelle und Transkript &gt;</a>
+								Source: Landeskirchliches Archiv der Evangelisch-Lutherischen Kirche in Norddeutschland, Kiel, Nachlass Wölber, Signatur 11.02, 1693.<br />
+								Mit freundlicher Genehmigung von Helmut Schmidt. <a href="{{ path('source', { 'uid' : 'jgo:source-111' }) }}" target="_blank">Source and Transcription &gt;</a>
 							</div>
 						</div>
 		            </div><!-- .col -->
@@ -785,7 +792,7 @@ Arnold Bernstein auf der „Atlantik“</a></li>
 							<p>Das Bild aus den 1920er-Jahren zeigt wie das Auto mit einem speziellen Lift auf das Schiff verladen wird. Bernstein lehnte die traditionellen Holzkisten als Verpackung für Automobile ab und revolutionierte so den Transport aus den USA nach Europa.
 							</p>
 							<div class="credits">
-								Quelle: Stiftung Jüdisches Museum Berlin; <a href="https://www.jmberlin.de/thema-arnold-bernstein" target="_blank">Sammlung Arnold Bernstein</a>; Fotografien, Inv.Nr. 2007/276/131/015, Bildnr. 290146.<br />
+								Source: Stiftung Jüdisches Museum Berlin; <a href="https://www.jmberlin.de/thema-arnold-bernstein" target="_blank">Sammlung Arnold Bernstein</a>; Fotografien, Inv.Nr. 2007/276/131/015, Bildnr. 290146.<br />
 								Mit freundlicher Genehmigung der Stiftung Jüdisches Museum Berlin.
 							</div>
 						</div>
@@ -814,7 +821,7 @@ Arnold Bernstein auf der „Atlantik“</a></li>
 							</p>
 							<p>Die zweite Aufnahme zeigt das Paar in den 1960er-Jahren.</p>
 							<div class="credits">
-								Quelle: Stiftung Jüdisches Museum Berlin; <a href="https://www.jmberlin.de/thema-arnold-bernstein" target="_blank">Sammlung Arnold Bernstein</a>; Fotografien, Inv.Nr. 2007/276/58 und 2007/35/250, Bildnr. 290124 und 264564.<br />
+								Source: Stiftung Jüdisches Museum Berlin; <a href="https://www.jmberlin.de/thema-arnold-bernstein" target="_blank">Sammlung Arnold Bernstein</a>; Fotografien, Inv.Nr. 2007/276/58 und 2007/35/250, Bildnr. 290124 und 264564.<br />
 								Mit freundlicher Genehmigung der Stiftung Jüdisches Museum Berlin.
 							</div>
 						</div>
@@ -838,12 +845,13 @@ Arnold Bernstein auf der „Atlantik“</a></li>
 		            </div><!-- .col -->
 					<div class="col col-xs-6 vertical-center">
 						<div class="vertical-center-content">
-							<h3>Gespräch mit Arnold Bernstein, in: Sonntagsblatt Staats-Zeitung und Herold, 24.11.1957</h3>
+							<h3>A Conversation with Arnold Bernstein, in: Sonntagsblatt Staats-Zeitung und Herold, November 24, 1957</h3>
 							<p>
-								Der am 24.11.1957 publizierte mehrspaltige Artikel, der ebenfalls ein Bild von Arnold Bernstein enthält, erzählt die Lebensgeschichte des Hamburgers, der in der Zwischenkriegszeit mit seiner Arnold Bernstein Schiffahrtsgesellschaft m.b.H. zu einem der erfolgreichsten Reeder der Weimarer Republik aufgestiegen war. Nach der Machtübernahme der Nationalsozialisten in Deutschland wurde er seines gesamten Besitzes beraubt und inhaftiert, wobei er nach seiner Haftstrafe von zweieinhalb Jahren noch vor dem Ausbruch des Krieges (1939) in die USA emigrieren konnte. Seine Bemühungen zur Gründung einer US-amerikanischen Reederei unter dem Namen American Banner Lines versinnbildlichen für den Autor des Artikels seinen Willen zum Erfolg und Leben, wie im Untertitel des Artikels deutlich wird: „Einstiger Hamburger Gross-Reeder hat es auch in New York wieder geschafft“. <a href="{{ path('article', { 'slug' : 'jgo:article-242' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Auszug aus: Björn Siegel, „20 Jahre hat es mich gekostet, Hitler zu besiegen.“ Der Hamburger Reeder Arnold Bernstein in den USA"></span> weiterlesen &gt;</a>
+								This newspaper article titled “Gespräch mit Arnold Bernstein” [“A Conversation with Arnold Bernstein”] covers the life and work of the German-Jewish shipping company owner from Hamburg. It tells the life story of this Hamburg citizen who in the interwar years had risen to become one of the most successful shipping company owners in the Weimar Republic through his business, Arnold Bernstein Shipping Company, LLC. After the National Socialist takeover in Germany, he was robbed of his entire assets and imprisoned; after spending two and a half years in prison, he managed to emigrate from Germany to the United States in 1939 shortly before the beginning of the war. To the author of this article, Bernstein's efforts to found a U.S. shipping company named “American Banner Lines” symbolize his will to succeed and to live, as the article's subtitle demonstrates: “Former major Hamburg shipping company owner also makes it in New York.”
+								<a href="{{ path('article', { 'slug' : 'jgo:article-242' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Excerpt from: Björn Siegel, “It Cost Me 20 Years to Defeat Hitler.” Hamburg Shipping Company Owner Arnold Bernstein in the USA"></span> Read on &gt;</a>
 							</p>
 							<div class="credits">
-								Quelle: Stiftung Jüdisches Museum Berlin; <a href="https://www.jmberlin.de/thema-arnold-bernstein" target="_blank">Sammlung Arnold Bernstein</a>; K 581, Mp. 1; Inv. 2007/35/167: Zeitungsartikel der Sonntagsblatt Staats-Zeitung und Herold, 24.11.1957. <a href="{{ path('source', { 'uid' : 'jgo:source-176' }) }}" target="_blank">Quelle und Transkript &gt;</a>
+								Source: Stiftung Jüdisches Museum Berlin; <a href="https://www.jmberlin.de/thema-arnold-bernstein" target="_blank">Sammlung Arnold Bernstein</a>; K 581, Mp. 1; Inv. 2007/35/167: Zeitungsartikel der Sonntagsblatt Staats-Zeitung und Herold, 24.11.1957. <a href="{{ path('source', { 'uid' : 'jgo:source-176' }) }}" target="_blank">Source and Transcription &gt;</a>
 							</div>
 						</div><!-- -->
 					</div><!-- #col-xs-8 -->
@@ -857,10 +865,10 @@ Arnold Bernstein auf der „Atlantik“</a></li>
 					<div class="col col-xs-3 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
 			            <h3>Arnold Bernstein (1888-1971) auf der „Atlantik“</h3>
-						<p>Die Atlantik sollte das Flaggschiff der American Banner Lines werden und symbolisierte damit die Hoffnungen auf einen Neuanfang in den USA. Bereits 1959, kurze Zeit nachdem diese Aufnahme von Arnold Bernstein entstand, wurde das Schiff jedoch wieder verkauft.
+						<p>Die Atlantik sollte das Flaggschiff der American Banner Lines werden und symbolisierte damit die Hoffnungen auf einen Neuanfang in den USA. Bereits 1959, kurze Zeit nach dem diese Aufnahme von Arnold Bernstein entstand, wurde das Schiff jedoch wieder verkauft.
 						</p>
 						<div class="credits">
-							Quelle: Stiftung Jüdisches Museum Berlin; <a href="https://www.jmberlin.de/thema-arnold-bernstein" target="_blank">Sammlung Arnold Bernstein</a>; Fotografien, Inv.Nr. 2007/35/268, Bildnr. 264633.<br />
+							Source: Stiftung Jüdisches Museum Berlin; <a href="https://www.jmberlin.de/thema-arnold-bernstein" target="_blank">Sammlung Arnold Bernstein</a>; Fotografien, Inv.Nr. 2007/35/268, Bildnr. 264633.<br />
 							Mit freundlicher Genehmigung der Stiftung Jüdisches Museum Berlin.
 						</div>
 						</div>
@@ -894,7 +902,8 @@ Arnold Bernstein auf der „Atlantik“</a></li>
 							<h2>Ehemalige jüdische Hamburger II<br />
 							Kampf um Rückkehr: Walter A. Berendsohn</h2>
 							<p>
-								Walter A. Berendsohn gilt als Nestor der Exilliteraturforschung und war zugleich selbst Exilant. Am 10.9.1884 wurde Berendsohn in Hamburg in ein jüdisches Elternhaus geboren. Der Germanist hatte 1926 eine außerplanmäßige Professur an der Universität Hamburg erhalten. Nach der Machtübertragung an die Nationalsozialisten und seiner Entlassung auf Grundlage des antisemitischen „Gesetzes zur Wiederherstellung des Berufsbeamtentums“ ging Berendsohn im Juli 1933 ins dänische Exil, wo er sich vergeblich um eine akademische Anstellung bemühte. Hier begann er seine 1939 fertiggestellte Arbeit an „Die humanistische Front“, die, wenngleich erst 1946 gedruckt, erstmals in systematischer Weise die Literatur der „Flüchtlinge aus dem Dritten Reich“ erfasste. <a href="{{ path('article', { 'slug' : 'jgo:article-10' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Auszug aus: Andreas Marquet, Exil und Exilliteratur. Walter A. Berendsohns Kampf für eine Rückkehr an die Universität Hamburg"></span> weiterlesen &gt;</a>
+								Walter A. Berendsohn, considered the doyen of exile literature studies, was himself an exile. Born to Jewish parents in Hamburg on September 10, 1884, he had been appointed associate professor of German literature at the University of Hamburg in 1926. In July 1933, following the Nazi takeover and his dismissal on the basis of the antisemitic “Law for the Restoration of the Professional Civil Service” , Berendsohn went into exile in Denmark, where he unsuccessfully sought academic employment. It was during this period that he began work on his book “Die humanistische Front” [“The Humanist Front”], which was the first volume to systematically survey literature written by “refugees from the Third Reich.” Although finished in 1939, it was not published until 1946.
+								<a href="{{ path('article', { 'slug' : 'jgo:article-10' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Excerpt from: Andreas Marquet, Exile and Exile Literature. Walter A. Berendsohn’s struggle to return to Hamburg University"></span> Read on &gt;</a>
 							</p>
 						</div><!-- -->
 					</div><!-- #col-xs-8 -->
@@ -912,12 +921,12 @@ Arnold Bernstein auf der „Atlantik“</a></li>
 		            </div><!-- .col -->
 					<div class="col col-xs-6 vertical-center">
 						<div class="vertical-center-content">
-							<h3>Walter A. Berendsohns Kampf für eine Rückkehr an die Universität Hamburg</h3>
-							<p>In der Nachkriegszeit bemühte sich Berendsohn um eine Rückkehr an die Universität Hamburg beziehungsweise um die Anerkennung seiner Pensionsansprüche. Er stieß jedoch auf den energischen Widerstand maßgeblicher Mitglieder des Literaturwissenschaftlichen Seminars. Insbesondere Hans Pyritz intrigierte gegen Berendsohn, der sich der Exil-Literatur verschrieben hatte. So wurden beispielsweise seine akademischen Leistungen in Zweifel gezogen. Auch das Fehlen der von den Nazis aberkannten Promotion wurde gegen Berendsohn vorgebracht. Damit hatten sich die Hamburger Literaturwissenschaftler eines Unrechtsakts der Nazis bedient. Berendsohns „Zweifache Vertreibung“  verweist auf eine über politische Zäsuren hinausreichende Kontinuität deutschen Ungeistes an der Philosophischen Fakultät.
-							<a href="{{ path('article', { 'slug' : 'jgo:article-10' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Auszug aus: Andreas Marquet, Exil und Exilliteratur. Walter A. Berendsohns Kampf für eine Rückkehr an die Universität Hamburg"></span> weiterlesen &gt;</a>
+							<h3>Walter A. Berendsohn’s struggle to return to Hamburg University</h3>
+							<p>After the war, Berendsohn sought to return to Hamburg University or at least have his pension claims acknowledged. However, he met with strong resistance by leading members of the literature department. Hans Pyritz in particular agitated against Berendsohn, who had devoted himself to exile literature, by questioning his academic achievements, for example. Another argument brought to bear against Berendsohn was that he lacked a Ph. D., his degree having been revoked by the Nazis. Thus the Hamburg academics had actually strategically used a Nazi crime to make their point. Berendsohn’s “two expulsions”  show the continuity of a hostile German mindset at Hamburg’s humanities department regardless of political changes.
+							<a href="{{ path('article', { 'slug' : 'jgo:article-10' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Excerpt from: Andreas Marquet, Exile and Exile Literature. Walter A. Berendsohn’s struggle to return to Hamburg University"></span> Read on &gt;</a>
 							</p>
 							<div class="credits">
-								Quelle: P. Walter Jacob Archiv (PWJA), Teilnachlass Walter A. Berendsohns, PWJA/WAB/IV. Mit freundlicher Genehmigung von Karin Braun. <a href="{{ path('source', { 'uid' : 'jgo:source-8' }) }}" target="_blank">Quelle und Transkript &gt;</a>
+								Source: P. Walter Jacob Archiv (PWJA), Teilnachlass Walter A. Berendsohns, PWJA/WAB/IV. Mit freundlicher Genehmigung von Karin Braun. <a href="{{ path('source', { 'uid' : 'jgo:source-8' }) }}" target="_blank">Source and Transcription &gt;</a>
 							</div>
 						</div>
 		            </div><!-- .col -->
@@ -945,7 +954,7 @@ erreichten Walter A. Berendsohn [...] gut 200 Glückwunschschreiben aus aller We
 							<a href="../img/exhibition/jewish-life-since-1945/berendsohn-baum-2.jpg" data-lightbox="berendsohn-tree-gallery" title="">
 							<img style="width: 45%" src="../img/exhibition/jewish-life-since-1945/berendsohn-baum-2.jpg" /></a>
 							<div class="credits">
-								Quelle: Mit freundlicher Genehmigung des P. Walter Jacob Archivs, Sammlung Walter A. Berendsohn, Sign. WAB/II/5
+								Source: Mit freundlicher Genehmigung des P. Walter Jacob Archivs, Sammlung Walter A. Berendsohn, Sign. WAB/II/5
 							</div>
 						</div>
 		            </div><!-- .col -->
@@ -965,7 +974,7 @@ erreichten Walter A. Berendsohn [...] gut 200 Glückwunschschreiben aus aller We
 							<li><a href="#" onClick="$.fn.fullpage.moveTo('remembrance', 3);" style="font-weight: bold; color: white"><span class="glyphicon glyphicon-chevron-right"></span> Eine lange Geschichte. „400 Jahre Juden in Hamburg“</a></li>
 							<li><a href="#" onClick="$.fn.fullpage.moveTo('remembrance', 4);" style="font-weight: bold; color: white"><span class="glyphicon glyphicon-chevron-right"></span> Die Stolpersteine in der Brahmsallee 13, Hamburg</a></li>
 						</ul>
-						<a href="#" data-toggle="tooltip" data-placement="top" title="Quelle: Ausstellungsplakat „400 Jahre Juden in Hamburg“. Ausstellung vom 8. November 1991 bis 29. März 1992. Plakatgestaltung: Wolfgang Wiedey; Museum für Hamburgische Geschichte / Privatbesitz">
+						<a href="#" data-toggle="tooltip" data-placement="top" title="Source: Ausstellungsplakat „400 Jahre Juden in Hamburg“. Ausstellung vom 8. November 1991 bis 29. März 1992. Plakatgestaltung: Wolfgang Wiedey; Museum für Hamburgische Geschichte / Privatbesitz">
 						<span class="glyphicon glyphicon-info-sign" style="color: white;"></span>
 						</a>
 					</div><!-- #section-remembrance-img -->
@@ -973,7 +982,7 @@ erreichten Walter A. Berendsohn [...] gut 200 Glückwunschschreiben aus aller We
 						<div style="padding: 40px; max-width: 50em;">
 							<h2>Erinnerungskultur: Umgang mit der Vergangenheit</h2>
 							<p>
-								Die Erinnerungskultur ist in den letzten Jahren vielgestaltiger geworden: Sie zeigt sich in der Topografie der Stadt wie im medialen, kollektiven und privaten Gedächtnis. Konkret bedeutet dies: über Stand- und Baudenkmäler, Straßen-, Platz- oder Gebäudebenennungen, in Gedenkstätten, auf Gedenkwänden oder -schwellen, in Wander- und Open-Air-Ausstellungen, szenischen Lesungen im öffentlichen Raum, über dezentrale Tafeln an Hauswänden oder Stolpersteine im Gehweg, in Büchern, Online-Artikeln und Veranstaltungen, bei Namensverlesungen, Umzügen und vieles mehr. Althergebrachte Formen wie Feierstunden mit Reden und Musik existieren weiter, werden durch neue ergänzt oder abgelöst. (Quelle: <a href="{{ path('topic-background', { 'slug' : 'erinnern-und-gedenken' })}}#section-4" target="_blank">Einführungstext: Erinnern und Gedenken)</a></p>
+								The culture of remembrance has become more diverse in recent years: it manifests itself in urban topography, in the media, and in collective and private memory. More specifically this means: statues and architectural monuments, the naming of streets, squares and buildings, memorials, memorial walls or plates, traveling and open air exhibits, public readings, decentralized plaques mounted on houses or stumbling stones  embedded in the pavement, books, online articles, and events, the reading out of names, marches, and lots more. More traditional forms of remembrance such as ceremonies featuring speeches and music continue to exist and are either complemented or replaced by new ones. (Source: <a href="{{ path('topic-background', { 'slug' : 'memory-and-remembrance' })}}#section-4" target="_blank">Introductory Text: Memory and Remembrance)</a></p>
 						</div><!-- -->
 					</div><!-- #col-xs-8 -->
 				</div><!-- .row -->
@@ -986,10 +995,10 @@ erreichten Walter A. Berendsohn [...] gut 200 Glückwunschschreiben aus aller We
 					<div class="col col-xs-4 vertical-center">
 						<div class="vertical-center-content">
 							<a href="../img/exhibition/jewish-life-since-1945/Schmid_Bornplatz_YadVashem_2957_6.jpg" data-lightbox="remembrance-bornplatz-gallery" title="Bodenmosaik Joseph-Carlebach-Platz">
-							<img style="width: 100%" src="../img/exhibition/jewish-life-since-1945/Schmid_Bornplatz_YadVashem_2957_6_thumb.jpg" />
+							<img style="width: 100%" src="../img/exhibition/jewish-life-since-1945/Schmid_Bornplatz_YadVashem_2957_6.jpg" />
 							</a>
 							<div class="credits">
-								Foto: Margrit Kahl, <a href="https://photos.yadvashem.org/photo-details.html?language=en&item_id=61124" target="_blank">photos.yadvashem.org/photo-details.html?language=en&item_id=61124</a>.<br />
+								Foto: Margit Kahl, <a href="https://photos.yadvashem.org/photo-details.html?language=en&item_id=61124" target="_blank">photos.yadvashem.org/photo-details.html?language=en&item_id=61124</a>.<br />
 								Mit freundlicher Genehmigung von Yad Vashem Photo Archive.
 							</div>
 						</div>
@@ -1007,13 +1016,15 @@ erreichten Walter A. Berendsohn [...] gut 200 Glückwunschschreiben aus aller We
     	<div class="slide">
 	        <div class="container fullheight">
 				<div class="row">
-					<div class="col col-xs-6 col-xs-offset-1 vertical-center">
+					<div class="col col-xs-7 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
-							<h3>„Filme gegen das Vergessen“: Artur Brauners „Der Rosengarten“</h3>
-							<p>Das Prädikatsgutachten der Filmbewertungsstelle Wiesbaden für den Film „Der Rosengarten“ stammt aus dem Arthur Brauner Archiv des Deutschen Filminstituts Dif e. V. / Frankfurt am Main. Es wurde auf Antrag am 24.4.1990 ausgestellt. Neben technischen Daten des Films gibt das Dokument die CCC-Filmkunst GmbH als Produktionsfirma an. An sie ist das Schreiben auch adressiert. Laut Gutachten wurde dem Spielfilm das Prädikat „besonders wertvoll“ mit einem internen Abstimmungsverhältnis von 4:1 mit unbefristeter Gültigkeit verliehen. Der Film wird als Problemfilm beschrieben und mit den Schlagworten „Vergangenheitsbewältigung“, „Schuld und Sühne“, „Judenverfolgung“, „dt. Justiz“, „engagiert“ und „zeitkritisch“ versehen. In der Begründung werden nach einer kurzen inhaltlichen Zusammenfassung vor allem die schauspielerischen Leistungen sowie die Figurenentwicklung und die Situationsschärfe des Films hervorgehoben, die sich auch im Zusammenspiel von Bild und Ton zeigten. Zusätzlich wird die Bedeutung des Films mit dem Zeitpunkt seiner Entstehung begründet, der mit der Wiedervereinigung Deutschlands Gründe für ein neues geschichtliches Nachdenken über das eigene Land mit sich bringe. Das Dokument kann einerseits als Quelle für erinnerungskulturelle Konjunkturen gelesen werden und verweist andererseits mit der Geschichte des in Hamburg und Frankfurt gedrehten Spielfilms auf die Ereignisse in der Schule am Bullenhuser Damm in Hamburg. <a href="{{ path('article', { 'slug' : 'jgo:article-164' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Auszug aus: Lea Wohl von Haselberg, „Gegen das Vergessen“ – Filmische Erinnerung in „Der Rosengarten“"></span> weiterlesen &gt;</a></p>
+							<h3>“Films Against Oblivion” – Artur Brauner's “The Rose Garden”</h3>
+							<p>
+								This official rating certificate for the film “The Rose Garden” issued by the German Motion Picture Rating Agency  in Wiesbaden is in the collection of the German Film Institute’s  Artur Brauner Archives in Frankfurt a.M. It was issued upon request on April 24, 1990. In addition to the film’s technical data such as its length (3080 m), running time (113 mins), aspect ratio (35 mm) or language (German), the document also names the company CCC-Filmkunst LLC as its production company. It is to them that this letter is addressed. According to the certificate, the feature film was given a permanent rating of “highly recommended” based on an internal vote of 4:1. The film is described as a “social issues drama” and tagged with keywords such as “coming to terms with the past,” “guilt and atonement,” “persecution of Jews,” “German justice system,” “politically engaged,” and “social criticism.” The section explaining the committee’s rating includes a brief plot summary and mainly highlights the acting, character development, and the film’s detailed observation, which the reviewers also saw reflected in the combination of image and sound. The production date, which coincided with Germany’s reunification, is seen as adding to the film’s significance because it prompted a new period of thinking in historical terms about one’s home country. First, this document can be read as a source shedding light on the trends in the culture of remembrance in Germany; moreover, the plot of this film shot in locations in Hamburg and Frankfurt also tells the story of the historic events that occurred at the school on Bullenhuser Damm in Hamburg. (Text: Lea Wohl von Haselberg)
+							</p>
 						</div>
 		            </div><!-- .col -->
-					<div class="col col-xs-3 col-xs-offset-1 vertical-center">
+					<div class="col col-xs-3 vertical-center">
 						<div class="vertical-center-content">
 							<!--
 							<a href="../img/exhibition/jewish-life-since-1945/Der_Rosengarten_Szenenbilder_06.600x600.jpg" data-lightbox="remembrance-rosentargeten-gallery" title=""><img style="width: 45%; padding: 4px" src="../img/exhibition/jewish-life-since-1945/Der_Rosengarten_Szenenbilder_06.600x600.jpg" /></a>
@@ -1027,7 +1038,7 @@ erreichten Walter A. Berendsohn [...] gut 200 Glückwunschschreiben aus aller We
 							<a href="../viewer/source-00142/f0037_3.jpg" data-lightbox="remembrance-rosentargeten-gallery" title="Schreiben der Filmbewertungsstelle, S. 37"><img style="width: 30%; padding: 4px" src="../viewer/source-00142/f0037_1.jpg" /></a>
 							<a href="../viewer/source-00142/f0038_3.jpg" data-lightbox="remembrance-rosentargeten-gallery" title="Schreiben der Filmbewertungsstelle, S. 38"><img style="width: 30%; padding: 4px" src="../viewer/source-00142/f0038_1.jpg" /></a>
 							<div class="credits">
-								Quelle: <a href="https://www.filmportal.de/node/53395/material/705071" target="_blank">Artur Brauner-Archiv im Deutschen Filminstitut – DIF</a>; © CCC Filmkunst GmbH und Filmbewertungsstelle in Wiesbaden. <a href="{{ path('source', { 'uid' : 'jgo:source-142' }) }}" target="_blank">Quelle und Transkript &gt;</a>
+								Source: <a href="https://www.filmportal.de/node/53395/material/705071" target="_blank">Artur Brauner-Archiv im Deutschen Filminstitut – DIF</a>; © CCC Filmkunst GmbH und Filmbewertungsstelle in Wiesbaden.
 							</div>
 							<!--
 							<a href="../img/exhibition/jewish-life-since-1945/gedenken-bullenhuser.jpg" data-lightbox="remembrance-rosentargeten-gallery" title="Saal im Mahnmal der Schule am Bullenhuser Damm, der den 20 ermordeten Kindern gewidmet ist"><img style="width: 93%; padding: 4px" src="../img/exhibition/jewish-life-since-1945/gedenken-bullenhuser.jpg" /></a>
@@ -1053,7 +1064,7 @@ erreichten Walter A. Berendsohn [...] gut 200 Glückwunschschreiben aus aller We
 					<div class="col col-xs-6 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
 							<h3>Eine lange Geschichte: „400 Jahre Juden in Hamburg“</h3>
-							<p>Die Ausstellung ging aus einer engagierten Kooperation zwischen Mitarbeitern des Museums für Hamburgische Geschichte, des Instituts für die Geschichte der deutschen Juden und der Initiative ehemaliger jüdischer Hamburger, Bremer und Lübecker in Israel hervor. Ein erstes  Ergebnis dieser Zusammenarbeit war die Ausstellung „Ehemals in Hamburg zu Hause – Jüdisches Leben am Grindel“ gewesen, die im August 1986 in der Aula der vormaligen Talmud-Tora-Schule gezeigt worden war. Das Gebäude diente damals noch der Fachhochschule Hamburg, Fachbereich Bibliothekswesen. Anschließend zog die vorwiegend als Tafelschau konzipierte Ausstellung ein weiteres Vierteljahr ins Museum für Hamburgische Geschichte. Parallel wurden die Recherchen und die Kontaktaufnahme zu Leihgebern in aller Welt fortgesetzt und unter anderem auch eine Bestandsaufnahme der Judaika in den Hamburger staatlichen Museen erstellt.</p>
+							<p>Die Ausstellung ging aus einer engagierten Kooperation zwischen Mitarbeitern des Museums für Hamburgische Geschichte, des Instituts für die Geschichte der deutschen Juden und der Initiative ehemaliger jüdischer Hamburger, Bremer und Lübecker in Israel hervor. Ein erstes  Ergebnis dieser Zusammenarbeit war die Ausstellung „Ehemals in Hamburg zu Hause – Jüdisches Leben am Grindel“ gewesen, die im August 1986 in der Aula der vormaligen Talmud-Tora-Schule gezeigt worden war. Das Gebäude diente damals noch der Fachhochschule Hamburg, Fachbereich Bibliothekswesen. Anschließend zog die vorwiegend als Tafelschau konzipierte Ausstellung ein weiteres Vierteljahr ins Museum für Hamburgische Geschichte. Parallel wurden die Recherchen und die Konztaktaufnahme zu Leihgebern in aller Welt fortgesetzt und unter anderem auch eine Bestandsaufnahme der Judaika in den Hamburger staatlichen Museen erstellt.</p>
 							<p><a href="#" onClick="$('#displayBoxContent').html($('#myModal').html()).parent().toggle(); return false;" title=""><span class="glyphicon glyphicon-plus"></span> Die Geschichte des Chanukka-Leuchters</a></p>
 							<p> (Text: Ulrich Bauche)</p>
 							<div id="myModal" style="display: none">
@@ -1069,7 +1080,7 @@ erreichten Walter A. Berendsohn [...] gut 200 Glückwunschschreiben aus aller We
 	In der schließlich im Museum für Hamburgische Geschichte gezeigten Ausstellung „400 Jahre Juden in Hamburg“ (1991 / 92) erhielt der Leuchter einen prominenten Platz und erfreute sich großer Aufmerksamkeit. Die umfangreiche Ausstellung, sie nahm den größten Teil der Erdgeschossräume des Museums ein, beeindruckte auch durch die vielen Leihgaben aus aller Welt.</p>
 								</div>
 							</div><!-- #myModal -->
-							<div class="credits">Quelle: Ausstellungsplakat „400 Jahre Juden in Hamburg“. Ausstellung vom 8. November 1991 bis 29. März 1992.  Plakatgestaltung: Wolfgang Wiedey; Museum für Hamburgische Geschichte, Privatbesitz</div>
+							<div class="credits">Source: Ausstellungsplakat „400 Jahre Juden in Hamburg“. Ausstellung vom 8. November 1991 bis 29. März 1992.  Plakatgestaltung: Wolfgang Wiedey; Museum für Hamburgische Geschichte, Privatbesitz</div>
 						</div>
 		            </div><!-- .col -->
 				</div><!-- .row -->
@@ -1080,9 +1091,10 @@ erreichten Walter A. Berendsohn [...] gut 200 Glückwunschschreiben aus aller We
 				<div class="row">
 					<div class="col col-xs-4 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
-							<h3>Die Stolpersteine in der Brahmsallee 13, Hamburg</h3>
-							<p>Das Foto zeigt sechs Stolpersteine, die der Künstler Gunter Demnig am 22.7.2007 in die Gehwegplatten vor dem Wohnhaus Brahmsallee 13 eingelassen hat. Die 10 x 10 cm großen Betonsteine mit einer Oberfläche aus Messing erinnern an drei jüdische Ehepaare, die dort gelebt haben: <a href="http://www.stolpersteine-hamburg.de/?MAIN_ID=7&BIO_ID=1838" target="_blank">Gretchen</a> und <a href="http://www.stolpersteine-hamburg.de/?MAIN_ID=7&BIO_ID=1839" target="_blank">Jona Fels</a> von 1920 bis 1935, <a href="http://www.stolpersteine-hamburg.de/?MAIN_ID=7&BIO_ID=1840" target="_blank">Bruno</a> und <a href="http://www.stolpersteine-hamburg.de/?MAIN_ID=7&BIO_ID=1841" target="_blank">Irma Schragenheim</a> von 1927 bis 1936 und <a href="http://www.stolpersteine-hamburg.de/?MAIN_ID=7&BIO_ID=1836" target="_blank">Moritz</a> und <a href="http://www.stolpersteine-hamburg.de/?MAIN_ID=7&BIO_ID=1837" target="_blank">Erna Bertha Bacharach</a> von 1937 bis Frühjahr 1939. Demnig intendiert mit den Stolpersteinen, dass über sie die Namen der NS-Opfer im Gedächtnis der heutigen Bevölkerung verankert werden. Er hofft, sie lösen Diskussionen jedweder Art aus und befördern damit immer wieder eine Auseinandersetzung mit dem NS-Unrecht.
-							<a href="{{ path('article', { 'slug' : 'jgo:article-171' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Auszug aus: Beate Meyer, Die Stolpersteine in der Brahmsallee 13: Von den Geschichten hinter den Namen und den Hürden des Erinnerns"></span> weiterlesen &gt;</a>
+							<h3>The Stolpersteine of Brahmsallee 13, Hamburg</h3>
+							<p>
+								This photograph shows six stumbling stones  embedded in the pavement in front of the residential building at Brahmsallee 13 by artist Gunter Demnig on July 22, 2007. The brass plate-covered concrete cubes measuring 10 x 10 cm remember three Jewish couples who lived at this address: <a href="http://www.stolpersteine-hamburg.de/?MAIN_ID=7&BIO_ID=1838" target="_blank">Gretchen</a> and <a href="http://www.stolpersteine-hamburg.de/?MAIN_ID=7&BIO_ID=1839" target="_blank">Jona Fels</a> from 1920 until 1935, <a href="http://www.stolpersteine-hamburg.de/?MAIN_ID=7&BIO_ID=1840" target="_blank">Bruno</a> and <a href="http://www.stolpersteine-hamburg.de/?MAIN_ID=7&BIO_ID=1841" target="_blank">Irma Schragenheim</a> from 1927 until 1936, and <a href="http://www.stolpersteine-hamburg.de/?MAIN_ID=7&BIO_ID=1836" target="_blank">Moritz</a> and <a href="http://www.stolpersteine-hamburg.de/?MAIN_ID=7&BIO_ID=1837" target="_blank">Erna Bertha Bacharach</a> from 1937 until the spring of 1939. Demnig’s intention in placing these stones is to embed the names of the victims of National Socialism in the memory of people living today. He hopes they will start various kinds of discussions, thus continuously encouraging the study and discussion of National Socialist injustice.
+							<a href="{{ path('article', { 'slug' : 'jgo:article-171' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Excerpt from: Beate Meyer, The Stolpersteine of Brahmsallee 13: The Stories behind the Names and the Obstacles to Commemorating Them"></span> Read on &gt;</a>
 							</p>
 						</div>
 		            </div><!-- .col -->
@@ -1090,7 +1102,7 @@ erreichten Walter A. Berendsohn [...] gut 200 Glückwunschschreiben aus aller We
 						<div class="vertical-center-content">
 							<img style="width: 80%" data-src="../viewer/source-00129/media.jpg" />
 							<div class="credits">
-								Foto: Beate Meyer. <a href="{{ path('source', { 'uid' : 'jgo:source-129' }) }}" target="_blank">Quellenansicht &gt;</a>
+								Foto: Beate Meyer. <a href="{{ path('source', { 'uid' : 'jgo:source-129' }) }}" target="_blank">Source View &gt;</a>
 							</div>
 						</div>
 		            </div><!-- .col -->
@@ -1112,7 +1124,7 @@ erreichten Walter A. Berendsohn [...] gut 200 Glückwunschschreiben aus aller We
 							<li><a href="#" onClick="$.fn.fullpage.moveTo('ottensen', 5);" style="font-weight: bold; color: white"><span class="glyphicon glyphicon-chevron-right"></span> Mitteilung des Senates an die Bürgerschaft</a></li>
 							<li><a href="#" onClick="$.fn.fullpage.moveTo('ottensen', 6);" style="font-weight: bold; color: white"><span class="glyphicon glyphicon-chevron-right"></span> Gedenktafeln im Einkaufszentrum Mercado</a></li>
 						</ul>
-						<a href="#" data-toggle="tooltip" data-placement="top" title="Quelle: Wikimedia Commons, User: Sebastian scha, Lizenz: CC BY-SA 3.0, https://commons.wikimedia.org/wiki/File:Jew_cemetery_Altona_Hamburg_(Mercado)_2.jpg">
+						<a href="#" data-toggle="tooltip" data-placement="top" title="Source: Wikimedia Commons, User: Sebastian scha, Lizenz: CC BY-SA 3.0, https://commons.wikimedia.org/wiki/File:Jew_cemetery_Altona_Hamburg_(Mercado)_2.jpg">
 						<span class="glyphicon glyphicon-info-sign" style="color: white;"></span>
 						</a>
 					</div><!-- #section-ottensen-img -->
@@ -1135,7 +1147,7 @@ Eine grundlegend neue Lage entstand 1990 und in den folgenden drei Jahren. Der W
 					<div class="col col-xs-4 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
 							<a href="../img/exhibition/jewish-life-since-1945/FRI00070j.jpg" data-lightbox="ottensen-gallery" title="">
-								<img style="width: 90%" src="../img/exhibition/jewish-life-since-1945/FRI00070j_thumb.jpg" />
+								<img style="width: 90%" src="../img/exhibition/jewish-life-since-1945/FRI00070j.jpg" />
 							</a>
 							<div class="credits" style="width: 90%">
 								 Foto: Asmus Henkel/ PAN-Foto, abgedruckt in: Gruppe K (Hrsg.), Für den Erhalt des jüdischen Friedhofs in Ottensen, Hamburg 1992, S. 18.
@@ -1159,7 +1171,7 @@ Eine grundlegend neue Lage entstand 1990 und in den folgenden drei Jahren. Der W
 					<div class="col col-xs-4 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
 							<a href="../img/exhibition/jewish-life-since-1945/entscheidung-rabbiner-konferenz.jpg" class="fancybox" title="">
-								<img style="width: 100%" src="../img/exhibition/jewish-life-since-1945/entscheidung-rabbiner-konferenz_thumb.jpg" />
+								<img style="width: 100%" src="../img/exhibition/jewish-life-since-1945/entscheidung-rabbiner-konferenz.jpg" />
 							</a>
 							<div class="credits">
 								abgedruckt in: Gruppe K (Hrsg.), Für den Erhalt des jüdischen Friedhofs in Ottensen, Hamburg 1992, S. 27.
@@ -1193,7 +1205,7 @@ Am 28.10.1661 erwarben aschkenasische Juden aus Hamburg auf holsteinischem Gebie
 								<h3>Der Kompromiss und seine Kosten</h3>
 								<p>Im August 1993 erfuhr die Öffentlichkeit, welchen Preis die Hansestadt Hamburg zum Zwecke der politischen Streitbefriedung zu zahlen hatte. Der Senat präsentierte der Hamburger Bürgerschaft den mit dem Bauträger ausgehandelten Kompromiss. Mit ihm sollten die wirtschaftlichen Verluste des Investors für den Verzicht der Ausschachtung der Baugrube ausgeglichen werden. Der Senat hatte zugestehen müssen, dass der Investor die politischen Kosten des Abzugs der demonstrierenden Athra Kadischa und das schlichtende Votum des Oberrabbiners Kolitz politisch „vorfinanziert“ hatte. Man verständigte sich rechnerisch auf ein Ausgleichsvolumen von rund 16,4 Millionen DM. Der Betrag setzte sich durch günstige Preisgestaltung zweier an den Investor zusätzlich veräußerter Grundstücke in bester Lage und den Verzicht fälliger Abgaben zusammen. Unerwähnt blieb, dass der Investor das ehemalige Friedhofsgelände 1990 zu einem Preis von 14,2 Millionen DM erworben hatte und wenn man so will, letztlich den größten Vorteil aus dem „Streitfall jüdischer Friedhof Ottensen“ zog.</p>
 							</div>
-						</div><!-- #lorenzModal -->
+						</div><!-- #orientModal -->
 						</div>
 	                </div><!-- .col -->
                 </div><!-- .row -->
@@ -1213,22 +1225,22 @@ Am 28.10.1661 erwarben aschkenasische Juden aus Hamburg auf holsteinischem Gebie
 					<div class="col col-xs-4 vertical-center">
 						<div class="vertical-center-content">
 							<a href="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Levinson_Stadtteilarchiv_Ottensen-0.jpg" class="fancybox" title="">
-								<img style="height: 150px" src="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Levinson_Stadtteilarchiv_Ottensen-0_thumb.jpg" />
+								<img style="height: 150px" src="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Levinson_Stadtteilarchiv_Ottensen-0.jpg" />
 							</a>
 							<a href="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Levinson_Stadtteilarchiv_Ottensen-1.jpg" class="fancybox" title="">
-								<img style="height: 150px" src="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Levinson_Stadtteilarchiv_Ottensen-1_thumb.jpg" />
+								<img style="height: 150px" src="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Levinson_Stadtteilarchiv_Ottensen-1.jpg" />
 							</a>
 							<a href="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Levinson_Stadtteilarchiv_Ottensen-2.jpg" class="fancybox" title="">
-								<img style="height: 150px" src="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Levinson_Stadtteilarchiv_Ottensen-2_thumb.jpg" />
+								<img style="height: 150px" src="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Levinson_Stadtteilarchiv_Ottensen-2.jpg" />
 							</a>
 							<a href="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Levinson_Stadtteilarchiv_Ottensen-3.jpg" class="fancybox" title="">
-								<img style="height: 150px" src="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Levinson_Stadtteilarchiv_Ottensen-3_thumb.jpg" />
+								<img style="height: 150px" src="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Levinson_Stadtteilarchiv_Ottensen-3.jpg" />
 							</a>
 							<a href="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Levinson_Stadtteilarchiv_Ottensen-4.jpg" class="fancybox" title="">
-								<img style="height: 150px" src="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Levinson_Stadtteilarchiv_Ottensen-4_thumb.jpg" />
+								<img style="height: 150px" src="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Levinson_Stadtteilarchiv_Ottensen-4.jpg" />
 							</a>
 							<div class="credits">
-								Quelle: Stadtteilarchiv Ottensen e.V. Geschichtswerkstatt für Altona
+								Source: Stadtteilarchiv Ottensen e.V. Geschichtswerkstatt für Altona
 Dokumenten-Sammlung Hertie/ Quarree Ordner 2 und 3, 1992/93, abgedruckt in:  Ina Lorenz / Jörg Berkemann, Streitfall Jüdischer Friedhof Ottensen 1663-1993. Bd. 2: Texte und Dokumente, Hamburg 1995, GA Nr. 10, S. 356-359.
 							</div>
 						</div>
@@ -1241,31 +1253,35 @@ Dokumenten-Sammlung Hertie/ Quarree Ordner 2 und 3, 1992/93, abgedruckt in:  Ina
     	<div class="slide">
 	        <div class="container fullheight">
 				<div class="row">
-					<div class="col col-xs-5 col-xs-offset-1 vertical-center">
+					<div class="col col-xs-7 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
 							<h3>Gutachten des Oberrabbiners und Vorsitzenden der rabbinischen Gerichte Rabbi Itzhak Kolitz (Jerusalem) vom 21.5.1992</h3>
-							<p>Itzhak Kolitz (1922-2003), dessen Namen auch manchmal mit „Kulitz“ transkribiert wird, wurde in Alytus geboren, eine Stadt an der Memel im südöstlichen Litauen. Sein Vater war dort Rabbiner. Im Alter von elf Jahren im Jahr 1933 kam Kolitz nach Palästina. Er studierte Tora an der Hebron Yeshiwa in Jerusalem. 1955 wurde er Rabbinatsrichter. 1981 wurde Kolitz zum aschkenasischen Oberrabbiner von Jerusalem ordiniert, später erhielt er zusätzlich das Amt des Vorsitzenden der jüdischen Gerichte Jerusalem. Seine in diesem Gutachten dargelegte Entscheidung war nicht halachisch begründet und stand im Gegensatz zum Votum von Landesrabbiner Levinson sowie zur Erklärung der Deutschen Rabbiner-Konferenz.  <a href="#" onClick="$('#displayBoxContent').html($('#kolitzModal').html()).parent().toggle(); return false;" title=""><span class="glyphicon glyphicon-plus"></span> mehr</a>
+							<p>Itzhak Kolitz (1922-2003), dessen Namen auch manchmal mit „Kulitz“ transkribiert wird, wurde in Alytus geboren, eine Stadt an der Memel im südöstlichen Litauen. Sein Vater war dort Rabbiner. Im Alter von elf Jahren im Jahr 1933 kam Kolitz nach Palästina. Er studierte Tora an der Hebron Yeshiwa in Jerusalem. 1955 wurde er Rabbinatsrichter. 1981 wurde Kolitz zum aschkenasischen Oberrabbiner von Jerusalem ordiniert, später erhielt er zusätzlich das Amt des Vorsitzenden der jüdischen Gerichte Jerusalem. Seine in diesem Gutachten dargelegte Entscheidung war nicht halachisch begründet und stand im Gegensatz zum Votum von Landesrabbiner Levinson sowie zur Erklärung der Deutschen Rabbiner-Konferenz. Da das Gutachten, das sowohl in der Frankfurter Allgemeinen Zeitung als auch in der Allgemeinen Jüdischen Wochenzeitung veröffentlicht wurde, unter einschränkenden Auflagen den Bau des Einkaufszentrums Mercado ermöglichte, wird es als salomonisch beurteilt. Um die Totenruhe nicht zu stören, durften keinerlei Ausschachtungen stattfinden. Anstelle der ursprünglich geplanten Tiefgarage wurde daher ein Parkhaus auf dem Dach des Gebäudes errichtet und über dem Teil des Erdreiches, in dem noch Gräber und Gebeine vermutet wurden, eine Betonplatte gegossen. An den ehemaligen Friedhof erinnert im Untergeschoss eine Memorwand mit den Namen von etwa 4.000 Toten, die hier einst bestattet wurden. (Text: Ina Lorenz)
 							</p>
-						<div id="kolitzModal" style="display: none">
-							<div style="padding: 2em;">
-								<p>
-Da das Gutachten, das sowohl in der Frankfurter Allgemeinen Zeitung als auch in der Allgemeinen Jüdischen Wochenzeitung veröffentlicht wurde, unter einschränkenden Auflagen den Bau des Einkaufszentrums Mercado ermöglichte, wird es als salomonisch beurteilt. Um die Totenruhe nicht zu stören, durften keinerlei Ausschachtungen stattfinden. Anstelle der ursprünglich geplanten Tiefgarage wurde daher ein Parkhaus auf dem Dach des Gebäudes errichtet und über dem Teil des Erdreiches, in dem noch Gräber und Gebeine vermutet wurden, eine Betonplatte gegossen. An den ehemaligen Friedhof erinnert im Untergeschoss eine Memorwand mit den Namen von etwa 4.000 Toten, die hier einst bestattet wurden.</p>
-							</div>
-						</div><!-- #kolitzModal -->
-							<p>(Text: Ina Lorenz)</p>
 							<div class="credits">
-								Quelle: Allgemeine Jüdische Wochenzeitung, 47. Jg., 28.5.1992, S. 15, abgedruckt in: Ina Lorenz / Jörg Berkemann, Streitfall Jüdischer Friedhof Ottensen 1663-1993. Bd. 2: Texte und Dokumente, Hamburg 1995, GA Nr. 11 (A), S. 360-361.
+								Source: Allgemeine Jüdische Wochenzeitung, 47. Jg., 28.5.1992, S. 15, abgedruckt in: Ina Lorenz / Jörg Berkemann, Streitfall Jüdischer Friedhof Ottensen 1663-1993. Bd. 2: Texte und Dokumente, Hamburg 1995, GA Nr. 11 (A), S. 360-361.
 							</div>
 						</div>
 		            </div><!-- .col -->
-					<div class="col col-xs-offset-1 col-xs-5 vertical-center">
-						<div class="vertical-center-content">
-							<a href="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Kolitz_JA_top.jpg" class="fancybox" title="">
-								<img style="height: 350px" src="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Kolitz_JA_top_thumb.jpg" />
-							</a>
+					<div class="col col-xs-3 vertical-center">
+						<div class="vertical-center-content" style="text-align: right;">
 							<a href="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Kolitz_JA_text.jpg" class="fancybox" title="">
-								<img style="height: 350px" src="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Kolitz_JA_text_thumb.jpg" />
+								<img style="width: 90%" src="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Kolitz_JA_thumb.jpg" />
 							</a>
+						<!--
+							<a href="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Kolitz_Stadtteilarchiv_Ottensen-0.jpg" class="fancybox" title="">
+								<img style="height: 150px" src="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Kolitz_Stadtteilarchiv_Ottensen-0.jpg" />
+							</a>
+							<a href="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Kolitz_Stadtteilarchiv_Ottensen-1.jpg" class="fancybox" title="">
+								<img style="height: 150px" src="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Kolitz_Stadtteilarchiv_Ottensen-1.jpg" />
+							</a>
+							<a href="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Kolitz_Stadtteilarchiv_Ottensen-2.jpg" class="fancybox" title="">
+								<img style="height: 150px" src="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Kolitz_Stadtteilarchiv_Ottensen-2.jpg" />
+							</a>
+							<a href="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Kolitz_Stadtteilarchiv_Ottensen-3.jpg" class="fancybox" title="">
+								<img style="height: 150px" src="../img/exhibition/jewish-life-since-1945/Gutachten_Rabbi_Kolitz_Stadtteilarchiv_Ottensen-3.jpg" />
+							</a>
+					-->
 						</div>
 		            </div><!-- .col -->
 				</div><!-- .row -->
@@ -1275,24 +1291,24 @@ Da das Gutachten, das sowohl in der Frankfurter Allgemeinen Zeitung als auch in 
     	<div class="slide">
             <div class="container fullheight">
                 <div class="row">
-					<div class="col col-xs-4 col-xs-offset-1 vertical-center">
+					<div class="col col-xs-5 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
 							<a href="../img/exhibition/jewish-life-since-1945/Mitteilung_Senat_17.8.1993-0.jpg" class="fancybox" title="">
-								<img style="width: 32%" src="../img/exhibition/jewish-life-since-1945/Mitteilung_Senat_17.8.1993-0_thumb.jpg" />
+								<img style="width: 140px" src="../img/exhibition/jewish-life-since-1945/Mitteilung_Senat_17.8.1993-0.jpg" />
 							</a>
 							<a href="../img/exhibition/jewish-life-since-1945/Mitteilung_Senat_17.8.1993-1.jpg" class="fancybox" title="">
-								<img style="width: 32%" src="../img/exhibition/jewish-life-since-1945/Mitteilung_Senat_17.8.1993-1_thumb.jpg" />
+								<img style="width: 140px" src="../img/exhibition/jewish-life-since-1945/Mitteilung_Senat_17.8.1993-1.jpg" />
 							</a>
 							<a href="../img/exhibition/jewish-life-since-1945/Mitteilung_Senat_17.8.1993-2.jpg" class="fancybox" title="">
-								<img style="width: 32%" src="../img/exhibition/jewish-life-since-1945/Mitteilung_Senat_17.8.1993-2_thumb.jpg" />
+								<img style="width: 140px" src="../img/exhibition/jewish-life-since-1945/Mitteilung_Senat_17.8.1993-2.jpg" />
 							</a>
 							<div class="credits">
-								Quelle: Bürgerschaft der Freien und Hansestadt Hamburg, Drucksache 14/4587, 14. Wahlperiode, 17.8.1993: Mitteilung des Senats an die Bürgerschaft<br />
+								Source: Bürgerschaft der Freien und Hansestadt Hamburg, Drucksache 14/4587, 14. Wahlperiode, 17.8.1993: Mitteilung des Senats an die Bürgerschaft<br />
 								Mit freundlicher Genehmigung der Bürgerschaft der Freien und Hansestadt Hamburg, Bürgerschaftskanzlei, Parlamentarische Informationsdienste.
 							</div>
 						</div>
 					</div>
-					<div class="col col-xs-5 col-xs-offset-1 vertical-center">
+					<div class="col col-xs-5 vertical-center">
 						<div class="vertical-center-content">
 							<h3>Mitteilung des Senates an die Bürgerschaft vom 17.8.1993</h3>
 							<p>Aus der Mitteilung des Senats an die Bürgerschaft geht hervor, dass es nach dem schlichtenden Spruch von Oberrabbiner Kollitz, der zwar einerseits den Bau des Einkaufszentrums ermöglicht hatte, andererseits aber Auflagen machte, zu einem finanziellen Arrangement zwischen der Freien und Hansestadt Hamburg und dem Investor Büll &amp; Lüdtke gekommen war.  Die Hansestadt sah ein, dass sie mit dem Investor zu einer ausgleichenden Gesamtregelung gelangen musste. Es traf zu, dass der Investor die ihm 1990 / 1991 erteilte Baugenehmigung nicht im vollen Umfang ausnutzen konnte, wenn er seinerseits dem schlichtenden Spruch von Oberrabbiner Kolitz folgen wollte. Dass die Baugenehmigung wegen Störung der Totenruhe möglicherweise von vornherein rechtswidrig gewesen war, wollten die Beteiligten zu diesem Zeitpunkt nicht in Erwägung ziehen. Der eigentliche Gewinner des Konfliktes war damit letztlich der Investor. Er hatte das ehemalige Friedhofsgelände zum Kaufpreis von 14,2 Millionen DM erworben, behielt dieses, erhielt zudem 16,4 Millionen DM „erstattet“ und besaß jetzt zudem zwei Grundstücke an der Großen Elbstraße in attraktiver Lage, die er als Ausgleichsleistung erhalten hatte. (Text: Ina Lorenz)</p>
@@ -1311,7 +1327,7 @@ Da das Gutachten, das sowohl in der Frankfurter Allgemeinen Zeitung als auch in 
 								<img style="width: 100%" data-src="../img/exhibition/jewish-life-since-1945/Jew_cemetery_Altona_Hamburg.jpg" />
 							</a>
 							<div class="credits">
-								Quelle: <a href="https://commons.wikimedia.org/wiki/File:Jew_cemetery_Altona_Hamburg_(Mercado)_2.jpg">Wikimedia Commons</a> von <a href="https://commons.wikimedia.org/wiki/User:Sebastian_scha.">Sebastian scha.</a>, 2009, Lizenz: <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.en">CC BY-SA 3.0</a>.
+								Source: <a href="https://commons.wikimedia.org/wiki/File:Jew_cemetery_Altona_Hamburg_(Mercado)_2.jpg">Wikimedia Commons</a> von <a href="https://commons.wikimedia.org/wiki/User:Sebastian_scha.">Sebastian scha.</a>, 2009, Lizenz: <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.en">CC BY-SA 3.0</a>.
 							</div>
 						</div>
 		            </div><!-- .col -->
@@ -1350,11 +1366,13 @@ Da das Gutachten, das sowohl in der Frankfurter Allgemeinen Zeitung als auch in 
 							<h2>Ehemalige jüdische Hamburger III<br />
 							Lebenslanger Einsatz für die Erinnerung: Esther Bauer</h2>
 							<p>
-								Esther Bauer (1924–2016) wurde als einzige Tochter von Alberto Jonas, dem Direktor der Israelitischen Töchterschule, und der Ärztin Marie Jonas, geb. Levinsohn, in Hamburg geboren. Sie wuchs in einem behüteten Umfeld auf und bemerkte anfangs die nationalsozialistischen Verfolgungsmaßnahmen kaum. 1940 musste die Familie jedoch ihre geräumige Wohnung im Hamburger Stadtteil Eppendorf verlassen und in ein sogenanntes „Judenhaus“ ziehen. Im Juli 1942 wurde die Familie nach Theresienstadt deportiert, wo der Vater kurze Zeit später ums Leben kam. <a href="#" onClick="$.fn.fullpage.moveTo('bauer', 3);">Esther Bauer verliebte sich in den tschechischen Häftling Hanuš Leiner  und heiratete ihn.</a> Als ihr Mann 1944 in ein anderes Lager deportiert wurde, ließ sie sich ebenfalls in einen Transport einreihen. Esther Bauer landete in Auschwitz-Birkenau, wo sie nach wenigen Tagen zur Zwangsarbeit im KZ-Außenlager Freiberg eingeteilt wurde. Ihren Mann sah sie nie wieder. 1945 wurde sie, fast verhungert, auf einen Todesmarsch getrieben. <a href="#" onClick="$.fn.fullpage.moveTo('bauer', 1);">Die Befreiung erlebte sie im KZ Mauthausen.</a> Ihre Mutter wurde in Auschwitz-Birkenau ermordet.
+								Esther Bauer (1924–2016) was born in Hamburg. She was the only child of Alberto Jonas, the director of the Israelite School for Girls, and physician Marie Jonas, née Levinsohn. She grew up in a sheltered environment and initially remained largely unaware of National Socialist persecution. In 1940, however, the family was forced to move out of their spacious apartment in Hamburg’s neighborhood of Eppendorf and had to move into a so-called “house for Jews” [Judenhaus]. In July 1942, her family was deported to Theresienstadt, where her father died soon after. <a href="#" onClick="$.fn.fullpage.moveTo('bauer', 3);">Esther Bauer fell in love with Czech camp inmate Hanuš Leiner  and married him.</a> When her husband was deported to another camp in 1944, she volunteered for a transport. Esther Bauer ended up in Auschwitz-Birkenau and, a few days after her arrival, was assigned to forced labor in the satellite camp at Freiberg. She never saw her husband again. In 1945, nearly starved to death, she was forced on a death march. <a href="#" onClick="$.fn.fullpage.moveTo('bauer', 1);">She witnessed the liberation at the KZ Mauthausen.</a> Her mother had been murdered at Auschwitz-Birkenau.
 							</p>
-							<p>Esther Bauer kehrte nach Hamburg zurück, wo ihr von der Besatzungsbehörde ein Zimmer in der elterlichen Wohnung in Eppendorf zugewiesen wurde. <a href="#" onClick="$.fn.fullpage.moveTo('bauer', 2);">Dort lebte jedoch nach wie vor jener Mann, der die Wohnung übernommen hatte, nachdem die Familie in ein „Judenhaus“ umziehen musste.</a> Angesichts dieser untragbaren Situation verließ Esther Bauer Hamburg und reiste wenig später in die USA aus. Sie heiratete erneut und arbeitete zunächst im Textilgeschäft ihres Mannes, später in einer großen Werbeagentur.</p>
 							<p>
-							(Quelle: <a href="{{ path('article', { 'slug' : 'jgo:article-2' }) }}" target="_blank">Andrea Althaus, Linde Apel, Erzählte Geschichte – geschichtete Erzählung. Zu den lebensgeschichtlichen Interviews mit der Holocaust-Überlebenden Esther Bauer</a>)</p>
+								 Esther returned to Hamburg, where the occupation authorities assigned her a room in her parents’ old apartment in Eppendorf. <a href="#" onClick="$.fn.fullpage.moveTo('bauer', 2);">The man who had taken over the apartment after her family was forced to move into the “Judenhaus” still lived there as well, however.</a> Due to this unbearable situation, Esther emigrated from Hamburg to the United States a short time later. She married again and first worked in her husband’s textile business and later in a large advertising agency.
+							</p>
+							<p>
+							(Source: <a href="{{ path('article', { 'slug' : 'jgo:article-2' }) }}" target="_blank">Andrea Althaus, Linde Apel, Narrative Layers of History. The Oral History Interviews with Holocaust Survivor Esther Bauer</a>)</p>
 						</div><!-- -->
 					</div><!-- #col-xs-8 -->
 				</div><!-- .row -->
@@ -1368,7 +1386,7 @@ Da das Gutachten, das sowohl in der Frankfurter Allgemeinen Zeitung als auch in 
 						<div class="vertical-center-content">
 							<h3>Esther Jonas mit einer Freundin im KZ Mauthausen nach der Befreiung, Mai 1945</h3>
 							<p>
-								Das Foto zeigt Esther Bauer, geb. Jonas (Esther Bauer wurde als Esther Jonas geboren, nach ihrer ersten Hochzeit hieß sie Esther Jonas-Leiner, in den USA nahm sie den Nachnamen ihres zweiten Mannes an und nannte sich Esther Bauer) mit einer Freundin, deren Name nicht bekannt ist, im Konzentrationslager Mauthausen. Nachdem sie im KZ-Außenlager Freiberg Zwangsarbeit leisten musste, war sie im Frühjahr 1945 mit einem Todesmarsch nach Mauthausen gekommen, wo sie im Mai 1945 die Befreiung durch US-amerikanische Soldaten erlebte. (Text: Lena Langensiepen)
+								Das Foto zeigt Esther Bauer, geb. Jonas (Esther Bauer wurde als Esther Jonas geboren, nach ihrer ersten Hochzeit hieß sie Esther Jonas-Leiner, in den USA nahm sie den Nachnamen ihres zweiten Mannes an und nannte sich Esther Bauer.) mit einer Freundin, deren Namen nicht bekannt ist, im Konzentrationslager Mauthausen. Nachdem sie im KZ-Außenlager Freiberg Zwangsarbeit leisten musste, war sie im Frühjahr 1945 mit einem Todesmarsch nach Mauthausen gekommen, wo sie im Mai 1945 die Befreiung durch US-amerikanische Soldaten erlebte. (Text: Lena Langensiepen)
 							</p>
 							<p>
 								<a href="http://www.werkstatt-der-erinnerung.de/migration/bauer.html" target="_blank">Esther Bauer: "Ich wär nie in Deutschland geblieben…"
@@ -1380,7 +1398,7 @@ Da das Gutachten, das sowohl in der Frankfurter Allgemeinen Zeitung als auch in 
 						<div class="vertical-center-content">
 							<a href="../img/exhibition/jewish-life-since-1945/bauer_002.jpg" data-lightbox="bauer-mauthausen" title=""><img style="width: 60%" src="../img/exhibition/jewish-life-since-1945/bauer_002.jpg" /></a>
 							<div class="credits">
-								Quelle: FZH/WdE 112 und Bilddatenbank des IGDJ 21-015/233, Esther Jonas mit einer Freundin im KZ Mauthausen nach der Befreiung, Mai 1945.<br />
+								Source: FZH/WdE 112 und Bilddatenbank des IGDJ 21-015/233, Esther Jonas mit einer Freundin im KZ Mauthausen nach der Befreiung, Mai 1945.<br />
 								Mit freundlicher Genehmigung der Werkstatt der Erinnerung der Forschungsstelle für Zeitgeschichte Hamburg und der Bilddatenbank des Instituts für die Geschichte der deutschen Juden.
 							</div>
 						</div>
@@ -1399,7 +1417,7 @@ Da das Gutachten, das sowohl in der Frankfurter Allgemeinen Zeitung als auch in 
 								Nachdem Esther Bauer im KZ Mauthausen in der Nähe von Linz die Befreiung durch die Alliierten erlebt hatte, kehrte sie nach Hamburg zurück. Dort erhielt sie von der britischen Besatzungsbehörde ein Zimmer in der ehemaligen elterlichen Wohnung im Woldsenweg 5 in Eppendorf. Jedoch wohnte in dieser noch immer jener Mann, Dr. Schwarke, der die Wohnung bezogen hatte, als Esthers Familie im Jahr 1940 in ein sogenanntes Judenhaus umziehen musste. Esther Bauer verließ angesichts dieser untragbaren Situation Hamburg und emigrierte wenig später in die USA. (Text: Lena Langensiepen)
 							</p>
 							<div class="credits">
-								Quelle: Mit freundlicher Genehmigung der Werkstatt der Erinnerung der Forschungsstelle für Zeitgeschichte Hamburg, FZH/WdE 112.
+								Source: Mit freundlicher Genehmigung der Werkstatt der Erinnerung der Forschungsstelle für Zeitgeschichte Hamburg, FZH/WdE 112.
 							</div>
 						</div>
 		            </div><!-- .col -->
@@ -1422,15 +1440,15 @@ Da das Gutachten, das sowohl in der Frankfurter Allgemeinen Zeitung als auch in 
 				<div class="row">
 					<div class="col col-xs-8 col-xs-offset-3 vertical-center">
 						<div class="vertical-center-content">
-							<h3>Interview mit Esther Bauer vom 20.11.1998</h3>
+							<h3>Interview with Esther Bauer, conducted on November 20, 1998</h3>
 							<p>
-								Bei der hier präsentierten Quelle handelt es sich um einen Ausschnitt aus einem lebensgeschichtlichen Interview mit Esther Bauer, das am 20.11.1998 von Jens Michelsen für die Werkstatt der Erinnerung (WdE), dem Oral History Archiv der Forschungsstelle für Zeitgeschichte, geführt wurde. Es ist das zweite von fünf Interviews mit Esther Bauer, die in der WdE archiviert werden. Das Interview fand auf Initiative von Esther Bauer während ihres Aufenthaltes in Hamburg anlässlich der Benennung der Gedenk- und Bildungsstätte Israelitische Töchterschule nach ihrem Vater Alberto Jonas am 9.11.1998 statt.
-								<a href="{{ path('article', { 'slug' : 'jgo:article-2' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Auszug aus: Andrea Althaus, Linde Apel, Erzählte Geschichte – geschichtete Erzählung. Zu den lebensgeschichtlichen Interviews mit der Holocaust-Überlebenden Esther Bauer"></span> weiterlesen &gt;</a>
+								This is an excerpt from an oral history interview with Esther Bauer conducted on November 20, 1998 by Jens Michelsen for Workshop of Memory (WdE), the Oral History Archive run by the Research Centre for Contemporary History. It is the second of five interviews with Esther Bauer archived at WdE. The interview was initiated by Esther Bauer during her visit to Hamburg on the occasion of the Gedenk- und Bildungsstätte Israelitische Töchterschule being named for her father, Alberto Jonas, on November 9, 1998.
+								<a href="{{ path('article', { 'slug' : 'jgo:article-2' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Excerpt from: Andrea Althaus, Linde Apel, Narrative Layers of History. The Oral History Interviews with Holocaust Survivor Esther Bauer"></span> Read on &gt;</a>
 							</p>
 							<audio controls><source data-src="../viewer/source-00003/media.mp3" type="audio/mpeg"></source></audio>
 							<div class="credits">
-				Quelle: FZH: WdE 112.<br />
-				Mit freundlicher Genehmigung der Werkstatt der Erinnerung der Forschungsstelle für Zeitgeschichte Hamburg.  <a href="{{ path('source', { 'uid' : 'jgo:source-3' }) }}" target="_blank">Quelle und Transkript &gt;</a>
+				Source: FZH: WdE 112.<br />
+				Mit freundlicher Genehmigung der Werkstatt der Erinnerung der Forschungsstelle für Zeitgeschichte Hamburg.  <a href="{{ path('source', { 'uid' : 'jgo:source-3' }) }}" target="_blank">Source and Transcription &gt;</a>
 							</div>
 						</div>
 					</div>
@@ -1455,7 +1473,7 @@ Da das Gutachten, das sowohl in der Frankfurter Allgemeinen Zeitung als auch in 
 								Die Lebensgeschichte von Esther Bauer inspirierte die Regisseurin Christiane Richers zu den Theaterstücken „Esther Leben“ (2006) und „Das ist Esther“ (2007), die bis heute in verschiedenen Fassungen in Hamburg aufgeführt werden. Diese Aufnahme zeigt einen Ausschnitt aus einer Theaterinszenierung von „Esther Leben“ des Thalia Treffpunkt / Thalia Theater, die unter der Regie von Herbert Enge im Jahr 2006 im Kellinghusen Park aufgeführt wurde. (Text: Lena Langensiepen)
 							</p>
 							<div class="credits">
-								Quelle: DVD „Esther Leben“ 2006, Theaterinszenierung des Thalia Treffpunkt, Thalia Theater im Kellinghusen Park, Regie: Herbert Enge.<br />
+								Source: DVD „Esther Leben“ 2006, Theaterinszenierung des Thalia Treffpunkt, Thalia Theater im Kellinghusen Park, Regie: Herbert Enge.<br />
 								Mit freundlicher Genehmigung von Herbert Enge.
 							</div>
 						</div>
@@ -1506,7 +1524,7 @@ Da das Gutachten, das sowohl in der Frankfurter Allgemeinen Zeitung als auch in 
 								Bei zahlreichen Gelegenheiten sprach Esther Bauer in Deutschland und in den USA öffentlich über ihre Erfahrungen als NS-Verfolgte. Für ihr Engagement erhielt sie 2007 das Bundesverdienstkreuz. Hier ist sie zu Gast bei einem Zeitzeugengespräch, das im November 2011 im Jüdischen Salon am Grindelhof aufgezeichnet wurde. Das Gespräch war Teil des Projektes „Wie wollt ihr euch erinnern?“ der KZ-Gedenkstätte Neuengamme mit Hamburger Schülerinnen und Schülern. (Text: Lena Langensiepen)
 							</p>
 							<div class="credits">
-								Quelle: FZH/WdE 112, Ausschnitt aus Zeitzeugengespräch mit Esther Bauer im Jüdischen Salon am Grindelhof, 4.11.2011. Durchgeführt im Rahmen des Partizipationsprojektes „Wie wollt ihr euch erinnern? Beteiligung Jugendlicher an der konzeptionellen Entwicklung des Informations- und Dokumentationszentrums Hannoverscher Bahnhof“ der Kulturbehörde Hamburg in Zusammenarbeit mit der KZ-Gedenkstätte Neuengamme.
+								Source: FZH/WdE 112, Ausschnitt aus Zeitzeugengespräch mit Esther Bauer im Jüdischen Salon am Grindelhof, 4.11.2011. Durchgeführt im Rahmen des Partizipationsprojektes „Wie wollt ihr euch erinnern? Beteiligung Jugendlicher an der konzeptionellen Entwicklung des Informations- und Dokumentationszentrums Hannoverscher Bahnhof“ der Kulturbehörde Hamburg in Zusammenarbeit mit der KZ-Gedenkstätte Neuengamme.
 							</div>
 						</div>
 		            </div><!-- .col -->
@@ -1532,7 +1550,9 @@ Da das Gutachten, das sowohl in der Frankfurter Allgemeinen Zeitung als auch in 
 					<div class="col-xs-8 col-md-9 no-float" style="vertical-align: middle;">
 						<div style="padding: 40px; max-width: 50em;">
 							<h2>Pluralität: Jüdisches Leben im neuen Jahrtausend</h2>
-							Erst in der jüngeren Vergangenheit, nicht zuletzt unter dem Eindruck der Zuwanderung aus den Staaten der ehemaligen Sowjetunion, entwickeln sich wieder Ansätze für eine pluralistische Anschauung von gelebter Frömmigkeit. Die Entstehung eines egalitären Gebetskreises, die 2004 gegründete Liberale Jüdische Gemeinde, die konservativ ausgerichtete Masorti Gemeinde Kehilat Beit Shira, die seit 2009 besteht, aber auch das Zentrum der ultraorthodoxen internationalen Gruppierung Chabad Lubawitsch zeugen von dem Wunsch, unterschiedliche religiöse Positionen wieder dauerhaft in Hamburg zu etablieren. (Quelle: <a href="{{ path('topic-background', { 'slug' : 'religion-und-identitaet' })}}#section-5" target="_blank">Einführungstext: Religion und Identität)</a>
+							<p>
+								It is only in the recent past and not least due to the influence of migration from the countries of the former Soviet Union that the beginnings of a more diverse approach towards living one’s faith have been emerging. The establishment of an egalitarian prayer circle, the Liberal Jewish congregation founded in 2004, the conservative Masorti congregation of Kehilat Beit Shira existing since 2009, as well as the center run by the international ultraorthodox group Chabad Lubawitsch all testify to the desire to again establish different religious positions in Hamburg in the hope that they will endure. (Source: <a href="{{ path('topic-background', { 'slug' : 'religion-and-identity' })}}#section-5" target="_blank">Introductory Text: Religion and Identity)</a>
+							</p>
 						</div><!-- -->
 					</div><!-- #col-xs-8 -->
 				</div><!-- .row -->
@@ -1547,16 +1567,19 @@ Da das Gutachten, das sowohl in der Frankfurter Allgemeinen Zeitung als auch in 
 						<div class="vertical-center-content">
 							<a href="../img/exhibition/jewish-life-since-1945/carlebach-schule.jpg" data-lightbox="21st-century-carlebach-schule" title="Eingang der Joseph-Carlebach-Schule im Gebäude der ehemaligen Talmud-Tora-Realschule"><img style="width: 100%; padding: 4px" src="../img/exhibition/jewish-life-since-1945/carlebach-schule.jpg"  /></a>
 							<div class="credits">
-								Quelle: IGdJ Bilddatenbank NEU00038_2, Foto: Paula Oppermann.
+								Source: IGdJ Bilddatenbank NEU00038_2, Foto: Paula Oppermann.
 							</div>
 						</div>
 					</div>
 		-->
 					<div class="col col-xs-5 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
-							<h3>Neueröffnung der Joseph-Carlebach-Schule</h3>
-							<p>In einem kurzen Artikel berichtet Daniel Killy von der Eröffnung der Joseph-Carlebach-Schule, die am 28.8.2007 im Grindelhof 30 ihre Pforten für 18 Kinder der Vorschule und der ersten Klasse öffnete. Er beschreibt den Tagesablauf und das Konzept der Rhythmisierung des Alltags an der Ganztagsschule, das an die Ideen des Pädagogen und Namensgebers der Schule Joseph Carlebach angelehnt ist. Killy zitiert neben dem Schulleiter Heinz Hibbeler den Rabbiner Shlomo Bistritzky, der die Bedeutung der neuen Schule für den Aufbau des jüdischen Lebens in Hamburg hervorhebt. <a href="{{ path('article', { 'slug' : 'jgo:article-211' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Auszug aus: Stephanie Kowitz-Harms, Die Neueröffnung der Joseph-Carlebach-Schule"></span> weiterlesen&nbsp;&gt;</a></p>
-							<div class="credits">Quelle: Daniel Killy, Joseph-Carlebach-Schule, in: Jüdische Gemeinde in Hamburg, Gemeinderundschreiben, September / Oktober 2007, S. 11. IGdJ, Signatur Z JGHam. <a href="{{ path('source', { 'uid' : 'jgo:source-164' }) }}" target="_blank">Quelle und Transkript &gt;</a></div>
+							<h3>The Reopening of the Joseph Carlebach School</h3>
+							<p>
+								In a short article, Daniel Killy reports about the opening of the Joseph Carlebach School located at Grindelhof 30, which opened its doors to 18 children attending preschool and first grade on August 28, 2007. He describes the daily routine and the concept of “rhythmicization,” meaning the multi-methodical composition of the school day at this all-day school, which follows the ideas of pedagogue Joseph Carlebach, for whom the school is named. In addition to principal Heinz Hibbeler, Killy quotes rabbi Shlomo Bistritzky, who highlights the significance of this new school for the rebuilding of Jewish life in Hamburg.
+								<a href="{{ path('article', { 'slug' : 'jgo:article-211' }) }}" target="_blank"><span class="glyphicon glyphicon-info-sign article-info" data-toggle="tooltip" data-placement="top" title="Excerpt from: Stephanie Kowitz-Harms, The Reopening of the Joseph Carlebach School"></span> Read on&nbsp;&gt;</a
+							</p>
+							<div class="credits">Source: Daniel Killy, Joseph-Carlebach-Schule, in: Jüdische Gemeinde in Hamburg, Gemeinderundschreiben, September / Oktober 2007, S. 11. IGdJ, Signatur Z JGHam. <a href="{{ path('source', { 'uid' : 'jgo:source-164' }) }}" target="_blank">Source and Transcription &gt;</a></div>
 
 						</div>
 		            </div><!-- .col -->
@@ -1575,7 +1598,7 @@ Da das Gutachten, das sowohl in der Frankfurter Allgemeinen Zeitung als auch in 
 					<div class="col col-xs-5 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
 							{{ fullpagejs.youtube('XpvOUARefCE', 350, 220) }}
-							<div class="credits">Quelle: <a href="https://youtu.be/XpvOUARefCE" target="_blank">YouTube</a>. Mit freundlicher Genehmigung der Jüdischen Gemeinde Hamburg.</div>
+							<div class="credits">Source: <a href="https://youtu.be/XpvOUARefCE" target="_blank">YouTube</a>. Mit freundlicher Genehmigung der Jüdischen Gemeinde Hamburg.</div>
 						</div>
 		            </div><!-- .col -->
 					<div class="col col-xs-5 vertical-center">
@@ -1597,18 +1620,18 @@ Da das Gutachten, das sowohl in der Frankfurter Allgemeinen Zeitung als auch in 
 							<p>Der 2008 innerhalb des Café Leonar eröffnete Jüdische Salon ist Ausdruck der wieder sichtbarer werdenden vielfältigen jüdischen Kultur. Angelehnt an die Salon-Idee soll ein Raum für Diskussion und Reflexion geschaffen werden. Wie das im 21. Jahrhundert gelingen kann und welche Rolle dabei die Zeit vor 1933 spielt, fragten sich vier Schülerinnen der Sophie-Barat-Schule im Rahmen einer Geschichtomat-Projektwoche und interviewten eines der Gründungsmitglieder Michael Heimann.</p>
 							<!--
 							<h3>Israelische Haute Couture in Hamburg</h3>
-							<p>Die Fotografie zeigt eine Modenschau vom 18.10.2015, die im großen Ballsaal des Hamburger Hotels Atlantic Kempinski stattfand. Vorgeführt wurden Hochzeitskleider der israelischen Modedesignerin Galia Lahav. Im Mittelpunkt der Abbildung stehen vier Models, die umringt von Zuschauern durch den Saal schreiten. Der Fotograf befindet sich zum Zeitpunkt des Bildes im Rücken der Frauen. Die Fotografie zeigt somit sowohl den prunkvollen Ballsaal, die Zuschauer als auch insbesondere die Rückenpartien und Schleppen der Hochzeitskleider. Der Fokus liegt auf dem Model, das sich am nächsten am Betrachter des Bildes befindet. Dieses trägt das Brautkleid „Jasmine“, welches am Rücken mit Perlenketten und Stickereien auf französischer Spitze verziert ist. <a href="{{ path('article', { 'slug' : 'jgo:article-246' }) }}" target="_blank">weiterlesen &gt;</a> (Text: Julie Grimmeisen)</p>-->
+							<p>Die Fotografie zeigt eine Modenschau vom 18.10.2015, die im großen Ballsaal des Hamburger Hotels Atlantic Kempinski stattfand. Vorgeführt wurden Hochzeitskleider der israelischen Modedesignerin Galia Lahav. Im Mittelpunkt der Abbildung stehen vier Models, die umringt von Zuschauern durch den Saal schreiten. Der Fotograf befindet sich zum Zeitpunkt des Bildes im Rücken der Frauen. Die Fotografie zeigt somit sowohl den prunkvollen Ballsaal, die Zuschauer als auch insbesondere die Rückenpartien und Schleppen der Hochzeitskleider. Der Fokus liegt auf dem Model, das sich am nächsten am Betrachter des Bildes befindet. Dieses trägt das Brautkleid „Jasmine“, welches am Rücken mit Perlenketten und Stickereien auf französischer Spitze verziert ist. <a href="{{ path('article', { 'slug' : 'jgo:article-246' }) }}" target="_blank">Read on &gt;</a> (Text: Julie Grimmeisen)</p>-->
 						</div>
 		            </div><!-- .col -->
 					<div class="col col-xs-6 col-xs-offset-1 vertical-center">
 						<div class="vertical-center-content">
 							{{ fullpagejs.youtube('lfwWfqlQMro', 350, 220) }}
 							<div class="credits">
-								Quelle: Geschichtomat, <a href="https://www.geschichtomat.de/orte/geschichten/#135" target="_blank">www.geschichtomat.de/orte/geschichten/#135</a>.
+								Source: Geschichtomat, <a href="https://www.geschichtomat.de/orte/geschichten/#135" target="_blank">www.geschichtomat.de/orte/geschichten/#135</a>.
 							</div>
 							<!--
 							<a href="../viewer/source-00185/media.jpg" data-lightbox="21st-century-lahav" title=""><img style="width: 70%; padding: 4px" src="../viewer/source-00185/media.jpg" /></a>
-							<div class="credits">Quelle: TODO</div>
+							<div class="credits">Source: TODO</div>
 							-->
 						</div>
 		            </div><!-- .col -->
@@ -1620,7 +1643,7 @@ Da das Gutachten, das sowohl in der Frankfurter Allgemeinen Zeitung als auch in 
 	<div class="section fp-auto-height">
         <div class="intro footer">
 	        <p>Konzeption: <a href="{{ path('about-staff') }}" target="_blank">Anna Menny</a>. Technische Umsetzung: <a href="{{ path('about-staff') }}" target="_blank">Daniel Burckhardt</a>.<br />
-			Stand: 11.7.2018.
+			Stand: 5.7.2018.
 			</p>
         </div><!-- .intro.footer -->
     </div><!-- .section -->

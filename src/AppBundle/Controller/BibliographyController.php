@@ -9,7 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  *
  */
-class BibliographyController extends Controller
+class BibliographyController
+extends Controller
 {
     use SharingBuilderTrait;
 

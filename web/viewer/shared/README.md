@@ -25,7 +25,7 @@ and
     https://archive.thulb.uni-jena.de/staatsarchive/rsc/locale/translate/en/component.mets.*,component.viewer.*
 
 Alternatively, you can build them from or convert from message_de.properties and message_en.properties in
-https://github.com/MyCoRe-Org/mycore/tree/master/mycore-viewer/src/main/resources/components/viewer/config
+    https://github.com/MyCoRe-Org/mycore/tree/master/mycore-viewer/src/main/resources/components/viewer/config
 
 The only change currently needed to make iview2 work on this site is an adjustment of the hardwired path used for HTML-renditions of the individual pages in the TEI-files:
 

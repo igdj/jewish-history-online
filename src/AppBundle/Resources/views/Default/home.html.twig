@@ -29,6 +29,16 @@
     </script>
 
     <style>
+        .exhibition-img {
+            vertical-align: top;
+        }
+
+        @media (min-width: 1200px ) {
+            .exhibition-img {
+                vertical-align: bottom;
+            }
+        }
+
         /* topic-carousel */
 
         @media (min-width: 992px ) {
@@ -185,6 +195,30 @@
                 </div>
             </div>
 
+{% if 'de' == app.request.locale %}
+            <div id="box-exhibition" class="container-fluid box">
+                <div class="row box-header" style="background-color: rgb(155, 155, 155);">
+                    <div class="col-sm-12">
+                        <h4><a href="{{ path('exhibition', { 'slug' : 'jewish-life-since-1945'|trans }) }}">{{ 'Online Exhibition'|trans }}</a></h4>
+                    </div>
+                </div>
+                <div class="row box-content" style="display: table;">
+                    <div class="col-sm-3 col-md-3 col-lg-6 hidden-xs exhibition-img" style="float: none; padding-top: 16px; padding-bottom: 16px; display: table-cell">
+                        <a href="{{ path('exhibition', { 'slug' : 'jewish-life-since-1945'|trans }) }}"><img src="{{ asset('img/exhibition/jewish-life-since-1945/jewish-life-since-1945.jpg') }}" style="width: 100%; height: auto" /></a>
+                    </div>
+                    <div class="col-xs-12 col-sm-9 col-lg-6" style="float: none; display: table-cell; padding-top: 8px; vertical-align: top;">
+
+                        <h5 style="font-size: 16px; font-weight: bold"><a href="{{ path('exhibition', { 'slug' : 'jewish-life-since-1945'|trans }) }}">{{ 'Jewish Life since 1945'|trans }}</a></h5>
+                        <p>
+                            In dieser ersten Online-Ausstellung im Rahmen der Schlüsseldokumente-Edition <a href="{{ path('exhibition', { 'slug' : 'jewish-life-since-1945'|trans }) }}">werfen wir ein Schlaglicht auf die jüdische Geschichte nach dem Holocaust</a>.
+                        </p>
+                        <p class="hidden-xs hidden-sm hidden-md">Keineswegs unumstritten entstanden bereits unmittelbar nach Kriegsende die ersten jüdischen Gemeinden in Westdeutschland, so auch im Sommer 1945 in Hamburg. Bis jüdisches Leben in Deutschland selbstverständlich werden konnte – sowohl für die dort lebenden Jüdinnen und Juden selbst als auch für die nichtjüdische Mehrheitsgesellschaft – sollte es jedoch mehrere Jahrzehnte dauern.</p>
+                        </p>
+                    </div>
+                </div>
+            </div>
+{% endif %}
+
             <div id="box-education" class="container-fluid box">
                 <div class="row box-header" style="background-color: #070E44">
                     <div class="col-sm-12">
@@ -334,6 +368,56 @@
                 </div>
                 <div class="row box-color-content-inverse">
                     <div class="col-sm-4">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-142' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00142/thumb.jpg" style="width: 100%; height: auto" /></a>
+                    </div>
+                    <div class="col-sm-8">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-142' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Letter from the German Motion Picture Rating Agency to CCC-Filmkunst LLC. Regarding the Rating of the Movie “Der Rosengarten” [“The Rose Garden”]</b>, Wiesbaden, May 08, 1990
+                        {% else %}
+                        <b>Schreiben der Filmbewertungsstelle an CCC-Filmkunst GmbH, betrifft Bewertung des Films „Der Rosengarten“</b>, Wiesbaden, 8.5.1990
+                        {% endif %}
+                        </a>
+
+                        <p>
+                        <a href="{{ path('article', { 'slug' : 'jgo:article-164' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Source Interpretation</b> by
+                        {% else %}
+                        <b>Interpretation</b> von
+                        {% endif %}
+                        Lea Wohl von Haselberg
+                        </a>
+                        </p>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse">
+                    <div class="col-sm-4">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-177' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00177/thumb.jpg" style="width: 100%; height: auto" /></a>
+                    </div>
+                    <div class="col-sm-8">
+                        <a href="{{ path('source', { 'uid' : 'jgo:source-177' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Letter to the President of the Hamburg Jewish Congregation</b>, Berlin, August 27, 1948
+                        {% else %}
+                        <b>Schreiben an den Vorsitzenden der jüdischen Gemeinde Hamburg</b>, Berlin, 27.8.1948
+                        {% endif %}
+                        </a>
+
+                        <p>
+                        <a href="{{ path('article', { 'slug' : 'jgo:article-207' }) }}">
+                        {% if 'en' == app.request.locale %}
+                        <b>Source Interpretation</b> by
+                        {% else %}
+                        <b>Interpretation</b> von
+                        {% endif %}
+                        Anna Koch
+                        </a>
+                        </p>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse">
+                    <div class="col-sm-4">
                         <a href="{{ path('source', { 'uid' : 'jgo:source-188' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00188/thumb.jpg" style="width: 100%; height: auto" /></a>
                     </div>
                     <div class="col-sm-8">
@@ -378,56 +462,6 @@
                         <b>Interpretation</b> von
                         {% endif %}
                         Constanze Kolbe
-                        </a>
-                        </p>
-                    </div>
-                </div>
-                <div class="row box-color-content-inverse">
-                    <div class="col-sm-4">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-67' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00067/thumb.jpg" style="width: 100%; height: auto" /></a>
-                    </div>
-                    <div class="col-sm-8">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-67' }) }}">
-                        {% if 'en' == app.request.locale %}
-                        <b>By-laws of the Franz Rosenzweig Memorial Foundation</b>, Hamburg, November 1930
-                        {% else %}
-                        <b>Die Statuten der Franz-Rosenzweig-Gedächtnis-Stiftung</b>, Hamburg, November 1930
-                        {% endif %}
-                        </a>
-
-                        <p>
-                        <a href="{{ path('article', { 'slug' : 'jgo:article-65' }) }}">
-                        {% if 'en' == app.request.locale %}
-                        <b>Source Interpretation</b> by
-                        {% else %}
-                        <b>Interpretation</b> von
-                        {% endif %}
-                        Ina Lorenz
-                        </a>
-                        </p>
-                    </div>
-                </div>
-                <div class="row box-color-content-inverse">
-                    <div class="col-sm-4">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-176' }) }}"><img src="{{ app.request.basepath }}/viewer/source-00176/thumb.jpg" style="width: 100%; height: auto" /></a>
-                    </div>
-                    <div class="col-sm-8">
-                        <a href="{{ path('source', { 'uid' : 'jgo:source-176' }) }}">
-                        {% if 'en' == app.request.locale %}
-                        <b>A Conversation with Arnold Bernstein, in: Sonntagsblatt Staats-Zeitung und Herold, November 24, 1957</b>, New York
-                        {% else %}
-                        <b>Gespräch mit Arnold Bernstein, in: Sonntagsblatt Staats-Zeitung und Herold, 24.11.1957</b>, New York
-                        {% endif %}
-                        </a>
-
-                        <p>
-                        <a href="{{ path('article', { 'slug' : 'jgo:article-242' }) }}">
-                        {% if 'en' == app.request.locale %}
-                        <b>Source Interpretation</b> by
-                        {% else %}
-                        <b>Interpretation</b> von
-                        {% endif %}
-                        Björn Siegel
                         </a>
                         </p>
                     </div>

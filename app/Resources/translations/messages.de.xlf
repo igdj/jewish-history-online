@@ -422,7 +422,7 @@
       </trans-unit>
       <trans-unit id="7890eab9e1d60e51ce0b9ac37b5db0390ab7bbb1" resname="More on this Topic">
         <source>More on this Topic</source>
-        <target>More on this Topic</target>
+        <target>Mehr zu diesem Thema</target>
         <jms:reference-file line="85">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Exhibition\jewish-life-since-1945.en.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="5a64c7607d6bbd900e183a7a6f02b220abab20f6" resname="New Sources">
@@ -680,7 +680,7 @@
       </trans-unit>
       <trans-unit id="e00240a56216e317ea288f3374ba3997e99953d1" resname="To the Chapter Overview">
         <source>To the Chapter Overview</source>
-        <target>To the Chapter Overview</target>
+        <target>Zur Kapitelübersicht</target>
         <jms:reference-file line="75">\..\..\..\..\..\..\./src\AppBundle\Resources\views\Exhibition\jewish-life-since-1945.en.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="7e13bd176f89a12f0b614b55ffc19c14515ef920" resname="Topic">

@@ -10,7 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  *
  */
-class TopicController extends RenderTeiController
+class TopicController
+extends RenderTeiController
 {
     static $TOPICS = [
         'Demographics and Social Structure',
@@ -69,6 +70,7 @@ class TopicController extends RenderTeiController
             $key = $slugify->slugify($translate_keys ? $label_translated : $label);
             $topics[$key] = $label_translated;
         }
+
         return $topics;
     }
 
@@ -211,19 +213,6 @@ class TopicController extends RenderTeiController
         $glossaryLookup = $this->buildGlossaryLookup($glossaryTerms, $locale);
 
         // sidebar
-        /*
-        $query = $this->getDoctrine()
-            ->getManager()
-            ->createQuery("SELECT A FROM AppBundle:Article A"
-                          . " WHERE A.status IN (1) AND A.keywords LIKE :topic AND A.articleSection <> 'background'"
-                          . (!empty($language) ? ' AND A.language=:language' : '')
-                          . " ORDER BY A.name")
-            ->setParameter('topic', '%' . $topics[$slug] . '%')
-            ;
-        if (!empty($language)) {
-            $query->setParameter('language', $language);
-        }
-        */
         $queryBuilder = $this->getDoctrine()
                 ->getManager()
                 ->createQueryBuilder()

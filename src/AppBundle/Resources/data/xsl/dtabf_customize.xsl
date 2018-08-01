@@ -217,6 +217,20 @@
     </span>
   </xsl:template>
 
+  <!-- override poems to add support for @dir -->
+  <xsl:template match='tei:lg[@type="poem"]'>
+    <div class="poem"><xsl:if test="@dir">
+        <xsl:attribute name="dir"><xsl:value-of select="@dir"/></xsl:attribute>
+      </xsl:if><xsl:apply-templates/></div>
+  </xsl:template>
+
+  <xsl:template match='tei:lg[not(@type="poem")]'>
+    <div class="dta-lg"><xsl:if test="@dir">
+        <xsl:attribute name="dir"><xsl:value-of select="@dir"/></xsl:attribute>
+      </xsl:if><xsl:apply-templates/></div>
+  </xsl:template>
+  <!-- end poems -->
+
   <!-- override version from dta-base.xsl to add support for @dir -->
   <xsl:template match="tei:p">
    <xsl:choose>

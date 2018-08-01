@@ -41,7 +41,7 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
                 Sozialgeschichte an der Universität Göttingen</p>
             <lb/>
             <p><hi rendition="#b"><ref
-                target="http://www.dubnow.de/institut/mitarbeiterinnen/prof-dr-joerg-deventer-stellvertreter-der-direktorin/"
+                        target="http://www.dubnow.de/institut/mitarbeiterinnen/prof-dr-joerg-deventer-stellvertreter-der-direktorin/"
                         >Prof. Dr. Jörg Deventer</ref></hi>, stellvertretender Direktor des Simon
                 Dubnow Instituts, Leipzig</p>
             <lb/>
@@ -78,8 +78,8 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
                     target="http://www.jmberlin.de/main/DE/03b-Akademie/03-Archiv/00-archiv.php">Leo
                     Baeck Instituts, Jüdisches Museum Berlin</ref></p>
             <lb/>
-            <p><hi rendition="#b">Prof. Dr. Reinhard Rürup</hi>, Prof. emer. für Neuere Geschichte,
-                Technische Universität Berlin</p>
+            <p><hi rendition="#b">Prof. Dr. Reinhard Rürup</hi>  †, Prof. emer. für Neuere
+                Geschichte, Technische Universität Berlin</p>
             <lb/>
             <p><hi rendition="#b"><ref
                         target="https://www.geschichte.uni-hamburg.de/arbeitsbereiche/deutsche-geschichte/personen/schaser.html"
