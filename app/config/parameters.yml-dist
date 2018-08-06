@@ -29,7 +29,7 @@ parameters:
     # if you want to use a wordpress installation for news
     # app.wp-rest.url: "http://juedische-geschichte-online.net/projekt/"
     # app.wp-rest.user: wp-rest
-    # app.wp-rest.url: "secret"
+    # app.wp-rest.password: "secret"
 
     # xslt settings
     app.xslt.adapter.class:  AppBundle\Utils\Xsl\XsltCommandlineAdapter
