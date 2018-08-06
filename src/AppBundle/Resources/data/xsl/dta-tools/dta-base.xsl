@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--perhaps a PROBLEM: xpath-default-namespace is an XSLT 2.0 feature -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
   xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:dta="urn:dta" exclude-result-prefixes="dta tei"
   xpath-default-namespace="http://www.tei-c.org/ns/1.0">
   <!-- <xsl:include href="uri-encode.xsl"/> -->
