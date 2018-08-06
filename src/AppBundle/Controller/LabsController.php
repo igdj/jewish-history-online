@@ -142,12 +142,8 @@ extends Controller
             if (empty($row['geo'])) {
                 continue;
             }
-            /*
-            if ($row['longitude'] == 0 && $row['latitude'] == 0) {
-                continue;
-            }
-            */
-            $key = $row['geo']; // $row['latitude'] . ':' . $row['longitude'];
+
+            $key = $row['geo'];
 
             if (!array_key_exists($key, $values)) {
                 $values[$key]  = [
@@ -160,6 +156,7 @@ extends Controller
                     'persons' => [],
                 ];
             }
+
             $values[$key]['persons'][] = sprintf('<a href="%s">%s</a>',
                                                  htmlspecialchars($this->generateUrl('person', [
                                                     'id' => $row['person_id'],
@@ -202,8 +199,8 @@ extends Controller
                   . ' FROM person INNER JOIN place ON person.deathplace_id=place.id'
                   . ' WHERE person.status <> -1'
                   // . " AND country_code IN ('IL')"
-                  . ' GROUP BY country_code, place.name'
-                  . ' ORDER BY country_code, place.name'
+                  . ' GROUP BY country_code, place.name, place.tgn'
+                  . ' ORDER BY country_code, place.name, place.tgn'
                   ;
         $stmt = $dbconn->query($querystr);
         $deathplaces_by_country = [];
@@ -221,7 +218,7 @@ extends Controller
                           . ' INNER JOIN place pb ON person.birthplace_id=pb.id'
                           . ' INNER JOIN place pd ON person.deathplace_id=pd.id'
                           . " WHERE pd.tgn='" . $tgn. "' AND person.status <> -1"
-                          . ' GROUP BY country_code, pb.name';
+                          . ' GROUP BY country_code, pb.name, pb.tgn';
                 $stmt = $dbconn->query($querystr);
                 $dependencies_by_place = [];
                 while ($row = $stmt->fetch()) {
