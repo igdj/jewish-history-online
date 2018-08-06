@@ -1973,16 +1973,16 @@
         },
         {
             "name": "knplabs/knp-components",
-            "version": "1.3.8",
+            "version": "v1.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/knp-components.git",
-                "reference": "b65f69ff04d2f1b7a67ae592273ca6f4d1aa3e5f"
+                "reference": "f0f830361ff0ee83ea5c5ffe49b429d2b0ff4266"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/knp-components/zipball/b65f69ff04d2f1b7a67ae592273ca6f4d1aa3e5f",
-                "reference": "b65f69ff04d2f1b7a67ae592273ca6f4d1aa3e5f",
+                "url": "https://api.github.com/repos/KnpLabs/knp-components/zipball/f0f830361ff0ee83ea5c5ffe49b429d2b0ff4266",
+                "reference": "f0f830361ff0ee83ea5c5ffe49b429d2b0ff4266",
                 "shasum": ""
             },
             "require": {
@@ -1999,13 +1999,6 @@
                 "symfony/property-access": ">=2.3"
             },
             "suggest": {
-                "doctrine/common": "to allow usage pagination with Doctrine ArrayCollection",
-                "doctrine/mongodb-odm": "to allow usage pagination with Doctrine ODM MongoDB",
-                "doctrine/orm": "to allow usage pagination with Doctrine ORM",
-                "doctrine/phpcr-odm": "to allow usage pagination with Doctrine ODM PHPCR",
-                "propel/propel1": "to allow usage pagination with Propel ORM",
-                "ruflin/Elastica": "to allow usage pagination with ElasticSearch Client",
-                "solarium/solarium": "to allow usage pagination with Solarium Client",
                 "symfony/property-access": "To allow sorting arrays"
             },
             "type": "library",
@@ -2042,7 +2035,7 @@
                 "pager",
                 "paginator"
             ],
-            "time": "2018-04-03T12:20:48+00:00"
+            "time": "2018-08-03T08:37:27+00:00"
         },
         {
             "name": "knplabs/knp-menu",
@@ -4528,16 +4521,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.43",
+            "version": "v2.8.44",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "e7f50768f107fa951f4c80dc447b893502cf2e89"
+                "reference": "789dc7eb57579185a430e65c5efce4b2d6b6b7b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/e7f50768f107fa951f4c80dc447b893502cf2e89",
-                "reference": "e7f50768f107fa951f4c80dc447b893502cf2e89",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/789dc7eb57579185a430e65c5efce4b2d6b6b7b1",
+                "reference": "789dc7eb57579185a430e65c5efce4b2d6b6b7b1",
                 "shasum": ""
             },
             "require": {
@@ -4664,7 +4657,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2018-07-23T09:03:03+00:00"
+            "time": "2018-08-01T14:12:49+00:00"
         },
         {
             "name": "technosophos/LibRIS",
@@ -4707,6 +4700,7 @@
                 "RIS",
                 "Reference"
             ],
+            "abandoned": true,
             "time": "2012-03-14T16:36:15+00:00"
         },
         {
