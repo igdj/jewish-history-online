@@ -6,15 +6,21 @@ use AppBundle\Utils\Sprintf;
 
 class XsltCommandlineAdapter
 {
-    var $cmdTemplate;
-    var $config = [];
+    protected $cmdTemplate;
+    protected $config = [];
+    protected $errors = [];
 
-    function __construct($cmdTemplate, $config = null)
+    public function __construct($cmdTemplate, $config = null)
     {
         $this->cmdTemplate = $cmdTemplate;
         if (isset($config) && is_array($config)) {
             $this->config = $config;
         }
+    }
+
+    public function getErrors()
+    {
+        return $this->errors;
     }
 
     protected function escapeFilename($fname, $check_exists = true)
@@ -44,16 +50,19 @@ class XsltCommandlineAdapter
         return join(' ', $nameValue);
     }
 
-    function transformToXml($srcFilename, $xslFilename, $options = [])
+    public function transformToXml($srcFilename, $xslFilename, $options = [])
     {
+        $this->errors = [];
+
         $cmd = trim(Sprintf::f($this->cmdTemplate, [
                 'source' => $this->escapeFilename($srcFilename),
                 'xsl' => $this->escapeFilename($xslFilename),
                 'additional' => $this->buildAdditional($options),
             ]));
+
         $res = `$cmd`;
 
-        // TODO: implement some form of error-handling
+        // TODO: implement error-handling
         return $res;
     }
 }
