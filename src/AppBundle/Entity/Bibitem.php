@@ -1061,7 +1061,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
             if (array_key_exists('imageLinks', $item['volumeInfo'])) {
                 foreach ([ 'thumbnail', 'smallThumbnail' ] as $key) {
                     if (array_key_exists($key, $item['volumeInfo']['imageLinks'])) {
-                        return $item['volumeInfo']['imageLinks'][$key];
+                        return str_replace('http://', 'https://', $item['volumeInfo']['imageLinks'][$key]);
                     }
                 }
             }
