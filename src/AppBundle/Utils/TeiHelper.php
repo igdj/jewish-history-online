@@ -895,7 +895,7 @@ class CollectingReader extends \Sabre\Xml\Reader
         $this->collected[] = $output;
     }
 
-    function parse()
+    function parse() : array
     {
         $this->collected = array();
         parent::parse();
