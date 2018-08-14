@@ -48,8 +48,8 @@ doctrine:
             admin:
                 host:     '%database.host%'
                 port:     '%database.port%'
-                dbname:   'juedischegeschichte'
-                user:     '%database.user%'
+                dbname:   '%database.admin_name%'
+                user:     '%database.admin_user%'
                 password: '%database.password%'
                 #driver:  pdo_mysql
                 charset:  '%database.charset%' # UTF8

@@ -8,6 +8,10 @@ parameters:
     database.password: ~
     database.charset:   utf8mb4
 
+    # administration database
+    database.admin_name: jgo_admin
+    database.admin_user: root
+
     jms_i18n_routing.hosts.de:  localhost
     jms_i18n_routing.hosts.en:  127.0.0.1
 
