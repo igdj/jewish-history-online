@@ -1,7 +1,7 @@
 {
     "config": {
         "platform": {
-            "php": "5.4.45"
+            "php": "7.1.3"
         }
     },
 
@@ -43,6 +43,8 @@
 
         "jms/i18n-routing-bundle": "2.0.*",
         "jms/translation-bundle": "1.3.*",
+
+        "twig/twig": "1.*",
 
         "cocur/slugify": "1.*",
         "liip/url-auto-converter-bundle": "dev-master",
