@@ -19,7 +19,28 @@ extends Controller
         $kernel = $this->container->get('kernel');
         $path = $kernel->locateResource('@AppBundle/Resources/data/csl/jgo-infoclio-de.csl.xml');
 
-        return new \AcademicPuma\CiteProc\CiteProc(file_get_contents($path), $locale);
+        $wrapSpan = function ($renderedText, $class) {
+            return '<span class="citeproc-'. $class . '">' . $renderedText . '</span>';
+        };
+
+        $additionalMarkup = [];
+        foreach ([
+                'creator' => 'creator',
+                'title' => 'title',
+                'in' => 'in',
+                'volumes' => 'volumes',
+                'book-series' => 'book-series',
+                'place' => 'place',
+                'date' => 'data',
+                'URL' => 'URL',
+                'DOI' => 'DOI',
+            ] as $key => $class) {
+            $additionalMarkup[$key] = function($cslItem, $renderedText) use ($wrapSpan, $class) {
+                return $wrapSpan($renderedText, $class);
+            };
+        }
+
+        return new \Seboettg\CiteProc\CiteProc(file_get_contents($path), $locale, $additionalMarkup);
     }
 
     /**

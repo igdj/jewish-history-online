@@ -1098,7 +1098,8 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
 
     public function renderCitationAsHtml($citeProc, $locale, $purgeSeparator = false)
     {
-        $ret = $citeProc->render(json_decode(json_encode($this->jsonSerialize($locale))));
+        // silence Notice: Undefined offset: 0
+        $ret = @ $citeProc->render([ json_decode(json_encode($this->jsonSerialize($locale))) ]);
 
         /* vertical-align: super doesn't render nicely:
            http://stackoverflow.com/a/1530819/2114681
@@ -1107,24 +1108,20 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
                             'style="\1vertical-align: top; font-size: 66%;\2"', $ret);
 
         if ($purgeSeparator) {
-            if (preg_match('/, <span class="citeproc\-in">/', $ret, $matches)) {
-                $ret = preg_replace('/, (<span class="citeproc\-in">)/', '\1', $ret);
+            $reWrappingDiv = '/^\s*<div[^>]*>([\s\S]*)<\/div>\s*$/s';
+            while (preg_match($reWrappingDiv, $ret)) {
+                $ret = trim(preg_replace($reWrappingDiv, '\1', $ret));
             }
-            else if (preg_match('/, <span class="citeproc\-volumes">/', $ret, $matches)) {
-                $ret = preg_replace('/, (<span class="citeproc\-volumes">)/', '\1', $ret);
-            }
-            else if (preg_match('/, <span class="citeproc\-book\-series">/', $ret, $matches)) {
-                $ret = preg_replace('/, (<span class="citeproc\-book\-series">)/', '\1', $ret);
-            }
-            else if (preg_match('/, <span class="citeproc\-place">/', $ret, $matches)) {
-                $ret = preg_replace('/, (<span class="citeproc\-place">)/', '\1', $ret);
-            }
-            else if (preg_match('/, <span class="citeproc\-date">/', $ret, $matches)) {
-                $ret = preg_replace('/, (<span class="citeproc\-date">)/', '\1', $ret);
+
+            if (preg_match($reTitle = '/(<span class="citeproc\-title">.*?<\/span>\s*),\s*/', $ret, $matches)) {
+                $parts = preg_split($reTitle, $ret, 2);
+                $ret = '<div class="csl-entry"><div class="citeproc-creator-title">' . $parts[0] . $matches[1] . '</div>'
+                     . (count($parts) > 1 ? $parts[1] : '')
+                     . '</div>';
             }
 
             // make links clickable
-            $ret = preg_replace_callback('/(<span class="citeproc\-URL">&lt;)(.*?)(&gt;)/',
+            $ret = preg_replace_callback('/(<span class="citeproc\-URL">)(.*?)(<\/span>)/',
                 function ($matches) {
                     return $matches[1]
                         . sprintf('<a href="%s" target="_blank">%s</a>',
@@ -1134,7 +1131,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
                 $ret);
 
             // make doi: clickable
-            $ret = preg_replace_callback('/(<span class="citeproc\-DOI">&lt;)doi\:(.*?)(&gt;)/',
+            $ret = preg_replace_callback('/doi\:(<span class="citeproc\-DOI">)(.*?)(<\/span>)/',
                 function ($matches) {
                     return $matches[1]
                         . sprintf('<a href="https://dx.doi.org/%s" target="_blank">doi:%s</a>',

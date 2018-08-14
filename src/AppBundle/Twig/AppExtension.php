@@ -135,10 +135,9 @@ class AppExtension extends \Twig_Extension
 
         $path = __DIR__ . '/../Resources/data/csl/jgo-infoclio-de.csl.xml';
 
-        $citeProc = new \AcademicPuma\CiteProc\CiteProc(file_get_contents($path),
-                                                        $locale);
+        $citeProc = new \Seboettg\CiteProc\CiteProc(file_get_contents($path), $locale);
 
-        return $citeProc->render(json_decode($encoded));
+        return $citeProc->render([ json_decode($encoded) ]);
     }
 
     public function placeTypeLabelFilter($placeType, $count = 1, $locale = null)

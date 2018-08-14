@@ -7,12 +7,36 @@
 
     "repositories": [
         {
-            "url": "https://github.com/burki/citeproc-php.git",
+            "url": "https://github.com/burki/LiipUrlAutoConverterBundle.git",
             "type": "vcs"
         },
         {
-            "url": "https://github.com/burki/LiipUrlAutoConverterBundle.git",
-            "type": "vcs"
+            "url": "https://github.com/burki/citeproc-php.git",
+             "type": "vcs"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "citation-style-language/locales",
+                "version":"1.0.0",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/citation-style-language/locales.git",
+                    "reference": "master"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "citation-style-language/styles-distribution",
+                "version":"1.0.0",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/citation-style-language/styles-distribution.git",
+                    "reference": "master"
+                }
+            }
         }
     ],
 
@@ -54,10 +78,12 @@
         "easyrdf/easyrdf": "0.9.*",
         "ml/json-ld": "1.0.*",
 
-        "seboettg/citeproc-php": "dev-name-as-sort-order-fix#bf446dc",
+        "citation-style-language/locales":"@dev",
+        "seboettg/citeproc-php": "dev-master#8a0d677",
         "fale/isbn": "3.*",
         "technosophos/libris": "dev-master",
         "geissler/converter": "dev-master",
+
         "nategood/httpful": "*",
 
         "ddeboer/data-import": "0.20.*",

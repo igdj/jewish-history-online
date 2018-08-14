@@ -1050,20 +1050,17 @@ body.route-about-implementation {
     }
 }
 
-.route-bibliography {
-    .csl-bib-body > div {
-        text-indent: 0 !important;
-        padding-left: 0 !important;
+.route-bibliography-index {
+    .csl-bib-body {
+        text-indent: -25px;
+        padding-left: 25px;
     }
+}
 
+.route-bibliography {
     .csl-entry {
-        .citeproc-creator, .citeproc-title {
+        .citeproc-creator-title {
             font-size: 140%;
-        }
-        & > .citeproc-title:after
-        {
-            content:"\000A";
-            white-space: pre;
         }
     }
 }

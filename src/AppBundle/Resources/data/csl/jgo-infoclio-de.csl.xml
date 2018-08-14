@@ -353,8 +353,11 @@
           <if variable="issued">
             <choose>
               <if is-numeric="edition">
-                <number vertical-align="super" variable="edition"/>
+                <number vertical-align="sup" variable="edition"/>
               </if>
+              <else>
+                <text vertical-align="sup" variable="edition"/>
+              </else>
             </choose>
             <date variable="issued" form="numeric" date-parts="year"/>
           </if>
