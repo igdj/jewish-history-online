@@ -22,6 +22,9 @@ DirectoryIndex app.php
 # php_value date.timezone 'UTC'
 
 # APP_ENVIRONMENT is assumed to be 'dev' if not explicitely set
+#   if you switch to prod, make sure you run
+#     ./bin/console assetic:dump --env=prod --no-debug
+#   to generate an uptodate web/css/app.css
 # SetEnv APP_ENVIRONMENT prod
 # SetEnv APP_DEBUG true
 
