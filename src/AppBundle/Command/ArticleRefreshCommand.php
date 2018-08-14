@@ -68,10 +68,10 @@ extends ContainerAwareCommand
 
             $command = $this->getApplication()->find('article:adjust');
 
-            $arguments = array(
+            $arguments = [
                 'command' => 'article:adjust',
                 'file'    => $fnameInput,
-            );
+            ];
 
             $adjustInput = new ArrayInput($arguments);
             // we want to catch output
@@ -125,11 +125,11 @@ extends ContainerAwareCommand
             $command = $this->getApplication()->find($name);
 
             foreach ($calls as $call) {
-                $arguments = array(
+                $arguments = [
                     'command' => $name,
                     'file' => $fnameInput,
                     $call => null,
-                );
+                ];
 
                 $output->write(sprintf('<info>Running %s %s %s: </info>',
                                        $name, $call, $fnameInput));

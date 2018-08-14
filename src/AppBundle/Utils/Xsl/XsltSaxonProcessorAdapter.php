@@ -45,12 +45,13 @@ class XsltSaxonProcessorAdapter
             // simple error-handling
             $res = false;
 
-			$errCount = $proc->getExceptionCount();
-			for ($i = 0; $i < $errCount; $i++) {
+            $errCount = $proc->getExceptionCount();
+            for ($i = 0; $i < $errCount; $i++) {
                 $this->errors[] = (object) [ 'message' => $proc->getErrorMessage($i) ];
-			}
+            }
         }
 
+        $proc->clearParameters();
         $proc->clearProperties();
         unset($proc);
 
