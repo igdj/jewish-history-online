@@ -31,8 +31,8 @@ extends TopicController
         if (!empty($url)) {
             try {
                 $client = new \Vnn\WpApiClient\WpClient(
-                    new \Vnn\WpApiClient\Http\Guzzle5Adapter(new \GuzzleHttp\Client()),
-                        $url);
+                            new \Vnn\WpApiClient\Http\GuzzleAdapter(new \GuzzleHttp\Client()),
+                            $url);
                 $client->setCredentials(new \Vnn\WpApiClient\Auth\WpBasicAuth($this->getParameter('app.wp-rest.user'), $this->getParameter('app.wp-rest.password')));
                 $posts = $client->posts()->get(null, [
                     'per_page' => 4,
