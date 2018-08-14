@@ -731,8 +731,20 @@ extends ArticleController
             if (is_dir($targetDir . '/' . $pagesPath)) {
                 $pagesDir = realpath($targetDir . '/' . $pagesPath);
 
-                if (!file_exists($pagesDir . '/' . $page)) {
-                    // TODO: check dates
+                $pageExistsAndIsCurrent = false;
+                if (file_exists($pagesDir . '/' . $page)) {
+                    // page exists, check if it is current
+                    $fnameFull = $this->locateTeiResource($fname);
+
+                    $modifiedSource = filemtime($fnameFull);
+                    $modifiedTarget = filemtime($pagesDir . '/' . $page);
+
+                    // target is older than source, so run again
+                    $pageExistsAndIsCurrent = $modifiedTarget >= $modifiedSource;
+                }
+
+                if (!$pageExistsAndIsCurrent) {
+                    // (re-)generate
                     $pagesDirUri = 'file:///' . str_replace('\\', '/', $pagesDir);
                     // we have to split the source file to pages
                     $res = $this->renderTei($fname, 'split-pages.xsl',
