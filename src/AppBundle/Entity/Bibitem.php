@@ -342,7 +342,14 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
 
     public static function slugifyCorresp($slugify, $corresp)
     {
-        if (preg_match('/(.*)\_(\d+[^_*])/', $corresp, $matches)) {
+        if (preg_match('/(.*)\_(oj[^_]*)/', $corresp, $matches)) {
+            // keep underscores before oj [ohne Jahr]
+            return $slugify->slugify($matches[1])
+                 . '_'
+                 . $slugify->slugify($matches[2]);
+        }
+
+        if (preg_match('/(.*)\_(\d+[^_]*)/', $corresp, $matches)) {
             // keep underscores before date
             return $slugify->slugify($matches[1])
                  . '_'
