@@ -18,7 +18,8 @@
 
 namespace AppBundle\Twig;
 
-class AppExtension extends \Twig_Extension
+class AppExtension
+extends \Twig_Extension
 {
     private $translator;
     private $slugifyer;

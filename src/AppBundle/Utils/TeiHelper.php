@@ -833,6 +833,7 @@ class TeiHelper
                 if (empty($item['attributes']['corresp'])) {
                   continue;
                 }
+
                 $key = trim($item['attributes']['corresp']);
                 if (!is_null($slugify)) {
                     $key = \AppBundle\Entity\Bibitem::slugifyCorresp($slugify, $key);
@@ -842,12 +843,14 @@ class TeiHelper
                     if (!isset($items[$key])) {
                         $items[$key] = 0;
                     }
+
                     ++$items[$key];
                 }
             }
         }
         catch (\Exception $e) {
             var_dump($e);
+
             return false;
         }
 
@@ -878,7 +881,8 @@ class TeiHelper
     }
 }
 
-class CollectingReader extends \Sabre\Xml\Reader
+class CollectingReader
+extends \Sabre\Xml\Reader
 {
     function xml($source, $encoding = null, $options = 0)
     {
