@@ -1070,7 +1070,7 @@ body.route-about-implementation {
 
 /* hyphenate */
 body.route-topic-background, body.route-article,
-body[class^="route-about"]
+body[class^="route-about"], body.route-exhibition
 {
     .dta-p, .source-description {
         text-align: justify;
