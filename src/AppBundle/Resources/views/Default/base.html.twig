@@ -46,7 +46,7 @@
         <meta property="og:title" content="{{ pageTitle }}">
         {% endif %}
 
-        <script src="{{ app.request.basepath }}/js/jquery-2.2.3.min.js"></script>
+        <script src="{{ app.request.basepath }}/js/jquery-2.2.4.min.js"></script>
 
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="{{ app.request.basepath }}/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css">
@@ -129,20 +129,21 @@
                 }
             });
             $input.change(function() {
-              var current = $input.typeahead('getActive');
-              if (current) {
-                // Some item from your model is active!
-                if (current.name == $input.val()) {
-                    // This means the exact match is found. Use toLowerCase() if you want case insensitive match.
-                    window.location = current.url;
-                } else {
-                    // This means it is only a partial match, you can either add a new item
-                    // or take the active if you don't want new items
-
-                }
-              } else {
-                // Nothing is active so it is a new value (or maybe empty value)
-              }
+				var current = $input.typeahead('getActive');
+				if (current) {
+					// Some item from your model is active!
+					if (current.name == $input.val()) {
+						// This means the exact match is found. Use toLowerCase() if you want case insensitive match.
+						window.location = current.url;
+					}
+					else {
+						// This means it is only a partial match, you can either add a new item
+						// or take the active if you don't want new items
+					}
+				}
+				else {
+				  // Nothing is active so it is a new value (or maybe empty value)
+				}
             });
         });
         </script>
@@ -247,17 +248,18 @@
         {% if piwikSiteId is not empty %}
         <!-- Piwik -->
         <script type="text/javascript">
-          var _paq = _paq || [];
-          _paq.push(["setDomains", ["*.juedische-geschichte-online.net","*.jewish-history-online.net"]]);
-          _paq.push(['trackPageView']);
-          _paq.push(['enableLinkTracking']);
-          (function() {
-            var u="//juedische-geschichte-online.net/piwik/";
-            _paq.push(['setTrackerUrl', u+'piwik.php']);
-            _paq.push(['setSiteId', {{ piwikSiteId }}]);
-            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-            g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-          })();
+			var _paq = _paq || [];
+			_paq.push(["setDomains", ["*.juedische-geschichte-online.net","*.jewish-history-online.net"]]);
+			_paq.push(['trackPageView']);
+			_paq.push(['enableLinkTracking']);
+
+			(function() {
+				var u="//juedische-geschichte-online.net/piwik/";
+				_paq.push(['setTrackerUrl', u+'piwik.php']);
+				_paq.push(['setSiteId', {{ piwikSiteId }}]);
+				var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+				g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+			})();
         </script>
         <noscript><p><img src="//juedische-geschichte-online.net/piwik/piwik.php?idsite={{ piwikSiteId }}" style="border:0;" alt="" /></p></noscript>
         <!-- End Piwik Code -->

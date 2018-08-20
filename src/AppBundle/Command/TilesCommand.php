@@ -1,6 +1,6 @@
 <?php
-
 // src/AppBundle/Command/TilesCommand.php
+
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -41,12 +41,16 @@ extends ContainerAwareCommand
 
         $DERIVATE = preg_replace('/\.(de|en)$/', '', pathinfo($fname, PATHINFO_FILENAME));
 
-        $baseDir = realpath($this->getContainer()->get('kernel')->getRootDir() . '/..');
+        $kernel = $this->getContainer()->get('kernel');
 
-        $srcPath = sprintf('src/AppBundle/Resources/data/img/%s', $DERIVATE);
+        $baseDir = realpath($kernel->getRootDir() . '/..');
 
-        $srcDir = realpath($baseDir . '/' . $srcPath);
-        if (empty($srcDir)) {
+        $srcPath = sprintf('@AppBundle/Resources/data/img/%s', $DERIVATE);
+
+        try {
+            $srcDir = $kernel->locateResource($srcPath, $kernel->getResourcesOverrideDir());
+        }
+        catch (\InvalidArgumentException $e) {
             $output->writeln(sprintf('<error>%s does not exist</error>', $srcPath));
 
             return 1;
@@ -136,6 +140,7 @@ extends ContainerAwareCommand
                 else {
                     $fnameScaled = $fnameFull;
                 }
+
                 $convertArgs = [
                     $imagickProcessor->escapeshellarg($fnameScaled),
                     '-crop 256x256',

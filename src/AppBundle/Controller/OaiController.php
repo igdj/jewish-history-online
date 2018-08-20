@@ -20,8 +20,8 @@ extends Controller
         $request = \Zend\Diactoros\ServerRequestFactory::fromGlobals();
 
         // repositoryName is localized siteName
-        $translator = $this->container->get('translator');
-        $twig = $this->container->get('twig');
+        $translator = $this->get('translator');
+        $twig = $this->get('twig');
         $globals = $twig->getGlobals();
 
         // $repository is an instance of \Picturae\OaiPmh\Interfaces\Repository

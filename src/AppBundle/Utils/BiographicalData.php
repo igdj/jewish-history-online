@@ -1,7 +1,8 @@
 <?php
 namespace AppBundle\Utils;
 
-class BiographicalData extends DnbData
+class BiographicalData
+extends DnbData
 {
     function processTriple($triple)
     {

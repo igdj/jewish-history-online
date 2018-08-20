@@ -1,6 +1,6 @@
 <?php
-
 // src/AppBundle/Command/ImportEntityCommand.php
+
 namespace AppBundle\Command;
 
 use Symfony\Component\Console\Input\InputInterface;

@@ -1,6 +1,6 @@
 <?php
-
 // src/AppBundle/Command/EntityEnhanceCommand.php
+
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -11,7 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
-class EntityEnhanceCommand extends ContainerAwareCommand
+class EntityEnhanceCommand
+extends ContainerAwareCommand
 {
     protected function configure()
     {

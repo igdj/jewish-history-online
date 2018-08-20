@@ -26,7 +26,8 @@ trait RenderTeiTrait
         }
 
         $proc = $this->getContainer()->get('app.xslt');
-        $pathToXslt = $kernel->locateResource('@AppBundle/Resources/data/xsl/' . $fnameXslt);
+        $pathToXslt = $kernel->locateResource('@AppBundle/Resources/data/xsl/' . $fnameXslt,
+                                              $kernel->getResourcesOverrideDir());
         $res = $proc->transformFileToXml($pathToXml, $pathToXslt, $options);
 
         return $res;

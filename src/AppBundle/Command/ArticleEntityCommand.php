@@ -1,6 +1,6 @@
 <?php
-
 // src/AppBundle/Command/ArticleEntityCommand.php
+
 namespace AppBundle\Command;
 
 use Symfony\Component\Console\Input\InputArgument;

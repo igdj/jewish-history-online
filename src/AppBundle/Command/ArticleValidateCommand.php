@@ -1,6 +1,6 @@
 <?php
+// src/AppBundle/Command/ArticleValidateCommand.php
 
-// src/AppBundle/Command/ArticleHeaderCommand.php
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -13,7 +13,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
-class ArticleValidateCommand extends ContainerAwareCommand
+class ArticleValidateCommand
+extends ContainerAwareCommand
 {
     protected function configure()
     {
@@ -42,8 +43,8 @@ class ArticleValidateCommand extends ContainerAwareCommand
 
         $teiHelper = new \AppBundle\Utils\TeiHelper();
 
-        $fnameSchema = $this->getContainer()->get('kernel')->getRootDir()
-                     . '/Resources/data/basisformat.rng';
+        $fnameSchema = $this->getContainer()->get('kernel')
+                        ->locateResource('@AppBundle/Resources/data/basisformat.rng');
 
         $result = $teiHelper->validateXml($fname, $fnameSchema);
 

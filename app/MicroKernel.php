@@ -105,6 +105,18 @@ extends Kernel
     }
 
     /*
+     * we pass this $dir to locateResources
+     * so the method will first look for a local bundle-override file named
+     * app/Resources/<BundleName>/path/without/Resources
+     *
+     * @see https://api.symfony.com/2.8/Symfony/Component/HttpKernel/Kernel.html#method_locateResource
+     */
+    public function getResourcesOverrideDir()
+    {
+        return realpath($this->getRootDir() . '/../app/Resources');
+    }
+
+    /*
      * {@inheritDoc}
      */
     protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
@@ -139,112 +151,5 @@ extends Kernel
 
         // Loading annotated routes
         $routes->mount('/', $routes->import('@AppBundle/Controller', 'annotation'));
-
-        // TODO: check which of the following can now be removed due to @Route annotations
-        $routes->add('/', 'AppBundle:Default:index', 'home');
-
-        $routes->add('/about/edition', 'AppBundle:About:about', 'about');
-        $routes->add('/about/goals', 'AppBundle:About:goals', 'about-goals');
-        $routes->add('/about/keydocuments', 'AppBundle:About:keydocuments', 'about-keydocuments');
-        $routes->add('/about/audience', 'AppBundle:About:audience', 'about-audience');
-        $routes->add('/about/usage', 'AppBundle:About:usage', 'about-usage');
-        $routes->add('/about/editorial-model', 'AppBundle:About:editorialmodel', 'about-editorialmodel');
-        $routes->add('/about/edition-guidelines', 'AppBundle:About:editionguidelines', 'about-editionguidelines');
-        $routes->add('/about/technical-implementation', 'AppBundle:About:implementation', 'about-implementation');
-        $routes->add('/about/about-us', 'AppBundle:About:staff', 'about-staff');
-        $routes->add('/about/staff', 'AppBundle:About:staff', 'about-staff');
-        $routes->add('/about/editors', 'AppBundle:About:editors', 'about-editors');
-        $routes->add('/about/authors', 'AppBundle:Person:index', 'about-authors');
-        $routes->add('/about/board', 'AppBundle:About:board', 'about-board');
-        $routes->add('/about/sponsors', 'AppBundle:About:sponsors', 'about-sponsors');
-        $routes->add('/contact', 'AppBundle:About:contact', 'contact');
-        $routes->add('/terms', 'AppBundle:About:terms', 'terms');
-
-        $routes->add('/about/cfp', 'AppBundle:About:cfp', 'about-cfp');
-        $routes->add('/about/news', 'AppBundle:About:news', 'about-news');
-
-        $routes->add('/topic', 'AppBundle:Topic:index', 'topic-index');
-
-        $routes->add('/topic/{slug}.pdf', 'AppBundle:Topic:background', 'topic-background-pdf');
-        $topicBackgroundRoute = new \Symfony\Component\Routing\Route(
-            '/topic/{slug}',
-            [ '_controller' => 'AppBundle:Topic:background' ],
-            [ 'slug' => '[^\.]+' ]
-        );
-        $routes->addRoute($topicBackgroundRoute, 'topic-background');
-
-        $routes->add('/article', 'AppBundle:Article:index', 'article-index');
-        $routes->add('/article/date', 'AppBundle:Article:index', 'article-index-date');
-        $routes->add('/article.rss', 'AppBundle:Article:index', 'article-index-rss');
-
-        $routes->add('/article/{slug}.jsonld', 'AppBundle:Article:article', 'article-jsonld');
-        $routes->add('/article/{slug}.pdf', 'AppBundle:Article:article', 'article-pdf');
-        $articleRoute = new \Symfony\Component\Routing\Route(
-            '/article/{slug}',
-            [ '_controller' => 'AppBundle:Article:article' ],
-            [ 'slug' => '[^\.]+' ]
-        );
-        $routes->addRoute($articleRoute, 'article');
-
-        $routes->add('/source/{uid}.zip', 'AppBundle:Source:download', 'source-download');
-        $routes->add('/source/{uid}.mets.xml', 'AppBundle:Source:mets', 'source-mets');
-        $routes->add('/source/{uid}.jsonld', 'AppBundle:Source:sourceViewer', 'source-jsonld');
-        $routes->add('/source/{uid}', 'AppBundle:Source:sourceViewer', 'source');
-
-        $routes->add('/map', 'AppBundle:Place:map', 'place-map');
-        $routes->add('/map/place', 'AppBundle:Place:map', 'place-map-mentioned');
-        $routes->add('/map/popup-content/{ids}', 'AppBundle:Place:mapPopupContent', 'place-map-popup-content');
-
-        $routes->add('/chronology/partial', 'AppBundle:Date:chronology', 'date-chronology-partial');
-        $routes->add('/chronology', 'AppBundle:Date:chronology', 'date-chronology');
-
-        $routes->add('/person', 'AppBundle:Person:index', 'person-index');
-        $routes->add('/person/{id}.jsonld', 'AppBundle:Person:detail', 'person-jsonld');
-        $routes->add('/person/{id}', 'AppBundle:Person:detail', 'person');
-        $routes->add('/person/gnd/beacon', 'AppBundle:Person:gndBeacon', 'person-gnd-beacon');
-        $routes->add('/person/gnd/{gnd}.jsonld', 'AppBundle:Person:detail', 'person-by-gnd-jsonld');
-        $routes->add('/person/gnd/{gnd}', 'AppBundle:Person:detail', 'person-by-gnd');
-
-        $routes->add('/place', 'AppBundle:Place:index', 'place-index');
-        $routes->add('/place/{id}.jsonld', 'AppBundle:Place:detail', 'place-jsonld');
-        $routes->add('/place/{id}', 'AppBundle:Place:detail', 'place');
-        $routes->add('/place/tgn/{tgn}.jsonld', 'AppBundle:Place:detail', 'place-by-tgn-jsonld');
-        $routes->add('/place/tgn/{tgn}', 'AppBundle:Place:detail', 'place-by-tgn');
-
-        $routes->add('/organization', 'AppBundle:Organization:index', 'organization-index');
-        $routes->add('/organization/gnd/beacon', 'AppBundle:Organization:gndBeacon', 'organization-gnd-beacon');
-        $routes->add('/organization/{id}.jsonld', 'AppBundle:Organization:detail', 'organization-jsonld');
-        $routes->add('/organization/{id}', 'AppBundle:Organization:detail', 'organization');
-        $routes->add('/organization/gnd/{gnd}.jsonld', 'AppBundle:Organization:detail', 'organization-by-gnd-jsonld');
-        $routes->add('/organization/gnd/{gnd}', 'AppBundle:Organization:detail', 'organization-by-gnd');
-
-        $routes->add('/bibliography', 'AppBundle:Bibliography:index', 'bibliography-index');
-        $routes->add('/bibliography/isbn/beacon', 'AppBundle:Bibliography:isbnBeacon', 'bibliography-isbn-beacon');
-        $routes->add('/bibliography/unapi', 'AppBundle:Bibliography:unapi', 'bibliography-unapi');
-        $routes->add('/bibliography/{slug}.ris', 'AppBundle:Bibliography:detail', 'bibliography-ris');
-        $routes->add('/bibliography/{slug}.jsonld', 'AppBundle:Bibliography:detail', 'bibliography-jsonld');
-        $routes->add('/bibliography/{slug}', 'AppBundle:Bibliography:detail', 'bibliography');
-        $routes->add('/bibliography/isbn/{isbn}', 'AppBundle:Bibliography:detail', 'bibliography-by-isbn');
-
-        $routes->add('/glossary', 'AppBundle:Glossary:index', 'glossary-index');
-        // $routes->add('/glossary/{slug}', 'AppBundle:Glossary:detail', 'glossary'); // currently only index, no detail
-
-        // allow / in route .+
-        $routes->addRoute(
-                          new \Symfony\Component\Routing\Route('/source/imginfo/{path}',
-                                                               [ '_controller' => 'AppBundle:Source:imgInfo' ],
-                                                               [ 'path' => '.*' ]),
-                          'imginfo');
-        $routes->addRoute(
-                          new \Symfony\Component\Routing\Route('/source/tei2html/{path}',
-                                                               [ '_controller' => 'AppBundle:Source:tei2html' ],
-                                                               [ 'path' => '.*' ]),
-                          'tei2html');
-
-        $routes->add('/search', 'AppBundle:Search:index', 'search-index');
-        $routes->add('/search/suggest', 'AppBundle:Search:suggest', 'search-suggest');
-
-        // oai
-        $routes->add('/oai', 'AppBundle:Oai:dispatch', 'oai');
     }
 }

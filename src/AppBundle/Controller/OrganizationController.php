@@ -10,7 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  *
  */
-class OrganizationController extends Controller
+class OrganizationController
+extends Controller
 {
     /**
      * @Route("/organization", name="organization-index")
@@ -51,8 +52,8 @@ class OrganizationController extends Controller
      */
     public function gndBeaconAction()
     {
-        $translator = $this->container->get('translator');
-        $twig = $this->container->get('twig');
+        $translator = $this->get('translator');
+        $twig = $this->get('twig');
 
         $personRepo = $this->getDoctrine()
                 ->getRepository('AppBundle:Organization');

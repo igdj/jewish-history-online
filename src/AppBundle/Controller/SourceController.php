@@ -18,7 +18,7 @@ extends ArticleController
     {
         $sourceArticle = $parts['article'];
 
-        $templating = $this->container->get('templating');
+        $templating = $this->get('templating');
 
         $html = $templating->render('AppBundle:Article:source-printview.html.twig', [
             'article' => $sourceArticle,
@@ -379,7 +379,7 @@ extends ArticleController
 
         $ret = [];
 
-        $translator = $this->container->get('translator');
+        $translator = $this->get('translator');
 
         $defaultLocale = $translator->getLocale();
 
@@ -404,14 +404,18 @@ extends ArticleController
 
     protected function buildImgSrcPath($relPath)
     {
-        $imgDir = 'src/AppBundle/Resources/data/img/';
+        $kernel = $this->get('kernel');
+
+        $imgDir = '@AppBundle/Resources/data/img/';
         $srcPath = $imgDir . $relPath;
 
-        $baseDir = realpath($this->get('kernel')->getRootDir() . '/..');
+        try {
+            $srcPathFull = $kernel->locateResource($srcPath, $kernel->getResourcesOverrideDir());
 
-        $srcPathFull = realpath($baseDir . '/' . $srcPath);
-
-        return $srcPathFull;
+            return $srcPathFull;
+        }
+        catch (\InvalidArgumentException $e) {
+        }
     }
 
     protected function buildDownloadFiles($uid, $sourceArticle)
@@ -465,8 +469,8 @@ extends ArticleController
             return false;
         }
 
-        $relPath = sprintf('viewer/%s', $dir);
         $baseDir = realpath($this->get('kernel')->getRootDir() . '/..');
+        $relPath = sprintf('viewer/%s', $dir);
         $filePath = $baseDir . '/web/' . $relPath;
 
         if (!file_exists($filePath)) {
@@ -505,7 +509,7 @@ extends ArticleController
         }
 
         $footer = $this->buildImgSrcPath('footer-download.png');
-        $imagickProcessor = $this->container->get('app.imagemagick');
+        $imagickProcessor = $this->get('app.imagemagick');
 
         $fs = new \Symfony\Component\Filesystem\Filesystem();
         $tempfiles = [];
@@ -689,7 +693,10 @@ extends ArticleController
         ]);
     }
 
-    /*
+    /**
+     *
+     * @Route("/source/tei2html/{path}", requirements={"path" = ".*"}, name="tei2html")
+     *
      * This action is called by
      *   iview-client-mets.js
      * to render a specific page of the transcription or translation
@@ -768,7 +775,10 @@ extends ArticleController
         return new Response($html);
     }
 
-    /*
+    /**
+     *
+     * @Route("/source/imginfo/{path}", requirements={"path" = ".*"}, name="imginfo")
+     *
      * This action is called by
      *   iview-client-mets.js
      * to determine the width and height of the page facsimile
@@ -781,12 +791,12 @@ extends ArticleController
         $derivate = preg_replace('/[^0-9a-zA-Z_\-\:]/', '', $parts[0]);
         $fname = preg_replace('/[^0-9a-zA-Z\.]/', '', $parts[1]);
 
-        $baseDir = realpath($this->get('kernel')->getRootDir() . '/..');
-        $srcPath = sprintf('src/AppBundle/Resources/data/img/%s', $derivate);
+        $kernel = $this->get('kernel');
+        $srcPath = sprintf('@AppBundle/Resources/data/img/%s', $derivate);
 
-        $fnameFull = realpath($baseDir . '/' . $srcPath . '/' . $fname);
-
-        if (!file_exists($fnameFull)) {
+        try {
+            $fnameFull = $kernel->locateResource($srcPath . '/' . $fname, $kernel->getResourcesOverrideDir());
+        } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException('This source-image does not exist');
         }
 

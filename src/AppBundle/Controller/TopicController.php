@@ -171,7 +171,7 @@ extends RenderTeiController
             $html = $this->removeByCssSelector('<body>' . $html . '</body>',
                                                [ 'h2 + br', 'h3 + br' ]);
 
-            $templating = $this->container->get('templating');
+            $templating = $this->get('templating');
 
             $html = $templating->render('AppBundle:Article:article-printview.html.twig', [
                 'name' => $topics[$slug],

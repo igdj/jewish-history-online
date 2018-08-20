@@ -17,11 +17,13 @@ extends Controller
 
     protected function locateTeiResource($fnameXml)
     {
-        $kernel = $this->container->get('kernel');
+        $kernel = $this->get('kernel');
 
         try {
-            $pathToXml = $kernel->locateResource('@AppBundle/Resources/data/tei/' . $fnameXml);
-        } catch (\InvalidArgumentException $e) {
+            $pathToXml = $kernel->locateResource('@AppBundle/Resources/data/tei/' . $fnameXml,
+                                                 $kernel->getResourcesOverrideDir());
+        }
+        catch (\InvalidArgumentException $e) {
             return false;
         }
 
@@ -30,7 +32,7 @@ extends Controller
 
     protected function renderTei($fnameXml, $fnameXslt = 'dtabf_article.xsl', $options = [])
     {
-        $kernel = $this->container->get('kernel');
+        $kernel = $this->get('kernel');
 
         $locateResource = !array_key_exists('locateXmlResource', $options)
             || $options['locateXmlResource'];
@@ -45,7 +47,8 @@ extends Controller
         }
 
         $proc = $this->get('app.xslt');
-        $pathToXslt = $kernel->locateResource('@AppBundle/Resources/data/xsl/' . $fnameXslt);
+        $pathToXslt = $kernel->locateResource('@AppBundle/Resources/data/xsl/' . $fnameXslt,
+                                              $kernel->getResourcesOverrideDir());
         $res = $proc->transformFileToXml($pathToXml, $pathToXslt, $options);
 
         return $res;
@@ -323,7 +326,7 @@ extends Controller
 
         $language = \AppBundle\Utils\Iso639::code1to3($locale);
 
-        $slugify = $this->container->get('cocur_slugify');
+        $slugify = $this->get('cocur_slugify');
 
         $slugs = array_map(function ($term) use ($slugify) {
                                 return $slugify->slugify($term);

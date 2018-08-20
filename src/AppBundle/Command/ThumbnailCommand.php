@@ -1,6 +1,6 @@
 <?php
-
 // src/AppBundle/Command/ThumbnailCommand.php
+
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -11,7 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
-class ThumbnailCommand extends ContainerAwareCommand
+class ThumbnailCommand
+extends ContainerAwareCommand
 {
     static $widthScaled = 293;
 
@@ -57,19 +58,23 @@ class ThumbnailCommand extends ContainerAwareCommand
             return 1;
         }
 
-        $baseDir = realpath($this->getContainer()->get('kernel')->getRootDir() . '/..');
-
         $DERIVATE = preg_replace('/\.(de|en)$/', '', pathinfo($fname, PATHINFO_FILENAME));
+
+        $kernel = $this->getContainer()->get('kernel');
+
+        $baseDir = realpath($kernel->getRootDir() . '/..');
 
         $convertArgs = [];
 
         $facsimile = $teiHelper->getFirstPbFacs($fname);
 
         if (!empty($facsimile)) {
-            $srcPath = sprintf('src/AppBundle/Resources/data/img/%s', $DERIVATE);
+            $srcPath = sprintf('@AppBundle/Resources/data/img/%s', $DERIVATE);
 
-            $srcDir = realpath($baseDir . '/' . $srcPath);
-            if (empty($srcDir)) {
+            try {
+                $srcDir = $kernel->locateResource($srcPath, $kernel->getResourcesOverrideDir());
+            }
+            catch (\InvalidArgumentException $e) {
                 $output->writeln(sprintf('<error>%s does not exist</error>', $srcPath));
 
                 return 1;
@@ -85,12 +90,14 @@ class ThumbnailCommand extends ContainerAwareCommand
                     if ('.pdf' == $extension) {
                         $convertArgs[] = '-density 400';
                     }
+
                     break;
                 }
             }
 
             if (false == $fnameSrc) {
-                $output->writeln(sprintf('<error>%s.{jpg|png|pdf} does not exist</error>', $srcDir . '/' . $facsimile));
+                $output->writeln(sprintf('<error>%s.{jpg|png|pdf} does not exist</error>',
+                                         $srcDir . '/' . $facsimile));
 
                 return 1;
             }
@@ -106,14 +113,12 @@ class ThumbnailCommand extends ContainerAwareCommand
                 return 1;
             }
 
-
             $fnameFull = realpath($srcDir . '/' . $fnameSrc);
             if (!file_exists($fnameFull)) {
                 $output->writeln(sprintf('<error>%s does not exist</error>', $fnameFull));
 
                 return 1;
             }
-
         }
         else {
             switch ($article->sourceType) {
@@ -137,7 +142,6 @@ class ThumbnailCommand extends ContainerAwareCommand
                         return 1;
                     }
             }
-
         }
 
         $fnameThumb = $targetDir . DIRECTORY_SEPARATOR . 'thumb.jpg';

@@ -43,8 +43,8 @@ trait SharingBuilderTrait
      */
     public function buildOg($entity, $request, $routeName, $routeParams = [])
     {
-        $translator = $this->container->get('translator');
-        $twig = $this->container->get('twig');
+        $translator = $this->get('translator');
+        $twig = $this->get('twig');
         $globals = $twig->getGlobals();
 
         if (empty($routeParams)) {
@@ -149,7 +149,7 @@ trait SharingBuilderTrait
     {
         $twitter = [];
 
-        $twig = $this->container->get('twig');
+        $twig = $this->get('twig');
         $globals = $twig->getGlobals();
         if (empty($globals['twitterSite'])) {
             return $twitter;

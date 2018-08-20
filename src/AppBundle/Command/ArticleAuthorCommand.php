@@ -1,6 +1,6 @@
 <?php
-
 // src/AppBundle/Command/ArticleAuthorCommand.php
+
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;

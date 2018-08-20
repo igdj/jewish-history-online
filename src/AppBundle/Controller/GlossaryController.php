@@ -10,7 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  *
  */
-class GlossaryController extends Controller
+class GlossaryController
+extends Controller
 {
     /**
      * @Route("/glossary", name="glossary-index")

@@ -3,6 +3,10 @@
 /web/viewer
 /sql
 
+# private git submodule for local @AppBundles/Resources
+.gitmodules
+/app/Resources/AppBundle
+
 # Cache, session files and logs (Symfony3)
 /var/cache/*
 /var/logs/*

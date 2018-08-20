@@ -1,6 +1,6 @@
 <?php
-
 // src/AppBundle/Command/ArticleDoiCommand.php
+
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -22,7 +22,8 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use \FluidXml\FluidXml;
 use \FluidXml\FluidNamespace;
 
-class ArticleDoiCommand extends ContainerAwareCommand
+class ArticleDoiCommand
+extends ContainerAwareCommand
 {
     protected function configure()
     {
@@ -311,6 +312,12 @@ class ArticleDoiCommand extends ContainerAwareCommand
         }
 
         $router = $this->getContainer()->get('router');
+
+        /*
+        // if you want to force https:// with UrlGeneratorInterface::ABSOLUTE_URL
+        $context = $router->getContext();
+        $context->setScheme('https');
+        */
 
         $url = $this->adjustUrlProduction($router->generate($routeName, [
                                                                          $routeKey => $entity->getUid(),

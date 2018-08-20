@@ -121,9 +121,11 @@
             if (info != null && info.url != null) {
                 $el.addClass('hoverable');
                 $el.click(function() {
-                  window.location = info.url;
-                  return false;
+                    window.location = info.url;
+
+                    return false;
                 });
+
                 // console.log( index + ": " + $el.text() + JSON.stringify(info));
                 if (info.blurb != null) {
                     $el.tooltip({

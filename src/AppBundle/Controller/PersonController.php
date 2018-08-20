@@ -16,6 +16,7 @@ extends Controller
 
     /**
      * @Route("/person", name="person-index")
+     * @Route("/about/authors", name="about-authors")
      */
     public function indexAction(Request $request)
     {
@@ -52,6 +53,12 @@ extends Controller
         ]);
     }
 
+    /**
+     * @Route("/person/{id}.jsonld", name="person-jsonld")
+     * @Route("/person/{id}", name="person")
+     * @Route("/person/gnd/{gnd}.jsonld", name="person-by-gnd-jsonld")
+     * @Route("/person/gnd/{gnd}", name="person-by-gnd")
+     */
     public function detailAction(Request $request, $id = null, $gnd = null)
     {
         $personRepo = $this->getDoctrine()
@@ -92,10 +99,13 @@ extends Controller
         ]);
     }
 
+    /**
+     * @Route("/person/gnd/beacon", name="person-gnd-beacon")
+     */
     public function gndBeaconAction()
     {
-        $translator = $this->container->get('translator');
-        $twig = $this->container->get('twig');
+        $translator = $this->get('translator');
+        $twig = $this->get('twig');
 
         $personRepo = $this->getDoctrine()
                 ->getRepository('AppBundle:Person');

@@ -1,7 +1,8 @@
 <?php
 namespace AppBundle\Utils;
 
-class PdfGenerator extends \mPDF
+class PdfGenerator
+extends \mPDF
 {
     // mpdf
     public function __construct()

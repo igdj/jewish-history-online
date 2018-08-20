@@ -1,6 +1,6 @@
 <?php
-
 // src/AppBundle/Command/ImportEducationCommand.php
+
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;

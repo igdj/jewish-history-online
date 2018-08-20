@@ -10,7 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  *
  */
-class SearchController extends Controller
+class SearchController
+extends Controller
 {
     protected function getQuery(Request $request, $facetNames = [])
     {
@@ -110,7 +111,6 @@ class SearchController extends Controller
             // hl.requireFieldMatch=true.
             $hl->setSimplePrefix('<b>');
             $hl->setSimplePostfix('</b>');
-
 
             /*
             // debug

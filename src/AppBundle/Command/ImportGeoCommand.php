@@ -1,5 +1,4 @@
 <?php
-
 // src/AppBundle/Command/ImportGeoCommand.php
 
 /* boundary download on: https://mapzen.com/data/borders/ */
@@ -7,6 +6,7 @@
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -14,7 +14,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
-class ImportGeoCommand extends BaseEntityCommand
+class ImportGeoCommand
+extends BaseEntityCommand
 {
     protected function configure()
     {

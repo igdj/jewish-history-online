@@ -16,8 +16,9 @@ extends Controller
 
     private function instantiateCiteProc($locale)
     {
-        $kernel = $this->container->get('kernel');
-        $path = $kernel->locateResource('@AppBundle/Resources/data/csl/jgo-infoclio-de.csl.xml');
+        $kernel = $this->get('kernel');
+        $path = $kernel->locateResource('@AppBundle/Resources/data/csl/jgo-infoclio-de.csl.xml',
+                                        $kernel->getResourcesOverrideDir());
 
         $wrapSpan = function ($renderedText, $class) {
             return '<span class="citeproc-'. $class . '">' . $renderedText . '</span>';
@@ -72,8 +73,8 @@ extends Controller
      */
     public function isbnBeaconAction()
     {
-        $translator = $this->container->get('translator');
-        $twig = $this->container->get('twig');
+        $translator = $this->get('translator');
+        $twig = $this->get('twig');
 
         $bibitemRepo = $this->getDoctrine()
                 ->getRepository('AppBundle:Bibitem');
@@ -142,7 +143,9 @@ extends Controller
     /**
      * @Route("/bibliography/{slug}.ris", name="bibliography-ris")
      * @Route("/bibliography/{slug}.jsonld", name="bibliography-jsonld")
+     * @Route("/bibliography/{id}", requirements={"id" = "\d+"})
      * @Route("/bibliography/{slug}", name="bibliography")
+     * @Route("/bibliography/isbn/{isbn}", name="bibliography-by-isbn")
      */
     public function detailAction(Request $request, $id = null, $slug = null, $isbn = null)
     {

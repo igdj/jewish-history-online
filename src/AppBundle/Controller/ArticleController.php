@@ -14,9 +14,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class ArticleController
 extends RenderTeiController
 {
-    /*
-     * TODO: maybe move into entity
-     */
     protected function buildArticleFname($article, $extension = '.xml')
     {
         $fname = $article->getSlug();
@@ -30,6 +27,9 @@ extends RenderTeiController
         return $fname;
     }
 
+    /*
+     * TODO: maybe move into entity
+     */
     protected function buildArticleFnameFromUid($uid, $locale)
     {
         if (preg_match('/(article|source)\-(\d+)/', $uid, $matches)) {
@@ -93,7 +93,7 @@ extends RenderTeiController
             $html = $this->removeByCssSelector('<body>' . $html . '</body>',
                                                [ 'h2 + br', 'h3 + br' ]);
 
-            $templating = $this->container->get('templating');
+            $templating = $this->get('templating');
 
             $html = $templating->render('AppBundle:Article:article-printview.html.twig', [
                 'article' => $article,
@@ -162,37 +162,6 @@ extends RenderTeiController
     }
 
     /**
-     * @Route("/article/{slug}.jsonld", name="article-jsonld")
-     * @Route("/article/{slug}.pdf", name="article-pdf")
-     * @Route("/article/{slug}", name="article")
-     */
-    public function articleAction(Request $request, $slug)
-    {
-        $criteria = [];
-        $locale = $request->getLocale();
-        if (!empty($locale)) {
-            $criteria['language'] = \AppBundle\Utils\Iso639::code1to3($locale);
-        }
-
-        if (preg_match('/article-\d+/', $slug)) {
-            $criteria['uid'] = $slug;
-        }
-        else {
-            $criteria['slug'] = $slug;
-        }
-
-        $article = $this->getDoctrine()
-                ->getRepository('AppBundle:Article')
-                ->findOneBy($criteria);
-
-        if (!$article) {
-            throw $this->createNotFoundException('This article does not exist');
-        }
-
-        return $this->renderArticle($request, $article);
-    }
-
-    /**
      * @Route("/article/date", name="article-index-date")
      * @Route("/article.rss", name="article-index-rss")
      * @Route("/article", name="article-index")
@@ -244,5 +213,36 @@ extends RenderTeiController
             'pageTitle' => $this->get('translator')->trans('Article Overview'),
             'articles' => $articles,
         ]);
+    }
+
+    /**
+     * @Route("/article/{slug}.jsonld", name="article-jsonld")
+     * @Route("/article/{slug}.pdf", name="article-pdf")
+     * @Route("/article/{slug}", name="article")
+     */
+    public function detailAction(Request $request, $slug)
+    {
+        $criteria = [];
+        $locale = $request->getLocale();
+        if (!empty($locale)) {
+            $criteria['language'] = \AppBundle\Utils\Iso639::code1to3($locale);
+        }
+
+        if (preg_match('/article-\d+/', $slug)) {
+            $criteria['uid'] = $slug;
+        }
+        else {
+            $criteria['slug'] = $slug;
+        }
+
+        $article = $this->getDoctrine()
+                ->getRepository('AppBundle:Article')
+                ->findOneBy($criteria);
+
+        if (!$article) {
+            throw $this->createNotFoundException('This article does not exist');
+        }
+
+        return $this->renderArticle($request, $article);
     }
 }
