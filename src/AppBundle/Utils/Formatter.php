@@ -13,7 +13,7 @@ class Formatter
 
     public static function dateIncomplete($datestr, $locale = 'en')
     {
-        $isBCE = count($datestr) > 0 && '-' == $datestr[0];
+        $isBCE = strlen($datestr) > 0 && '-' == $datestr[0];
 
         $date_parts = preg_split('/\-/', $datestr, -1, PREG_SPLIT_NO_EMPTY);
 
