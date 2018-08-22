@@ -54,12 +54,8 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
                     Forschungsinteressen sind: Geschichte der Shoah, visuelle Kultur, urbane
                     Anthropologie, Gender Studies.</p><lb/>
                 
-                <p><hi rendition="#b">Irina Troitskaya, B.A.</hi></p><lb/>
-                <p>Sie studiert an der Universität Hamburg Geschichte und Politikwissenschaft. Ihre
-                    Forschungsinteressen sind: Osteuropäische Geschichte (Geschichte der
-                    Sowjetunion), Europäische Geschichte des 20. Jahrhunderts (Nationalsozialismus,
-                    Erinnerungskultur in West-und Osteuropa).</p>
-                <lb/>
+                <p><hi rendition="#b">Esther Yen, B.A.</hi></p><lb/>
+                <p>Sie studiert an der Universität Hamburg Geschichte und Islamwissenschaft. Ihre Forschungsinteressen sind: Geschichte des Islams in Deutschland, Reformbewegungen im Nahen Osten, Denkmäler im Erinnerungsdiskurs.</p><lb/>
             </div>
             
             <div n="3">
@@ -78,8 +74,16 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
                 
                 <p><hi rendition="#b">Jan Kawlath, M.A.</hi></p><lb/>
                 <p>Er studierte an der Universität Hamburg Geschichte und Philosophie. Seine Forschungsinteressen sind: deutsche Kolonialgeschichte, Genozidforschung und Postkolonialismus.</p><lb/>
+
                 <p><hi rendition="#b">Sebastian Merkel, M.A.</hi></p><lb/>
                 <p>Er studierte an der Universität Hamburg Geschichte. Seine Forschungsinteressen sind: Lager- und Gewaltgeschichte des 20. Jahrhundert, Jugend(sub)kulturen und Deutsche Zeitgeschichte.</p><lb/>
+
+                <p><hi rendition="#b">Irina Troitskaya, B.A.</hi></p><lb/>
+                <p>Sie studiert an der Universität Hamburg Geschichte und Politikwissenschaft. Ihre
+                    Forschungsinteressen sind: Osteuropäische Geschichte (Geschichte der
+                    Sowjetunion), Europäische Geschichte des 20. Jahrhunderts (Nationalsozialismus,
+                    Erinnerungskultur in West-und Osteuropa).</p>
+                <lb/>
             </div>
         </body>
     </text>

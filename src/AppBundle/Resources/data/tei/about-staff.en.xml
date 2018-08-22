@@ -52,8 +52,8 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
                 <p><hi rendition="#b">Ute Schumacher, B.A.</hi><lb/></p>
                 <p>She is a student majoring in cultural anthropology at the University of Hamburg. Her research interests center on the history of Shoah, visual culture, urban anthropology, gender studies.</p><lb/>
                 
-                <p><hi rendition="#b">Irina Troitskaya, B.A.</hi></p><lb/>
-                <p>She studies history and politics at the University of Hamburg. Her research interests are: Eastern European History (History of the Soviet Union), European History in 20th century, especially Nationalsocialism and culture of remembrance in Western and Eastern Europe. </p><lb/>
+                <p><hi rendition="#b">Esther Yen, B.A.</hi></p><lb/>
+                <p>She studies Islamic studies at Hamburg University. Her research interests are: the history of Islam in Germany, reform movements in the Middle East, memorial sites and remembrance policy. </p><lb/>
             </div>
 
             <div n="3">
@@ -76,6 +76,9 @@ schematypens="http://relaxng.org/ns/structure/1.0"?>
 
                 <p><hi rendition="#b">Sebastian Merkel, M.A.</hi></p><lb/>
                 <p>He received a degree in history at the University of Hamburg. Mr. Merkel’s research interests center on the history of internment camps and violence in the 20th century, youth (sub)cultures and German contemporary history.<lb/></p>
+
+                <p><hi rendition="#b">Irina Troitskaya, B.A.</hi></p><lb/>
+                <p>She studies history and politics at the University of Hamburg. Her research interests are: Eastern European History (History of the Soviet Union), European History in 20th century, especially Nationalsocialism and culture of remembrance in Western and Eastern Europe. </p><lb/>
             </div>
         </body>
     </text>
