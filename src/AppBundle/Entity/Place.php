@@ -178,6 +178,13 @@ implements \JsonSerializable, JsonLdSerializable
     protected $geonames;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $wikidata;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Place", inversedBy="children")
      * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
@@ -507,6 +514,30 @@ implements \JsonSerializable, JsonLdSerializable
     public function getGeonames()
     {
         return $this->geonames;
+    }
+
+    /**
+     * Sets wikidata.
+     *
+     * @param string $wikidata
+     *
+     * @return $this
+     */
+    public function setWikidata($wikidata)
+    {
+        $this->wikidata = $wikidata;
+
+        return $this;
+    }
+
+    /**
+     * Gets wikidata.
+     *
+     * @return string
+     */
+    public function getWikidata()
+    {
+        return $this->wikidata;
     }
 
     public function setParent(Place $parent = null)
