@@ -114,7 +114,7 @@
                 {% set last_epoch = epochLabel[0] %}
                 {% set epochs = epochs|merge([epochLabel])%}
             {% endif %}
-            {{ helper.source_box(source) }}
+            {{ helper.source_box(source, embedded) }}
         {% endfor %}
                     </div>
                 </div><!-- .row -->
@@ -142,4 +142,12 @@
     {% endif %}
         </div>
     </div><!-- .row -->
+    {% if embedded %}
+    <script>
+        // on-demand image loading for chronology
+        var bLazy = new Blazy({
+            container: '#chronology'
+        });
+    </script>
+    {% endif %}
 {% endblock %}

@@ -100,7 +100,7 @@
     {% endif %}
 {% endmacro %}
 
-{% macro source_box(source) %}
+{% macro source_box(source, delayLoad=false) %}
     {% set path = path('source', { 'uid' : source.uid }) %}
     <div class="panel panel-default source-box">
         <div class="panel-heading  sourcetype-icon {% if source.sourceType is not empty %}sourcetype-{{ source.sourceType|lower }}{% endif %}">
@@ -125,7 +125,11 @@
         {% set thumb = "/viewer/source-%05d/thumb.jpg"|format(source.uid|replace({'jgo:source-' : ''})) %}
                     <div class="col-xs-4" style="max-height: 150px; overflow: hidden;">
         {% if file_exists(webDir ~ thumb) %}
+            {% if delayLoad %}
+                        <a href="{{ path }}"><img class="b-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ app.request.basepath }}{{ thumb }}" alt="" style="width: 100%; height: auto;"></a>
+            {% else %}
                         <a href="{{ path }}"><img src="{{ app.request.basepath }}{{ thumb }}" alt="" style="width: 100%; height: auto;"></a>
+            {% endif %}
         {% else %}
                         &nbsp;
         {% endif %}
