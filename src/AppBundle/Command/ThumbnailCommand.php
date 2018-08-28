@@ -15,6 +15,7 @@ class ThumbnailCommand
 extends ContainerAwareCommand
 {
     static $widthScaled = 293;
+    static $quality = 85;
 
     protected function configure()
     {
@@ -147,10 +148,18 @@ extends ContainerAwareCommand
         $fnameThumb = $targetDir . DIRECTORY_SEPARATOR . 'thumb.jpg';
         $geom = sprintf('-geometry %dx', self::$widthScaled);
 
+        // for img-optimization
+        //  -sampling-factor 4:2:0 -strip -quality 85
+        // see https://developers.google.com/speed/docs/insights/OptimizeImages
+        $quality = sprintf('-quality %s', self::$quality);
+
         $imagickProcessor = $this->getContainer()->get('app.imagemagick');
 
         $convertArgs = array_merge($convertArgs, [
             $imagickProcessor->escapeshellarg($fnameFull),
+            '-sampling-factor 4:2:0',
+            '-strip',
+            $quality,
             $geom,
             $imagickProcessor->escapeshellarg($fnameThumb)
         ]);

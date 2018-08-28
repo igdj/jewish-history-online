@@ -28,6 +28,7 @@ class ImageMagickProcessor
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             return '"' . addcslashes($arg, '\\"') . '"';
         }
+
         return escapeshellarg($arg);
     }
 
@@ -41,5 +42,4 @@ class ImageMagickProcessor
 
         return $ret;
     }
-
 }
