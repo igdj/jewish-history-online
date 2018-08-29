@@ -522,12 +522,16 @@ a.break-word, .sidebar dd a {
     background-position: right 10px top 8px;
     background-size: auto 60%;
 
-    &.sourcetype-text {
+    &.sourcetype-text, &.sourcetype-transkript {
         background-image: url("../img/icon/text.png");
     }
 
     &.sourcetype-bild {
         background-image: url("../img/icon/image.png");
+    }
+
+    &.sourcetype-objekt {
+        background-image: url("../img/icon/object.png");
     }
 
     &.sourcetype-audio {
