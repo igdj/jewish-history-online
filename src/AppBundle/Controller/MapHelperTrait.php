@@ -20,6 +20,7 @@ trait MapHelperTrait
             if (empty($geo)) {
                 continue;
             }
+
             // localize name
             $place->setName($position['name']);
             $place->setAlternateName($position['alternateName']);
@@ -37,6 +38,7 @@ trait MapHelperTrait
                 $markers[$geo]['places'] .= ',' . $position['places'];
             }
         }
+
         return $markers;
     }
 
@@ -107,7 +109,7 @@ trait MapHelperTrait
                 ]
                 : [
                     [ 34.05, -118.2333 ], // LA, Sonderling
-                    [ 59.35, 17.9167 ],   // Stockholm, Berendsohn
+                    [ 60, 122 ],   // 59.35: Stockholm, 121.5: Shanghai
                 ],
         ];
     }

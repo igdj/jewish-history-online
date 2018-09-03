@@ -174,7 +174,7 @@
                             {% endfor %}
                             </ul>
                             {% endif %}
-                            <a class="hidden-xs" href="http://www.igdj-hh.de/" target="_blank">
+                            <a class="hidden-xs" href="http://www.igdj-hh.de/" target="_blank" rel="noopener">
                                 <img src="{{ app.request.basepath }}/img/igdj.png" style="margin-left: 60px; width: 80px; height: auto" alt="{{ 'Institute for the History of the German Jews'|trans }}" />
                             </a>
                         </div>
@@ -215,7 +215,7 @@
             <div id="footer-social" class="container-fluid">
                 <div class="row">
                     <div class="col-xs-12" style="z-index: 1; text-align: center">
-                    <a class="twitter" target="_blank" href="https://twitter.com/@{{ twitterSite }}" title="@{{ twitterSite }}"> </a>
+                    <a class="twitter" target="_blank" href="https://twitter.com/{{ twitterSite }}" title="@{{ twitterSite }}" rel="noopener"> </a>
                     </div>
                 </div>
             </div>
@@ -235,7 +235,7 @@
                         {{ knp_menu_render(menu) }}
                     </div>
                     <div id="footer-dfg" class="col-sm-4">
-                        <a href="http://gepris.dfg.de/gepris/projekt/268470421?language={{ app.request.locale }}" target="_blank">
+                        <a href="http://gepris.dfg.de/gepris/projekt/268470421?language={{ app.request.locale }}" target="_blank" rel="noopener">
                             <img src="{{ app.request.basepath }}/img/dfg.png" style="width: 165px; height: auto" alt="Deutsche Forschungsgemeinschaft" />
                         </a>
                     </div>
