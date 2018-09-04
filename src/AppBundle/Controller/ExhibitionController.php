@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-
 class ExhibitionController
 extends ArticleController
 {
@@ -58,7 +57,7 @@ extends ArticleController
             foreach ([ 'de' ] as $alternateLocale) {
                 $translator->setLocale($alternateLocale);
                 $localeSwitch[$alternateLocale] = [
-                    'slug' => $translator->trans($slug),
+                    'slug' => /** @Ignore */$translator->trans($slug),
                 ];
             }
             $translator->setLocale($locale);
