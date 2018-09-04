@@ -307,7 +307,7 @@ extends ArticleController
     /**
      * @Route("/source/{uid}.jsonld", name="source-jsonld")
      * @Route("/source/{uid}.pdf", name="source-pdf")
-     * @Route("/source/{uid}", name="source")
+     * @Route("/source/{uid}", name="source", requirements={"uid"=".*source\-\d+"})
      */
     public function sourceViewerAction(Request $request, $uid)
     {
