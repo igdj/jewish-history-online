@@ -1,16 +1,30 @@
 <?php
+
 namespace AppBundle\Utils;
 
 class PdfGenerator
-extends \mPDF
+extends \Mpdf\Mpdf
 {
     // mpdf
-    public function __construct()
+    public function __construct($options = [])
     {
-        // add font - mpdf 6.1
-        define('_MPDF_SYSTEM_TTFONTS_CONFIG', realpath(__DIR__ . '/config_fonts.php'));
+        // mpdf 7.x
+        $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
+        $fontDir = $defaultConfig['fontDir'];
 
-        parent::__construct();
+        $options['fontDir'] = array_key_exists('fontDir', $options)
+            ? array_merge($options['fontDir'], $fontDir)
+            : $fontDir;
+
+
+        $defaultFontConfig = (new \Mpdf\Config\FontVariables())->getDefaults();
+        $fontdata = $defaultFontConfig['fontdata'];
+
+        $options['fontdata'] = array_key_exists('fontdata', $options)
+            ? $fontdata + $options['fontdata']
+            : $fontdata;
+
+        parent::__construct($options);
 
         $this->autoScriptToLang = true;
 

@@ -415,17 +415,25 @@ extends Controller
         */
 
         // mpdf
-        $pdfGenerator = new \AppBundle\Utils\PdfGenerator();
+        $pdfGenerator = new \AppBundle\Utils\PdfGenerator([
+            'fontDir' => [
+                $this->get('kernel')->getProjectDir()
+                    . '/app/Resources/data/font',
+            ],
+            'fontdata' => [
+                'roboto' => [
+                    'R' => 'Roboto-Regular.ttf',
+                    'B' => 'Roboto-Bold.ttf',
+                    'I' => 'Roboto-Italic.ttf',
+                    'BI' => 'Roboto-BoldItalic.ttf',
+                    // 'useOTL' => 0xFF, // this font does not have OTL table
+                ],
+            ],
+            'default_font' => 'roboto',
+        ]);
 
-        /*
-        // hyphenation
-        list($lang, $region) = explode('_', $display_lang, 2);
-        $pdfGenerator->SHYlang = $lang;
-        $pdfGenerator->SHYleftmin = 3;
-        */
-
-        $fnameLogo = $this->get('kernel')->getRootDir() . '/../web/img/icon/icons_wide.png';
-        $pdfGenerator->logo_top = file_get_contents($fnameLogo);
+        $fnameLogo = $this->get('kernel')->getProjectDir() . '/web/img/icon/icons_wide.png';
+        $pdfGenerator->imageVars['logo_top'] = file_get_contents($fnameLogo);
 
         // silence due to https://github.com/mpdf/mpdf/issues/302 when using tables
         @$pdfGenerator->writeHTML($html);
