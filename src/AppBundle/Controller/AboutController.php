@@ -264,8 +264,7 @@ extends RenderTeiController
         $textBody = $template->renderBlock('body_text', [ 'data' => $data ]);
         $htmlBody = $template->renderBlock('body_html', [ 'data' => $data ]);
 
-        $message = \Swift_Message::newInstance()
-            ->setSubject($subject)
+        $message = (new \Swift_Message($subject))
             ->setFrom('burckhardtd@geschichte.hu-berlin.de')
             ->setTo('burckhardtd@geschichte.hu-berlin.de')
             ->setReplyTo($data['email']);
@@ -294,8 +293,8 @@ extends RenderTeiController
     {
         $translator = $this->get('translator');
 
-        $form = $this->createForm(new \AppBundle\Form\Type\ContactType());
-        $form->handleRequest($this->get('request'));
+        $form = $this->createForm(\AppBundle\Form\Type\ContactType::class);
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->render('AppBundle:Default:contact-sent.html.twig', [
                 'pageTitle' => $translator->trans('Contact'),
@@ -323,12 +322,17 @@ extends RenderTeiController
             }
         });
 
+        // the following gets full html from $crawler, except the doctype, so re-add
+        $node = $crawler->getNode(0);
+        $domDocument = $node->parentNode;
+        $html = '<!DOCTYPE html>' . "\n"
+            . $domDocument->saveHTML($node);
 
         return new Response(str_replace('%form%',
                                         $this->get('twig')
                                             ->render('AppBundle:Default:contact-form.html.twig', [
                                                 'form' => $form->createView(),
                                             ]),
-                                        $crawler->html()));
+                                        $html));
     }
 }

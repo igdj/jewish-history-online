@@ -23,8 +23,8 @@ twig:
         webDir: "%kernel.root_dir%/../web"
         piwikSiteId: "%piwik.site_id%"
         twitterSite: "%twitter.site%"
-    form:
-        resources: ['bootstrap_3_horizontal_layout.html.twig']
+    form_themes:
+        - 'bootstrap_3_horizontal_layout.html.twig'
         
 # Doctrine Configuration
 doctrine:

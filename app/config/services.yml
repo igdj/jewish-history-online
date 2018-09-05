@@ -13,7 +13,7 @@ services:
 
     app.twig_extension:
         class: AppBundle\Twig\AppExtension
-        arguments: [ @translator, @cocur_slugify ]
+        arguments: [ "@translator", "@cocur_slugify" ]
         public: false
         tags:
             - { name: twig.extension }
@@ -41,3 +41,13 @@ services:
     app.simplify_geojson:
         class:        AppBundle\Utils\SimplifyGeojsonProcessor
         arguments:    [ "%app.simplify_geojson.processor.arguments%" ]
+
+    app.menu_builder:
+        class: AppBundle\Menu\Builder
+        arguments: [ "@knp_menu.factory", "@translator.default", "@request_stack", "@router"  ]
+        tags:
+            # The alias is what is used to retrieve the menu
+            - { name: knp_menu.menu_builder, method: createTopMenu, alias: top } 
+            - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
+            - { name: knp_menu.menu_builder, method: createBreadcrumbMenu, alias: breadcrumb }
+            - { name: knp_menu.menu_builder, method: createFooterMainMenu, alias: footer-main }

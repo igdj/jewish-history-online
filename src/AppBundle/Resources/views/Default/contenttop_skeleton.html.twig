@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 small">
-                {% set item = knp_menu_get('AppBundle:Builder:breadcrumbMenu') %}
+                {% set item = knp_menu_get('breadcrumb') %}
                 {% set breadcrumbs_array = knp_menu_get_breadcrumbs_array(item) %}
                 <ul class="list-inline">
                 {% for item in breadcrumbs_array %}

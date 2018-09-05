@@ -159,7 +159,7 @@
                 <div class="row">
                     <div class="col-sm-12" style="position: relative">
                         <div style="position: absolute; right: 18px; z-index: 100">
-                            {{ knp_menu_render('AppBundle:Builder:topMenu') }}
+                            {{ knp_menu_render('top') }}
                             {% if app.request.attributes.get("_route") is not null %}
                             <ul id="menu-lang" class="list-inline">
                             {% for locale in [ 'de', 'en' ] %}
@@ -186,7 +186,7 @@
                         </h1>
                     </div>
                     <div class="col-sm-9">
-                        {{ knp_menu_render('AppBundle:Builder:mainMenu') }}
+                        {{ knp_menu_render('main') }}
                     </div>
                     <div id="header-search-wrapper" class="col-sm-3 hidden-xs">
                         <form action="{{ path('search-index') }}" method="post">
@@ -223,15 +223,15 @@
             <div id="footer-navigation" class="container">
                 <div class="row">
                     <div class="col-xs-12 col-sm-3" style="z-index: 1">
-                        {% set menu = knp_menu_get('AppBundle:Builder:mainMenu', [], {'position': 'footer'}) %}
+                        {% set menu = knp_menu_get('main', [], {'position': 'footer'}) %}
                         {{ knp_menu_render(menu) }}
                     </div>
                     <div class="col-xs-6 col-sm-3" style="z-index: 1">
-                        {% set menu = knp_menu_get('AppBundle:Builder:topMenu', [], {'position': 'footer', 'part': 'left'}) %}
+                        {% set menu = knp_menu_get('top', [], {'position': 'footer', 'part': 'left'}) %}
                         {{ knp_menu_render(menu) }}
                     </div>
                     <div class="col-xs-6 col-sm-2" style="z-index: 1">
-                        {% set menu = knp_menu_get('AppBundle:Builder:topMenu', [], {'position': 'footer', 'part': 'right'}) %}
+                        {% set menu = knp_menu_get('top', [], {'position': 'footer', 'part': 'right'}) %}
                         {{ knp_menu_render(menu) }}
                     </div>
                     <div id="footer-dfg" class="col-sm-4">

@@ -16,7 +16,8 @@ License
     Code for the presentation of the Digital Source Edition
         Key Documents of German-Jewish History
 
-        (C) 2017 Institut für die Geschichte der deutschen Juden, Daniel Burckhardt
+    (C) 2017-2018 Institut für die Geschichte der deutschen Juden,
+        Daniel Burckhardt
 
 
     This program is free software: you can redistribute it and/or modify
