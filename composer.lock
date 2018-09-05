@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ffc56c12344ed5e480e98a0b20f644c4",
+    "content-hash": "5c8f007fa18944b2956add2e6aba9e87",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -5804,14 +5804,10 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "liip/url-auto-converter-bundle": 20,
-        "leafo/scssphp": 0,
-        "knplabs/knp-menu-bundle": 0,
         "citation-style-language/locales": 20,
         "seboettg/citeproc-php": 20,
         "technosophos/libris": 20,
-        "geissler/converter": 20,
-        "symfony/psr-http-message-bridge": 0,
-        "zendframework/zend-diactoros": 0
+        "geissler/converter": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

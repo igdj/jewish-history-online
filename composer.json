@@ -66,8 +66,8 @@
         "twig/extensions": "1.4.*",
 
         "symfony/assetic-bundle": "2.8.*",
-        "leafo/scssphp": "@stable",
-        "knplabs/knp-menu-bundle": "@stable",
+        "leafo/scssphp": "^0.7",
+        "knplabs/knp-menu-bundle": "^2.2",
 
         "sabre/xml": "2.*",
         "servo/fluidxml": "1.*",
@@ -89,7 +89,7 @@
         "ddeboer/data-import": "0.20.*",
         "phpoffice/phpexcel": "1.8.*",
 
-        "gmo/iso-639": "1.0.*",
+        "gmo/iso-639": "^1.0",
 
         "mpdf/mpdf": "^7.1",
 
@@ -100,8 +100,8 @@
         "eko/feedbundle": "^1.2",
 
         "picturae/oai-pmh": "0.5.18",
-        "symfony/psr-http-message-bridge": "@stable",
-        "zendframework/zend-diactoros": "@stable",
+        "symfony/psr-http-message-bridge": "^1.1",
+        "zendframework/zend-diactoros": "^1.8",
 
         "vnn/wordpress-rest-api-client": "^1.2",
         "guzzlehttp/guzzle": "^6.3"
