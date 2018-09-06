@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -15,9 +17,9 @@ extends Controller
     /**
      * @Route("/oai", name="oai")
      */
-    public function dispatchAction()
+    public function dispatchAction(Request $request)
     {
-        $request = \Zend\Diactoros\ServerRequestFactory::fromGlobals();
+        $zendRequest = \Zend\Diactoros\ServerRequestFactory::fromGlobals();
 
         // repositoryName is localized siteName
         $translator = $this->get('translator');
@@ -25,15 +27,19 @@ extends Controller
         $globals = $twig->getGlobals();
 
         // $repository is an instance of \Picturae\OaiPmh\Interfaces\Repository
-        $repository = new Repository($this, [
-            'repositoryName' => /** @Ignore */ $translator->trans($globals['siteName']),
-            'administrationEmails' => [ 'info@juedische-geschichte-online.net' ],
-        ]);
+        $repository = new Repository(
+            $request,
+            $this->get('router'),
+            $this->getDoctrine(),
+            [
+                'repositoryName' => /** @Ignore */ $translator->trans($globals['siteName']),
+                'administrationEmails' => [ 'info@juedische-geschichte-online.net' ],
+            ]);
 
         // Instead of
         //   $provider = new \Picturae\OaiPmh\Provider($repository, $request);
         // we use a derived class referencing oai.xsl
-        $provider = new \AppBundle\Utils\OaiProvider($repository, $request);
+        $provider = new \AppBundle\Utils\OaiProvider($repository, $zendRequest);
 
         $psrResponse = $provider->getResponse();
 
@@ -74,9 +80,11 @@ implements InterfaceRepository
         return htmlspecialchars(rtrim($str), ENT_XML1, 'utf-8');
     }
 
-    public function __construct($controller, $options = [])
+    public function __construct($request, $router, $doctrine, $options = [])
     {
-        $this->controller = $controller;
+        $this->request = $request;
+        $this->router = $router;
+        $this->doctrine = $doctrine;
         $this->options = $options;
     }
 
@@ -86,7 +94,7 @@ implements InterfaceRepository
     public function getBaseUrl()
     {
         // create a generator
-        return $this->controller->generateUrl('oai', [], \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->router->generate('oai', [], \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     /**
@@ -106,7 +114,7 @@ implements InterfaceRepository
     {
         return new ImplementationIdentity(
             array_key_exists('repositoryName', $this->options)
-                ? $this->options['repositoryName'] : $this->controller->getRequest()->getHost(),
+                ? $this->options['repositoryName'] : $this->request->getHost(),
             $this->getEarliestDateStamp(),
             \Picturae\OaiPmh\Interfaces\Repository\Identity::DELETED_RECORD_PERSISTENT,
             array_key_exists('administrationEmails', $this->options)
@@ -304,12 +312,13 @@ implements InterfaceRepository
     protected function buildDateExpression($date)
     {
         $date->setTimezone(new \DateTimeZone('UTC'));
+
         return $date->format('Y-m-d'); // currently no time in datePublished field
     }
 
     protected function getRecords($params)
     {
-        $locale = $this->controller->getRequest()->getLocale();
+        $locale = $this->request->getLocale();
 
         $criteria = [
             'status' => [ 1 ], // explicit publishing needed
@@ -322,7 +331,7 @@ implements InterfaceRepository
             $criteria['articleSection'] = $params['set'];
         }
 
-        $qb = $this->controller->getDoctrine()
+        $qb = $this->doctrine
             ->getManager()
             ->createQueryBuilder();
 
@@ -346,6 +355,7 @@ implements InterfaceRepository
             $qb->andWhere('COALESCE(A.datePublished, PA.datePublished) >= :from')
                 ->setParameter('from', $this->buildDateExpression($params['from']));
         }
+
         if (!empty($params['until'])) {
             $qb->andWhere('COALESCE(A.datePublished, PA.datePublished) <= :until')
                 ->setParameter('until', $this->buildDateExpression($params['until']));
@@ -373,7 +383,7 @@ implements InterfaceRepository
             return;
         }
 
-        $article = $this->controller->getDoctrine()
+        $article = $this->doctrine
             ->getManager()
             ->getRepository('AppBundle\Entity\Article')
             ->findOneBy([
@@ -427,7 +437,7 @@ implements InterfaceRepository
             $url = 'https://dx.doi.org/' . $doi;
         }
         else {
-            $url = $this->controller->generateUrl($route, $params, true);
+            $url = $this->router->generateUrl($route, $params, true);
         }
 
         $description = self::xmlEncode($description);
