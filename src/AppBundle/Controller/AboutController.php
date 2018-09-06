@@ -190,7 +190,7 @@ extends RenderTeiController
 
                 $posts = $client->posts()->get(null, [
                     'per_page' => 15,
-                    'lang' => $this->get('request')->getLocale(),
+                    'lang' => $request->getLocale(),
                 ]);
 
                 if (!empty($posts)) {
