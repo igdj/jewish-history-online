@@ -5,7 +5,6 @@
 
 namespace AppBundle\Utils;
 
-
 class TeiHelper
 {
     protected $errors = [];
@@ -805,11 +804,11 @@ class TeiHelper
                     }
                     ++$additional[$type][$uri];
                 }
-
             }
         }
         catch (\Exception $e) {
             var_dump($e);
+
             return false;
         }
 
@@ -901,7 +900,7 @@ extends \Sabre\Xml\Reader
 
     function parse() : array
     {
-        $this->collected = array();
+        $this->collected = [];
         parent::parse();
 
         return $this->collected;
