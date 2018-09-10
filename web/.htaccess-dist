@@ -77,3 +77,23 @@ DirectoryIndex app.php
         # RedirectTemp cannot be used instead
     </IfModule>
 </IfModule>
+
+<IfModule mod_expires.c>
+ExpiresActive On
+############################################
+## Add default Expires header
+## http://developer.yahoo.com/performance/rules.html#expires
+<FilesMatch "\.(ico||jpg|jpeg|png|gif|svg|woff|css|js)$">
+ExpiresDefault "access plus 1 month"
+</FilesMatch>
+</IfModule>
+
+<FilesMatch "^media[0-9]\.mp3$">
+    FileEtag None
+    <ifModule mod_headers.c>
+        Header Unset ETag
+        Header Set Cache-Control "max-age=0, no-store, no-cache, must-revalidate"
+        Header Set Pragma "no-cache"
+        Header Set Expires "Thu, 1 Jan 1970 00:00:00 GMT"
+    </ifModule>
+</FilesMatch>
