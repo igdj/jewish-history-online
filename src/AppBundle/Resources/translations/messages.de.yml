@@ -99,6 +99,7 @@ epoch.century-nd:                   "%century%. Jahrhundert"
 epoch.century-bce:                  "%century%. Jahrhundert v.d.Z."
 epoch.decade:                       "%epoch%er-Jahre"
 Image:                              Bild
+Image %1 of %2:                     Bild %1 von %2
 Transcript:                         Transkript
 Transcription:                      Transkript
 German Translation:                 Deutsche Übersetzung
