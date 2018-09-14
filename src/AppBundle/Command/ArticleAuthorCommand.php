@@ -12,7 +12,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 class ArticleAuthorCommand
-extends BaseEntityCommand
+extends EntityCommandBase
 {
     protected function configure()
     {

@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class ArticleContentCommand
-extends BaseEntityCommand
+extends EntityCommandBase
 {
     use \AppBundle\Utils\RenderTeiTrait; // use shared method renderTei()
 

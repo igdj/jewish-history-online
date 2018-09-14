@@ -1,11 +1,11 @@
 <?php
-// src/AppBundle/Command/BaseEntityCommand.php
+// src/AppBundle/Command/EntityCommandBase.php
 
 namespace AppBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
-abstract class BaseEntityCommand
+abstract class EntityCommandBase
 extends ContainerAwareCommand
 {
     protected function jsonPrettyPrint($structure)

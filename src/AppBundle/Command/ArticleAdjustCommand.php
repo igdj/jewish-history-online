@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class ArticleAdjustCommand
-extends BaseEntityCommand
+extends EntityCommandBase
 {
     protected function configure()
     {

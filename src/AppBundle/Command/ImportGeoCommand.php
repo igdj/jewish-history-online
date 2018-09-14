@@ -15,7 +15,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 class ImportGeoCommand
-extends BaseEntityCommand
+extends EntityCommandBase
 {
     protected function configure()
     {

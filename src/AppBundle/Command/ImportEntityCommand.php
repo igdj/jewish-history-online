@@ -9,7 +9,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 class ImportEntityCommand
-extends BaseEntityCommand
+extends EntityCommandBase
 {
     protected function configure()
     {
