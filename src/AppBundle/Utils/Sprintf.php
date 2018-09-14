@@ -35,7 +35,7 @@ class Sprintf
     {
         self::$string = $string;
 
-        foreach($args as $key => $val) {
+        foreach ($args as $key => $val) {
 
             // Forced formatting for boolean values
             if (preg_match('%(?P<key>'.$key.'(?:\:bool\:(?P<format>int|str)))%', self::$string, $matches)) {

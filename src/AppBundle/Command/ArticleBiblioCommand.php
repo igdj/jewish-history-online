@@ -76,7 +76,7 @@ extends ContainerAwareCommand
 
         if (false === $items) {
             $output->writeln(sprintf('<error>%s could not be loaded</error>', $fname));
-            foreach($teiHelper->getErrors() as $error) {
+            foreach ($teiHelper->getErrors() as $error) {
                 $output->writeln(sprintf('<error>  %s</error>', trim($error->message)));
             }
 
