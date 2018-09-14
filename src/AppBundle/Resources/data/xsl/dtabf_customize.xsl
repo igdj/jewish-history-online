@@ -182,7 +182,7 @@
     <xsl:param name="value"/>
     <xsl:param name="type"/>
     <xsl:choose>
-      <xsl:when test="$value and starts-with($value,'http')">
+      <xsl:when test="$value and (starts-with($value,'http') or starts-with($value,'geo:'))">
         <xsl:element name="span">
           <xsl:attribute name="class">entity-ref</xsl:attribute>
           <xsl:attribute name="data-type"><xsl:value-of select="$type" /></xsl:attribute>

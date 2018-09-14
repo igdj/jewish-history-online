@@ -1,7 +1,7 @@
 <?php
 
 /**
- *
+ * Shared methods for Controllers working with the TEI-files
  */
 
 namespace AppBundle\Controller;
@@ -14,45 +14,6 @@ extends Controller
 {
     use SharingBuilderTrait,
         \AppBundle\Utils\RenderTeiTrait; // use shared method renderTei()
-
-    protected function locateTeiResource($fnameXml)
-    {
-        $kernel = $this->get('kernel');
-
-        try {
-            $pathToXml = $kernel->locateResource('@AppBundle/Resources/data/tei/' . $fnameXml,
-                                                 $kernel->getResourcesOverrideDir());
-        }
-        catch (\InvalidArgumentException $e) {
-            return false;
-        }
-
-        return $pathToXml;
-    }
-
-    protected function renderTei($fnameXml, $fnameXslt = 'dtabf_article.xsl', $options = [])
-    {
-        $kernel = $this->get('kernel');
-
-        $locateResource = !array_key_exists('locateXmlResource', $options)
-            || $options['locateXmlResource'];
-        if ($locateResource) {
-            $pathToXml = $this->locateTeiResource($fnameXml);
-            if (false === $pathToXml) {
-                return false;
-            }
-        }
-        else {
-            $pathToXml = $fnameXml;
-        }
-
-        $proc = $this->get('app.xslt');
-        $pathToXslt = $kernel->locateResource('@AppBundle/Resources/data/xsl/' . $fnameXslt,
-                                              $kernel->getResourcesOverrideDir());
-        $res = $proc->transformFileToXml($pathToXml, $pathToXslt, $options);
-
-        return $res;
-    }
 
     protected function buildRefLookup($refs, $language)
     {
@@ -139,9 +100,11 @@ extends Controller
             if (!array_key_exists($entity['type'], $entitiesByType)) {
                 continue;
             }
+
             if (!array_key_exists($entity['uri'], $entitiesByType[$entity['type']])) {
                 $entitiesByType[$entity['type']][$entity['uri']] = [ 'count' => 0 ];
             }
+
             ++$entitiesByType[$entity['type']][$entity['uri']]['count'];
         }
 
@@ -175,6 +138,7 @@ extends Controller
                             ->getRepository('AppBundle:Person')
                             ->findBy([ 'gnd' => array_keys($personGnds) ])
                             ;
+
                         foreach ($persons as $person) {
                             if ($person->getStatus() >= 0) {
                                 $uri = $personGnds[$person->getGnd()];
@@ -193,11 +157,14 @@ extends Controller
                             ->getRepository('AppBundle:Person')
                             ->findBy([ 'djh' => array_keys($personDjhs) ])
                             ;
+
                         foreach ($persons as $person) {
                             if ($person->getStatus() >= 0) {
                                 $uri = $personDjhs[$person->getDjh()];
                                 $details = [
-                                    'url' => $this->generateUrl('person', [ 'id' => $person->getId() ]),
+                                    'url' => $this->generateUrl('person', [
+                                        'id' => $person->getId(),
+                                    ]),
                                 ];
                                 $entitiesByType[$type][$uri] += $details;
                             }
@@ -209,11 +176,14 @@ extends Controller
                             ->getRepository('AppBundle:Person')
                             ->findBy([ 'stolpersteine' => array_keys($personStolpersteine) ])
                             ;
+
                         foreach ($persons as $person) {
                             if ($person->getStatus() >= 0) {
                                 $uri = $personStolpersteine[$person->getStolpersteine()];
                                 $details = [
-                                    'url' => $this->generateUrl('person', [ 'id' => $person->getId() ]),
+                                    'url' => $this->generateUrl('person', [
+                                        'id' => $person->getId(),
+                                    ]),
                                 ];
                                 $entitiesByType[$type][$uri] += $details;
                             }
@@ -222,13 +192,19 @@ extends Controller
                     break;
 
                 case 'place':
-                    $placeTgns = [];
+                    $placeTgns = $placeGeo = [];
                     foreach ($uriCount as $uri => $count) {
                         if (preg_match('/^'
                                        . preg_quote('http://vocab.getty.edu/tgn/', '/')
                                        . '(\d+?)$/', $uri, $matches))
                         {
                             $placeTgns[$matches[1]] = $uri;
+                        }
+                        else if (preg_match('/^geo\:(-?\d+\.\d*)(,)\s*(-?\d+\.\d*)/', $uri, $matches)) {
+                            $placeGeo['geo:' . $matches[1] . $matches[2] . $matches[3]] = $uri;
+                        }
+                        else {
+                            // TODO: maybe handle gnd as well
                         }
                     }
 
@@ -237,8 +213,9 @@ extends Controller
                             ->getRepository('AppBundle:Place')
                             ->findBy([ 'tgn' => array_keys($placeTgns) ])
                             ;
+
                         foreach ($places as $place) {
-                            if (true /*$person->getStatus() >= 0 */) {
+                            if ($place->getStatus() >= 0) {
                                 $uri = $placeTgns[$place->getTgn()];
                                 $details = [
                                     'url' => $this->generateUrl('place-by-tgn', [
@@ -247,6 +224,18 @@ extends Controller
                                 ];
                                 $entitiesByType[$type][$uri] += $details;
                             }
+                        }
+                    }
+
+                    if (!empty($placeGeo)) {
+                        // TODO: check which are linked to LandmarksOrHistoricalBuildings
+                        foreach ($placeGeo as $uriNormalized => $uriOriginal) {
+                            $coords = explode(',', str_replace('geo:', '', $uriNormalized));
+                            $details = [
+                                'url' => $uriNormalized,
+                                'latLong' => [ (double)$coords[0], (double)$coords[1] ],
+                            ];
+                            $entitiesByType[$type][$uriOriginal] += $details;
                         }
                     }
                     break;
@@ -267,6 +256,7 @@ extends Controller
                             ->getRepository('AppBundle:Organization')
                             ->findBy([ 'gnd' => array_keys($organizationGnds) ])
                             ;
+
                         foreach ($organizations as $organization) {
                             if ($organization->getStatus() >= 0) {
                                 $uri = $organizationGnds[$organization->getGnd()];
@@ -297,6 +287,7 @@ extends Controller
                             ->getRepository('AppBundle:Event')
                             ->findBy([ 'gnd' => array_keys($dateGnds) ])
                             ;
+
                         foreach ($events as $event) {
                             if ($event->getStatus() >= 0 && !is_null($event->getStartDate())) {
                                 $uri = $dateGnds[$event->getGnd()];
@@ -328,14 +319,15 @@ extends Controller
 
         $slugify = $this->get('cocur_slugify');
 
-        $slugs = array_map(function ($term) use ($slugify) {
-                                return $slugify->slugify($term);
-                           },
-                           $glossaryTerms);
+        $slugs = array_map(
+            function ($term) use ($slugify) {
+                return $slugify->slugify($term);
+            },
+            $glossaryTerms);
 
         $termsBySlug = [];
 
-        // TODO: only query for $slugs
+        // lookup matching terms by slug
         foreach ($this->getDoctrine()
                 ->getRepository('AppBundle:GlossaryTerm')
                 ->findBy([
@@ -483,12 +475,15 @@ extends Controller
         $crawler = new \Symfony\Component\DomCrawler\Crawler();
         $crawler->addHtmlContent($html);
 
-        // extract toc
-        $section_headers = $crawler->filterXPath('//h2')->each(function ($node, $i) {
+        // headers for TOC
+        $sectionHeaders = $crawler->filterXPath('//h2')->each(function ($node, $i) {
             return [ 'id' => $node->attr('id'), 'text' => $node->text() ];
         });
+
+        // authors
         $authors = $crawler->filterXPath("//ul[@id='authors']/li")->each(function ($node, $i) {
             $author = [ 'text' => $node->text() ];
+
             $slug = $node->attr('data-author-slug');
             if (!empty($slug)) {
                 $author['slug'] = $slug;
@@ -497,22 +492,26 @@ extends Controller
             return $author;
         });
 
-        // extract license
+        // license
         $license = null;
         $node = $crawler
             ->filterXpath("//div[@id='license']");
         if (count($node) > 0) {
-            $license = [ 'text' => trim($node->text()),
-                         'url' => $node->attr('data-target') ];
+            $license = [
+                'text' => trim($node->text()),
+                'url' => $node->attr('data-target'),
+            ];
         }
 
-        // extract entities
+        // entities
         $entities = $crawler->filterXPath("//span[@class='entity-ref']")->each(function ($node, $i) {
             $entity = [];
+
             $type = $node->attr('data-type');
             if (!empty($type)) {
                 $entity['type'] = $type;
             }
+
             $uri = $node->attr('data-uri');
             if (!empty($uri)) {
                 $entity['uri'] = $uri;
@@ -521,38 +520,41 @@ extends Controller
             return $entity;
         });
 
-        // extract bibitem
+        // bibitem
         $bibitems = array_filter(array_unique($crawler->filterXPath("//span[@class='dta-bibl']")->each(function ($node, $i) {
             return trim($node->attr('data-corresp'));
         })));
 
-        $bibitems_by_corresp = [];
+        $bibitemsByCorresp = [];
         if (!empty($bibitems)) {
             $slugify = $this->get('cocur_slugify');
+
             foreach ($bibitems as $corresp) {
-                $bibitems_map[$corresp] =  \AppBundle\Entity\Bibitem::slugifyCorresp($slugify, $corresp);
+                $bibitemsMap[$corresp] =  \AppBundle\Entity\Bibitem::slugifyCorresp($slugify, $corresp);
             }
+
             $query = $this->getDoctrine()
                 ->getManager()
                 ->createQuery('SELECT b.slug'
                               . ' FROM AppBundle:Bibitem b'
                               . ' WHERE b.slug IN (:slugs) AND b.status >= 0')
-                ->setParameter('slugs', array_values($bibitems_map))
+                ->setParameter('slugs', array_values($bibitemsMap))
                 ;
+
             foreach ($query->getResult() as $bibitem) {
-                $corresps = array_keys($bibitems_map, $bibitem['slug']);
+                $corresps = array_keys($bibitemsMap, $bibitem['slug']);
                 foreach ($corresps as $corresp) {
-                    $bibitems_by_corresp[$corresp] = $bibitem;
+                    $bibitemsByCorresp[$corresp] = $bibitem;
                 }
             }
         }
 
-        // extract glossary terms
+        //  glossary terms
         $glossaryTerms = array_unique($crawler->filterXPath("//span[@class='glossary']")->each(function ($node, $i) {
             return $node->attr('data-title');
         }));
 
-        // extract article refs
+        // refs to other articles in the format jg:article-123 or jgo:source-123
         $refs = array_unique($crawler->filterXPath("//a[@class='external']")->each(function ($node, $i) {
             $href = $node->attr('href');
             if (preg_match('/^jgo:(article|source)\-(\d+)$/', $node->attr('href'))) {
@@ -562,40 +564,40 @@ extends Controller
 
         // try to get bios in the current locale
         $locale = $this->get('translator')->getLocale();
-        $author_slugs = [];
-        $authors_by_slug = [];
+        $authorSlugs = [];
+        $authorsBySlug = [];
         foreach ($authors as $author) {
             if (array_key_exists('slug', $author)) {
-                $author_slugs[] = $author['slug'];
-                $authors_by_slug[$author['slug']] = $author;
+                $authorSlugs[] = $author['slug'];
+                $authorsBySlug[$author['slug']] = $author;
             }
             else {
-                $authors_by_slug[] = $author;
+                $authorsBySlug[] = $author;
             }
         }
 
-        if (!empty($author_slugs)) {
+        if (!empty($authorSlugs)) {
             $query = $this->getDoctrine()
                 ->getManager()
                 ->createQuery('SELECT p.slug, p.description, p.gender'
                               . ' FROM AppBundle:Person p'
                               . ' WHERE p.slug IN (:slugs)')
-                ->setParameter('slugs', $author_slugs);
+                ->setParameter('slugs', $authorSlugs);
 
             foreach ($query->getResult() as $person) {
-                $authors_by_slug[$person['slug']]['gender'] = $person['gender'];
+                $authorsBySlug[$person['slug']]['gender'] = $person['gender'];
                 if (!is_null($person['description']) && array_key_exists($locale, $person['description'])) {
-                    $authors_by_slug[$person['slug']]['description'] = $person['description'][$locale];
+                    $authorsBySlug[$person['slug']]['description'] = $person['description'][$locale];
                 }
             }
         }
 
         return [
-            $authors_by_slug,
-            $section_headers,
+            $authorsBySlug,
+            $sectionHeaders,
             $license,
             $entities,
-            $bibitems_by_corresp,
+            $bibitemsByCorresp,
             $glossaryTerms,
             $refs,
         ];

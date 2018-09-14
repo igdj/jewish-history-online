@@ -5,8 +5,7 @@ namespace AppBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  *
@@ -404,13 +403,11 @@ extends ArticleController
 
     protected function buildImgSrcPath($relPath)
     {
-        $kernel = $this->get('kernel');
-
         $imgDir = '@AppBundle/Resources/data/img/';
         $srcPath = $imgDir . $relPath;
 
         try {
-            $srcPathFull = $kernel->locateResource($srcPath, $kernel->getResourcesOverrideDir());
+            $srcPathFull = $this->locateResource($srcPath);
 
             return $srcPathFull;
         }

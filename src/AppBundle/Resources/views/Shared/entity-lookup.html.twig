@@ -1,29 +1,32 @@
 {% macro head(entity_lookup, bibitem_lookup, glossary_lookup) %}
+    {% import 'AppBundle:Shared:map-leaflet.html.twig' as map %}
     <script>
     var tooltipDelayHide = 150;
 
     /* Bootstrap tooltips to stay open on hover: https://stackoverflow.com/a/36056707/2114681 */
     var originalLeave = $.fn.tooltip.Constructor.prototype.leave;
-    $.fn.tooltip.Constructor.prototype.leave = function(obj){
-      var self = obj instanceof this.constructor ?
-        obj : $(obj.currentTarget)[this.type](this.getDelegateOptions()).data('bs.' + this.type)
-      var container, timeout;
+    $.fn.tooltip.Constructor.prototype.leave = function (obj) {
+        var self = obj instanceof this.constructor
+            ? obj
+            : $(obj.currentTarget)[this.type](this.getDelegateOptions()).data('bs.' + this.type);
+        var container, timeout;
 
-      originalLeave.call(this, obj);
+        originalLeave.call(this, obj);
 
-      if(obj.currentTarget) {
-        container = $(obj.currentTarget).siblings('.tooltip')
-        timeout = self.timeout;
-        container.one('mouseenter', function(){
-          //We entered the actual popover – call off the dogs
-          clearTimeout(timeout);
-          //Let's monitor popover content instead
-          container.one('mouseleave', function(){
-            $.fn.tooltip.Constructor.prototype.leave.call(self, self);
-          });
-        })
-      }
+        if (obj.currentTarget) {
+            container = $(obj.currentTarget).siblings('.tooltip')
+            timeout = self.timeout;
+            container.one('mouseenter', function() {
+                // We entered the actual popover - call off the dogs
+                clearTimeout(timeout);
+                // Let's monitor popover content instead
+                container.one('mouseleave', function(){
+                    $.fn.tooltip.Constructor.prototype.leave.call(self, self);
+                });
+            })
+        }
     };
+
     var entityLookup = {{ entity_lookup|json_encode|raw }};
     var bibitemLookup = {{ bibitem_lookup|json_encode|raw }};
     var glossaryLookup = {{ glossary_lookup|json_encode|raw }};
@@ -39,6 +42,7 @@
                 "title" : info.name + ': ' + info.headline
             };
         }
+
         return null;
     }
 
@@ -120,11 +124,35 @@
             var info = entityLookup[type][uri];
             if (info != null && info.url != null) {
                 $el.addClass('hoverable');
-                $el.click(function() {
-                    window.location = info.url;
+                if (info.url.startsWith('geo:')) {
+                    $el.popover({
+                        html : true,
+                        'content': '<div class="map" style="width: 240px; height: 240px; background-color: gray;"></div>'
+                    })
+                    .on('shown.bs.popover', function () {
+                        var $popover = $el.next();
+                        var $map = $popover.find('.map');
+                        var id = $map.attr('id');
+                        var mapid = $popover.attr('id') + 'map';
+                        $map.attr('id', mapid);
+                        var map = L.map(mapid);
+                        L.marker(info.latLong).addTo(map);
+                        map.setView(info.latLong, 16);
+                        {{ map.addTileLayer() }}
+                    });
+                }
+                else {
+                    $el.click(function() {
+                        if (info.url.startsWith('geo:')) {
+                        }
+                        else {
+                            // open
+                            window.location = info.url;
+                        }
 
-                    return false;
-                });
+                        return false;
+                    });
+                }
 
                 // console.log( index + ": " + $el.text() + JSON.stringify(info));
                 if (info.blurb != null) {
