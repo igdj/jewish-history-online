@@ -43,8 +43,6 @@
     "require": {
         "symfony/symfony": "3.4.*",
 
-        "sensio/framework-extra-bundle": "^5.2",
-
         "symfony/console": "3.4.*",
 
         "symfony/monolog-bundle": "^3.3",

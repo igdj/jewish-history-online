@@ -3,10 +3,11 @@
 namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
  * Use Picturae OAI-PMH package to implement an OAI-endpoint /oai

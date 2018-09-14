@@ -40,7 +40,6 @@ extends Kernel
     {
         $bundles = [
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 
             new Symfony\Bundle\TwigBundle\TwigBundle(),
 
