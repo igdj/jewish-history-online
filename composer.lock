@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "518126560f53f5cd4eedcf6c4f769204",
+    "content-hash": "2dfe5a5aefac316eea512565b66b931c",
     "packages": [
         {
             "name": "beberlei/DoctrineExtensions",
@@ -1476,21 +1476,22 @@
         },
         {
             "name": "eko/feedbundle",
-            "version": "1.2.8",
+            "version": "1.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eko/FeedBundle.git",
-                "reference": "2d2c8eb09f4ff4eb2c482315d18fa5173bd273eb"
+                "reference": "d4e626616d9ccf6527212d3bdda15f9af3838e4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eko/FeedBundle/zipball/2d2c8eb09f4ff4eb2c482315d18fa5173bd273eb",
-                "reference": "2d2c8eb09f4ff4eb2c482315d18fa5173bd273eb",
+                "url": "https://api.github.com/repos/eko/FeedBundle/zipball/d4e626616d9ccf6527212d3bdda15f9af3838e4f",
+                "reference": "d4e626616d9ccf6527212d3bdda15f9af3838e4f",
                 "shasum": ""
             },
             "require": {
                 "php": "^5.4|^7.0",
-                "symfony/framework-bundle": "^2.5|^3.0",
+                "symfony/framework-bundle": "^2.5|^3.0|^4.0",
+                "symfony/translation": "^2.5|^3.0|^4.0",
                 "zendframework/zend-feed": ">=2.0",
                 "zendframework/zend-http": ">=2.0",
                 "zendframework/zend-servicemanager": ">=2.0"
@@ -1503,11 +1504,6 @@
                 "doctrine/orm": "~2.2,>=2.2.3|~2.5"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.1.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Eko\\FeedBundle\\": ""
@@ -1531,7 +1527,7 @@
                 "feed",
                 "rss"
             ],
-            "time": "2016-04-20T19:56:02+00:00"
+            "time": "2018-09-14T19:08:49+00:00"
         },
         {
             "name": "fale/isbn",
@@ -5125,21 +5121,22 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.35.4",
+            "version": "v2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "7e081e98378a1e78c29cc9eba4aefa5d78a05d2a"
+                "reference": "6a5f676b77a90823c2d4eaf76137b771adf31323"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/7e081e98378a1e78c29cc9eba4aefa5d78a05d2a",
-                "reference": "7e081e98378a1e78c29cc9eba4aefa5d78a05d2a",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/6a5f676b77a90823c2d4eaf76137b771adf31323",
+                "reference": "6a5f676b77a90823c2d4eaf76137b771adf31323",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3",
-                "symfony/polyfill-ctype": "^1.8"
+                "php": "^7.0",
+                "symfony/polyfill-ctype": "^1.8",
+                "symfony/polyfill-mbstring": "~1.0"
             },
             "require-dev": {
                 "psr/container": "^1.0",
@@ -5149,7 +5146,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.35-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -5187,7 +5184,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2018-07-13T07:12:17+00:00"
+            "time": "2018-07-13T07:18:09+00:00"
         },
         {
             "name": "vnn/wordpress-rest-api-client",

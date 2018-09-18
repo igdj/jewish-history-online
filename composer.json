@@ -57,7 +57,7 @@
         "jms/i18n-routing-bundle": "^2.0",
         "jms/translation-bundle": "^1.4",
 
-        "twig/twig": "1.*",
+        "twig/twig": "2.*",
 
         "cocur/slugify": "^3.1",
         "liip/url-auto-converter-bundle": "dev-master",
