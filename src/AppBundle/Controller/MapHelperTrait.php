@@ -13,6 +13,8 @@ trait MapHelperTrait
      */
     protected function buildPlaceMarkers($result, $locale, $geoPrimary = null)
     {
+        $router = $this->get('router');
+
         $place = new \AppBundle\Entity\Place();
         $markers = [];
         foreach ($result as $position) {
@@ -25,12 +27,25 @@ trait MapHelperTrait
             $place->setName($position['name']);
             $place->setAlternateName($position['alternateName']);
             $position['name'] = $place->getNameLocalized($locale);
+
             if (!array_key_exists($geo, $markers)) {
                 unset($position['geo']);
+
                 $position['number'] = (int)($position['number']);
                 $latLng = explode(',', $geo);
                 $position['latLng'] = [ (double)$latLng[0], (double)$latLng[1] ];
                 $position['primary'] = is_null($geoPrimary) || array_key_exists($geo, $geoPrimary);
+
+                if (!empty($position['type'])) {
+                    switch ($position['type']) {
+                        case 'landmark':
+                            $position['url'] = $router->generate('landmark', [
+                                'id' => $position['id'],
+                            ]);
+                            break;
+                    }
+                }
+
                 $markers[$geo] = $position;
             }
             else {
@@ -48,8 +63,8 @@ trait MapHelperTrait
             case 'landmark':
                 $entityName = 'AppBundle:Article';
                 $boundingBox = [
-                    [ 60, -120 ],
-                    [ -15, 120 ],
+                    [ 53.549405, 9.950503 ], // Königsstraße
+                    [ 53.6154844, 10.038958900000011 ], // Jüdischer Friedhof an der Ilandkoppel
                 ];
                 break;
 
@@ -104,13 +119,12 @@ trait MapHelperTrait
                     ;
         }
         else if ('landmark' == $mode) {
-            $qb->select('COUNT(DISTINCT A.id) AS number, P.id AS places, P.name, P.alternateName, COALESCE(A.geo,P.geo) AS geo')
+            $qb->select("COUNT(DISTINCT A.id) AS number, P.id AS places, P.id AS id, 'landmark' AS type, P.name, P.alternateName, COALESCE(A.geo,P.geo) AS geo")
                 ->innerJoin('A.landmarkReferences', 'AL')
                 ->innerJoin('AL.landmark', 'P')
                 ->andWhere('A.status IN (1) AND (P.geo IS NOT NULL)')
                 ->groupBy('geo, P.id')
                 ;
-
         }
         else {
             $qb->select('COUNT(DISTINCT A.id) AS number, P.id AS places, P.name, P.alternateName, COALESCE(A.geo,P.geo) AS geo')

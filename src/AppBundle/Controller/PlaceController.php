@@ -44,11 +44,12 @@ extends Controller
             $articles = [];
         }
         else {
-            $mentioned = 'place-map-mentioned' == $request->get('caller');
+            $mode = str_replace('place-map-', '', $request->get('caller'));
 
             $ids = explode(',', $ids);
             $qb = $this->getDoctrine()
-                    ->getRepository($mentioned ? 'AppBundle:Article' : 'AppBundle:SourceArticle')
+                    ->getRepository(in_array($mode, [ 'mentioned', 'landmark' ])
+                                             ? 'AppBundle:Article' : 'AppBundle:SourceArticle')
                     ->createQueryBuilder('A')
                     ;
 
@@ -58,10 +59,22 @@ extends Controller
                     ->setParameter('ids', $ids)
                     ;
 
-            if ($mentioned) {
+            if ('mentioned' == $mode) {
                 $qb
                 ->innerJoin('A.placeReferences', 'AP')
                 ->innerJoin('AP.place', 'P');
+            }
+            else if ('landmark' == $mode) {
+                $qb
+                ->innerJoin('A.landmarkReferences', 'AL')
+                ->innerJoin('AL.landmark', 'P');
+
+                $geo = $request->get('geo');
+                if (!empty($geo)) {
+                    $qb->andWhere('P.geo = :geo')
+                        ->setParameter('geo', $geo)
+                        ;
+                }
             }
             else {
                 $qb->innerJoin('A.contentLocation', 'P');

@@ -114,6 +114,10 @@
                                 var url = decodeURIComponent(urlTemplatePlace).replace('{0}', info['tgn']);
                                 name = '<a href="' + url + '">' + name + '</a>';
                             }
+                            else if (null != info['url']) {
+                                name = '<a href="' + info['url'] + '">' + name + '</a>';
+                            }
+
                             var header = '<b>' + name + '</b><br />';
                             popup.setContent(header + labelLoading);
                             popup.update();
