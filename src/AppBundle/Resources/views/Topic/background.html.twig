@@ -2,8 +2,11 @@
 
 {% import 'AppBundle:Shared:helper.html.twig' as helper %}
 {% import 'AppBundle:Shared:entity-lookup.html.twig' as entityLookup %}
+{% import 'AppBundle:Shared:map-leaflet.html.twig' as map %}
 
 {% block head %}
+    {{ map.head() }}
+
     {# TODO: move to some shared style-sheet #}
     <style>
     #authors, #license {
