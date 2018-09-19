@@ -127,6 +127,10 @@ extends EntityCommandBase
                             $responsible = [ $translator->trans('Migration') ];
                             break;
 
+                        case 'fischer-stefanie':
+                            $responsible = [ $translator->trans('Family and Everyday Life') ];
+                            break;
+
                         case 'heinsohn-kirsten':
                             $responsible = [ $translator->trans('Leisure and Sports') ];
                             break;
@@ -176,12 +180,15 @@ extends EntityCommandBase
                         if ($a == $b) {
                             return 0;
                         }
+
                         if (in_array($a, $responsible) && in_array($b, $responsible)) {
                             return strcmp($a, $b);
                         }
+
                         if (in_array($a, $responsible)) {
                             return -1;
                         }
+
                         if (in_array($b, $responsible)) {
                             return 1;
                         }
