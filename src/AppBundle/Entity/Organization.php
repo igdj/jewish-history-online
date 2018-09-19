@@ -310,6 +310,11 @@ implements \JsonSerializable, JsonLdSerializable
         return $this->description;
     }
 
+    /**
+     * Gets description in a specific locale.
+     *
+     * @return string
+     */
     public function getDescriptionLocalized($locale)
     {
         if (empty($this->description)) {

@@ -735,6 +735,10 @@ class TeiHelper
                                        . preg_quote('http://vocab.getty.edu/tgn/', '/')
                                        . '\d+$/', $uri))
                         {
+                            ;
+                        }
+                        else if (preg_match('/geo\:(-?\d+\.\d*),\s*(-?\d+\.\d*)/', $uri, $matches)) {
+                            $uri = sprintf('geo:%s,%s', $matches[1], $matches[2]);
                         }
                         else {
                             // die($uri);
@@ -771,6 +775,7 @@ class TeiHelper
                                        . preg_quote('http://d-nb.info/gnd/', '/')
                                        . '\d+\-?[\dxX]?$/', $uri))
                         {
+                            ;
                         }
                         else {
                             // die($uri);
@@ -784,6 +789,7 @@ class TeiHelper
                                        . preg_quote('http://d-nb.info/gnd/', '/')
                                        . '\d+\-?[\dxX]?$/', $uri))
                         {
+                            ;
                         }
                         else {
                             // die($uri);

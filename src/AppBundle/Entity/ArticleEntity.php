@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *   "person" = "ArticlePerson",
  *   "organization" = "ArticleOrganization",
  *   "place" = "ArticlePlace",
+ *   "landmark" = "ArticleLandmark",
  *   "event" = "ArticleEvent",
  *   "bibitem" = "ArticleBibitem"
  * })

@@ -34,14 +34,13 @@ extends Controller
                           . " ORDER BY a.name")
             ->setParameter('refs', $refs, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY)
             ;
+
         if (!empty($language)) {
             $query->setParameter('language', $language);
         }
 
-        $result = $query->getResult();
-
         $translator = $this->get('translator');
-        foreach ($result as $article) {
+        foreach ($query->getResult() as $article) {
             $prefix = null;
             switch ($article->getArticleSection()) {
                 case 'background':
@@ -228,14 +227,35 @@ extends Controller
                     }
 
                     if (!empty($placeGeo)) {
-                        // TODO: check which are linked to LandmarksOrHistoricalBuildings
+                        $geos = [];
+
                         foreach ($placeGeo as $uriNormalized => $uriOriginal) {
-                            $coords = explode(',', str_replace('geo:', '', $uriNormalized));
+                            $coords = explode(',', $latLong = str_replace('geo:', '', $uriNormalized));
                             $details = [
                                 'url' => $uriNormalized,
                                 'latLong' => [ (double)$coords[0], (double)$coords[1] ],
                             ];
                             $entitiesByType[$type][$uriOriginal] += $details;
+
+                            $geos[] = $latLong;
+                        }
+
+                        // override the urls of thse entries that link to a Landmark
+                        $landmarks = $this->getDoctrine()
+                            ->getRepository('AppBundle:Landmark')
+                            ->findBy([
+                                'geo' => $geos,
+                                'status' => [ 0, 1 ],
+                            ])
+                            ;
+
+                        foreach ($landmarks as $landmark) {
+                            if ($landmark->getStatus() >= 0) {
+                                $uri = 'geo:' . $landmark->getGeo();
+                                $entitiesByType[$type][$uri]['url'] = $this->generateUrl('landmark', [
+                                    'id' => $landmark->getId(),
+                                ]);
+                            }
                         }
                     }
                     break;

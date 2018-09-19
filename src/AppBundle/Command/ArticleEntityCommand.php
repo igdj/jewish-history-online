@@ -56,7 +56,7 @@ extends EntityCommandBase
 
         if (false === $entities) {
             $output->writeln(sprintf('<error>%s could not be loaded</error>', $fname));
-            foreach($teiHelper->getErrors() as $error) {
+            foreach ($teiHelper->getErrors() as $error) {
                 $output->writeln(sprintf('<error>  %s</error>', trim($error->message)));
             }
 
@@ -121,7 +121,9 @@ extends EntityCommandBase
             }
 
             $persist = false;
-            foreach ([ 'person', 'place', 'organization', 'event' ] as $type) {
+            foreach ([ 'person', 'place', 'organization', 'landmark', 'event' ] as $type) {
+                $entityType = 'landmark' == $type ? 'place' : $type;
+
                 // clear existing before adding them back
                 $method = 'get' . ucfirst($type) . 'References';
                 $references = $article->$method();
@@ -130,11 +132,11 @@ extends EntityCommandBase
                     $persist = true;
                 }
 
-                if (empty($entities[$type])) {
+                if (empty($entities[$entityType])) {
                     continue;
                 }
 
-                foreach ($entities[$type] as $uri => $num) {
+                foreach ($entities[$entityType] as $uri => $num) {
                     switch ($type) {
                         case 'person':
                             if ($this->setPersonReference($article, $uri)) {
@@ -150,6 +152,13 @@ extends EntityCommandBase
 
                         case 'organization':
                             if ($this->setOrganizationReference($article, $uri)) {
+                                $persist = true;
+                            }
+                            break;
+
+                        case 'landmark':
+                            var_dump($uri);
+                            if ($this->setLandmarkReference($article, $uri)) {
                                 $persist = true;
                             }
                             break;
@@ -212,6 +221,20 @@ extends EntityCommandBase
         $entityReference = new \AppBundle\Entity\ArticlePlace();
         $entityReference->setEntity($entity);
         $article->addPlaceReference($entityReference);
+
+        return true;
+    }
+
+    protected function setLandmarkReference($article, $uri)
+    {
+        $entity = $this->findLandmarkByUri($uri);
+        if (is_null($entity)) {
+            return false;
+        }
+
+        $entityReference = new \AppBundle\Entity\ArticleLandmark();
+        $entityReference->setEntity($entity);
+        $article->addLandmarkReference($entityReference);
 
         return true;
     }

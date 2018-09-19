@@ -42,15 +42,40 @@ trait MapHelperTrait
         return $markers;
     }
 
-    public function buildMap($locale, $mentioned = false)
+    public function buildMap($locale, $mode = '')
     {
+        switch ($mode) {
+            case 'landmark':
+                $entityName = 'AppBundle:Article';
+                $boundingBox = [
+                    [ 60, -120 ],
+                    [ -15, 120 ],
+                ];
+                break;
+
+            case 'mentioned':
+                $entityName = 'AppBundle:Article';
+                $boundingBox = [
+                    [ 60, -120 ],
+                    [ -15, 120 ],
+                ];
+                break;
+
+            default:
+                $entityName = 'AppBundle:SourceArticle';
+                $boundingBox = [
+                    [ 34.05, -118.2333 ], // LA, Sonderling
+                    [ 60, 122 ],   // 59.35: Stockholm, 121.5: Shanghai
+                ];
+        }
+
         $qb = $this->getDoctrine()
-                ->getRepository($mentioned ? 'AppBundle:Article' : 'AppBundle:SourceArticle')
+                ->getRepository($entityName)
                 ->createQueryBuilder('A')
                 ;
 
         $geoPrimary = null;
-        if ($mentioned) {
+        if ('mentioned' == $mode) {
             // set $geoPrimary = [ 'geo0' => 1, 'geo1' => 1, ... ] for quick lookup
             $geo = $this->getDoctrine()
                 ->getRepository('AppBundle:SourceArticle')
@@ -78,6 +103,15 @@ trait MapHelperTrait
                     ->groupBy('P.geo, P.id')
                     ;
         }
+        else if ('landmark' == $mode) {
+            $qb->select('COUNT(DISTINCT A.id) AS number, P.id AS places, P.name, P.alternateName, COALESCE(A.geo,P.geo) AS geo')
+                ->innerJoin('A.landmarkReferences', 'AL')
+                ->innerJoin('AL.landmark', 'P')
+                ->andWhere('A.status IN (1) AND (P.geo IS NOT NULL)')
+                ->groupBy('geo, P.id')
+                ;
+
+        }
         else {
             $qb->select('COUNT(DISTINCT A.id) AS number, P.id AS places, P.name, P.alternateName, COALESCE(A.geo,P.geo) AS geo')
                 ->innerJoin('A.contentLocation', 'P')
@@ -102,15 +136,8 @@ trait MapHelperTrait
         $markers = $this->buildPlaceMarkers($result, $locale, $geoPrimary);
 
         return [
-            $markers, $mentioned
-                ? [
-                    [ 60, -120 ],
-                    [ -15, 120 ],
-                ]
-                : [
-                    [ 34.05, -118.2333 ], // LA, Sonderling
-                    [ 60, 122 ],   // 59.35: Stockholm, 121.5: Shanghai
-                ],
+            $markers,
+            $boundingBox,
         ];
     }
 }

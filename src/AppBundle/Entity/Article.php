@@ -158,6 +158,16 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
 
     /**
      * @ORM\OneToMany(
+     *   targetEntity="ArticleLandmark",
+     *   mappedBy="article",
+     *   cascade={"persist", "remove"},
+     *   orphanRemoval=TRUE
+     * )
+     */
+    protected $landmarkReferences;
+
+    /**
+     * @ORM\OneToMany(
      *   targetEntity="ArticleEvent",
      *   mappedBy="article",
      *   cascade={"persist", "remove"},
@@ -1151,6 +1161,27 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
     public function getPlaceReferences()
     {
         return $this->placeReferences;
+    }
+
+    public function addLandmarkReference(ArticleEntity $entityReference)
+    {
+        $entityId = $entityReference->getEntity()->getId();
+
+        if (!$this->landmarkReferences->exists(
+            function ($key, $element) use ($entityId) {
+                return $element->getEntity()->getId() == $entityId;
+            }))
+        {
+            $this->landmarkReferences->add($entityReference);
+            $entityReference->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function getLandmarkReferences()
+    {
+        return $this->landmarkReferences;
     }
 
     public function addEventReference(ArticleEntity $entityReference)

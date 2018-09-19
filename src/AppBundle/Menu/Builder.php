@@ -311,6 +311,7 @@ class Builder
                 break;
 
             case 'place-map-mentioned':
+            case 'place-map-landmark':
                 $item = $menu->addChild($currentRoute, [ 'label' => 'Map' ]);
                 break;
 
@@ -353,9 +354,12 @@ class Builder
                 $item = $menu->addChild($currentRoute, [ 'label' => 'Teaching Resources' ]);
                 break;
 
-            // experimental stuff
-            case 'home-preview':
             case 'exhibition':
+                break;
+            
+            // experimental stuff
+            case 'landmark':
+            case 'home-preview':
             case 'labs-index':
             case 'person-by-year':
             case 'person-by-birthplace':

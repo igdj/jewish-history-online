@@ -20,11 +20,13 @@ extends Controller
      *
      * @Route("/map", name="place-map")
      * @Route("/map/place", name="place-map-mentioned")
+     * @Route("/map/landmark", name="place-map-landmark")
      *
      */
     public function mapAction(Request $request)
     {
-        list($markers, $bounds) = $this->buildMap($request->getLocale(), 'place-map-mentioned' == $request->get('_route'));
+        list($markers, $bounds) = $this->buildMap($request->getLocale(),
+                                                  str_replace('place-map-', '', $request->get('_route')));
 
         return $this->render('AppBundle:Place:map.html.twig', [
             'pageTitle' => $this->get('translator')->trans('Map'),
@@ -167,6 +169,36 @@ extends Controller
             'persons' => $persons,
             'pageMeta' => [
                 'jsonLd' => $place->jsonLdSerialize($request->getLocale()),
+            ],
+        ]);
+    }
+
+    /**
+     * @Route("/landmark/{id}.jsonld", name="landmark-jsonld")
+     * @Route("/landmark/{id}", name="landmark")
+     */
+    public function landmarkDetailAction(Request $request, $id = null)
+    {
+        $landmarkRepo = $this->getDoctrine()
+                ->getRepository('AppBundle:Landmark');
+
+        if (!empty($id)) {
+            $landmark = $landmarkRepo->findOneById($id);
+        }
+
+        if (!isset($landmark) || $landmark->getStatus() < 0) {
+            return $this->redirectToRoute('place-map-landmark');
+        }
+
+        if (in_array($request->get('_route'), [ 'landmark-jsonld' ])) {
+            return new JsonLdResponse($landmark->jsonLdSerialize($request->getLocale()));
+        }
+
+        return $this->render('AppBundle:Place:landmark-detail.html.twig', [
+            'pageTitle' => $landmark->getNameLocalized($request->getLocale()),
+            'landmark' => $landmark,
+            'pageMeta' => [
+                'jsonLd' => $landmark->jsonLdSerialize($request->getLocale()),
             ],
         ]);
     }

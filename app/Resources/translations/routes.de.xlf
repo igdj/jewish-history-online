@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2018-09-04T10:07:22Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2018-09-18T06:56:55Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -206,6 +206,14 @@
         <source>/labs</source>
         <target>/labs</target>
       </trans-unit>
+      <trans-unit id="93ac1a0050ee54e77acc49225601f34f27f8d4d7" resname="landmark">
+        <source>/landmark/{id}</source>
+        <target>/landmarke/{id}</target>
+      </trans-unit>
+      <trans-unit id="798e7bdaec24c8f96139e6f9ddd0c3129d6c94ad" resname="landmark-jsonld">
+        <source>/landmark/{id}.jsonld</source>
+        <target>/landmarke/{id}.jsonld</target>
+      </trans-unit>
       <trans-unit id="db1bb80ce727aa150bc4be7f4eda72fec252c3df" resname="oai">
         <source>/oai</source>
         <target>/oai</target>
@@ -302,6 +310,10 @@
         <source>/map</source>
         <target>/karte</target>
       </trans-unit>
+      <trans-unit id="1c6ae4426cd7c97f574657b4792ec1a446a9aaed" resname="place-map-landmark">
+        <source>/map/landmark</source>
+        <target>/map/landmark</target>
+      </trans-unit>
       <trans-unit id="e0bcf5c8b1db80bcea717b774c69c55093ace197" resname="place-map-mentioned">
         <source>/map/place</source>
         <target>/karte/ort</target>
@@ -345,10 +357,6 @@
       <trans-unit id="ce620d6749880d79c700eb0ae2a56646f3a59bc5" resname="terms">
         <source>/terms</source>
         <target>/nutzungsbedingungen</target>
-      </trans-unit>
-      <trans-unit id="b3ffec0fcb01cc5e0ad6490d21ce71f6a03f5206" resname="test-rendertei">
-        <source>/test/rendertei</source>
-        <target>/test/rendertei</target>
       </trans-unit>
       <trans-unit id="11382b2dc45c0a18f2c1b76687a989ba9c1d1002" resname="topic-background">
         <source>/topic/{slug}</source>

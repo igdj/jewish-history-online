@@ -233,10 +233,16 @@ extends ContainerAwareCommand
 
     protected function findPlaceByUri($uri)
     {
+        if (preg_match('/^geo:/', $uri)) {
+            // ignore geo: $uri
+            return null;
+        }
+
         $condition = $this->buildPlaceConditionByUri($uri);
 
         if (is_null($condition)) {
             die('Currently not handling ' . $uri);
+
             return;
         }
 
@@ -247,6 +253,11 @@ extends ContainerAwareCommand
 
     protected function insertMissingPlace($uri, $additional = [])
     {
+        if (preg_match('/^geo:/', $uri)) {
+            // ignore geo: $uri
+            return 0;
+        }
+
         $em = $this->getContainer()->get('doctrine')->getManager();
         $entity = $this->findPlaceByUri($uri);
         if (!is_null($entity)) {
@@ -344,6 +355,35 @@ extends ContainerAwareCommand
         $em->flush();
 
         return 1;
+    }
+
+    protected function buildLandmarkConditionByUri($uri)
+    {
+        if (preg_match('/^geo:(.*)/', $uri, $matches)) {
+            return [
+                'geo' => $matches[1],
+            ];
+        }
+    }
+
+    protected function findLandmarkByUri($uri)
+    {
+        if (!preg_match('/^geo:/', $uri)) {
+            // ignore all non-geo: $uri
+            return null;
+        }
+
+        $condition = $this->buildLandmarkConditionByUri($uri);
+
+        if (is_null($condition)) {
+            die('Currently not handling ' . $uri);
+
+            return;
+        }
+
+        $em = $this->getContainer()->get('doctrine')->getManager();
+
+        return $em->getRepository('AppBundle\Entity\Landmark')->findOneBy($condition);
     }
 
     protected function buildEventConditionByUri($uri)
