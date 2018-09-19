@@ -66,6 +66,37 @@
             }
             </script>
             {% endif %}
+
+            {% if landmark.djh is not empty %}
+            <div>&nbsp;</div>
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>
+                            {% if landmark.gnd is not empty %}
+                            {{ 'Integrated Authority File'|trans }}
+                            <br /><a href="http://d-nb.info/gnd/{{ landmark.gnd }}" target="_blank">{{ person.gnd }}</a>
+                            {% else %}
+                            {{ 'Additional Information'|trans }}
+                            {% endif %}
+                        </h4>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse">
+                    {% if landmark.djh is not empty %}
+                    <div class="col-sm-12 beacon-ul">
+                        <ul>
+                            {% if landmark.djh is not empty %}
+                            <li>
+                                <a href="http://www.dasjuedischehamburg.de/inhalt/{{ landmark.djh|url_encode }}" target="_blank">„Das Jüdische Hamburg“</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div><!-- .row -->
 {% endblock %}

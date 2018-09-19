@@ -21,6 +21,12 @@ extends PlaceBase
     use ArticleReferencesTrait;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $djh;
+
+    /**
      * @ORM\OneToMany(targetEntity="ArticleLandmark",
      *   mappedBy="landmark",
      *   cascade={"persist", "remove"},
@@ -28,6 +34,30 @@ extends PlaceBase
      * )
      */
     protected $articleReferences;
+
+    /**
+     * Sets djh.
+     *
+     * @param string $djh
+     *
+     * @return $this
+     */
+    public function setDjh($djh)
+    {
+        $this->djh = $djh;
+
+        return $this;
+    }
+
+    /**
+     * Gets djh.
+     *
+     * @return string
+     */
+    public function getDjh()
+    {
+        return $this->djh;
+    }
 
     public function getDefaultZoomlevel()
     {
