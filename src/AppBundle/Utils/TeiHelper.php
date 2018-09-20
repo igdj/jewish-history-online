@@ -388,7 +388,8 @@ class TeiHelper
     {
         foreach ($structure as $tagName => $content) {
             if (is_scalar($content)) {
-                $self = $parent->addChild($prefix . $tagName, $content);
+                $self = $parent->addChild($prefix . $tagName,
+                                          htmlspecialchars($content, ENT_XML1, 'UTF-8'));
             }
             else {
                 $atKeys = preg_grep('/^@/', array_keys($content));
