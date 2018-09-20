@@ -1,11 +1,14 @@
 {% extends 'AppBundle:Default:base.html.twig' %}
 
 {% import 'AppBundle:Shared:helper.html.twig' as helper %}
+{% import _self as education %}
 
 {% macro icon_ghdi() %}
 <img src="{{ app.request.basepath }}/img/education/ghdi_{{ app.request.locale }}.jpg" style="float: left; height: 25px; margin-top: 0.2em; padding-right: 0.4em; padding-bottom: 0.3em; width: auto;"/>
 {% endmacro %}
+
 {% macro children_display(children) %}
+    {% import _self as education %}
     {% for child in children %}
         {% if child.provider ==  'Geschichtomat' and 'de' ==  app.request.getLocale() %}
             {% set url = 'http://www.geschichtomat.de/' %}
@@ -14,15 +17,16 @@
         <div class="embed-responsive embed-responsive-16by9" style="margin-bottom: 16px"><iframe class="embed-responsive-item" src="{{ child.url }}" frameborder="0" allowfullscreen></iframe></div>
         {% elseif child.title is not empty %}
             {% if 'de' ==  app.request.getLocale() %}
-                <div style="clear: left">{{ _self.icon_ghdi() }} <a href="{{ child.url }}&amp;language=german" target="_blank">{{ child.title['de'] }}</a></div>
+                <div style="clear: left">{{ education.icon_ghdi() }} <a href="{{ child.url }}&amp;language=german" target="_blank">{{ child.title['de'] }}</a></div>
             {% elseif 'en' ==  app.request.getLocale() %}
-                <div style="clear: left">{{ _self.icon_ghdi() }} <a href="{{ child.url }}&amp;language=english" target="_blank">{{ child.title['en'] }}</a></div>
+                <div style="clear: left">{{ education.icon_ghdi() }} <a href="{{ child.url }}&amp;language=english" target="_blank">{{ child.title['en'] }}</a></div>
             {% endif %}
         {% endif %}
     {% endfor %}
 {% endmacro %}
 
 {% macro source_display(source, entry) %}
+    {% import _self as education %}
     <div class="container-fluid" style="padding: 20px">
         <div class="row">
             <div class="col-sm-4 hidden-xs">
@@ -54,7 +58,7 @@
             </p>
         {% endif %}
         {% if entry.children is not empty %}
-            {{ _self.children_display(entry.children) }}
+            {{ education.children_display(entry.children) }}
         {% endif %}
             </div>
         </div>
@@ -141,7 +145,7 @@ des <a href="http://www.geschichtomat.de/">Geschichtomat</a> sowie Quellen aus <
                             <div class="col-sm-6">
                             {% if sourcesByUid[entry.url] is defined %}
                                 {% set source = sourcesByUid[entry.url] %}
-                                {{ _self.source_display(source, entry) }}
+                                {{ education.source_display(source, entry) }}
                             {% elseif entry.provider == 'Geschichtomat' or entry.title is not empty %}
                                 {% if 'de' ==  app.request.getLocale() %}
                                     <h4>Zusätzliche Materialien</h4>
@@ -151,16 +155,16 @@ des <a href="http://www.geschichtomat.de/">Geschichtomat</a> sowie Quellen aus <
                                         <a href="{{ url }}" target="_blank"><img src="./img/education/geschichtomat.png" style="height: 1.2em; width: auto; padding-bottom: 4px"/></a>
                                         <div class="embed-responsive embed-responsive-16by9" style="margin-bottom: 16px"><iframe class="embed-responsive-item" src="{{ entry.url }}" frameborder="0" allowfullscreen></iframe></div>
                                     {% else %}
-                                        {{ _self.icon_ghdi() }} <a href="{{ entry.url }}&amp;language=german" target="_blank">{{ entry.title['de'] }}</a>
+                                        {{ education.icon_ghdi() }} <a href="{{ entry.url }}&amp;language=german" target="_blank">{{ entry.title['de'] }}</a>
                                     {% endif %}
                                     {% if entry.children is not empty %}
-                                        {{ _self.children_display(entry.children) }}
+                                        {{ education.children_display(entry.children) }}
                                     {% endif %}
                                 {% elseif 'en' ==  app.request.getLocale() and entry.title is not empty %}
                                     <h4>Additional Material</h4>
-                                    {{ _self.icon_ghdi() }} <a href="{{ entry.url }}&amp;language=english" target="_blank">{{ entry.title['en'] }}</a>
+                                    {{ education.icon_ghdi() }} <a href="{{ entry.url }}&amp;language=english" target="_blank">{{ entry.title['en'] }}</a>
                                     {% if entry.children is not empty %}
-                                        {{ _self.children_display(entry.children) }}
+                                        {{ education.children_display(entry.children) }}
                                     {% endif %}
                                 {% endif %}
                             {% endif %}

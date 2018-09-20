@@ -209,12 +209,14 @@
 {% endmacro %}
 
 {% macro source_description_footer(name, article, description, license) %}
-    {{ _self.source_description(description) }}
-    {{ _self.source_footer(name, article, license) }}
+    {% import _self as helper %}
+    {{ helper.source_description(description) }}
+    {{ helper.source_footer(name, article, license) }}
 {% endmacro %}
 
 {% macro source_meta(meta, description, mets, printview = false, interpretations = null) %}
     {% import 'AppBundle:Shared:map-leaflet.html.twig' as map %}
+    {% import _self as helper %}
                         <dl{% if printview %} class="dl-horizontal"{% endif %}>
                         {% if meta.dateCreated is not empty %}
                             <dt>{{ 'Date'|trans }}</dt>
@@ -371,7 +373,7 @@
                             <dt>{{ 'Source Description and Interpretation'|trans }}</dt>
                             <dd>
                                 {% for article in interpretations %}
-                                    {{ _self.article_linked(article) }}
+                                    {{ helper.article_linked(article) }}
                                 {% endfor %}
                             </dd>
                             {% endif %}
