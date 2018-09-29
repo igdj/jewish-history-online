@@ -63,6 +63,15 @@
         <meta property="og:title" content="{{ pageTitle }}">
         {% endif %}
 
+        <script>
+        if (!String.prototype.startsWith) {
+            // Polyfill for IE 11
+            String.prototype.startsWith = function(searchString, position) {
+              position = position || 0;
+              return this.indexOf(searchString, position) === position;
+            };
+        }
+        </script>
         <script src="{{ app.request.basepath }}/js/jquery-3.3.1.min.js"></script>
 
         <!-- Latest compiled and minified CSS -->
