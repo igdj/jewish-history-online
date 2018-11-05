@@ -68,8 +68,18 @@ extends RenderTeiController
      */
     public function indexAction(Request $request)
     {
-        $fname = $this->get('kernel')->getRootDir()
-               . '/Resources/data/education.json';
+        $kernel = $this->get('kernel');
+
+        $fname = '/Resources/data/education.json';
+
+        try {
+            $fname = $kernel->locateResource('@AppBundle' . $fname,
+                                             $kernel->getResourcesOverrideDir());
+        }
+        catch (\InvalidArgumentException $e) {
+            $fname = $kernel->getRootDir() . $fname;
+        }
+
         $structure = json_decode(file_get_contents($fname), true);
 
         // make sure we only pick-up the published ones in the current language

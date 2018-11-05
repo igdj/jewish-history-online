@@ -24,8 +24,17 @@ extends EntityCommandBase
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $fname = $this->getContainer()->get('kernel')->getRootDir()
-               . '/Resources/data/education.xlsx';
+        $kernel = $this->getContainer()->get('kernel');
+
+        $fname = '/Resources/data/education.xlsx';
+
+        try {
+            $fname = $kernel->locateResource('@AppBundle' . $fname,
+                                             $kernel->getResourcesOverrideDir());
+        }
+        catch (\InvalidArgumentException $e) {
+            $fname = $kernel->getRootDir() . $fname;
+        }
 
         $fs = new Filesystem();
 
@@ -110,6 +119,13 @@ extends EntityCommandBase
                 }
                 $entry['url'] = $url;
 
+                if (!empty($row['url_additional'])) {
+                    $entry['url_additional'] = $row['url_additional'];
+                }
+            }
+            else if ('Hamburg-Geschichtsbuch' == $row['provider']) {
+                $entry['provider'] = $row['provider'];
+                $entry['url'] = $row['url'];
                 if (!empty($row['url_additional'])) {
                     $entry['url_additional'] = $row['url_additional'];
                 }
