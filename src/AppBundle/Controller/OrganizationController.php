@@ -49,6 +49,9 @@ extends Controller
 
     /**
      * @Route("/organization/gnd/beacon", name="organization-gnd-beacon")
+     *
+     * Provide a BEACON file as described in
+     *  https://de.wikipedia.org/wiki/Wikipedia:BEACON
      */
     public function gndBeaconAction()
     {

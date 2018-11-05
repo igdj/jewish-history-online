@@ -55,6 +55,51 @@ extends Controller
     }
 
     /**
+     * @Route("/person/gnd/beacon", name="person-gnd-beacon")
+     *
+     * Provide a BEACON file as described in
+     *  https://de.wikipedia.org/wiki/Wikipedia:BEACON
+     */
+    public function gndBeaconAction()
+    {
+        $translator = $this->get('translator');
+        $twig = $this->get('twig');
+
+        $personRepo = $this->getDoctrine()
+                ->getRepository('AppBundle:Person');
+
+        $query = $personRepo
+                ->createQueryBuilder('P')
+                ->where('P.status >= 0')
+                ->andWhere('P.gnd IS NOT NULL')
+                ->orderBy('P.gnd')
+                ->getQuery()
+                ;
+
+        $persons = $query->execute();
+
+        $ret = '#FORMAT: BEACON' . "\n"
+             . '#PREFIX: http://d-nb.info/gnd/'
+             . "\n";
+        $ret .= sprintf('#TARGET: %s/gnd/{ID}',
+                        $this->generateUrl('person-index', [], true))
+              . "\n";
+
+        $globals = $twig->getGlobals();
+        $ret .= '#NAME: '
+              . /** @Ignore */ $translator->trans($globals['siteName'])
+              . "\n";
+        // $ret .= '#MESSAGE: ' . "\n";
+
+        foreach ($persons as $person) {
+            $ret .=  $person->getGnd() . "\n";
+        }
+
+        return new \Symfony\Component\HttpFoundation\Response($ret, \Symfony\Component\HttpFoundation\Response::HTTP_OK,
+                                                              [ 'Content-Type' => 'text/plain; charset=UTF-8' ]);
+    }
+
+    /**
      * @Route("/person/{id}.jsonld", name="person-jsonld")
      * @Route("/person/{id}", name="person")
      * @Route("/person/gnd/{gnd}.jsonld", name="person-by-gnd-jsonld")
@@ -98,47 +143,5 @@ extends Controller
                 'twitter' => $this->buildTwitter($person, $request, $routeName, $routeParams),
             ],
         ]);
-    }
-
-    /**
-     * @Route("/person/gnd/beacon", name="person-gnd-beacon")
-     */
-    public function gndBeaconAction()
-    {
-        $translator = $this->get('translator');
-        $twig = $this->get('twig');
-
-        $personRepo = $this->getDoctrine()
-                ->getRepository('AppBundle:Person');
-
-        $query = $personRepo
-                ->createQueryBuilder('P')
-                ->where('P.status >= 0')
-                ->andWhere('P.gnd IS NOT NULL')
-                ->orderBy('P.gnd')
-                ->getQuery()
-                ;
-
-        $persons = $query->execute();
-
-        $ret = '#FORMAT: BEACON' . "\n"
-             . '#PREFIX: http://d-nb.info/gnd/'
-             . "\n";
-        $ret .= sprintf('#TARGET: %s/gnd/{ID}',
-                        $this->generateUrl('person-index', [], true))
-              . "\n";
-
-        $globals = $twig->getGlobals();
-        $ret .= '#NAME: '
-              . /** @Ignore */ $translator->trans($globals['siteName'])
-              . "\n";
-        // $ret .= '#MESSAGE: ' . "\n";
-
-        foreach ($persons as $person) {
-            $ret .=  $person->getGnd() . "\n";
-        }
-
-        return new \Symfony\Component\HttpFoundation\Response($ret, \Symfony\Component\HttpFoundation\Response::HTTP_OK,
-                                                              [ 'Content-Type' => 'text/plain; charset=UTF-8' ]);
     }
 }
