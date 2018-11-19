@@ -240,6 +240,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
 
     /**
      * @var array
+     *
      * @ORM\Column(type="json_array", nullable=true)
      */
     protected $additional;
@@ -782,9 +783,11 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
     }
 
     /**
-     * @ORM\PreUpdate
      *
      * Populate description for other properties.
+     *
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
      *
      * @param string $description
      *
