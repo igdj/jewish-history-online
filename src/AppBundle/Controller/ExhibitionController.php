@@ -14,7 +14,10 @@ extends ArticleController
             'name' => 'Jewish Life since 1945',
         ],
         'migration' => [
-            'name' => 'Auswanderung',
+            'name' => 'Jewish Migration: Location Hamburg',
+        ],
+        'salzberg' => [
+            'name' => 'Die Wohnung von Max und Frieda Salzberg',
         ],
     ];
 
