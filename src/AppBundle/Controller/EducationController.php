@@ -33,21 +33,22 @@ extends RenderTeiController
     ];
 
     /* TODO: share the following with AboutController */
-    protected function renderTitleContent($title, $template)
+    protected function renderTitleContent(Request $request, $title, $template)
     {
         $translator = $this->get('translator');
 
         return $this->render($template, [
             'pageTitle' => /** @Ignore */ $translator->trans($title),
             'title' => $title,
-            'content' => $this->renderContent(),
+            'content' => $this->renderContent($request),
         ]);
     }
 
-    protected function renderContent()
+    protected function renderContent(Request $request)
     {
-        $route = $this->get('request')->get('_route');
-        $locale = $this->get('request')->getLocale();
+        $route = $request->get('_route');
+        $locale = $request->getLocale();
+
         $fnameTei = $route . '.' . $locale . '.xml';
 
         $params = [ 'lang' => \AppBundle\Utils\Iso639::code1To3($locale) ];
@@ -136,18 +137,20 @@ extends RenderTeiController
     /**
      * @Route("/education/guidelines", name="about-educationguidelines")
      */
-    public function editionguidelinesAction()
+    public function editionguidelinesAction(Request $request)
     {
-        return $this->renderTitleContent($this->get('translator')->trans('Guidelines for the Use of Materials in the Key Documents Edition'),
+        return $this->renderTitleContent($request,
+                                         'Guidelines for the Use of Materials in the Key Documents Edition',
                                          'AppBundle:Default:sitetext-education.html.twig');
     }
 
     /**
      * @Route("/education/sourceinterpretation", name="about-educationsourceinterpretation")
      */
-    public function educationsourceinterpretationAction()
+    public function educationsourceinterpretationAction(Request $request)
     {
-        return $this->renderTitleContent('Information on Source Interpretation for Students',
+        return $this->renderTitleContent($request,
+                                         'Information on Source Interpretation for Students',
                                          'AppBundle:Default:sitetext-education.html.twig');
     }
 }
