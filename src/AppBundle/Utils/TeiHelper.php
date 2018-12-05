@@ -640,10 +640,14 @@ class TeiHelper
             $this->addDescendants($header, 'tei:fileDesc/tei:sourceDesc/tei:msDesc/tei:msIdentifier', [
                 'tei:msIdentifier' => function ($parent, $name) use ($data) {
                     $self = $parent->addChild($name);
-                    $this->addChildStructure($self, [
-                            'repository' => $data['bibl']['orgName']['@value'],
-                            'idno' => [ 'idno' => [ '@type' => 'URLImages', '@value' => $data['URLImages']] ]
-                        ], 'tei:');
+
+                    $structure = [];
+                    if (!empty($data['bibl']['orgName'])) {
+                        $structure['repository'] = $data['bibl']['orgName']['@value'];
+                    }
+                    $structure['idno'] = [ 'idno' => [ '@type' => 'URLImages', '@value' => $data['URLImages']] ];
+
+                    $this->addChildStructure($self, $structure, 'tei:');
                 },
             ]);
         }
