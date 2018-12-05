@@ -2,124 +2,6 @@
 
 {% import 'AppBundle:Shared:helper.html.twig' as helper %}
 
-{% block head %}
-    {# TODO: move to some shared style-sheet #}
-    <style>
-    @page {
-        size: auto;
-        /* size: 210mm 297mm;
-        */
-        margin-header: 10mm;
-        margin-top: 22mm;
-        /*
-        margin-left: 24mm;
-        margin-right: 24mm;
-        */
-
-        /* increase the following two by 5mm to fit on legal */
-        margin-bottom: 23mm;
-        margin-footer: 15mm;
-
-        odd-header-name: html_header;
-        even-header-name: html_header;
-        odd-footer-name: html_footer;
-        even-footer-name: html_footer;
-    }
-
-    #header-wrapper {
-        border-bottom: 1px solid black;
-    }
-
-    #author-line {
-        text-align: right;
-        line-height: 20px;
-        background: url(var:logo_top) /* no-repeat */;
-        background-image-resize: 2;
-        margin-bottom: 8px;
-    }
-
-    #authors, #license {
-        display: none;
-    }
-    /* reset to bootstrap initials */
-    .source-description {
-        /* font-size: 14px;
-        line-height: 1.42857; */
-    }
-    /*
-    h2 + br {
-        display: initial;
-        content: "Read this: ";
-        border-bottom: 1px solid red;
-    }
-    */
-
-    body {
-        font-family: roboto;
-    }
-
-    a {
-        text-decoration: none;
-    }
-
-    .source-description, .article .dta-p, .article div.dta-bibl {
-        font-size: 14px;
-    }
-
-    .article > div.dta-endnote {
-        margin-top: 0;
-    }
-
-    header {
-        color: inherit;
-        background-color: inherit;
-        margin-top: 0;
-        margin-bottom: 36px;
-    }
-
-    header h1 {
-        margin-top: 0;
-        padding-top: 0;
-    }
-
-    h1#title {
-        margin-top: 4px;
-        border-top: 1px solid black;
-        border-bottom: 1px solid black;
-        font-size: 24px;
-        font-weight: bold;
-        padding-top: 16px;
-        padding-bottom: 16px;
-    }
-
-    h2 {
-        font-weight: bold;
-        font-size: 20px;
-    }
-
-    h3 {
-        font-weight: bold;
-        font-size: 16px;
-    }
-
-    .author {
-        text-align: right;
-        color: inherit;
-        margin-bottom: 4px;
-    }
-
-    .source-description, .source-description-head, h3, .appendix {
-        color: #6E6E6E;
-    }
-
-    .source-description-head {
-        text-transform: uppercase;
-        font-size: 18px;
-        font-weight: bold;
-    }
-    </style>
-{% endblock %}
-
 {% block body %}
     <htmlpageheader name="header" style="display:none">
         <div id="header-wrapper">
@@ -152,11 +34,9 @@
 
     {% if authors is not empty %}
         <div class="author">
-            <!--<a href="#author">-->
             {% for author in authors %}
                 {{ author.text }}{% if not loop.last %}, {% endif %}
             {% endfor %}
-            <!--</a>-->
         </div>
     {% endif %}
     <h1 id="title">{{ name }}</h1>
