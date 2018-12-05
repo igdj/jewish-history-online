@@ -164,7 +164,9 @@ extends EntityCommandBase
         $normalizer->setIgnoredAttributes($ignoredAttributes);
         $serializer = new Serializer([ $normalizer ], [ new JsonEncoder() ]);
 
-        $serializer->deserialize(json_encode($article), get_class($entity), 'json', [ 'object_to_populate' => $entity ]);
+        $serializer->deserialize(json_encode($article), get_class($entity), 'json', [
+            'object_to_populate' => $entity,
+        ]);
 
         foreach ($ignoredAttributes as $attribute) {
             if (in_array($attribute, [ 'datePublished', 'dateModified' ])) {
@@ -241,10 +243,14 @@ extends EntityCommandBase
                                 // collect author into creator for quick sorting
                                 $creator[] = $relatedEntity->getFullname();
                             }
+
                             if (!$currentValues->contains($relatedEntity)) {
                                 $method = 'add' . ucfirst($attribute);
                                 $entity->$method($relatedEntity);
                             }
+                        }
+                        else {
+                            die('AppBundle:' . $repoClass . '->findOneBy' . json_encode($criteria) . ' failed');
                         }
                     }
                     $currentValues = $entity->$methodGet();

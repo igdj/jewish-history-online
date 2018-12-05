@@ -64,13 +64,13 @@ extends EntityCommandBase
             return 1;
         }
 
-        if (empty($article->author)) {
-            $output->writeln(sprintf('<info>No author found in %s</info>', $fname));
+        if (empty($article->author) && empty($article->translator)) {
+            $output->writeln(sprintf('<info>No author or translator found in %s</info>', $fname));
 
             return 0;
         }
 
-        $persons = $article->author;
+        $persons = !empty($article->author) ? $article->author : [];
         if (!empty($article->translator)) {
             $persons[] = $article->translator;
         }

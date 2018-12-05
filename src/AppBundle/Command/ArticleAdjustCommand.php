@@ -57,12 +57,15 @@ extends EntityCommandBase
                 break;
 
             case 'source':
+                $translatorField = 'deu' == $data['lang']
+                    ? 'translator_de' : 'translator';
+
                 $sql = "SELECT 'source' AS query_type, Publication.*"
                      . ", Translator.slug AS translator_slug, Translator.firstname, Translator.lastname"
                      . ", Provider.name AS provider_name, Provider.gnd AS provider_gnd, T1.name AS type_name"
                      . " FROM Publication"
                      . " LEFT OUTER JOIN User Translator"
-                     . " ON Publication.translator = Translator.id"
+                     . " ON Publication.{$translatorField} = Translator.id"
                      . " LEFT OUTER JOIN Publisher Provider"
                      . " ON Publication.publisher_id = Provider.id"
                      . " LEFT OUTER JOIN Term T1"
