@@ -102,7 +102,10 @@ extends \Twig_Extension
         }
 
         return $parsed['host']
-            . (!empty($parsed['path']) && '/' !== $parsed['path'] ? $parsed['path'] : '');
+            . (!empty($parsed['path']) && '/' !== $parsed['path'] ? $parsed['path'] : '')
+            . (!empty($parsed['query']) ? '?' . $parsed['query'] : '')
+            . (!empty($parsed['fragment']) ? '#' . $parsed['fragment'] : '')
+            ;
     }
 
     public function lookupLocalizedTopicFilter($topic, $locale = null)
