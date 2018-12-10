@@ -169,6 +169,10 @@ extends EntityCommandBase
                             $responsible = [ $translator->trans('Social Issues and Welfare') ];
                             break;
 
+                        case 'studemund-halevy-michael':
+                            $responsible = [ $translator->trans('Sephardic Jews') ];
+                            break;
+
                         case 'tuerk-lilian':
                             $responsible = [ $translator->trans('Scholarship') ];
                             break;
