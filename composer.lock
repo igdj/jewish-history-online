@@ -2867,16 +2867,16 @@
         },
         {
             "name": "mpdf/mpdf",
-            "version": "v7.1.7",
+            "version": "v7.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mpdf/mpdf.git",
-                "reference": "ac60286a7dc5250c293afebd2bd9414e58a02466"
+                "reference": "5a124ed382cf9241597c7ba12f98a756daa7f8df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mpdf/mpdf/zipball/ac60286a7dc5250c293afebd2bd9414e58a02466",
-                "reference": "ac60286a7dc5250c293afebd2bd9414e58a02466",
+                "url": "https://api.github.com/repos/mpdf/mpdf/zipball/5a124ed382cf9241597c7ba12f98a756daa7f8df",
+                "reference": "5a124ed382cf9241597c7ba12f98a756daa7f8df",
                 "shasum": ""
             },
             "require": {
@@ -2931,7 +2931,7 @@
                 "php",
                 "utf-8"
             ],
-            "time": "2018-11-29T18:21:32+00:00"
+            "time": "2019-01-08T11:38:17+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -3077,16 +3077,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.1.1",
+            "version": "v4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "8aae5b59b83bb4d0dbf07b0a835f2680a658f610"
+                "reference": "594bcae1fc0bccd3993d2f0d61a018e26ac2865a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/8aae5b59b83bb4d0dbf07b0a835f2680a658f610",
-                "reference": "8aae5b59b83bb4d0dbf07b0a835f2680a658f610",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/594bcae1fc0bccd3993d2f0d61a018e26ac2865a",
+                "reference": "594bcae1fc0bccd3993d2f0d61a018e26ac2865a",
                 "shasum": ""
             },
             "require": {
@@ -3102,7 +3102,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.1-dev"
+                    "dev-master": "4.2-dev"
                 }
             },
             "autoload": {
@@ -3124,7 +3124,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2018-12-26T11:32:39+00:00"
+            "time": "2019-01-12T16:31:37+00:00"
         },
         {
             "name": "oro/doctrine-extensions",
@@ -3778,16 +3778,16 @@
         },
         {
             "name": "sabre/xml",
-            "version": "2.1.1",
+            "version": "2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/xml.git",
-                "reference": "c5f510f8d0fa8135de9495145e2758f56037aa1e"
+                "reference": "e15454e68805e3713271ea58c0b2d6a82dac56b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/xml/zipball/c5f510f8d0fa8135de9495145e2758f56037aa1e",
-                "reference": "c5f510f8d0fa8135de9495145e2758f56037aa1e",
+                "url": "https://api.github.com/repos/sabre-io/xml/zipball/e15454e68805e3713271ea58c0b2d6a82dac56b7",
+                "reference": "e15454e68805e3713271ea58c0b2d6a82dac56b7",
                 "shasum": ""
             },
             "require": {
@@ -3836,7 +3836,7 @@
                 "dom",
                 "xml"
             ],
-            "time": "2018-10-09T11:41:10+00:00"
+            "time": "2019-01-09T13:50:52+00:00"
         },
         {
             "name": "seboettg/citeproc-php",
@@ -5175,16 +5175,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.6.0",
+            "version": "v2.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "a11dd39f5b6589e14f0ff3b36675d06047c589b1"
+                "reference": "7d7342c8a4059fefb9b8d07db0cc14007021f9b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/a11dd39f5b6589e14f0ff3b36675d06047c589b1",
-                "reference": "a11dd39f5b6589e14f0ff3b36675d06047c589b1",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/7d7342c8a4059fefb9b8d07db0cc14007021f9b7",
+                "reference": "7d7342c8a4059fefb9b8d07db0cc14007021f9b7",
                 "shasum": ""
             },
             "require": {
@@ -5238,7 +5238,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2018-12-16T10:36:48+00:00"
+            "time": "2019-01-14T15:00:48+00:00"
         },
         {
             "name": "vnn/wordpress-rest-api-client",
@@ -5449,22 +5449,22 @@
         },
         {
             "name": "zendframework/zend-http",
-            "version": "2.8.2",
+            "version": "2.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-http.git",
-                "reference": "2c8aed3d25522618573194e7cc51351f8cd4a45b"
+                "reference": "fe80a6bc0b8a632ed878854ee519a2eed4a1e2d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-http/zipball/2c8aed3d25522618573194e7cc51351f8cd4a45b",
-                "reference": "2c8aed3d25522618573194e7cc51351f8cd4a45b",
+                "url": "https://api.github.com/repos/zendframework/zend-http/zipball/fe80a6bc0b8a632ed878854ee519a2eed4a1e2d0",
+                "reference": "fe80a6bc0b8a632ed878854ee519a2eed4a1e2d0",
                 "shasum": ""
             },
             "require": {
                 "php": "^5.6 || ^7.0",
                 "zendframework/zend-loader": "^2.5.1",
-                "zendframework/zend-stdlib": "^3.1 || ^2.7.7",
+                "zendframework/zend-stdlib": "^3.2.1",
                 "zendframework/zend-uri": "^2.5.2",
                 "zendframework/zend-validator": "^2.10.1"
             },
@@ -5479,8 +5479,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.8.x-dev",
-                    "dev-develop": "2.9.x-dev"
+                    "dev-master": "2.9.x-dev",
+                    "dev-develop": "2.10.x-dev"
                 }
             },
             "autoload": {
@@ -5500,7 +5500,7 @@
                 "zend",
                 "zf"
             ],
-            "time": "2018-08-13T18:47:03+00:00"
+            "time": "2019-01-22T19:48:43+00:00"
         },
         {
             "name": "zendframework/zend-loader",
