@@ -340,6 +340,7 @@ extends ContainerAwareCommand
             if ('#' != $license[0]) {
                 $rightsAttr['rightsURI'] = $license;
             }
+
             if (empty($rights)) {
                 // set standard rights for this license
                 switch ($rightsAttr['rightsURI']) {
@@ -349,12 +350,15 @@ extends ContainerAwareCommand
                 }
             }
         }
+
         if (empty($rights) && !empty($license)) {
             die('TODO: determine rights-statement for ' . $license);
         }
+
         if (!empty($rights)) {
+            // htmlspecialchars added due to https://github.com/servo-php/fluidxml/issues/14
             $root->addChild('rightsList', true)
-                ->addChild('rights', $rights, $rightsAttr);
+                ->addChild('rights', htmlspecialchars($rights, ENT_XML1, 'UTF-8'), $rightsAttr);
         }
 
         $keywords = $entity->getKeywords();
@@ -382,12 +386,15 @@ extends ContainerAwareCommand
         // connection to translation
         $variants = $em
             ->getRepository('AppBundle:Article')
-            ->findBy([ 'uid' => $entity->getUid() ]);
+            ->findBy([ 'uid' => $entity->getUid() ])
+            ;
+
         foreach ($variants as $variant) {
             if ($entity->getLanguage() != $variant->getLanguage()) {
                 $relationType = $variant->getTranslatedFrom() ==  $entity->getLanguage()
                     ? 'IsOriginalFormOf'
                     : 'IsVariantFormOf';
+
                 $relatedIdentifiers->addChild('relatedIdentifier', $variant->buildDoi($prefix), [
                     'relatedIdentifierType' => 'DOI',
                     'relationType' => $relationType,
@@ -411,7 +418,8 @@ extends ContainerAwareCommand
             $related = $em
                 ->getRepository('AppBundle:Article')
                 ->findBy([ 'isPartOf' => $entity ],
-                         [ 'dateCreated' => 'ASC', 'name' => 'ASC']);
+                         [ 'dateCreated' => 'ASC', 'name' => 'ASC'])
+                ;
             foreach ($related as $source) {
                 $relatedIdentifiers->addChild('relatedIdentifier', $source->buildDoi($prefix), [
                     'relatedIdentifierType' => 'DOI',
