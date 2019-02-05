@@ -208,7 +208,7 @@ extends Bundle
                                 break;
 
                             default:
-                                continue;
+                                ; // ignore
                         }
                     }
                     else {
