@@ -1109,7 +1109,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
     public function renderCitationAsHtml($citeProc, $locale, $purgeSeparator = false)
     {
         // silence Notice: Undefined offset: 0
-        $ret = @ $citeProc->render([ json_decode(json_encode($this->jsonSerialize($locale))) ]);
+        $ret = @ $citeProc->render([ json_decode(json_encode($this->jsonSerialize($locale))) ], 'citation');
 
         /* vertical-align: super doesn't render nicely:
            http://stackoverflow.com/a/1530819/2114681
