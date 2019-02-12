@@ -75,7 +75,7 @@ extends Controller
              . '#PREFIX: http://d-nb.info/gnd/'
              . "\n";
         $ret .= sprintf('#TARGET: %s/gnd/{ID}',
-                        $this->generateUrl('organization-index', [], true))
+                        $this->generateUrl('organization-index', [], \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL))
               . "\n";
 
         $globals = $twig->getGlobals();

@@ -95,7 +95,7 @@ extends Controller
              // . "#VERSION: 0.1\n"
              ;
         $ret .= sprintf('#TARGET: %s/isbn/{ID}',
-                        $this->generateUrl('bibliography-index', [], true))
+                        $this->generateUrl('bibliography-index', [], \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL))
               . "\n";
 
         $globals = $twig->getGlobals();
