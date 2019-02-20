@@ -79,13 +79,13 @@ DirectoryIndex app.php
 </IfModule>
 
 <IfModule mod_expires.c>
-ExpiresActive On
-############################################
-## Add default Expires header
-## http://developer.yahoo.com/performance/rules.html#expires
-<FilesMatch "\.(ico||jpg|jpeg|png|gif|svg|woff|css|js)$">
-ExpiresDefault "access plus 1 month"
-</FilesMatch>
+    ExpiresActive On
+    ############################################
+    ## Add default Expires header
+    ## http://developer.yahoo.com/performance/rules.html#expires
+    <FilesMatch "\.(ico||jpg|jpeg|png|gif|svg|woff|css|js)$">
+        ExpiresDefault "access plus 1 month"
+    </FilesMatch>
 </IfModule>
 
 <FilesMatch "^media[0-9]\.mp3$">
