@@ -70,7 +70,8 @@ extends ContainerAwareCommand
 
             $arguments = [
                 'command' => 'article:adjust',
-                'file'    => $fnameInput,
+                'file' => $fnameInput,
+                '--tidy' => null,
             ];
 
             $adjustInput = new ArrayInput($arguments);
