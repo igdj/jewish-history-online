@@ -40,7 +40,7 @@ extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // for calling other commands, see https://symfony.com/doc/2.8/console/calling_commands.html
+        // for calling other commands, see https://symfony.com/doc/3.4/console/calling_commands.html
 
         $fnameInput = $input->getArgument('file');
         $quiet = $input->getOption('quiet');

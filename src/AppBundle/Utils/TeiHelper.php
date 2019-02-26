@@ -872,7 +872,13 @@ class TeiHelper
         switch ($schemaType) {
             case 'relaxng':
                 $document = new \Brunty\DOMDocument;
-                $document->load($fname);
+                if (is_resource($fname)) {
+                    $document->loadXML(stream_get_contents($fname));
+                }
+                else {
+                    $document->load($fname);
+                }
+
                 $result = $document->relaxNGValidate($fnameSchema);
                 if (!$result) {
                     $errors = [];

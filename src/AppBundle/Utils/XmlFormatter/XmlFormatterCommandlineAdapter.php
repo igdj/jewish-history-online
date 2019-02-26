@@ -58,4 +58,14 @@ class XmlFormatterCommandlineAdapter
 
         return $res;
     }
+
+    function formatXML($xml, $options = [])
+    {
+        $tempFile = tempnam(sys_get_temp_dir(), 'TMP_');
+        file_put_contents($tempFile, $xml);
+        $ret = $this->formatFile($tempFile, $options);
+        @unlink($tempFile);
+
+        return $ret;
+    }
 }

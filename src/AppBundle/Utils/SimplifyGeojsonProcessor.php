@@ -17,6 +17,7 @@ class SimplifyGeojsonProcessor
         if (isset($config) && is_array($config)) {
             $this->config = $config;
         }
+
         if (array_key_exists('path', $this->config)) {
             $this->path = $this->config['path'];
         }
@@ -26,7 +27,8 @@ class SimplifyGeojsonProcessor
     {
         $cmd = $this->path
              . 'simplify-geojson '
-             . join(' ', $arguments);
+             . join(' ', $arguments)
+             ;
 
         $ret = exec($cmd, $lines, $retval);
 
@@ -39,6 +41,7 @@ class SimplifyGeojsonProcessor
         file_put_contents($tempFile, json_encode($geojson));
         $ret = $this->exec([ sprintf('-t %f', $precision), $tempFile ]);
         @unlink($tempFile);
+
         return json_decode($ret, true);
     }
 }

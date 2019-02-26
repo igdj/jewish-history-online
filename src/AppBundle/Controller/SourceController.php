@@ -389,8 +389,7 @@ extends ArticleController
                                              [ 'meta' => $sourceArticle ]);
                 $tempnam = $fs->tempnam(sys_get_temp_dir(), 'readme-' . $locale);
                 file_put_contents($tempnam,
-                                  str_replace("\n", "\r\n",
-                                              self::mb_wordwrap($content)));
+                                  str_replace("\n", "\r\n", self::mb_wordwrap($content)));
                 $ret[$translator->trans('README.txt')] = $tempnam;
             }
         }

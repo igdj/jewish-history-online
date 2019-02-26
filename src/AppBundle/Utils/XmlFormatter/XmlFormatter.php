@@ -11,7 +11,7 @@ class XmlFormatter
     {
         // hack to add a line break after <lb />
         $xml = preg_replace('~([ \t]+)(.*?)(<' . $element . '\s*/>)~',
-                            "\\1\\2<" .$element . "/>\n\\1",
+                            "\\1\\2<" . $element . "/>\n\\1",
                             $xml);
 
         return $xml;
@@ -29,6 +29,14 @@ class XmlFormatter
         $this->adapter = $adapter;
     }
 
+    protected function instantiateDomDocument()
+    {
+        // create $doc
+        $doc = new \DomDocument('1.0', 'UTF-8');
+        $doc->preserveWhiteSpace = false;
+        $doc->formatOutput = true;
+    }
+
     public function formatFile($fname_xml, $options = [])
     {
         if (isset($this->adapter)) {
@@ -37,16 +45,28 @@ class XmlFormatter
             return $res;
         }
 
-        // create $doc
-        $doc = new \DomDocument('1.0', 'UTF-8');
-        $doc->preserveWhiteSpace = false;
-        $doc->formatOutput = true;
-
         // load xml
+        $doc = $this->instantiateDomDocument();
         @$valid = $doc->load($fname_xml);
 
         $ret = $doc->saveXML();
 
+        return self::addLinebreak($ret);
+    }
+
+    public function formatXML($xml, $options = [])
+    {
+        if (isset($this->adapter)) {
+            $res = $this->adapter->formatXML($xml, $options);
+
+            return $res;
+        }
+
+        // load xml
+        $doc = $this->instantiateDomDocument();
+        @$valid = $doc->loadXML($xml);
+
+        $ret = $doc->saveXML();
 
         return self::addLinebreak($ret);
     }

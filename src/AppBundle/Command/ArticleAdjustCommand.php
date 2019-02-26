@@ -30,6 +30,12 @@ extends EntityCommandBase
                 InputArgument::REQUIRED,
                 'TEI file'
             )
+            ->addOption(
+                'tidy',
+                null,
+                InputOption::VALUE_NONE,
+                'If set, the output will be pretty printed'
+            )
         ;
     }
 
@@ -475,7 +481,36 @@ extends EntityCommandBase
             return 1;
         }
 
-        $output->write($xml->asXML());
+        $xmlAsString = $xml->asXML();
+
+        if ($input->getOption('tidy')) {
+            // first check if it is valid
+            $fnameSchema = $this->getContainer()->get('kernel')
+                            ->locateResource('@AppBundle/Resources/data/basisformat.rng');
+
+            // we pass the string as stream_wrapper
+            $stream = fopen('php://memory','r+');
+            fwrite($stream, $xmlAsString);
+            rewind($stream);
+
+            $result = $teiHelper->validateXml($stream, $fnameSchema);
+
+            if (false === $result) {
+                $output->writeln('<info> Invalid XML according to basisformat.rng</info>');
+                foreach ($teiHelper->getErrors() as $error) {
+                    $output->writeln(sprintf('<error>  %s</error>', trim($error->message)));
+                }
+            }
+            else {
+                $formatter = $this->getContainer()->get('app.xml_formatter');
+                $res = $formatter->formatXML($xmlAsString);
+                if (is_string($res)) {
+                    $xmlAsString = $res;
+                }
+            }
+        }
+
+        $output->write($xmlAsString);
 
         return 0;
     }
