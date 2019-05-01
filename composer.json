@@ -12,7 +12,7 @@
         },
         {
             "url": "https://github.com/burki/citeproc-php.git",
-             "type": "vcs"
+            "type": "vcs"
         },
         {
             "type": "package",
