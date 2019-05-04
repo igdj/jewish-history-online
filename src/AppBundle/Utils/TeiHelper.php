@@ -620,14 +620,13 @@ class TeiHelper
         }
 
         if (!empty($data['bibl'])) {
-            /*
-            // remove if it is legacy <p>
-            $result = $header->xpath('./tei:fileDesc/tei:publicationStmt/tei:p[not(*) and not(normalize-space())]');
+            // remove sourceDesc if it is manually added <p>
+            $result = $header->xpath('./tei:fileDesc/tei:sourceDesc/tei:p');
             foreach ($result as $element) {
                 $dom = dom_import_simplexml($element);
                 $dom->parentNode->removeChild($dom);
             }
-            */
+
             $this->addDescendants($header, 'tei:fileDesc/tei:sourceDesc/tei:bibl', [
                 'tei:bibl' => function ($parent, $name) use ($data) {
                     $self = $parent->addChild($name);
