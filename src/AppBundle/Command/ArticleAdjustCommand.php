@@ -92,12 +92,15 @@ extends EntityCommandBase
         if (!empty($result['lang'])
             && ($translatedFrom = \AppBundle\Utils\Iso639::code2bTo3($result['lang'])) != $data['lang'])
         {
-            $data['translator'] = [
-                $result['translator_slug'] => join(' ', [ $result['firstname'], $result['lastname'] ]),
-            ];
+            $translator_slug = trim(join(' ', [ $result['firstname'], $result['lastname'] ]));
+            if (!empty($translator_slug)) {
+                $data['translator'] = [
+                    $result['translator_slug'] => join(' ', [ $result['firstname'], $result['lastname'] ]),
+                ];
 
-            // admin uses 639-2B ('ger' instead of 'deu')
-            $data['translatedFrom'] = $translatedFrom;
+                // admin uses 639-2B ('ger' instead of 'deu')
+                $data['translatedFrom'] = $translatedFrom;
+            }
         }
 
         switch ($result['query_type']) {
@@ -444,8 +447,8 @@ extends EntityCommandBase
             $uid = sprintf('jgo:%s-%d', $matches[1], $matches[2]);
             $langCode1 = $matches[3];
         }
-        else if (preg_match('/(source)\-(\d+)\.(yi|yl|ja|la|pt)\.(xml|tei)$/', $fname, $matches)) {
-            // yiddish (hebrew), yiddish (latin), japanese, latin
+        else if (preg_match('/(source)\-(\d+)\.(yi|yl|ja|la|sv|pt)\.(xml|tei)$/', $fname, $matches)) {
+            // yiddish (hebrew), yiddish (latin), japanese, latin, swedish, portuguese
             $uid = sprintf('jgo:%s-%d', $matches[1], $matches[2]);
             $langCode1 = $matches[3];
         }
@@ -496,10 +499,17 @@ extends EntityCommandBase
             $result = $teiHelper->validateXml($stream, $fnameSchema);
 
             if (false === $result) {
+                fwrite(STDERR, "Invalid XML according to basisformat.rng\n");
+                foreach ($teiHelper->getErrors() as $error) {
+                    fwrite(STDERR, trim($error->message) . "\n");
+                }
+                /*
+                // TODO: use Symfony's method to write to STDERR
                 $output->writeln('<info> Invalid XML according to basisformat.rng</info>');
                 foreach ($teiHelper->getErrors() as $error) {
                     $output->writeln(sprintf('<error>  %s</error>', trim($error->message)));
                 }
+                */
             }
             else {
                 $formatter = $this->getContainer()->get('app.xml_formatter');
