@@ -354,9 +354,10 @@ class Builder
                 $item = $menu->addChild($currentRoute, [ 'label' => 'Teaching Resources' ]);
                 break;
 
+            case 'exhibition-index':
             case 'exhibition':
                 break;
-            
+
             // experimental stuff
             case 'landmark':
             case 'home-preview':

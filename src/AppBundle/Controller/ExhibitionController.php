@@ -17,7 +17,10 @@ extends ArticleController
             'name' => 'Jewish Migration: Location Hamburg',
         ],
         'salzberg' => [
-            'name' => 'Die Wohnung von Max und Frieda Salzberg',
+            'name' => '“A (Life) History between Four Walls” – Max and Frida Salzberg',
+        ],
+        'images-jewish-histories' => [
+            'name' => 'Images of Jewish (Hi)stories',
         ],
     ];
 
@@ -72,6 +75,18 @@ extends ArticleController
                              . '.' . $locale . '.html.twig', [
             'pageTitle' => /** @Ignore */ $this->get('translator')->trans($exhibition['name']),
             'route_params_locale_switch' => $localeSwitch,
+        ]);
+    }
+
+    /**
+     * @Route("/exhibition", name="exhibition-index")
+     */
+    public function indexAction(Request $request)
+    {
+        $locale = $request->getLocale();
+
+        return $this->render('AppBundle:Exhibition:index.html.twig', [
+            'pageTitle' => /** @Ignore */ $this->get('translator')->trans('Online Exhibitions'),
         ]);
     }
 
