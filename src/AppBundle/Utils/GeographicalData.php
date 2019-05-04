@@ -372,6 +372,10 @@ class GeographicalData
                     $values['type'] = 'historic site';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300006891':
+                    $values['type'] = 'castle';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300386698':
                     $values['type'] = 'miscellaneous';
                     break;
