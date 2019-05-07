@@ -19,8 +19,8 @@ extends ArticleController
         'salzberg' => [
             'name' => '“A (Life) History between Four Walls” – Max and Frida Salzberg',
         ],
-        'images-jewish-histories' => [
-            'name' => 'Images of Jewish (Hi)stories',
+        'histories-in-images' => [
+            'name' => '(Hi)stories in Images – Jewish Private Photography in the 20th Century',
         ],
     ];
 
