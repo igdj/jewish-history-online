@@ -204,7 +204,10 @@ extends RenderTeiController
             $feed = $this->get('eko_feed.feed.manager')->get('article');
             $feed->addFromArray($articles);
 
-            return new Response($feed->render('rss')); // or 'atom'
+            return new Response($feed->render('rss'), // // or 'atom'
+                Response::HTTP_OK,
+                [ 'content-type' => 'text/xml' ]
+            );
         }
 
         return $this->render('AppBundle:Article:index.html.twig', [
