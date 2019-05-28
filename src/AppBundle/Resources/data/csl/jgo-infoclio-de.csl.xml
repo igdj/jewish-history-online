@@ -497,7 +497,7 @@
   <macro name="doi">
     <group delimiter=", ">
         <group delimiter=", ">
-          <text variable="source" />
+          <text variable="source"/>
           <group delimiter=":">
             <!--<text value="doi"/>-->
             <text variable="DOI" prefix="&amp;lt;doi:" suffix="&amp;gt;"/>
