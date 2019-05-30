@@ -25,6 +25,8 @@
         </a>
     {% elseif 'source' == article.genre %}
         <a href="{{ path('source', { 'uid' : article.uid }) }}">{{ article.name }}</a>
+    {% elseif 'exhibition' == article.genre %}
+        <a href="{{ path('exhibition', { 'slug' : article.slug }) }}">{{ article.name }}</a>
     {% endif %}
 {% endmacro %}
 

@@ -13,6 +13,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SourceArticle
 extends Article
 {
+    /**
+     * Gets genre.
+     *
+     * @return string
+     */
+    public function getGenre()
+    {
+        return 'source';
+    }
+
     public static function buildDateBucket($date)
     {
         // we only care about the year

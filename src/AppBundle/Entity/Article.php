@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="article")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="genre", type="string")
- * @ORM\DiscriminatorMap({"interpretation" = "Article", "source" = "SourceArticle"})
+ * @ORM\DiscriminatorMap({"interpretation" = "Article", "source" = "SourceArticle", "exhibition" = "ExhibitionArticle"})
  */
 class Article
 implements \JsonSerializable, JsonLdSerializable, OgSerializable,
@@ -756,8 +756,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
      */
     public function getGenre()
     {
-        return $this instanceof SourceArticle
-            ? 'source' : 'interpretation';
+        return 'interpretation';
     }
 
     /**

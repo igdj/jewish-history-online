@@ -11,7 +11,6 @@
 
 {% macro build_result_path(result) %}
     {% set parts = result.id|split('_') %}
-    {#{ dump(parts)}#}
     {% if parts[0] == 'sourcearticle' %}
         {% set route = 'source' %}
         {% set params = { 'uid' : result.uid_s } %}
@@ -26,6 +25,9 @@
         {% else %}
             {% set params = { 'slug' : result.uid_s } %}
         {% endif %}
+    {% elseif parts[0] == 'exhibitionarticle' %}
+        {% set route = 'exhibition' %}
+        {% set params = { 'slug' : result.slug_s } %}
     {% elseif parts[0] == 'bibitem' %}
         {% set route = 'bibliography'  %}
         {% set params = { 'slug' : result.slug_s } %}

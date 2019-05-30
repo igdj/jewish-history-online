@@ -79,16 +79,19 @@ extends EntityCommandBase
 
         if ($input->getOption('insert-missing') || $input->getOption('update')) {
             $em = $this->getContainer()->get('doctrine')->getManager();
+
             foreach ($persons as $author) {
                 $slug = $author->getSlug();
                 if (empty($slug)) {
                     $output->writeln(sprintf('<info>Skip author with empty slug in %s</info>', $fname));
                     continue;
                 }
+
                 $person = $this->findPersonBySlug($slug);
                 if (!is_null($person) && !$input->getOption('update')) {
                     continue;
                 }
+
                 // either insert or update
                 $user = $this->findUserFromAdminBySlug($slug, $output);
                 if (is_null($person)) {
@@ -97,16 +100,20 @@ extends EntityCommandBase
                                                  trim($slug)));
                         continue;
                     }
+
                     if (!empty($user['gnd'])) {
                         $uri = 'http://d-nb.info/gnd/' . $user['gnd'];
                         $this->insertMissingPerson($uri);
                         $person = $this->findPersonByUri($uri);
                     }
+
                     if (is_null($person)) {
                         $person = new \AppBundle\Entity\Person();
                     }
+
                     $person->setSlug($slug);
                 }
+
                 foreach ([
                         'title' => 'honoricPrefix',
                         'firstname' => 'givenName',
@@ -134,9 +141,11 @@ extends EntityCommandBase
                 if (!empty($user['description_de'])) {
                     $description['de'] = $user['description_de'];
                 }
+
                 if (!empty($user['description'])) {
                     $description['en'] = $user['description'];
                 }
+
                 $person->setDescription($description);
 
                 // var_dump(json_encode($person));
@@ -151,6 +160,7 @@ extends EntityCommandBase
         $conn =  $this->getContainer()->get('doctrine.dbal.admin_connection');
 
         $sql = "SELECT * FROM User WHERE slug = :slug AND status <> -100";
+
         $users = $conn->fetchAll($sql, [ 'slug' => $slug ]);
         if (empty($users)) {
             return;

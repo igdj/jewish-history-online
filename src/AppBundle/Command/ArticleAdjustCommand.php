@@ -92,10 +92,10 @@ extends EntityCommandBase
         if (!empty($result['lang'])
             && ($translatedFrom = \AppBundle\Utils\Iso639::code2bTo3($result['lang'])) != $data['lang'])
         {
-            $translator_slug = trim(join(' ', [ $result['firstname'], $result['lastname'] ]));
-            if (!empty($translator_slug)) {
+            $translatorSlug = trim(join(' ', [ $result['firstname'], $result['lastname'] ]));
+            if (!empty($translatorSlug)) {
                 $data['translator'] = [
-                    $result['translator_slug'] => join(' ', [ $result['firstname'], $result['lastname'] ]),
+                    $result['translator_slug'] => $translatorSlug,
                 ];
 
                 // admin uses 639-2B ('ger' instead of 'deu')
