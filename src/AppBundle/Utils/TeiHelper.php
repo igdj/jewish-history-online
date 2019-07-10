@@ -186,14 +186,14 @@ class TeiHelper
             $article->license = (string)$result[0]['target'];
             $result = $header->xpath('./tei:fileDesc/tei:publicationStmt/tei:availability/tei:licence/tei:p');
             if (!empty($result)) {
-                $article->rights = (string)$result[0];
+                $article->rights = trim($this->extractTextContent($result[0], false));
             }
         }
         else {
             $article->license = null;
             $result = $header->xpath('./tei:fileDesc/tei:publicationStmt/tei:availability/tei:p');
             if (!empty($result)) {
-                $article->rights = (string)$result[0];
+                $article->rights = trim($this->extractTextContent($result[0], false));
             }
         }
 
@@ -210,7 +210,7 @@ class TeiHelper
         // primary date and publication
         $result = $header->xpath('./tei:fileDesc/tei:sourceDesc/tei:bibl');
         if (!empty($result)) {
-            $article->creator = (string)$result[0]->author;
+            $article->creator = trim((string)$result[0]->author);
             $placeName = $result[0]->placeName;
             if (!empty($placeName)) {
                 $place = new \AppBundle\Entity\Place();
@@ -237,7 +237,7 @@ class TeiHelper
             $orgName = $result[0]->orgName;
             if (!empty($orgName)) {
                 $org = new \AppBundle\Entity\Organization();
-                $org->setName((string)$orgName);
+                $org->setName($this->extractTextContent($orgName));
                 $uri = $orgName['ref'];
                 if (!empty($uri)) {
                     if (preg_match('/^'
@@ -253,10 +253,10 @@ class TeiHelper
             $article->providerIdno = (string)($result[0]->idno);
             $date = $result[0]->date;
             if (!empty($date)) {
-                $article->dateCreatedDisplay = (string)$date;
+                $article->dateCreatedDisplay = $this->extractTextContent($date);
                 $when = $date['when'];
                 if (!empty($when)) {
-                    $article->dateCreated = (string)$when;
+                    $article->dateCreated = $this->extractTextContent($when);
                 }
             }
         }
