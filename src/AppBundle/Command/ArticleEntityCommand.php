@@ -157,7 +157,6 @@ extends EntityCommandBase
                             break;
 
                         case 'landmark':
-                            var_dump($uri);
                             if ($this->setLandmarkReference($article, $uri)) {
                                 $persist = true;
                             }
