@@ -130,7 +130,7 @@ extends ContainerAwareCommand
             ],
         ];
 
-        $xw = new \xmlWriter();
+        $xw = new \XMLWriter();
         $xw->openMemory();
         $xw->setIndent(TRUE);
 
