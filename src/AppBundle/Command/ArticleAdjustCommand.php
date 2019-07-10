@@ -97,10 +97,10 @@ extends EntityCommandBase
                 $data['translator'] = [
                     $result['translator_slug'] => $translatorSlug,
                 ];
-
-                // admin uses 639-2B ('ger' instead of 'deu')
-                $data['translatedFrom'] = $translatedFrom;
             }
+
+            // admin uses 639-2B ('ger' instead of 'deu')
+            $data['translatedFrom'] = $translatedFrom;
         }
 
         switch ($result['query_type']) {
