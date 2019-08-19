@@ -18,7 +18,7 @@ extends ContainerAwareCommand
     {
         $this
             ->setName('source:mets')
-            ->setDescription('Generate Mets')
+            ->setDescription('Generate METS')
             ->addArgument(
                 'file',
                 InputArgument::REQUIRED,
@@ -52,6 +52,12 @@ extends ContainerAwareCommand
             foreach ($teiHelper->getErrors() as $error) {
                 $output->writeln(sprintf('<error>  %s</error>', trim($error->message)));
             }
+
+            return 1;
+        }
+
+        if (empty($article->language)) {
+            $output->writeln(sprintf('<error>%s is missing the language</error>', $fname));
 
             return 1;
         }
