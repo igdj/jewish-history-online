@@ -50,3 +50,25 @@ so our viewer-setting
     derivateContentTransformerServlet: "{{ path('tei2html', {'path' : ''}) }}"
 
 is properly picked up. For additional info about the viewer, have a look at the examples in https://github.com/MyCoRe-Org/mycore/tree/master/mycore-viewer/src/main/resources/example
+
+## TODO
+
+Incorporate changes from https://github.com/MyCoRe-Org/mycore/commit/9bf43152995c83e24dc119487a4486e9db097f95#diff-17745d4c6db86367f5e9ece254c97e84
+
+    ## mycore-mets
+
+    The fileGroups for TEI changed from
+
+    ```
+    <!-- 2017.06 -->
+    <mets:fileGrp USE="TRANSCRIPTION" />
+    <mets:fileGrp USE="TRANSLATION"/>
+    ```
+    to
+    ```
+    <!-- 2018.06 -->
+    <mets:fileGrp USE="TEI.TRANSCRIPTION" />
+    <mets:fileGrp USE="TEI.TRANSLATION.DE" />
+    <mets:fileGrp USE="TEI.TRANSLATION.EN" />
+
+Check https://archive.thulb.uni-jena.de/staatsarchive/rsc/viewer/stat_derivate_00010626/BACZ%2011087_1.tif for an example
