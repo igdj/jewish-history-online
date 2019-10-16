@@ -192,6 +192,11 @@ extends ContainerAwareCommand
                            $url);
     }
 
+    private function xmlspecialchars($str)
+    {
+        return htmlspecialchars($str, ENT_XML1, 'utf-8');
+    }
+
     protected function buildDataCite($entity, $prefix)
     {
         $locale = \AppBundle\Utils\Iso639::code3To1($entity->getLanguage());
@@ -216,9 +221,10 @@ extends ContainerAwareCommand
             // for sources, creator is free-text
             $creator = $entity->getCreator();
             if (!empty($creator)) {
+                // xmlspecialchars needed due to https://github.com/servo-php/fluidxml/issues/14
                 $creators = $root->addChild('creators', true)
                     ->addChild('creator', true)
-                        ->addChild('creatorName', $creator)
+                        ->addChild('creatorName', $this->xmlspecialchars($creator))
                     ;
             }
             else {
@@ -356,9 +362,9 @@ extends ContainerAwareCommand
         }
 
         if (!empty($rights)) {
-            // htmlspecialchars added due to https://github.com/servo-php/fluidxml/issues/14
+            // xmlspecialchars needed due to https://github.com/servo-php/fluidxml/issues/14
             $root->addChild('rightsList', true)
-                ->addChild('rights', htmlspecialchars($rights, ENT_XML1, 'UTF-8'), $rightsAttr);
+                ->addChild('rights', $this->xmlspecialchars($rights), $rightsAttr);
         }
 
         $keywords = $entity->getKeywords();
