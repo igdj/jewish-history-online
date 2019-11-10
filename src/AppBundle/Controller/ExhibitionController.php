@@ -22,6 +22,10 @@ extends ArticleController
         'histories-in-images' => [
             'name' => '(Hi)stories in Images – Jewish Private Photography in the 20th Century',
         ],
+        'childrens-worlds' => [
+            'name' => 'Children’s Worlds – New Perspectives on the History of Jewish School Life in Hamburg', // 'Kinderwelten – Neue Perspektiven auf die Geschichte des jüdischen Schulleben Hamburgs',
+            'published' => false,
+        ],
     ];
 
     public static function lookupLocalizedExhibition($slug, $translator, $locale)
