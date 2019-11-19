@@ -93,6 +93,10 @@ extends Bundle
                                 $translator = $container->get('translator');
 
                                 foreach (\AppBundle\Controller\ExhibitionController::$EXHIBITIONS as $exhibition => $descr) {
+                                    if (array_key_exists('published', $descr) && !$descr['published']) {
+                                        continue;
+                                    }
+
                                     $translator->setLocale($defaults['_locale']);
                                     $url = $router->generate($routeName, [
                                                                 'slug' => $slugify->slugify(/** @Ignore */ $translator->trans($exhibition)),
