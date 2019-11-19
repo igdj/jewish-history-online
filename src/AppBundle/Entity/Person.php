@@ -627,8 +627,8 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
 
         if (!empty($place['@id'])) {
             $uri = $place['@id'];
-            if (preg_match('/^'
-                           . preg_quote('http://d-nb.info/gnd/', '/')
+            if (preg_match('/^https?'
+                           . preg_quote('://d-nb.info/gnd/', '/')
                            . '(\d+\-?[\dxX]?)$/', $uri, $matches))
             {
                 $placeInfo['gnd'] = $matches[1];
@@ -838,6 +838,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
             if (is_null($this->entityfacts)) {
                 $this->entityfacts = [];
             }
+
             $this->entityfacts[$locale] = $entityfacts;
         }
 

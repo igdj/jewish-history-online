@@ -17,8 +17,8 @@ extends ContainerAwareCommand
     {
         $condition = null;
 
-        $regExp = '/^'
-            . preg_quote('http://d-nb.info/gnd/', '/')
+        $regExp = '/^https?'
+            . preg_quote('://d-nb.info/gnd/', '/')
             . ($hyphenAllowed ? '(\d+\-?[\dxX]?)' : '(\d+[xX]?)')
             . '$/';
 
@@ -126,6 +126,7 @@ extends ContainerAwareCommand
                     die('TODO: handle field ' . $field . ' for ' . $value);
             }
         }
+
         $em->persist($person);
         $em->flush();
 
@@ -211,6 +212,7 @@ extends ContainerAwareCommand
                     die('TODO: handle field ' . $field);
             }
         }
+
         $em->persist($organization);
         $em->flush();
 
@@ -263,8 +265,8 @@ extends ContainerAwareCommand
         if (!is_null($entity)) {
             // set gnd if given and not already set
             if (!empty($additional['gnd'])
-                && preg_match('/^'
-                              . preg_quote('http://d-nb.info/gnd/', '/')
+                && preg_match('/^https?'
+                              . preg_quote('://d-nb.info/gnd/', '/')
                               . '(\d+[\-]?[\dxX]?)$/', $additional['gnd'], $matches))
             {
                 $gnd = $entity->getGnd();
@@ -309,8 +311,8 @@ extends ContainerAwareCommand
 
                     if (!empty($additional['gnd'])) {
                         $uri = $additional['gnd'];
-                        if (preg_match('/^'
-                                       . preg_quote('http://d-nb.info/gnd/', '/')
+                        if (preg_match('/^https?'
+                                       . preg_quote('://d-nb.info/gnd/', '/')
                                        . '(\d+[\-]?[\dxX]?)$/', $uri, $matches))
                         {
                             $entity->setGnd($matches[1]);
@@ -351,6 +353,7 @@ extends ContainerAwareCommand
                     die('TODO: handle field ' . $field);
             }
         }
+
         $em->persist($entity);
         $em->flush();
 
@@ -459,6 +462,7 @@ extends ContainerAwareCommand
                     die('TODO: handle field ' . $field);
             }
         }
+
         $em->persist($entity);
         $em->flush();
 

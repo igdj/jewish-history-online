@@ -102,7 +102,7 @@ extends EntityCommandBase
                     }
 
                     if (!empty($user['gnd'])) {
-                        $uri = 'http://d-nb.info/gnd/' . $user['gnd'];
+                        $uri = 'https://d-nb.info/gnd/' . $user['gnd'];
                         $this->insertMissingPerson($uri);
                         $person = $this->findPersonByUri($uri);
                     }

@@ -95,9 +95,9 @@ class GeographicalData
             $url = sprintf('http://vocab.getty.edu/%s/%s', $parts[0], $parts[1]);
         }
         else if ('gnd' == $parts[0]) {
-            \EasyRdf_Namespace::set('gnd', 'http://d-nb.info/standards/elementset/gnd#');
+            \EasyRdf_Namespace::set('gnd', 'https://d-nb.info/standards/elementset/gnd#');
             $url = sprintf('https://d-nb.info/%s/%s/about/lds', $parts[0], $parts[1]);
-            $uri = sprintf('http://d-nb.info/%s/%s', $parts[0], $parts[1]);
+            $uri = sprintf('https://d-nb.info/%s/%s', $parts[0], $parts[1]);
         }
 
         $place = new GeographicalData();

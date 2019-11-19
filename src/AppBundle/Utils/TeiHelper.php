@@ -240,8 +240,8 @@ class TeiHelper
                 $org->setName($this->extractTextContent($orgName));
                 $uri = $orgName['ref'];
                 if (!empty($uri)) {
-                    if (preg_match('/^'
-                                   . preg_quote('http://d-nb.info/gnd/', '/')
+                    if (preg_match('/^https?'
+                                   . preg_quote('://d-nb.info/gnd/', '/')
                                    . '(\d+[\-]?[\dxX]?)$/', $uri, $matches))
                     {
                         $org->setGnd($matches[1]);
@@ -752,8 +752,8 @@ class TeiHelper
 
                       case '{http://www.tei-c.org/ns/1.0}persName':
                         $type = 'person';
-                        if (preg_match('/^'
-                                       . preg_quote('http://d-nb.info/gnd/', '/')
+                        if (preg_match('/^https?'
+                                       . preg_quote('://d-nb.info/gnd/', '/')
                                        . '\d+[xX]?$/', $uri)
 
                             || preg_match('/^'
@@ -775,8 +775,8 @@ class TeiHelper
 
                       case '{http://www.tei-c.org/ns/1.0}orgName':
                         $type = 'organization';
-                        if (preg_match('/^'
-                                       . preg_quote('http://d-nb.info/gnd/', '/')
+                        if (preg_match('/^https?'
+                                       . preg_quote('://d-nb.info/gnd/', '/')
                                        . '\d+\-?[\dxX]?$/', $uri))
                         {
                             ;
@@ -789,8 +789,8 @@ class TeiHelper
 
                       case '{http://www.tei-c.org/ns/1.0}date':
                         $type = 'event';
-                        if (preg_match('/^'
-                                       . preg_quote('http://d-nb.info/gnd/', '/')
+                        if (preg_match('/^https?'
+                                       . preg_quote('://d-nb.info/gnd/', '/')
                                        . '\d+\-?[\dxX]?$/', $uri))
                         {
                             ;
