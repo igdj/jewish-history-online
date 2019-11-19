@@ -90,11 +90,13 @@ extends ContainerAwareCommand
         if (!isset($this->client)) {
             $this->client = new \EasyRdf_Http_Client();
         }
+
         $this->client->setUri($url);
         $this->client->resetParameters(true); // clear headers
         foreach ($headers as $name => $val) {
             $this->client->setHeaders($name, $val);
         }
+
         try {
             $response = $this->client->request();
             if ($response->getStatus() < 400) {
@@ -103,6 +105,7 @@ extends ContainerAwareCommand
         } catch (\Exception $e) {
             $content = null;
         }
+
         if (!isset($content)) {
             return false;
         }
@@ -132,18 +135,22 @@ extends ContainerAwareCommand
                 if (empty($line)) {
                     continue;
                 }
+
                 if (preg_match('/^\#/', $line)) {
                     if (preg_match('/^\#\s*(NAME|DESCRIPTION|PREFIX|TARGET)\s*\:\s*(.+)/', $line, $matches)) {
                         $info[strtolower($matches[1])] = trim($matches[2]);
                     }
+
                     continue;
                 }
+
                 $parts = explode('|', $line);
                 if (count($parts) >= 3) {
                     $gnd = trim($parts[0]);
                     if (!array_key_exists($gnd, $gndBeacon)) {
                         $gndBeacon[$gnd] = [];
                     }
+
                     $gndBeacon[$gnd][$key] = $info + [ 'url' => trim($parts[2]) ];
                 }
             }
@@ -166,12 +173,14 @@ extends ContainerAwareCommand
             if (empty($gnd)) {
                 continue;
             }
+
             if (array_key_exists($gnd, $gndBeacon)) {
                 $additional = $person->getAdditional();
                 $additional['beacon'] = $gndBeacon[$gnd];
                 $person->setAdditional($additional);
                 $persist = true;
             }
+
             $additional = $person->getAdditional();
             if (is_null($additional) || !array_key_exists('wikidata', $additional)) {
                 foreach ([ 'de' /*, 'en' */ ] as $locale) {
@@ -180,9 +189,11 @@ extends ContainerAwareCommand
                         if (is_null($additional)) {
                             $additional = [];
                         }
+
                         if (!array_key_exists('wikidata', $additional)) {
                             $additional['wikidata'] = [];
                         }
+
                         $additional['wikidata'][$locale] = (array)$wikidata;
                         $person->setAdditional($additional);
                         $persist = true;
@@ -198,6 +209,7 @@ extends ContainerAwareCommand
                         'Accept' => 'application/json',
                         'Accept-Language' => $locale, // date-format!
                     ]);
+
                     if (false !== $result) {
                         $person->setEntityfacts($result, $locale);
                         $entityfacts = $person->getEntityfacts($locale, true);
@@ -209,9 +221,11 @@ extends ContainerAwareCommand
                                 $person->setDescription($description);
                             }
                         }
+
                         $persist = true;
                     }
                 }
+
                 if (!is_null($entityfacts)) {
                     $fullname = $person->getFullname();
                     if (empty($fullname)) {
@@ -252,6 +266,7 @@ extends ContainerAwareCommand
                                             }
                                         }
                                     }
+
                                     if (isset($value)) {
                                         var_dump($entityfacts['preferredName']);
                                         var_dump($property);
@@ -266,9 +281,11 @@ extends ContainerAwareCommand
 
                         $method = 'get' . ucfirst($property) . 'PlaceInfo';
                         $placeInfo = $person->$method($locale);
+
                         if (is_null($placeInfo) || !empty($placeInfo['tgn'])) {
                             continue;
                         }
+
                         $place = null;
                         if ($placeInfo['name'] == 'Altona') {
                             $places = $em->getRepository('AppBundle:Place')->findByTgn('7012310');
@@ -314,13 +331,14 @@ extends ContainerAwareCommand
                             $persist = true;
                         }
                         else {
-                            echo sprintf("Lookup TGN: %s\thttp://d-nb.info/gnd/%s",
+                            echo sprintf("Lookup TGN: %s\thttps://d-nb.info/gnd/%s",
                                          $placeInfo['name'], $placeInfo['gnd'])
                               . "\n";
                         }
                     }
                 }
             }
+
             if ($persist) {
                 $em->persist($person);
                 $em->flush();
@@ -336,16 +354,21 @@ extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine')->getManager();
         $placeRepository = $em->getRepository('AppBundle:Place');
 
-        foreach ([ 'nation', 'country',
-                  'state', 'metropolitan area',
-                  'inhabited place', 'neighborhood' ] as $type) {
+        foreach ([
+                'nation', 'country',
+                'state', 'metropolitan area',
+                'inhabited place', 'neighborhood'
+            ] as $type)
+        {
             $places = $placeRepository->findBy([ 'type' => $type,
                                                  'geonames' => null]);
+
             foreach ($places as $place) {
                 $geo = $place->getGeo();
                 if (empty($geo) || false === strpos($geo, ':')) {
                     continue;
                 }
+
                 $persist = false;
                 list($lat, $long) = explode(':', $geo, 2);
                 $url = sprintf('http://api.geonames.org/extendedFindNearby?lat=%s&lng=%s&username=burckhardtd',
@@ -415,6 +438,7 @@ extends ContainerAwareCommand
                             break;
                     }
                 }
+
                 if ($persist) {
                     $em->persist($place);
                     $em->flush();
@@ -425,13 +449,16 @@ extends ContainerAwareCommand
             foreach ($places as $place) {
                 $persist = false;
                 $additional = $place->getAdditional();
+
                 if (!is_null($additional) && array_key_exists('bounds', $additional)) {
                     continue; // TODO: maybe option to force update
                 }
+
                 $geonames = $place->getGeonames();
                 if (empty($geonames)) {
                     continue;
                 }
+
                 $url = sprintf('http://api.geonames.org/get?geonameId=%s&username=burckhardtd',
                                $geonames);
                 $xml = simplexml_load_file($url);
@@ -457,6 +484,7 @@ extends ContainerAwareCommand
                     $place->setAdditional($additional);
                     $persist = true;
                 }
+
                 if ($persist) {
                     $em->persist($place);
                     $em->flush();
@@ -485,15 +513,18 @@ extends ContainerAwareCommand
         foreach ($organizations as $organization) {
             $persist = false;
             $gnd = $organization->getGnd();
+
             if (empty($gnd)) {
                 continue;
             }
+
             if (array_key_exists($gnd, $gndBeacon)) {
                 $additional = $organization->getAdditional();
                 $additional['beacon'] = $gndBeacon[$gnd];
                 $organization->setAdditional($additional);
                 $persist = true;
             }
+
             if ($persist) {
                 $em->persist($organization);
                 $em->flush();
@@ -587,6 +618,7 @@ extends ContainerAwareCommand
                         $persist = true;
                     }
                 }
+
                 if (!empty($info)) {
                     $persist = true;
 
@@ -608,6 +640,7 @@ extends ContainerAwareCommand
 
                     $country->setAdditional($additional);
                 }
+
                 if ($persist) {
                     $em->persist($country);
                     $em->flush();
@@ -633,6 +666,7 @@ extends ContainerAwareCommand
             if (empty($isbns)) {
                 continue;
             }
+
             $additional = $item->getAdditional();
             if (is_null($additional) || !array_key_exists('googleapis-books', $additional)) {
                 $url = sprintf('https://www.googleapis.com/books/v1/volumes?q=isbn:%s&key=%s',
@@ -643,6 +677,7 @@ extends ContainerAwareCommand
                     'Accept' => 'application/json',
                     // 'Accept-Language' => $locale, // date-format!
                 ]);
+
                 if (false !== $result && $result['totalItems'] > 0) {
                     $resultItem = $result['items'][0];
                     if (!empty($resultItem['selfLink'])) {
@@ -650,6 +685,7 @@ extends ContainerAwareCommand
                             'Accept' => 'application/json',
                             // 'Accept-Language' => $locale, // date-format!
                         ]);
+
                         if (false !== $result) {
                             $resultItem = $result;
                         }
@@ -672,5 +708,4 @@ extends ContainerAwareCommand
             }
         }
     }
-
 }
