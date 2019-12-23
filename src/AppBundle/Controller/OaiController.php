@@ -438,7 +438,7 @@ implements InterfaceRepository
             $url = 'https://dx.doi.org/' . $doi;
         }
         else {
-            $url = $this->router->generateUrl($route, $params, true);
+            $url = $this->router->generate($route, $params, \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
         $description = self::xmlEncode($description);
