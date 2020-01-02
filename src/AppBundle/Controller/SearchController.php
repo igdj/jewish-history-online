@@ -263,6 +263,7 @@ extends Controller
                 if (!array_key_exists($suggestion['routeParams']['id'], $articles)) {
                     continue; // lookup failed
                 }
+
                 $article = & $articles[$suggestion['routeParams']['id']];
                 switch ($article['articleSection']) {
                     case 'background':
@@ -285,7 +286,7 @@ extends Controller
 
                     default:
                         // we shouldn't get here
-                        continue;
+                        continue 2;
                 }
 
                 $url = $this->generateUrl($route, $routeParams);
