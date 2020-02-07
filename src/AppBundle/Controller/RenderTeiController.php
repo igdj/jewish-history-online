@@ -440,6 +440,13 @@ extends Controller
                     'BI' => 'Roboto-BoldItalic.ttf',
                     // 'useOTL' => 0xFF, // this font does not have OTL table
                 ],
+                // see https://github.com/OdedEzer/heebo/tree/master/compiled_fonts/ttf
+                'heebo' => [
+                    'R' => 'Heebo-Regular.ttf',
+                    'B' => 'Heebo-Bold.ttf',
+                    'I' => 'Heebo-Regular.ttf',
+                    'BI' => 'Heebo-Bold.ttf',
+                ],
             ],
             'default_font' => 'roboto',
         ]);
