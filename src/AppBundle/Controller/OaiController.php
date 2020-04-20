@@ -20,7 +20,7 @@ extends Controller
      */
     public function dispatchAction(Request $request)
     {
-        $zendRequest = \Zend\Diactoros\ServerRequestFactory::fromGlobals();
+        $laminasRequest = $this->buildRequest();
 
         // repositoryName is localized siteName
         $translator = $this->get('translator');
@@ -38,9 +38,9 @@ extends Controller
             ]);
 
         // Instead of
-        //   $provider = new \Picturae\OaiPmh\Provider($repository, $request);
+        //   $provider = new \Picturae\OaiPmh\Provider($repository, $laminasRequest);
         // we use a derived class referencing oai.xsl
-        $provider = new \AppBundle\Utils\OaiProvider($repository, $zendRequest);
+        $provider = new OaiProvider($repository, $laminasRequest);
 
         $psrResponse = $provider->getResponse();
 
@@ -48,6 +48,81 @@ extends Controller
         $httpFoundationFactory = new HttpFoundationFactory();
 
         return $httpFoundationFactory->createResponse($psrResponse);
+    }
+
+    private function buildRequest()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $ref = & $_POST;
+        }
+        else {
+            $ref = & $_GET;
+        }
+
+        // OaiProvider doesn't like empty params
+        foreach ([ 'from', 'until' ] as $key) {
+            if (array_key_exists($key, $ref)) {
+                if ('' === $ref[$key]) {
+                    unset($ref[$key]);
+                }
+            }
+        }
+
+        return \Laminas\Diactoros\ServerRequestFactory::fromGlobals();
+    }
+}
+
+/*
+ * Override \Picturae\OaiPmh\Provider so we can inject the
+ * Eprints: OAI2 to HTML XSLT Style Sheet
+ */
+class OaiProvider extends \Picturae\OaiPmh\Provider
+{
+    private $xslUrl;
+
+    /**
+     * @param Repository $repository
+     * @param ServerRequestInterface $request
+     */
+    public function __construct(\Picturae\OaiPmh\Interfaces\Repository $repository,
+                                \Psr\Http\Message\ServerRequestInterface $request = null)
+    {
+        if ($request->getMethod() === 'POST') {
+            $this->params = $request->getParsedBody();
+        } else {
+            $this->params = $request->getQueryParams();
+        }
+
+        parent::__construct($repository, $request);
+
+        $this->xslUrl = $repository->getStylesheetUrl();
+    }
+
+    /**
+     * inject xml-stylesheet processing instruction if $this->xslUrl is not empty
+     * @return ResponseInterface
+     */
+    public function getResponse()
+    {
+        $response = parent::getResponse();
+
+        if (empty($this->xslUrl)) {
+            return $response;
+        }
+
+        // add xml-stylesheet processing instruction
+        $document = new \DOMDocument('1.0', 'UTF-8');
+        $document->loadXML($response->getBody());
+
+        $xslt = $document->createProcessingInstruction('xml-stylesheet',
+                                                       'type="text/xsl" href="' . htmlspecialchars($this->xslUrl) . '"');
+
+        // adding it to the document
+        $document->insertBefore($xslt, $document->documentElement);
+
+        return new \GuzzleHttp\Psr7\Response($response->getStatusCode(),
+                                             $response->getHeaders(),
+                                             $document->saveXML());
     }
 }
 
@@ -96,6 +171,14 @@ implements InterfaceRepository
     {
         // create a generator
         return $this->router->generate('oai', [], \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL);
+    }
+
+    /**
+     * @return string stylesheet url
+     */
+    public function getStylesheetUrl()
+    {
+        return $this->router->getContext()->getBaseUrl() . '/assets/oai.xsl';
     }
 
     /**
@@ -213,8 +296,15 @@ implements InterfaceRepository
                 $params['metadataPrefix'],
                 $params['set']
             );
+
             unset($items[$this->limit]);
         }
+
+        // remove non-null
+        $items = array_filter($items, function($var) { return $var !== null;} );
+
+        // TODO: handle case when $items is empty but $token is not null
+        // which can happen if all are null but there are more to come
 
         return new OaiRecordList($items, $token);
     }
