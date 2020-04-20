@@ -554,8 +554,14 @@ a.break-word, .sidebar dd a {
     @include dta-styles;
 
     .dta-p, span.dta-opener, div.dta-closer,
-    div.dta-bibl {
+    div.dta-list, div.dta-bibl {
         @include article-text;
+    }
+
+    .dta-list-item {
+        display: list-item;          /* This has to be "list-item"                                               */
+        list-style-type: disc;       /* See https://developer.mozilla.org/en-US/docs/Web/CSS/list-style-type     */
+        list-style-position: inside; /* See https://developer.mozilla.org/en-US/docs/Web/CSS/list-style-position */
     }
 
     h3.dta-head {
@@ -858,6 +864,7 @@ footer {
         right: 0;
         border-left: none !important;
     }
+
     #site-name {
         padding-top: 15px;
     }
