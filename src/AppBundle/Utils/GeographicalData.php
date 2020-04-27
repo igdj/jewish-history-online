@@ -119,12 +119,14 @@ class GeographicalData
             $place->tgn = $resource->get('dc11:identifier')->getValue();
             $prefLabels = $resource->all('skos:prefLabel');
             $preferredName = '';
+
             if (empty($prefLabels)) {
                 $prefLabels = $resource->all('skosxl:prefLabel');
                 if (empty($prefLabels)) {
                     echo $resource->dump();
                     exit;
                 }
+
                 foreach ($prefLabels as $prefLabel) {
                     if ($prefLabel instanceof \EasyRdf_Resource) {
                         $subgraph = $place->executeRdfQuery($prefLabel->getUri());
@@ -141,10 +143,12 @@ class GeographicalData
                         $preferredName = $prefLabel->getValue();
                         $values['preferredName'] = $preferredName;
                     }
+
                     if (!empty($lang)) {
                         if (!array_key_exists('alternateName', $values)) {
                             $values['alternateName'] = [];
                         }
+
                         $values['alternateName'][$lang] = $prefLabel->getValue();
                     }
                 }
@@ -380,13 +384,18 @@ class GeographicalData
                     $values['type'] = 'miscellaneous';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300387575':
+                    $values['type'] = 'area';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300386832':
                     $values['type'] = 'mountain system';
                     break;
 
                 default:
-                    die('TODO: handle place type ' . $placeTypePreferred);
+                    die('TODO: handle place type ' . $placeTypePreferred . ' for ' . $place->tgn);
             }
+
             $schemaPlace = $resource->get('foaf:focus');
             if (isset($schemaPlace)) {
                 $place->setValuesFromResource($values, $schemaPlace, [
@@ -395,6 +404,7 @@ class GeographicalData
                     'geo');
 
             }
+
             // echo $schemaPlace->dump();
             foreach ($values as $key => $val) {
                 $place->$key = $val;
@@ -407,12 +417,14 @@ class GeographicalData
             if (!is_null($gndIdentifier)) {
                 $place->gnd = $gndIdentifier->getValue();
             }
+
             foreach ($resource->allResources('owl:sameAs') as $sameAs) {
                 $place->sameAs[] = $sameAs->getUri();
             }
 
             // echo $graph->dump();
         }
+        
         return $place;
     }
 
