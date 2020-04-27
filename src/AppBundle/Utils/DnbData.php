@@ -62,6 +62,7 @@ abstract class DnbData
             case 'https://d-nb.info/standards/elementset/gnd#DifferentiatedPerson':
             case 'https://d-nb.info/standards/elementset/gnd#Pseudonym':
             case 'https://d-nb.info/standards/elementset/gnd#RoyalOrMemberOfARoyalHouse':
+            case 'https://d-nb.info/standards/elementset/gnd#LiteraryOrLegendaryCharacter':
             case 'https://d-nb.info/standards/elementset/gnd#UndifferentiatedPerson':
                 return new BiographicalData();
                 break;
