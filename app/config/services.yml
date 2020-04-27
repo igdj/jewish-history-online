@@ -1,5 +1,15 @@
 # app/config/services.yml
 services:
+    # explicit commands registration
+    # see https://stackoverflow.com/a/49136150
+    AppBundle\Command\:
+        resource: '%kernel.project_dir%/src/AppBundle/Command/*'
+        tags: ['console.command']
+
+    cocur_slugify:
+        class: Cocur\Slugify\Slugify
+        public: true
+
     twig.extension.text:
         class: Twig_Extensions_Extension_Text
         tags:
@@ -21,6 +31,7 @@ services:
     app.imagemagick:
         class:        AppBundle\Utils\ImageMagick\ImageMagickProcessor
         arguments:    [ "%app.imagemagick.processor.arguments%" ]
+        public: true
         
     app.xslt_adapter:
         class:        "%app.xslt.adapter.class%"
@@ -29,6 +40,7 @@ services:
         class:        AppBundle\Utils\Xsl\XsltProcessor
         calls:
             - [ setAdapter, [ '@app.xslt_adapter' ]]
+        public: true
 
     app.xml_formatter_adapter:
         class:        "%app.xml_formatter.adapter.class%"
@@ -37,10 +49,12 @@ services:
         class:        AppBundle\Utils\XmlFormatter\XmlFormatter
         calls:
             - [ setAdapter, [ '@app.xml_formatter_adapter' ]]
+        public: true
 
     app.simplify_geojson:
         class:        AppBundle\Utils\SimplifyGeojsonProcessor
         arguments:    [ "%app.simplify_geojson.processor.arguments%" ]
+        public: true
 
     app.menu_builder:
         class: AppBundle\Menu\Builder

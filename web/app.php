@@ -6,7 +6,6 @@ $loader = require __DIR__.'/../app/config/autoload.php';
 require_once __DIR__.'/../app/MicroKernel.php';
 
 $kernel = MicroKernel::fromEnvironment();
-$kernel->loadClassCache();
 
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);

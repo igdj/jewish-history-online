@@ -8,7 +8,7 @@ parameters:
     # knp_menu.voter.router.class: Knp\Menu\Matcher\Voter\RegexVoter
     
 framework:
-    secret: %kernel.secret%
+    secret: '%kernel.secret%'
     # JMS\TranslationBundle\JMSTranslationBundle needs validation
     validation: ~
     templating:
@@ -42,7 +42,7 @@ doctrine:
                 options:
                         1002: "SET NAMES '%database.charset%' COLLATE '%database.charset%_unicode_ci'"
                 default_table_options:
-                    charset: %database.charset%
+                    charset: '%database.charset%'
                     collate: '%database.charset%_unicode_ci'
                     engine:  MyISAM     # InnoDB
             admin:
@@ -56,14 +56,14 @@ doctrine:
                 options:
                         1002: "SET NAMES '%database.charset%' COLLATE '%database.charset%_unicode_ci'"
                 default_table_options:
-                    charset: %database.charset%
+                    charset: '%database.charset%'
                     collate: '%database.charset%_unicode_ci'
                     engine:  MyISAM     # InnoDB
     orm:
         # TODO: set a cache, see http://www.craftitonline.com/2015/04/doctrine-file-system-caching-with-doctrine-cache-bundle/
         connection: default        
         auto_generate_proxy_classes: '%kernel.debug%'
-        auto_mapping: true 
+        auto_mapping: true
         dql:
             string_functions:
                 REPLACE:    DoctrineExtensions\Query\Mysql\Replace
@@ -82,14 +82,14 @@ assetic:
         # see http://symfony.com/doc/current/cookbook/assetic/php.html
         scssphp:
             formatter: 'Leafo\ScssPhp\Formatter\Compressed'
-            
+
 jms_i18n_routing:
     default_locale: de
     locales: [de, en]
     strategy: custom
     hosts:
-        de: %jms_i18n_routing.hosts.de%
-        en: %jms_i18n_routing.hosts.en%
+        de: '%jms_i18n_routing.hosts.de%'
+        en: '%jms_i18n_routing.hosts.en%'
     redirect_to_host: true
     
 knp_menu:

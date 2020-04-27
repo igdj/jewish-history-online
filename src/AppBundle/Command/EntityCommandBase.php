@@ -30,6 +30,19 @@ extends ContainerAwareCommand
         return $condition;
     }
 
+    /**
+     * Private helper to ignore SolrException
+     */
+    protected function flushEm($em)
+    {
+        try {
+            $em->flush();
+        }
+        catch (\FS\SolrBundle\SolrException $e) {
+        }
+    }
+
+
     protected function buildPersonConditionByUri($uri)
     {
         $condition = $this->buildGndConditionByUri($uri, false);
@@ -128,7 +141,7 @@ extends ContainerAwareCommand
         }
 
         $em->persist($person);
-        $em->flush();
+        $this->flushEm($em);
 
         return 1;
     }
@@ -214,7 +227,7 @@ extends ContainerAwareCommand
         }
 
         $em->persist($organization);
-        $em->flush();
+        $this->flushEm($em);
 
         return 1;
     }
@@ -273,7 +286,7 @@ extends ContainerAwareCommand
                 if (empty($gnd)) {
                     $entity->setGnd($matches[1]);
                     $em->persist($entity);
-                    $em->flush();
+                    $this->flushEm($em);
                 }
             }
 
@@ -297,6 +310,7 @@ extends ContainerAwareCommand
                         $parent = $em->getRepository('AppBundle\Entity\Place')->findOneBy([
                             'tgn' => $geo->tgnParent,
                         ]);
+
                         if (is_null($parent)) {
                             $res = $this->insertMissingPlace('http://vocab.getty.edu/tgn/' . $geo->tgnParent);
                             if ($res >= 0) {
@@ -355,7 +369,7 @@ extends ContainerAwareCommand
         }
 
         $em->persist($entity);
-        $em->flush();
+        $this->flushEm($em);
 
         return 1;
     }
@@ -400,6 +414,7 @@ extends ContainerAwareCommand
 
         if (is_null($condition)) {
             die('Currently not handling ' . $uri);
+
             return;
         }
 
@@ -464,7 +479,7 @@ extends ContainerAwareCommand
         }
 
         $em->persist($entity);
-        $em->flush();
+        $this->flushEm($em);
 
         return 1;
     }

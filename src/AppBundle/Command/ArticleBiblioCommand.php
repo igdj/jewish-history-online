@@ -148,7 +148,7 @@ extends EntityCommandBase
 
                 var_dump(json_encode($bibitem));
                 $em->persist($bibitem);
-                $em->flush();
+                $this->flushEm($em);
             }
         }
         else if ($input->getOption('set-references')) {
