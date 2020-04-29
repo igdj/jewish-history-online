@@ -25,6 +25,9 @@ extends ArticleController
         'childrens-worlds' => [
             'name' => 'Children’s Worlds – New Perspectives on the History of Jewish School Life in Hamburg',
         ],
+        'sea-voyages' => [
+            'name' => 'On Board the Ship: “as on another Earth”',
+        ],
     ];
 
     public static function lookupLocalizedExhibition($slug, $translator, $locale)
