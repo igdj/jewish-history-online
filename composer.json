@@ -89,6 +89,7 @@
         "oro/doctrine-extensions": "^1.2",
 
         "jms/i18n-routing-bundle": "^3.0",
+        "symfony/security-core": "^4.4",
         "jms/translation-bundle": "^1.4",
 
         "sabre/xml": "2.*",
