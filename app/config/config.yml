@@ -11,9 +11,13 @@ framework:
     secret: '%kernel.secret%'
     # JMS\TranslationBundle\JMSTranslationBundle needs validation
     validation: ~
+    # TODO: remove templating
+    # https://stackoverflow.com/a/58380813
     templating:
         engines: ['twig']
-    translator: { fallbacks: ['%locale%'], logging: false }
+    translator:
+        fallbacks: ['%locale%']
+        logging: false
     form: ~
 
 twig:
@@ -100,7 +104,7 @@ knp_menu:
     templating: false
     # the renderer to use, list is also available by default
     default_renderer: twig
-    
+
 liip_url_auto_converter:
     linkclass:
     target: _blank
@@ -130,8 +134,8 @@ knp_paginator:
         #distinct: true                 # ensure distinct results, useful when ORM queries are using GROUP BY statements
     template:
         # pagination: KnpPaginatorBundle:Pagination:sliding.html.twig     # sliding pagination controls template
-        pagination: KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig
-        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
+        pagination: 'KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig'
+        sortable: 'KnpPaginatorBundle:Pagination:sortable_link.html.twig' # sort link template
        
 eko_feed:
     feeds:
