@@ -1403,6 +1403,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
             '@context' => 'http://schema.org',
             '@type' => $type,
         ];
+
         if ($type == 'PublicationIssue') {
             // issues on't have a name, but might have an issue-number
             if (!empty($this->volume)) {

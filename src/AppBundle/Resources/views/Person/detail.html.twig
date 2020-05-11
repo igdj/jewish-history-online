@@ -81,7 +81,7 @@
             </ul>
             {% endif %}
 
-            {{ helper.list_entity_mentioned_in(person.articleReferences(app.request.locale)) }}
+            {{ helper.list_entity_mentioned_in(person.articleReferences(app.request.locale, articles)) }}
         </div>
 
         <div class="col-sm-4 sidebar">

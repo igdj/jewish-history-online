@@ -21,7 +21,7 @@ trait ArticleReferencesTrait
         return $articleReferences;
     }
 
-    public function getArticleReferences($lang = null)
+    public function getArticleReferences($lang = null, $ignoreArticles = null)
     {
         if (is_null($this->articleReferences)) {
             return [];
@@ -33,8 +33,19 @@ trait ArticleReferencesTrait
 
         $langCode3 = \AppBundle\Utils\Iso639::code1to3($lang);
 
+        $ignoreArticleIds = [];
+        if (!is_null($ignoreArticles)) {
+            foreach ($ignoreArticles as $article) {
+                $ignoreArticleIds[] = $article->getId();
+            }
+        }
+
         return $this->sortArticleReferences($this->articleReferences->filter(
-            function ($entity) use ($langCode3) {
+            function ($entity) use ($langCode3, $ignoreArticleIds) {
+                if (in_array($entity->getArticle()->getId(), $ignoreArticleIds)) {
+                    return false;
+                }
+
                 return 1 == $entity->getArticle()->getStatus()
                     && $entity->getArticle()->getLanguage() == $langCode3;
             }
