@@ -14,7 +14,7 @@ extends Kernel
      * Set an Environment Variable in Apache Configuration
      *   SetEnv APP_ENVIRONMENT prod
      * for production setting instead of having www/app.php and www/app_dev.php
-     * This approach is described int
+     * This approach is described in
      *   https://www.pmg.com/blog/symfony-no-app-dev/
      */
     public static function fromEnvironment()
@@ -39,54 +39,54 @@ extends Kernel
     public function registerBundles()
     {
         $bundles = [
-            new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+            new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
 
-            new Symfony\Bundle\TwigBundle\TwigBundle(),
+            new \Symfony\Bundle\TwigBundle\TwigBundle(),
 
-            new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
+            new \Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
 
-            new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
+            new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
 
             // $slug = $this->get('cocur_slugify')->slugify('Hello World!');
             // see https://github.com/cocur/slugify#user-content-symfony2
-            new Cocur\Slugify\Bridge\Symfony\CocurSlugifyBundle(),
+            new \Cocur\Slugify\Bridge\Symfony\CocurSlugifyBundle(),
 
-            new Symfony\Bundle\MonologBundle\MonologBundle(), // required by JMS\TranslationBundle\JMSTranslationBundle
+            new \Symfony\Bundle\MonologBundle\MonologBundle(), // required by JMS\TranslationBundle\JMSTranslationBundle
 
             // translate routes
-            new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
+            new \JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
             // not required, but recommended for better extraction
-            new JMS\TranslationBundle\JMSTranslationBundle(),
+            new \JMS\TranslationBundle\JMSTranslationBundle(),
 
             // asset management
             // see http://symfony.com/doc/current/cookbook/assetic/asset_management.html
-            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
+            new \Symfony\Bundle\AsseticBundle\AsseticBundle(),
 
             // menu
             // see http://symfony.com/doc/current/bundles/KnpMenuBundle/index.html
-            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+            new \Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
             // converturls filter
-            new Liip\UrlAutoConverterBundle\LiipUrlAutoConverterBundle(),
+            new \Liip\UrlAutoConverterBundle\LiipUrlAutoConverterBundle(),
 
             // solr
-            new FS\SolrBundle\FSSolrBundle(),
-            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new \FS\SolrBundle\FSSolrBundle(),
+            new \Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
 
             // sitemap
-            new Presta\SitemapBundle\PrestaSitemapBundle(),
+            new \Presta\SitemapBundle\PrestaSitemapBundle(),
 
             // rss
-            new Eko\FeedBundle\EkoFeedBundle(),
+            new \Eko\FeedBundle\EkoFeedBundle(),
 
             // own code
-            new AppBundle\AppBundle(),
+            new \AppBundle\AppBundle(),
         ];
 
         if (in_array($this->getEnvironment(), [ 'dev', 'test' ], true)) {
-            $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
+            $bundles[] = new \Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
+            $bundles[] = new \Symfony\Bundle\DebugBundle\DebugBundle();
         }
 
         return $bundles;
