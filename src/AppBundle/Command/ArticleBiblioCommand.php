@@ -52,12 +52,15 @@ extends EntityCommandBase
         if ('all' == $fname) {
             if (!$input->getOption('update')) {
                 $output->writeln(sprintf('<error>all only works in combination with --update</error>', $fname));
+
                 return 1;
             }
+
             $query = $this->getContainer()->get('doctrine')
                 ->getManager()
                 ->createQuery('SELECT DISTINCT b.slug FROM AppBundle:Bibitem b WHERE b.status >= 0')
                 ;
+
             $items = array_flip(array_map(function ($res) { return $res['slug']; },
                                array_values($query->getResult())));
         }
@@ -110,6 +113,15 @@ extends EntityCommandBase
                     $bibitem->setUid($zoteroItem['zoteroKey']);
                     $bibitem->setSlug($key);
                 }
+                else {
+                    // fix bad entries in the database where
+                    // description didn't get populated
+                    $description = $bibitem->getDescription();
+                    if (empty($description)) {
+                        $bibitem->populateDescription();
+                    }
+                }
+
                 $zoteroData = json_decode($zoteroItem['zoteroData'], true);
 
                 // var_dump($zoteroData);
