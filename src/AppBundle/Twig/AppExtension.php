@@ -141,7 +141,12 @@ extends \Twig_Extension
 
         $citeProc = new \Seboettg\CiteProc\CiteProc(file_get_contents($path), $locale);
 
-        return $citeProc->render([ json_decode($encoded) ]);
+        $bibitemObj = json_decode($encoded);
+        if (is_null($bibitemObj)) {
+            return null;
+        }
+
+        return $citeProc->render([ $bibitemObj ]);
     }
 
     public function placeTypeLabelFilter($placeType, $count = 1, $locale = null)
