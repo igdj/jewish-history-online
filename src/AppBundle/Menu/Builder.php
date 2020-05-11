@@ -229,7 +229,8 @@ class Builder
         // try to return the active item
         $currentRoute = $this->requestStack->getCurrentRequest()->get('_route');
 
-        if ('home' == $currentRoute) {
+        if (is_null($currentRoute) || 'home' == $currentRoute) {
+            // $currentRoute is null on error pages, e.g. 404
             return $menu;
         }
 
@@ -367,15 +368,11 @@ class Builder
             case 'person-by-deathplace':
             case 'person-birth-death':
                 break;
-
-            default:
-                if (!is_null($currentRoute)) {
-                    var_dump($currentRoute);
-                }
         }
 
         if (isset($item)) {
             $item->setCurrent(true);
+
             return $item;
         }
 
