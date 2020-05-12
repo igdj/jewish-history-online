@@ -80,7 +80,7 @@ extends PlaceBase
     private $children;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Article", mappedBy="contentLocation")
+     * @ORM\OneToMany(targetEntity="Article", mappedBy="contentLocation")
      */
     protected $articles;
 
