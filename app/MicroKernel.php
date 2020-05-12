@@ -59,9 +59,8 @@ extends Kernel
             // not required, but recommended for better extraction
             new \JMS\TranslationBundle\JMSTranslationBundle(),
 
-            // asset management
-            // see http://symfony.com/doc/current/cookbook/assetic/asset_management.html
-            new \Symfony\Bundle\AsseticBundle\AsseticBundle(),
+            // https://github.com/a-r-m-i-n/scssphp-bundle
+            new \Armin\ScssphpBundle\ScssphpBundle(),
 
             // menu
             // see http://symfony.com/doc/current/bundles/KnpMenuBundle/index.html
@@ -136,13 +135,16 @@ extends Kernel
                 $routes->import('@WebProfilerBundle/Resources/config/routing/profiler.xml')
             );
 
-            // TODO (doesn't work yet) if we want to check error pages in dev
-            // see http://symfony.com/doc/current/cookbook/controller/error_pages.html
-            // e.g. http://host/base/_error/404
-            /* $routes->mount(
+            // Preview error pages through /_error/{statusCode}
+            //   see http://symfony.com/doc/current/cookbook/controller/error_pages.html
+            // Note: not sure why this is mapped to /_error/_error/{code}.{_format} as can be seen by
+            //   bin/console debug:router | grep twig
+            // ->_twig_error_test            ANY      ANY      ANY    /_error/_error/{code}.{_format}
+
+            $routes->mount(
                 '/_error',
                 $routes->import('@TwigBundle/Resources/config/routing/errors.xml')
-            ); */
+            );
         }
 
         // exports /sitemap.xml

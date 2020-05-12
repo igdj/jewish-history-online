@@ -78,14 +78,16 @@ stof_doctrine_extensions:
         default:
             timestampable: true
 
-assetic:
-    debug:          '%kernel.debug%'
-    use_controller: '%kernel.debug%'
-    filters:
-        cssrewrite: ~
-        # see http://symfony.com/doc/current/cookbook/assetic/php.html
-        scssphp:
-            formatter: 'Leafo\ScssPhp\Formatter\Compressed'
+scssphp:
+    assets:
+        "css/base.css":
+            src: "web/assets/scss/base.scss"
+            sourceMap: true
+            outputFolder: web
+#            importPaths:
+#                - "vendor/twbs/bootstrap/scss"
+#            variables:
+#                primary: '#ff0066'
 
 jms_i18n_routing:
     default_locale: de

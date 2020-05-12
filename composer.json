@@ -14,10 +14,6 @@
             "type": "vcs"
         },
         {
-            "type": "vcs",
-            "url": "https://github.com/burki/assetic-bundle"
-        },
-        {
             "type": "package",
             "package": {
                 "name": "citation-style-language/locales",
@@ -74,8 +70,7 @@
         "knplabs/knp-menu-bundle": "^3.0",
 
         "symfony/asset": "^4.4",
-        "symfony/assetic-bundle": "dev-master as 2.8.3",
-        "leafo/scssphp": "^0.8",
+        "armin/scssphp-bundle": "^1.1",
 
         "cocur/slugify": "^3.2",
         "twig/twig": "^2.11",

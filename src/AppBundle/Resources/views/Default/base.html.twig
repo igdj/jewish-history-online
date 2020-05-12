@@ -83,11 +83,14 @@
         <!-- Search suggest -->
         <script src="{{ app.request.basepath }}/js/bootstrap3-typeahead.js"></script>
 
-        {% stylesheets filter="scssphp" output="css/app.css"
-            "assets/scss/base.scss"
-        %}
-            <link rel="stylesheet" href="{{ asset_url }}" />
-        {% endstylesheets %}
+        {#
+            triggers scssphp, this one doesn't prepend app.request.basepath
+            since it overrides \Symfony\Bridge\Twig\Extension\AssetExtension
+            and doesn't prepend $this->getBasePath().ltrim($versionedPath, '/')
+            as in Symfony\Component\Asset\PathPackage
+        #}
+        <link href="{{ app.request.basepath }}{{ asset('css/base.css') }}" rel="stylesheet">
+
         <style>
         @media print {
             /* http://drupal.stackexchange.com/a/59908*/
