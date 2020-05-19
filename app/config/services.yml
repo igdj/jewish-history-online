@@ -13,7 +13,7 @@ services:
     # together with the above _defaults, this is needed for Command-classes to work as in Sf 3.4
     AppBundle\:
         resource: '%kernel.project_dir%/src/AppBundle'
-        exclude: '%kernel.project_dir%/src/AppBundle/{Entity,Migrations,Tests,Utils/config_fonts.php}'
+        exclude: '%kernel.project_dir%/src/AppBundle/{Entity,Migrations,Tests}'
 
     dbconn.admin:
         class: Doctrine\DBAL\Connection

@@ -115,7 +115,7 @@
 
         "gmo/iso-639": "^1.0",
 
-        "mpdf/mpdf": "^7.1",
+        "mpdf/mpdf": "^8.0",
 
         "maxgr0/solr-bundle": "dev-master",
         "knplabs/knp-paginator-bundle": "^5.2",

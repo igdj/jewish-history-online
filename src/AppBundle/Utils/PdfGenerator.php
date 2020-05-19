@@ -8,7 +8,7 @@ extends \Mpdf\Mpdf
     // mpdf
     public function __construct($options = [])
     {
-        // mpdf 7.x
+        // mpdf >= 7
         $defaultConfig = (new \Mpdf\Config\ConfigVariables())->getDefaults();
         $fontDir = $defaultConfig['fontDir'];
 
