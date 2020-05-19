@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  *
@@ -56,34 +57,30 @@ extends RenderTeiController
         return $topic;
     }
 
-    protected function buildTopicsBySlug($translate_keys = false)
+    protected function buildTopicsBySlug(TranslatorInterface $translator, $translate_keys = false)
     {
-        $translator = $this->get('translator');
-        $slugify = $this->get('cocur_slugify');
-
         $topics = [];
         foreach (self::$TOPICS as $label) {
             /** @Ignore */
             $label_translated = $translator->trans($label);
-            $key = $slugify->slugify($translate_keys ? $label_translated : $label);
+            $key = $this->slugify($translate_keys ? $label_translated : $label);
             $topics[$key] = $label_translated;
         }
 
         return $topics;
     }
 
-    protected function buildTopicsDescriptions($locale)
+    protected function buildTopicsDescriptions(TranslatorInterface $translator, $locale)
     {
         $fnameAppend = !empty($locale) ? '.' . $locale : '';
 
-        $topics = $this->buildTopicsBySlug();
+        $topics = $this->buildTopicsBySlug($translator);
         asort($topics);
 
-        $slugify = $this->get('cocur_slugify');
         $topicsDescription = [];
         foreach ($topics as $slug => $label) {
             $topicsDescription[$slug] = [ 'label' => $label ];
-            $articleSlug =  $slugify->slugify($label);
+            $articleSlug =  $this->slugify($label);
             $articlePath = $this->locateTeiResource($articleSlug . $fnameAppend . '.xml');
             if (false !== $articlePath) {
                 $topicsDescription[$slug]['article'] = $articleSlug;
@@ -96,11 +93,12 @@ extends RenderTeiController
     /**
      * @Route("/topic", name="topic-index")
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request,
+                                TranslatorInterface $translator)
     {
         return $this->render('AppBundle:Topic:index.html.twig', [
-            'pageTitle' => $this->get('translator')->trans('Topics'),
-            'topics' => $this->buildTopicsDescriptions($request->getLocale()),
+            'pageTitle' => $translator->trans('Topics'),
+            'topics' => $this->buildTopicsDescriptions($translator, $request->getLocale()),
         ]);
     }
 
@@ -108,7 +106,9 @@ extends RenderTeiController
      * @Route("/topic/{slug}.pdf", name="topic-background-pdf")
      * @Route("/topic/{slug}", name="topic-background")
      */
-    public function backgroundAction(Request $request, $slug)
+    public function backgroundAction(Request $request,
+                                     TranslatorInterface $translator,
+                                     $slug)
     {
         $language = null;
         $locale = $request->getLocale();
@@ -117,7 +117,7 @@ extends RenderTeiController
         }
         $fnameAppend = !empty($locale) ? '.' . $locale : '';
 
-        $topics = $this->buildTopicsBySlug(true);
+        $topics = $this->buildTopicsBySlug($translator, true);
         if (!array_key_exists($slug, $topics)) {
             return $this->redirectToRoute('topic-index');
         }
@@ -157,8 +157,8 @@ extends RenderTeiController
 
         $html = $this->renderTei($fname, $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl', [ 'params' => $params ]);
 
-        list($authors, $section_headers, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html);
-        $html = $this->adjustRefs($html, $refs, $language);
+        list($authors, $section_headers, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html, $translator);
+        $html = $this->adjustRefs($html, $refs, $translator, $language);
 
         $html = $this->adjustMedia($html,
                                    $request->getBaseURL()
@@ -169,9 +169,7 @@ extends RenderTeiController
             $html = $this->removeByCssSelector('<body>' . $html . '</body>',
                                                [ 'h2 + br', 'h3 + br' ]);
 
-            $templating = $this->get('templating');
-
-            $html = $templating->render('AppBundle:Article:article-printview.html.twig', [
+            $html = $this->renderView('AppBundle:Article:article-printview.html.twig', [
                 'name' => $topics[$slug],
                 'html' => preg_replace('/<\/?body>/', '', $html),
                 'authors' => $authors,
@@ -180,28 +178,25 @@ extends RenderTeiController
             ]);
 
             $this->renderPdf($html, $slug . '.pdf');
+
             return;
         }
 
         $localeSwitch = [];
         if ('en' == $locale) {
-            $translator = $this->get('translator');
-            $slugify = $this->get('cocur_slugify');
             foreach ([ 'de' ] as $alternateLocale) {
                 $translator->setLocale($alternateLocale);
                 $localeSwitch[$alternateLocale] = [
-                    'slug' => $slugify->slugify(/** @Ignore */ $translator->trans($topics[$slug])),
+                    'slug' => $this->slugify(/** @Ignore */ $translator->trans($topics[$slug])),
                 ];
             }
             $translator->setLocale($locale);
         }
         else {
             // find corresponding english slug
-            $translator = $this->get('translator');
-            $slugify = $this->get('cocur_slugify');
             foreach (self::$TOPICS as $topicLabel) {
                 if ($topics[$slug] == /** @Ignore */ $translator->trans($topicLabel)) {
-                    $localeSwitch['en'] = [ 'slug' => $slugify->slugify($topicLabel) ];
+                    $localeSwitch['en'] = [ 'slug' => $this->slugify($topicLabel) ];
                     break;
                 }
             }
@@ -276,7 +271,7 @@ extends RenderTeiController
             'sources' => [ $sourcesPrimary, $sourcesAdditional ],
             'pageMeta' => [
                 'jsonLd' => $article->jsonLdSerialize($request->getLocale()),
-                'og' => $this->buildOg($article, $request, 'topic-background', [ 'slug' => $slug ]),
+                'og' => $this->buildOg($article, $request, $translator, 'topic-background', [ 'slug' => $slug ]),
                 'twitter' => $this->buildTwitter($article, $request, 'topic-background', [ 'slug' => $slug ]),
             ],
             'route_params_locale_switch' => $localeSwitch, // TODO: put into pageMeta

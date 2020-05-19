@@ -3,8 +3,6 @@
 
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -48,7 +46,7 @@ extends EntityCommandBase
                 InputOption::VALUE_NONE,
                 'If set, an existing article will be set to published'
             )
-        ;
+            ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -78,9 +76,7 @@ extends EntityCommandBase
 
         $output->writeln($this->jsonPrettyPrint($article));
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
-
-        $entity = $em->getRepository('AppBundle\Entity\Article')
+        $entity = $this->em->getRepository('AppBundle\Entity\Article')
             ->findOneBy([
                 'uid' => $article->uid,
                 'language' => $article->language,
@@ -120,21 +116,21 @@ extends EntityCommandBase
 
         if ($input->getOption('publish')) {
             $entity->setStatus(1);
-            $em->persist($entity);
+            $this->em->persist($entity);
 
             // set the (non-deleted)sources belonging to this article to publish as well
-            $sourceArticles = $em->getRepository('AppBundle:Article')
+            $sourceArticles = $this->em->getRepository('AppBundle:Article')
                 ->findBy([ 'isPartOf' => $entity  ],
                          [ 'dateCreated' => 'ASC', 'name' => 'ASC']);
 
             foreach ($sourceArticles as $sourceArticle) {
                 if (0 == $sourceArticle->getStatus()) {
                     $sourceArticle->setStatus(1);
-                    $em->persist($sourceArticle);
+                    $this->em->persist($sourceArticle);
                 }
             }
 
-            $em->flush();
+            $this->em->flush();
         }
 
         if (!($input->getOption('insert-missing') || $input->getOption('update'))) {
@@ -172,7 +168,8 @@ extends EntityCommandBase
             if (in_array($attribute, [ 'datePublished', 'dateModified' ])) {
                 // \DateTime
                 $method = 'set' . ucfirst($attribute);
-                $entity->$method(isset($article->$attribute) ? $article->$attribute : null);
+                $entity->$method(isset($article->$attribute)
+                                 ? $article->$attribute : null);
                 continue;
             }
 
@@ -183,6 +180,7 @@ extends EntityCommandBase
                     $method = 'set' . ucfirst($attribute);
                     $entity->$method(null);
                 }
+
                 continue;
             }
 
@@ -235,7 +233,7 @@ extends EntityCommandBase
                     $currentValues = $entity->$methodGet();
                     foreach ($value as $singleValue) {
                         $criteria = [ $key => $singleValue ];
-                        $relatedEntity = $em->getRepository('AppBundle:' . $repoClass)
+                        $relatedEntity = $this->em->getRepository('AppBundle:' . $repoClass)
                             ->findOneBy($criteria);
 
                         if (!is_null($relatedEntity)) {
@@ -253,14 +251,16 @@ extends EntityCommandBase
                             die('AppBundle:' . $repoClass . '->findOneBy' . json_encode($criteria) . ' failed');
                         }
                     }
+
                     $currentValues = $entity->$methodGet();
                     if ('author' == $attribute) {
                         $entity->setCreator(join('; ', $creator));
                     }
                 }
                 else {
-                    $relatedEntity = $em->getRepository('AppBundle:' . $repoClass)
+                    $relatedEntity = $this->em->getRepository('AppBundle:' . $repoClass)
                         ->findOneBy($criteria);
+
                     if (!is_null($relatedEntity)) {
                         $method = 'set' . ucfirst($attribute);
                         $entity->$method($relatedEntity);
@@ -271,8 +271,10 @@ extends EntityCommandBase
 
         $output->writeln($this->jsonPrettyPrint($entity));
 
-        $em->persist($entity);
-        $em->flush();
-        //     $output->writeln($text);
+        $this->em->persist($entity);
+        $this->em->flush();
+        // $output->writeln($text);
+
+        return 0;
     }
 }

@@ -12,8 +12,17 @@ web_profiler:
 
 monolog:
     handlers:
-        console:
-            type:   console
-            verbosity_levels:
-                VERBOSITY_NORMAL: NOTICE # DEBUG
-
+#        doctrine:
+#            action_level: debug
+#            type: stream
+#            path: %kernel.logs_dir%/%kernel.environment%_doctrine.log
+#            channels: doctrine
+#        console:
+#            type:   console
+#            verbosity_levels:
+#                VERBOSITY_NORMAL: NOTICE # DEBUG
+        stream:
+            type: stream
+            # log to var/logs/(dev|prod).log
+            path: "%kernel.logs_dir%/%kernel.environment%.log"
+            level: error

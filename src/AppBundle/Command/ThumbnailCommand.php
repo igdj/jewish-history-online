@@ -3,19 +3,34 @@
 
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
+use Symfony\Component\HttpKernel\KernelInterface;
+
 class ThumbnailCommand
-extends ContainerAwareCommand
+extends Command
 {
     static $widthScaled = 293;
     static $quality = 85;
+
+    protected $kernel;
+    protected $imagickProcessor;
+
+    public function __construct(KernelInterface $kernel,
+                                \AppBundle\Utils\ImageMagick\ImageMagickProcessor $imagickProcessor)
+    {
+        parent::__construct();
+
+        $this->kernel = $kernel;
+        $this->imagickProcessor = $imagickProcessor;
+    }
 
     protected function configure()
     {
@@ -61,9 +76,7 @@ extends ContainerAwareCommand
 
         $DERIVATE = preg_replace('/\.(de|en)$/', '', pathinfo($fname, PATHINFO_FILENAME));
 
-        $kernel = $this->getContainer()->get('kernel');
-
-        $baseDir = realpath($kernel->getRootDir() . '/..');
+        $baseDir = realpath($this->kernel->getRootDir() . '/..');
 
         $convertArgs = [];
 
@@ -73,7 +86,7 @@ extends ContainerAwareCommand
             $srcPath = sprintf('@AppBundle/Resources/data/img/%s', $DERIVATE);
 
             try {
-                $srcDir = $kernel->locateResource($srcPath, $kernel->getResourcesOverrideDir());
+                $srcDir = $this->kernel->locateResource($srcPath, $this->kernel->getResourcesOverrideDir());
             }
             catch (\InvalidArgumentException $e) {
                 $output->writeln(sprintf('<error>%s does not exist</error>', $srcPath));
@@ -153,17 +166,17 @@ extends ContainerAwareCommand
         // see https://developers.google.com/speed/docs/insights/OptimizeImages
         $quality = sprintf('-quality %s', self::$quality);
 
-        $imagickProcessor = $this->getContainer()->get('app.imagemagick');
-
         $convertArgs = array_merge($convertArgs, [
-            $imagickProcessor->escapeshellarg($fnameFull),
+            $this->imagickProcessor->escapeshellarg($fnameFull),
             '-sampling-factor 4:2:0',
             '-strip',
             $quality,
             $geom,
-            $imagickProcessor->escapeshellarg($fnameThumb)
+            $this->imagickProcessor->escapeshellarg($fnameThumb)
         ]);
 
-        $imagickProcessor->convert($convertArgs);
+        $this->imagickProcessor->convert($convertArgs);
+
+        return 0;
     }
 }

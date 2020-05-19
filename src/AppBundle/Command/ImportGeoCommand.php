@@ -5,18 +5,48 @@
 
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
+
+use Doctrine\ORM\EntityManagerInterface;
+
+use Cocur\Slugify\SlugifyInterface;
+
+use AppBundle\Utils\Xsl\XsltProcessor;
+use AppBundle\Utils\XmlFormatter\XmlFormatter;
+use AppBundle\Utils\SimplifyGeojsonProcessor;
 
 class ImportGeoCommand
 extends EntityCommandBase
 {
+    protected $simplifier;
+
+    public function __construct(EntityManagerInterface $em,
+                                KernelInterface $kernel,
+                                RouterInterface $router,
+                                TranslatorInterface $translator,
+                                SlugifyInterface $slugify,
+                                ParameterBagInterface $params,
+                                \Doctrine\DBAL\Connection $dbconnAdmin,
+                                string $rootDir,
+                                XsltProcessor $xsltProcessor,
+                                XmlFormatter $formatter,
+                                SimplifyGeojsonProcessor $simplifier
+                                )
+    {
+        parent::__construct($em, $kernel, $router, $translator, $slugify, $params,
+                            $dbconnAdmin, $rootDir, $xsltProcessor, $formatter);
+
+        $this->simplifier = $simplifier;
+    }
+
+
     protected function configure()
     {
         $this
@@ -29,9 +59,7 @@ extends EntityCommandBase
     {
         $precision = 'nation' == $type ? 0.01 : 0.001;
 
-        $simplifier = $this->getContainer()->get('app.simplify_geojson');
-
-        return $simplifier->simplifyGeojson($geometry, $precision);
+        return $this->simplifier->simplifyGeojson($geometry, $precision);
     }
 
     protected function processCountry($dir, $geojson)
@@ -48,9 +76,7 @@ extends EntityCommandBase
             return false;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
-
-        $country = $em->getRepository('AppBundle\Entity\Place')
+        $country = $this->em->getRepository('AppBundle\Entity\Place')
             ->findOneBy([ 'countryCode' => $countryCode, 'type' => 'nation' ]);
 
         if (is_null($country)) {
@@ -61,6 +87,7 @@ extends EntityCommandBase
         if (is_null($additional)) {
             $additional = [];
         }
+
         if (!array_key_exists('boundary', $additional)) {
             $feature['properties'] = [ 'name' => $feature['properties']['name'] ];
             $simplified = $this->simplify([
@@ -69,11 +96,12 @@ extends EntityCommandBase
                     $feature
                 ],
             ], $country->getType());
+
             if (!empty($simplified)) {
                 $additional['boundary'] = $simplified;
                 $country->setAdditional($additional);
-                $em->persist($country);
-                $em->flush();
+                $this->em->persist($country);
+                $this->em->flush();
             }
         }
 
@@ -101,11 +129,12 @@ extends EntityCommandBase
                                         $feature
                                     ],
                                 ], $child->getType());
+
                                 if (!empty($simplified)) {
                                     $additional['boundary'] = $simplified;
                                     $child->setAdditional($additional);
-                                    $em->persist($child);
-                                    $em->flush();
+                                    $this->em->persist($child);
+                                    $this->em->flush();
                                     unset($additional);
                                     unset($simplified);
                                 }
@@ -117,13 +146,14 @@ extends EntityCommandBase
                 unset($level4geojson);
             }
         }
+
         unset($country);
-        $em->clear();
+        $this->em->clear();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dir = $this->getContainer()->get('kernel')->getRootDir()
+        $dir = $this->rootDir
              . '/Resources/data/geo';
 
         $fs = new Filesystem();
@@ -147,11 +177,13 @@ extends EntityCommandBase
             if (false === $info) {
                 continue;
             }
+
             $geojson = json_decode($info, true);
             unset($info);
             if (false === $geojson) {
                 continue;
             }
+
             $this->processCountry($dir, $geojson);
             unset($geojson);
             gc_collect_cycles();

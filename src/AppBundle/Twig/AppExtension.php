@@ -18,14 +18,20 @@
 
 namespace AppBundle\Twig;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
+
+use Cocur\Slugify\SlugifyInterface;
+
 class AppExtension
-extends \Twig_Extension
+extends AbstractExtension
 {
     private $translator;
     private $slugifyer;
 
     public function __construct(\Symfony\Component\Translation\TranslatorInterface $translator,
-                                $slugifyer = null)
+                                SlugifyInterface $slugifyer)
     {
         $this->translator = $translator;
         $this->slugifyer = $slugifyer;
@@ -38,7 +44,7 @@ extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('file_exists', 'file_exists'),
+            new TwigFunction('file_exists', 'file_exists'),
         ];
     }
 
@@ -46,16 +52,16 @@ extends \Twig_Extension
     {
         return [
             // general
-            new \Twig_SimpleFilter('dateincomplete', [ $this, 'dateincompleteFilter' ]),
-            new \Twig_SimpleFilter('epoch', [ $this, 'epochFilter' ]),
-            new \Twig_SimpleFilter('prettifyurl', [ $this, 'prettifyurlFilter' ]),
+            new TwigFilter('dateincomplete', [ $this, 'dateincompleteFilter' ]),
+            new TwigFilter('epoch', [ $this, 'epochFilter' ]),
+            new TwigFilter('prettifyurl', [ $this, 'prettifyurlFilter' ]),
 
             // appbundle-specific
-            new \Twig_SimpleFilter('placeTypeLabel', [ $this, 'placeTypeLabelFilter' ]),
-            new \Twig_SimpleFilter('lookupLocalizedTopic', [ $this, 'lookupLocalizedTopicFilter' ]),
-            new \Twig_SimpleFilter('glossaryAddRefLink', [ $this, 'glossaryAddRefLinkFilter' ],
+            new TwigFilter('placeTypeLabel', [ $this, 'placeTypeLabelFilter' ]),
+            new TwigFilter('lookupLocalizedTopic', [ $this, 'lookupLocalizedTopicFilter' ]),
+            new TwigFilter('glossaryAddRefLink', [ $this, 'glossaryAddRefLinkFilter' ],
                                    [ 'is_safe' => [ 'html' ] ]),
-            new \Twig_SimpleFilter('renderCitation', [ $this, 'renderCitation' ],
+            new TwigFilter('renderCitation', [ $this, 'renderCitation' ],
                                    [ 'is_safe' => [ 'html' ] ]),
         ];
     }

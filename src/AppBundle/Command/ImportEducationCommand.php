@@ -3,7 +3,6 @@
 
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -24,16 +23,14 @@ extends EntityCommandBase
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $kernel = $this->getContainer()->get('kernel');
-
         $fname = '/Resources/data/education.xlsx';
 
         try {
-            $fname = $kernel->locateResource('@AppBundle' . $fname,
-                                             $kernel->getResourcesOverrideDir());
+            $fname = $this->locateResource('@AppBundle' . $fname,
+                                           $this->getResourcesOverrideDir());
         }
         catch (\InvalidArgumentException $e) {
-            $fname = $kernel->getRootDir() . $fname;
+            $fname = $this->getRootDir() . $fname;
         }
 
         $fs = new Filesystem();
@@ -147,5 +144,7 @@ extends EntityCommandBase
         }
 
         $output->writeln($this->jsonPrettyPrint($entriesByTopic));
+
+        return 0;
     }
 }

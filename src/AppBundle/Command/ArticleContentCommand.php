@@ -3,8 +3,6 @@
 
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -87,9 +85,7 @@ extends EntityCommandBase
             return 1;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
-
-        $entity = $em->getRepository('AppBundle\Entity\Article')
+        $entity = $this->em->getRepository('AppBundle\Entity\Article')
             ->findOneBy([
                          'uid' => $article->uid,
                          'language' => $article->language,
@@ -157,8 +153,10 @@ extends EntityCommandBase
             return 0; // done
         }
 
-        $em->persist($entity);
-        $em->flush();
+        $this->em->persist($entity);
+        $this->em->flush();
         //     $output->writeln($text);
+
+        return 0;
     }
 }

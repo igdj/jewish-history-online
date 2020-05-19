@@ -29,7 +29,8 @@ twig:
         twitterSite: "%twitter.site%"
     form_themes:
         - 'bootstrap_3_horizontal_layout.html.twig'
-        
+    strict_variables: false     # TODO: make safe for '%kernel.debug%'
+
 # Doctrine Configuration
 doctrine:
     dbal:

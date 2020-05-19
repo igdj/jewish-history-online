@@ -3,8 +3,6 @@
 
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -45,8 +43,6 @@ extends EntityCommandBase
             return $data;
         }
 
-        $conn =  $this->getContainer()->get('doctrine.dbal.admin_connection');
-
         switch ($matches[1]) {
             case 'article':
                 $sql = "SELECT 'article' AS query_type, Message.*"
@@ -82,7 +78,7 @@ extends EntityCommandBase
                 break;
         }
 
-        $result = $conn->fetchAssoc($sql, $params);
+        $result = $this->dbconnAdmin->fetchAssoc($sql, $params);
 
         if (false === $result || empty($result)) {
             return $data;
@@ -109,11 +105,12 @@ extends EntityCommandBase
                 if (preg_match('/^Einführung/', $result['subject'])) {
                     $genre = 'Introduction';
                 }
+
                 $data['genre'] = /** @Ignore */ $translator->trans($genre);
 
                 if (!empty($result['section'])) {
                     $sql = "SELECT name FROM Term WHERE id IN (?) AND status <> -1";
-                    $stmt = $conn->executeQuery($sql,
+                    $stmt = $this->dbconnAdmin->executeQuery($sql,
                                                 [ explode(',', $result['section']) ],
                                                 [ \Doctrine\DBAL\Connection::PARAM_INT_ARRAY ]);
                     $terms = $stmt->fetchAll();
@@ -302,7 +299,7 @@ extends EntityCommandBase
                      . " WHERE MessagePublication.publication_id=? AND MessagePublication.message_id=Message.id AND Message.status <> -1"
                      . " ORDER BY Message.id DESC";
 
-                $stmt = $conn->executeQuery($sql, [ $result['id'] ]);
+                $stmt = $this->dbconnAdmin->executeQuery($sql, [ $result['id'] ]);
                 $articles = $stmt->fetchAll();
                 $seriesStmt = [];
                 foreach ($articles as $article) {
@@ -463,11 +460,10 @@ extends EntityCommandBase
         ];
 
         // set the publisher - needs to be localized
-        $translator = $this->getContainer()->get('translator');
-        $translator->setLocale(\AppBundle\Utils\Iso639::code3To1($data['lang']));
+        $this->translator->setLocale(\AppBundle\Utils\Iso639::code3To1($data['lang']));
 
         $data['publisher'] = [
-            'orgName' => $translator->trans('Institute for the History of the German Jews'),
+            'orgName' => $this->translator->trans('Institute for the History of the German Jews'),
             'email' => 'redaktion@juedische-geschichte-online.net',
             'address' => [
                 'addrLine' => 'Beim Schlump 83, 20144 Hamburg',
@@ -475,7 +471,7 @@ extends EntityCommandBase
         ];
 
         // all the data from the admin-database
-        $dataFromDb = $this->getDataFromAdminDb($data, $translator);
+        $dataFromDb = $this->getDataFromAdminDb($data, $this->translator);
 
         $xml = $teiHelper->adjustHeader($fname, $dataFromDb);
         if (false === $xml) {
@@ -488,7 +484,7 @@ extends EntityCommandBase
 
         if ($input->getOption('tidy')) {
             // first check if it is valid
-            $fnameSchema = $this->getContainer()->get('kernel')
+            $fnameSchema = $this->kernel
                             ->locateResource('@AppBundle/Resources/data/basisformat.rng');
 
             // we pass the string as stream_wrapper
@@ -512,8 +508,7 @@ extends EntityCommandBase
                 */
             }
             else {
-                $formatter = $this->getContainer()->get('app.xml_formatter');
-                $res = $formatter->formatXML($xmlAsString);
+                $res = $this->formatter->formatXML($xmlAsString);
                 if (is_string($res)) {
                     $xmlAsString = $res;
                 }

@@ -5,33 +5,16 @@ namespace AppBundle\Utils;
 /**
  * Use a trait to share methods for Command and Controller
  *
+ * TODO: Transform into Service (for better dependency injection)
+ *
  */
 trait RenderTeiTrait
 {
-    /**
-     * Capsulate difference between
-     * Controller and ContainerAwareCommand
-     */
-    protected function getFromContainer($name)
-    {
-        $container = method_exists($this, 'getContainer')
-            ? $this->getContainer() : $this;
-
-        return $container->get($name);
-    }
-
-    protected function locateResource($name)
-    {
-
-        $kernel = $this->getFromContainer('kernel');
-
-        return $kernel->locateResource($name, $kernel->getResourcesOverrideDir());
-    }
-
     protected function locateTeiResource($fnameXml)
     {
         try {
-            $pathToXml = $this->locateResource('@AppBundle/Resources/data/tei/' . $fnameXml);
+            $pathToXml = $this->locateResource('@AppBundle/Resources/data/tei/' . $fnameXml,
+                                               $this->getResourcesOverrideDir());
         }
         catch (\InvalidArgumentException $e) {
             return false;
@@ -43,8 +26,6 @@ trait RenderTeiTrait
     /**
      * Transform an XML file ($fnameXml)
      * with an XSLT stylesheet ($fnameXslt)
-     * using the processor defined by
-     *  app.xslt
      */
     protected function renderTei($fnameXml, $fnameXslt = 'dtabf_article.xsl', $options = [])
     {
@@ -59,12 +40,10 @@ trait RenderTeiTrait
             }
         }
 
-        $pathToXslt = $this->locateResource('@AppBundle/Resources/data/xsl/' . $fnameXslt);
+        $pathToXslt = $this->locateResource('@AppBundle/Resources/data/xsl/' . $fnameXslt,
+                                            $this->getResourcesOverrideDir());
 
-        $proc = $this->getFromContainer('app.xslt');
-        $res = $proc->transformFileToXml($pathToXml, $pathToXslt, $options);
-
-        return $res;
+        return $this->xsltProcessor->transformFileToXml($pathToXml, $pathToXslt, $options);
     }
 
     /**

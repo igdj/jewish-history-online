@@ -3,11 +3,11 @@
 
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
@@ -56,8 +56,7 @@ extends EntityCommandBase
                 return 1;
             }
 
-            $query = $this->getContainer()->get('doctrine')
-                ->getManager()
+            $query = $this->em
                 ->createQuery('SELECT DISTINCT b.slug FROM AppBundle:Bibitem b WHERE b.status >= 0')
                 ;
 
@@ -74,7 +73,7 @@ extends EntityCommandBase
 
             $teiHelper = new \AppBundle\Utils\TeiHelper();
 
-            $items = $teiHelper->extractBibitems($fname, $this->getContainer()->get('cocur_slugify'));
+            $items = $teiHelper->extractBibitems($fname, $this->slugify);
         }
 
         if (false === $items) {
@@ -86,7 +85,6 @@ extends EntityCommandBase
             return 1;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
         if ($input->getOption('update') || $input->getOption('insert-missing')) {
             foreach ($items as $key => $num) {
                 $bibitem = $this->findBibitemBySlug($key);
@@ -159,8 +157,8 @@ extends EntityCommandBase
                 }
 
                 var_dump(json_encode($bibitem));
-                $em->persist($bibitem);
-                $this->flushEm($em);
+                $this->em->persist($bibitem);
+                $this->flushEm($this->em);
             }
         }
         else if ($input->getOption('set-references')) {
@@ -178,10 +176,8 @@ extends EntityCommandBase
                 return 1;
             }
 
-            $em = $this->getContainer()->get('doctrine')->getManager();
-
             $uid = $article->uid; $language = $article->language;
-            $article = $em->getRepository('AppBundle\Entity\Article')
+            $article = $this->em->getRepository('AppBundle\Entity\Article')
                 ->findOneBy([
                     'uid' => $uid,
                     'language' => $language,
@@ -212,8 +208,8 @@ extends EntityCommandBase
             }
 
             if ($persist) {
-                $em->persist($article);
-                $em->flush();
+                $this->em->persist($article);
+                $this->em->flush();
                 $output->writeln(sprintf('<info>updated article %s</info>', $uid));
             }
         }
@@ -238,17 +234,13 @@ extends EntityCommandBase
 
     protected function findBibitemBySlug($slug)
     {
-        $em = $this->getContainer()->get('doctrine')->getManager();
-
-        return $em->getRepository('AppBundle\Entity\Bibitem')->findOneBySlug($slug);
+        return $this->em->getRepository('AppBundle\Entity\Bibitem')->findOneBySlug($slug);
     }
 
     protected function findZoteroItemsBySlug($slug, $output)
     {
-        $conn = $this->getContainer()->get('doctrine.dbal.admin_connection');
-
         $sql = "SELECT * FROM Zotero WHERE corresp = :slug AND status >= 0";
 
-        return $conn->fetchAll($sql, [ 'slug' => $slug ]);
+        return $this->dbconnAdmin->fetchAll($sql, [ 'slug' => $slug ]);
     }
 }

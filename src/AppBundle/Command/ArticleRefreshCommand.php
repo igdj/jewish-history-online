@@ -3,8 +3,7 @@
 
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,7 +16,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 class ArticleRefreshCommand
-extends ContainerAwareCommand
+extends Command
 {
     protected function configure()
     {
@@ -59,6 +58,7 @@ extends ContainerAwareCommand
 
             return 1;
         }
+
         $langIso2 = $matches[1];
 
         $ext = pathinfo($fnameInput, PATHINFO_EXTENSION);
@@ -146,30 +146,7 @@ extends ContainerAwareCommand
                 $output->writeln('<info> [OK]</info>');
             }
         }
-    }
 
-    protected function findUserFromAdminBySlug($slug, $output)
-    {
-        $conn =  $this->getContainer()->get('doctrine.dbal.admin_connection');
-
-        $sql = "SELECT * FROM User WHERE slug = :slug AND status <> -100";
-        $users = $conn->fetchAll($sql, [ 'slug' => $slug ]);
-        if (empty($users)) {
-            return;
-        }
-
-        if (count($users) > 1) {
-            $output->writeln(sprintf('<error>More than one user found for %s</error>',
-                                     trim($slug)));
-        }
-
-        return $users[0];
-    }
-
-    protected function findPersonBySlug($slug)
-    {
-        $em = $this->getContainer()->get('doctrine')->getManager();
-
-        return $em->getRepository('AppBundle\Entity\Person')->findOneBySlug($slug);
+        return 0;
     }
 }

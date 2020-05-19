@@ -4,14 +4,13 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  *
  */
 class PlaceController
-extends Controller
+extends BaseController
 {
     use MapHelperTrait;
 
@@ -23,13 +22,13 @@ extends Controller
      * @Route("/map/landmark", name="place-map-landmark")
      *
      */
-    public function mapAction(Request $request)
+    public function mapAction(Request $request, TranslatorInterface $translator)
     {
         list($markers, $bounds) = $this->buildMap($request->getLocale(),
                                                   str_replace('place-map-', '', $request->get('_route')));
 
         return $this->render('AppBundle:Place:map.html.twig', [
-            'pageTitle' => $this->get('translator')->trans('Map'),
+            'pageTitle' => $translator->trans('Map'),
             'bounds' => $bounds,
             'markers' => $markers,
         ]);
@@ -111,7 +110,7 @@ extends Controller
     /**
      * @Route("/place", name="place-index")
      */
-    public function indexAction()
+    public function indexAction(TranslatorInterface $translator)
     {
         $places = $this->getDoctrine()
                 ->getRepository('AppBundle:Place')
@@ -119,7 +118,7 @@ extends Controller
                          [ 'name' => 'ASC' ]);
 
         return $this->render('AppBundle:Place:index.html.twig', [
-            'pageTitle' => $this->get('translator')->trans('Places'),
+            'pageTitle' => $translator->trans('Places'),
             'places' => $places,
         ]);
     }

@@ -1,10 +1,9 @@
 <?php
-// src/AppBundle/Command/ArticleHeaderCommand.php
+// src/AppBundle/Command/ArticleFormatCommand.php
 
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -13,9 +12,20 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
+use AppBundle\Utils\XmlFormatter\XmlFormatter;
+
 class ArticleFormatCommand
-extends ContainerAwareCommand
+extends Command
 {
+    protected $formatter;
+
+    public function __construct(XmlFormatter $formatter)
+    {
+        parent::__construct();
+
+        $this->formatter = $formatter;
+    }
+
     protected function configure()
     {
         $this
@@ -42,10 +52,7 @@ extends ContainerAwareCommand
             return 1;
         }
 
-        $formatter = $this->getContainer()->get('app.xml_formatter');
-        $res = $formatter->formatFile($fname, $options);
-
-        echo $res;
+        echo $this->formatter->formatFile($fname, $options);
 
         return 0;
     }

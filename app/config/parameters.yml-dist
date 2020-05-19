@@ -23,13 +23,12 @@ parameters:
     mailer.username: ~
     mailer.password: ~
 
-    # for testing, use
+    # for testing (https://doi.test.datacite.org/), use
     # app.datacite.url: "https://mds.test.datacite.org/"
     app.datacite.url: "https://mds.datacite.org/"
     app.datacite.user: YOUR.USER
     app.datacite.password: "secret"
-    # 10.5072 is our test prefix, 10.23691 is our production
-    app.datacite.prefix: 10.5072
+    app.datacite.prefix: 10.23691
 
     # if you want to use a wordpress installation for news
     # app.wp-rest.url: "http://juedische-geschichte-online.net/projekt/"

@@ -4,22 +4,21 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  *
  */
 class LabsController
-extends Controller
+extends BaseController
 {
     /**
      * @Route("/labs", name="labs-index")
      */
-    public function indexAction()
+    public function indexAction(TranslatorInterface $translator)
     {
         return $this->render('AppBundle:Labs:index.html.twig', [
-            'pageTitle' => $this->get('translator')->trans('Labs'),
+            'pageTitle' => $translator->trans('Labs'),
         ]);
     }
 

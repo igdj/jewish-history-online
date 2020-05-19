@@ -6,16 +6,34 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\CssSelector\CssSelectorConverter;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+
+use Doctrine\ORM\EntityManagerInterface;
+
+use Cocur\Slugify\SlugifyInterface;
+
+use AppBundle\Utils\Xsl\XsltProcessor;
 
 abstract class RenderTeiController
-extends Controller
+extends BaseController
 {
     use SharingBuilderTrait,
         \AppBundle\Utils\RenderTeiTrait; // use shared method renderTei()
 
-    protected function buildRefLookup($refs, $language)
+    protected $xsltProcessor;
+
+    public function __construct(KernelInterface $kernel,
+                                SlugifyInterface $slugify,
+                                XsltProcessor $xsltProcessor)
+    {
+        parent::__construct($kernel, $slugify);
+
+        $this->xsltProcessor = $xsltProcessor;
+    }
+
+    protected function buildRefLookup($refs, TranslatorInterface $translator, $language)
     {
         $refMap = [];
 
@@ -39,7 +57,6 @@ extends Controller
             $query->setParameter('language', $language);
         }
 
-        $translator = $this->get('translator');
         foreach ($query->getResult() as $article) {
             $prefix = null;
             switch ($article->getArticleSection()) {
@@ -337,11 +354,11 @@ extends Controller
 
         $language = \AppBundle\Utils\Iso639::code1to3($locale);
 
-        $slugify = $this->get('cocur_slugify');
+        $that = $this;
 
         $slugs = array_map(
-            function ($term) use ($slugify) {
-                return $slugify->slugify($term);
+            function ($term) use ($that) {
+                return $that->slugify($term);
             },
             $glossaryTerms);
 
@@ -360,7 +377,7 @@ extends Controller
         }
 
         foreach ($glossaryTerms as $glossaryTerm) {
-            $slug = $slugify->slugify($glossaryTerm);
+            $slug = $this->slugify($glossaryTerm);
             if (array_key_exists($slug, $termsBySlug)) {
                 $term = $termsBySlug[$slug];
                 $headline = $term->getHeadline();
@@ -429,7 +446,7 @@ extends Controller
         // mpdf
         $pdfGenerator = new \AppBundle\Utils\PdfGenerator([
             'fontDir' => [
-                $this->get('kernel')->getProjectDir()
+                $this->getProjectDir()
                     . '/app/Resources/data/font',
             ],
             'fontdata' => [
@@ -451,7 +468,7 @@ extends Controller
             'default_font' => 'roboto',
         ]);
 
-        $fnameLogo = $this->get('kernel')->getProjectDir() . '/web/img/icon/icons_wide.png';
+        $fnameLogo = $this->getProjectDir() . '/web/img/icon/icons_wide.png';
         $pdfGenerator->imageVars['logo_top'] = file_get_contents($fnameLogo);
 
         // silence due to https://github.com/mpdf/mpdf/issues/302 when using tables
@@ -460,14 +477,14 @@ extends Controller
         $pdfGenerator->Output($filename, 'I');
     }
 
-    protected function adjustRefs($html, $refs, $language)
+    protected function adjustRefs($html, $refs, $translator, $language)
     {
         if (empty($refs)) {
             // nothing to do
             return $html;
         }
 
-        $refLookup = $this->buildRefLookup($refs, $language);
+        $refLookup = $this->buildRefLookup($refs, $translator, $language);
 
         $crawler = new \Symfony\Component\DomCrawler\Crawler();
         $crawler->addHtmlContent('<body>' . $html . '</body>');
@@ -497,7 +514,7 @@ extends Controller
         return preg_replace('/<\/?body>/', '', $crawler->html());
     }
 
-    protected function extractPartsFromHtml($html)
+    protected function extractPartsFromHtml($html, TranslatorInterface $translator)
     {
         $crawler = new \Symfony\Component\DomCrawler\Crawler();
         $crawler->addHtmlContent($html);
@@ -554,10 +571,8 @@ extends Controller
 
         $bibitemsByCorresp = [];
         if (!empty($bibitems)) {
-            $slugify = $this->get('cocur_slugify');
-
             foreach ($bibitems as $corresp) {
-                $bibitemsMap[$corresp] =  \AppBundle\Entity\Bibitem::slugifyCorresp($slugify, $corresp);
+                $bibitemsMap[$corresp] = \AppBundle\Entity\Bibitem::slugifyCorresp($this->getSlugify(), $corresp);
             }
 
             $query = $this->getDoctrine()
@@ -590,7 +605,7 @@ extends Controller
         }));
 
         // try to get bios in the current locale
-        $locale = $this->get('translator')->getLocale();
+        $locale = $translator->getLocale();
         $authorSlugs = [];
         $authorsBySlug = [];
         foreach ($authors as $author) {

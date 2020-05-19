@@ -5,6 +5,9 @@ namespace AppBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
+
+use AppBundle\Utils\ImageMagick\ImageMagickProcessor;
 
 /**
  *
@@ -16,9 +19,7 @@ extends ArticleController
     {
         $sourceArticle = $parts['article'];
 
-        $templating = $this->get('templating');
-
-        $html = $templating->render('AppBundle:Article:source-printview.html.twig', [
+        $html = $this->renderView('AppBundle:Article:source-printview.html.twig', [
             'article' => $sourceArticle,
             'meta' => $sourceArticle,
             'layers' => $parts['layers'],
@@ -37,7 +38,7 @@ extends ArticleController
         $this->renderPdf($html, str_replace(':', '-', $sourceArticle->getSlug(true)) . '.pdf');
     }
 
-    protected function renderSourceViewer(Request $request, $uid, $sourceArticle)
+    protected function renderSourceViewer(Request $request, TranslatorInterface $translator, $uid, $sourceArticle)
     {
         if (in_array($request->get('_route'), [ 'source-jsonld' ])) {
             // return jsonld-rendition
@@ -64,7 +65,7 @@ extends ArticleController
                                  $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl',
                                  $params);
 
-        list($authors, $section_headers, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html);
+        list($authors, $section_headers, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html, $translator);
 
         $interpretation = $sourceArticle->getIsPartOf();
         $sourceDescription = null; // $sourceDescription is part of $interpretation
@@ -72,9 +73,9 @@ extends ArticleController
         if (isset($interpretation)) {
             $sourceDescription = [
                 'article' => $interpretation,
-                'html' => $this->renderSourceDescription($interpretation),
+                'html' => $this->renderSourceDescription($interpretation, $translator),
             ];
-            list($dummy, $dummy, $license, $entitiesSourceDescription, $bibitemLookup, $glossaryTermsSourceDescription, $refs) = $this->extractPartsFromHtml($sourceDescription['html']);
+            list($dummy, $dummy, $license, $entitiesSourceDescription, $bibitemLookup, $glossaryTermsSourceDescription, $refs) = $this->extractPartsFromHtml($sourceDescription['html'], $translator);
 
             $entities = array_merge($entities, $entitiesSourceDescription);
             $glossaryTerms += $glossaryTermsSourceDescription;
@@ -253,7 +254,7 @@ extends ArticleController
                     'glossary_lookup' => $glossaryLookup,
                     'pageMeta' => [
                         'jsonLd' => $sourceArticle->jsonLdSerialize($request->getLocale()),
-                        'og' => $this->buildOg($sourceArticle, $request, 'source', [ 'uid' => $sourceArticle->getUid() ]),
+                        'og' => $this->buildOg($sourceArticle, $request, $translator, 'source', [ 'uid' => $sourceArticle->getUid() ]),
                         'twitter' => $this->buildTwitter($sourceArticle, $request, 'source', [ 'uid' => $sourceArticle->getUid() ]),
                     ],
                 ]);
@@ -274,7 +275,7 @@ extends ArticleController
                 'glossary_lookup' => $glossaryLookup,
                 'pageMeta' => [
                     'jsonLd' => $sourceArticle->jsonLdSerialize($request->getLocale()),
-                    'og' => $this->buildOg($sourceArticle, $request, 'source', [ 'uid' => $sourceArticle->getUid() ]),
+                    'og' => $this->buildOg($sourceArticle, $request, $translator, 'source', [ 'uid' => $sourceArticle->getUid() ]),
                     'twitter' => $this->buildTwitter($sourceArticle, $request, 'source', [ 'uid' => $sourceArticle->getUid() ]),
                 ],
             ]);
@@ -296,7 +297,7 @@ extends ArticleController
             'glossary_lookup' => $glossaryLookup,
             'pageMeta' => [
                 'jsonLd' => $sourceArticle->jsonLdSerialize($request->getLocale()),
-                'og' => $this->buildOg($sourceArticle, $request, 'source', [ 'uid' => $sourceArticle->getUid() ]),
+                'og' => $this->buildOg($sourceArticle, $request, $translator, 'source', [ 'uid' => $sourceArticle->getUid() ]),
                 'twitter' => $this->buildTwitter($sourceArticle, $request, 'source', [ 'uid' => $sourceArticle->getUid() ]),
             ],
         ]);
@@ -307,7 +308,9 @@ extends ArticleController
      * @Route("/source/{uid}.pdf", name="source-pdf")
      * @Route("/source/{uid}", name="source", requirements={"uid"=".*source\-\d+"})
      */
-    public function sourceViewerAction(Request $request, $uid)
+    public function sourceViewerAction(Request $request,
+                                       TranslatorInterface $translator,
+                                       $uid)
     {
         $criteria = [ 'uid' => $uid ];
         $locale = $request->getLocale();
@@ -323,7 +326,7 @@ extends ArticleController
             throw $this->createNotFoundException('This source does not exist');
         }
 
-        return $this->renderSourceViewer($request, $uid, $article);
+        return $this->renderSourceViewer($request, $translator, $uid, $article);
     }
 
     protected function buildFolderName($uid)
@@ -377,7 +380,7 @@ extends ArticleController
 
         $ret = [];
 
-        $translator = $this->get('translator');
+        $translator = $this->getTranslator();
 
         $defaultLocale = $translator->getLocale();
 
@@ -464,7 +467,7 @@ extends ArticleController
             return false;
         }
 
-        $baseDir = realpath($this->get('kernel')->getRootDir() . '/..');
+        $baseDir = realpath($this->getRootDir() . '/..');
         $relPath = sprintf('viewer/%s', $dir);
         $filePath = $baseDir . '/web/' . $relPath;
 
@@ -475,7 +478,7 @@ extends ArticleController
         return [ $relPath, $filePath ];
     }
 
-    protected function generateZip($uid, $files)
+    protected function generateZip($imagickProcessor, $uid, $files)
     {
         $dstPath = $this->buildViewerPath($uid);
         if (false === $dstPath) {
@@ -504,7 +507,6 @@ extends ArticleController
         }
 
         $footer = $this->buildImgSrcPath('footer-download.png');
-        $imagickProcessor = $this->get('app.imagemagick');
 
         $fs = new \Symfony\Component\Filesystem\Filesystem();
         $tempfiles = [];
@@ -524,6 +526,7 @@ extends ArticleController
                         $imagickProcessor->escapeshellarg($footer),
                         $tempnam,
                     ];
+
                     if (0 == $imagickProcessor->convert($convertArgs)) {
                         $tempfiles[] = $fname = $tempnam;
                     }
@@ -532,6 +535,7 @@ extends ArticleController
 
             $zip->addFile($fname, $localfname);
         }
+
         $zip->close();
 
         foreach ($tempfiles as $tempfile) {
@@ -558,7 +562,9 @@ extends ArticleController
     /**
      * @Route("/source/{uid}.zip", name="source-download")
      */
-    public function downloadAction(Request $request, $uid)
+    public function downloadAction(Request $request,
+                                   ImageMagickProcessor $imagickProcessor,
+                                   $uid)
     {
         $article = $this->findSourceArticle($uid, $request->getLocale());
 
@@ -583,7 +589,7 @@ extends ArticleController
             $files = array_merge($files, $readme);
         }
 
-        $urlZip = $this->generateZip($uid, $files);
+        $urlZip = $this->generateZip($imagickProcessor, $uid, $files);
         if (false === $files) {
             // something went wrong
             return new \Symfony\Component\HttpFoundation\RedirectResponse($this->generateUrl('source', [ 'uid' => $uid ]));
@@ -600,7 +606,9 @@ extends ArticleController
      * in the DFG-Viewer
      *
      */
-    public function metsAction(Request $request, $uid)
+    public function metsAction(Request $request,
+                               \Twig\Environment $twig,
+                               $uid)
     {
         $article = $this->findSourceArticle($uid, $request->getLocale());
 
@@ -663,7 +671,6 @@ extends ArticleController
             };
         }
 
-        $twig = $this->get('twig');
         $template = $twig->loadTemplate('AppBundle:Article:mods-fragments.xml.twig');
         $context = $twig->getGlobals();
 
@@ -718,7 +725,7 @@ extends ArticleController
         $fname .= '.xml';
 
         // check if source is splitted into individual files one per page
-        $baseDir = realpath($this->get('kernel')->getRootDir() . '/..');
+        $baseDir = realpath($this->getRootDir() . '/..');
 
         $targetPath = sprintf('web/viewer/%s', $uid);
         $targetDir = realpath($baseDir . '/' . $targetPath);
@@ -786,11 +793,10 @@ extends ArticleController
         $derivate = preg_replace('/[^0-9a-zA-Z_\-\:]/', '', $parts[0]);
         $fname = preg_replace('/[^0-9a-zA-Z\.]/', '', $parts[1]);
 
-        $kernel = $this->get('kernel');
         $srcPath = sprintf('@AppBundle/Resources/data/img/%s', $derivate);
 
         try {
-            $fnameFull = $kernel->locateResource($srcPath . '/' . $fname, $kernel->getResourcesOverrideDir());
+            $fnameFull = $this->locateResource($srcPath . '/' . $fname, $this->getResourcesOverrideDir());
         } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException('This source-image does not exist');
         }

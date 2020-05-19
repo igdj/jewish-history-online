@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  *
@@ -33,10 +34,10 @@ extends RenderTeiController
     ];
 
     /* TODO: share the following with AboutController */
-    protected function renderTitleContent(Request $request, $title, $template)
+    protected function renderTitleContent(Request $request,
+                                          TranslatorInterface $translator,
+                                          $title, $template)
     {
-        $translator = $this->get('translator');
-
         return $this->render($template, [
             'pageTitle' => /** @Ignore */ $translator->trans($title),
             'title' => $title,
@@ -67,18 +68,17 @@ extends RenderTeiController
     /**
      * @Route("/education", name="education-index")
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request,
+                                TranslatorInterface $translator)
     {
-        $kernel = $this->get('kernel');
-
         $fname = '/Resources/data/education.json';
 
         try {
-            $fname = $kernel->locateResource('@AppBundle' . $fname,
-                                             $kernel->getResourcesOverrideDir());
+            $fname = $this->locateResource('@AppBundle' . $fname,
+                                           $this->getResourcesOverrideDir());
         }
         catch (\InvalidArgumentException $e) {
-            $fname = $kernel->getRootDir() . $fname;
+            $fname = $this->getRootDir() . $fname;
         }
 
         $structure = json_decode(file_get_contents($fname), true);
@@ -128,7 +128,7 @@ extends RenderTeiController
         }
 
         return $this->render('AppBundle:Education:index.html.twig', [
-            'pageTitle' => $this->get('translator')->trans('Teaching Resources'),
+            'pageTitle' => $translator->trans('Teaching Resources'),
             'structure' => $structure,
             'sourcesByUid' => $sourcesByUid,
         ]);
@@ -137,9 +137,10 @@ extends RenderTeiController
     /**
      * @Route("/education/guidelines", name="about-educationguidelines")
      */
-    public function editionguidelinesAction(Request $request)
+    public function editionguidelinesAction(Request $request,
+                                            TranslatorInterface $translator)
     {
-        return $this->renderTitleContent($request,
+        return $this->renderTitleContent($request, $translator,
                                          'Guidelines for the Use of Materials in the Key Documents Edition',
                                          'AppBundle:Default:sitetext-education.html.twig');
     }
@@ -147,9 +148,10 @@ extends RenderTeiController
     /**
      * @Route("/education/sourceinterpretation", name="about-educationsourceinterpretation")
      */
-    public function educationsourceinterpretationAction(Request $request)
+    public function educationsourceinterpretationAction(Request $request,
+                                                        TranslatorInterface $translator)
     {
-        return $this->renderTitleContent($request,
+        return $this->renderTitleContent($request, $translator,
                                          'Information on Source Interpretation for Students',
                                          'AppBundle:Default:sitetext-education.html.twig');
     }

@@ -4,19 +4,19 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  *
  */
 class OrganizationController
-extends Controller
+extends BaseController
 {
     /**
      * @Route("/organization", name="organization-index")
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request,
+                                TranslatorInterface $translator)
     {
         $organizations = $this->getDoctrine()
                 ->getRepository('AppBundle:Organization')
@@ -42,7 +42,7 @@ extends Controller
         }
 
         return $this->render('AppBundle:Organization:index.html.twig', [
-            'pageTitle' => $this->get('translator')->trans('Organizations'),
+            'pageTitle' => $translator->trans('Organizations'),
             'organizations' => $organizations,
         ]);
     }
@@ -53,15 +53,12 @@ extends Controller
      * Provide a BEACON file as described in
      *  https://de.wikipedia.org/wiki/Wikipedia:BEACON
      */
-    public function gndBeaconAction()
+    public function gndBeaconAction(TranslatorInterface $translator)
     {
-        $translator = $this->get('translator');
-        $twig = $this->get('twig');
-
-        $personRepo = $this->getDoctrine()
+        $repo = $this->getDoctrine()
                 ->getRepository('AppBundle:Organization');
 
-        $query = $personRepo
+        $query = $repo
                 ->createQueryBuilder('O')
                 ->where('O.status >= 0')
                 ->andWhere('O.gnd IS NOT NULL')
@@ -78,9 +75,8 @@ extends Controller
                         $this->generateUrl('organization-index', [], \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL))
               . "\n";
 
-        $globals = $twig->getGlobals();
         $ret .= '#NAME: '
-              . /** @Ignore */ $translator->trans($globals['siteName'])
+              . /** @Ignore */ $translator->trans($this->getGlobal('siteName'))
               . "\n";
         // $ret .= '#MESSAGE: ' . "\n";
 

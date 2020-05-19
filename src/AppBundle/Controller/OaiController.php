@@ -4,33 +4,36 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Use Picturae OAI-PMH package to implement an OAI-endpoint /oai
  */
 class OaiController
-extends Controller
+extends AbstractController
 {
     /**
      * @Route("/oai", name="oai")
      */
-    public function dispatchAction(Request $request)
+    public function dispatchAction(Request $request,
+                                   TranslatorInterface $translator,
+                                   RouterInterface $router,
+                                   \Twig\Environment $twig)
     {
         $laminasRequest = $this->buildRequest();
 
         // repositoryName is localized siteName
-        $translator = $this->get('translator');
-        $twig = $this->get('twig');
         $globals = $twig->getGlobals();
 
         // $repository is an instance of \Picturae\OaiPmh\Interfaces\Repository
         $repository = new Repository(
             $request,
-            $this->get('router'),
+            $router,
             $this->getDoctrine(),
             [
                 'repositoryName' => /** @Ignore */ $translator->trans($globals['siteName']),
@@ -76,7 +79,8 @@ extends Controller
  * Override \Picturae\OaiPmh\Provider so we can inject the
  * Eprints: OAI2 to HTML XSLT Style Sheet
  */
-class OaiProvider extends \Picturae\OaiPmh\Provider
+class OaiProvider
+extends \Picturae\OaiPmh\Provider
 {
     private $xslUrl;
 

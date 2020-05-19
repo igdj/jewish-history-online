@@ -946,12 +946,12 @@
       </trans-unit>
       <trans-unit id="4c6cc61ad14d77dbcc0f3c9c41cc9531e88392df" resname="license.personal-use">
         <source>license.personal-use</source>
-        <target>license.personal-use</target>
+        <target>Dieser Text ist urheberrechtlich geschützt und darf nur mit Einwilligung der Rechteinhaber vervielfältigt und veröffentlicht. Er darf zu wissenschaftlichen oder privaten Zwecken heruntergeladen werden.</target>
         <jms:reference-file line="402">\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="76ef082a395e8e204883a504ca3e054bedf59149" resname="license.public-domain">
         <source>license.public-domain</source>
-        <target>license.public-domain</target>
+        <target>Dieses Werk wurde als frei von bekannten urheberrechtlichen Einschränkungen identifiziert, einschließlich aller verwandten Schutzrechte.</target>
         <jms:reference-file line="397">\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="da2999cac117278739bcc5e3843a108636701ebd" resname="license.restricted">

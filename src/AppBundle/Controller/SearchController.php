@@ -4,13 +4,13 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  *
  */
 class SearchController
-extends Controller
+extends BaseController
 {
     protected function getQuery(Request $request, $facetNames = [])
     {
@@ -47,7 +47,8 @@ extends Controller
     /**
      * @Route("/search", name="search-index")
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request,
+                                TranslatorInterface $translator)
     {
         $solrClient = $this->getSolrClient($request);
 
@@ -159,7 +160,7 @@ extends Controller
         }
 
         return $this->render('AppBundle:Search:index.html.twig', [
-            'pageTitle' => $this->get('translator')->trans('Search'),
+            'pageTitle' => $translator->trans('Search'),
             'results' => $results,
             'meta' => $meta,
             'pagination' => $pagination,

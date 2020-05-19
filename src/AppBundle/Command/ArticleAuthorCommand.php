@@ -3,11 +3,11 @@
 
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
@@ -78,8 +78,6 @@ extends EntityCommandBase
         $output->writeln($this->jsonPrettyPrint($persons));
 
         if ($input->getOption('insert-missing') || $input->getOption('update')) {
-            $em = $this->getContainer()->get('doctrine')->getManager();
-
             foreach ($persons as $author) {
                 $slug = $author->getSlug();
                 if (empty($slug)) {
@@ -127,6 +125,7 @@ extends EntityCommandBase
                         if ('url' == $src && preg_match('/^keine/i', $user[$src])) {
                            $user[$src] = null;
                         }
+
                         $methodName = 'set' . ucfirst($target);
                         $person->$methodName($user[$src]);
                     }
@@ -149,19 +148,17 @@ extends EntityCommandBase
                 $person->setDescription($description);
 
                 // var_dump(json_encode($person));
-                $em->persist($person);
-                $em->flush();
+                $this->em->persist($person);
+                $this->em->flush();
             }
         }
     }
 
     protected function findUserFromAdminBySlug($slug, $output)
     {
-        $conn =  $this->getContainer()->get('doctrine.dbal.admin_connection');
-
         $sql = "SELECT * FROM User WHERE slug = :slug AND status <> -100";
 
-        $users = $conn->fetchAll($sql, [ 'slug' => $slug ]);
+        $users = $this->dbconnAdmin->fetchAll($sql, [ 'slug' => $slug ]);
         if (empty($users)) {
             return;
         }
@@ -177,8 +174,6 @@ extends EntityCommandBase
 
     protected function findPersonBySlug($slug)
     {
-        $em = $this->getContainer()->get('doctrine')->getManager();
-
-        return $em->getRepository('AppBundle\Entity\Person')->findOneBySlug($slug);
+        return $this->em->getRepository('AppBundle\Entity\Person')->findOneBySlug($slug);
     }
 }

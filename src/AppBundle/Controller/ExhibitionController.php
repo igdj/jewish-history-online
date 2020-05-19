@@ -5,9 +5,10 @@ namespace AppBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class ExhibitionController
-extends ArticleController
+extends BaseController
 {
     static $EXHIBITIONS = [
         'jewish-life-since-1945' => [
@@ -57,19 +58,21 @@ extends ArticleController
         return $slug;
     }
 
-    protected function renderExhibition(Request $request, $slug)
+    protected function renderExhibition(Request $request,
+                                        TranslatorInterface $translator,
+                                        $slug)
     {
         $exhibition = self::$EXHIBITIONS[$slug];
 
         $localeSwitch = [];
         if ('en' == ($locale = $request->getLocale())) {
-            $translator = $this->get('translator');
             foreach ([ 'de' ] as $alternateLocale) {
                 $translator->setLocale($alternateLocale);
                 $localeSwitch[$alternateLocale] = [
                     'slug' => /** @Ignore */$translator->trans($slug),
                 ];
             }
+
             $translator->setLocale($locale);
         }
         else {
@@ -79,7 +82,7 @@ extends ArticleController
         return $this->render('AppBundle:Exhibition:'
                              . $slug
                              . '.' . $locale . '.html.twig', [
-            'pageTitle' => /** @Ignore */ $this->get('translator')->trans($exhibition['name']),
+            'pageTitle' => /** @Ignore */ $translator->trans($exhibition['name']),
             'route_params_locale_switch' => $localeSwitch,
         ]);
     }
@@ -87,29 +90,32 @@ extends ArticleController
     /**
      * @Route("/exhibition", name="exhibition-index")
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request,
+                                TranslatorInterface $translator)
     {
         $locale = $request->getLocale();
 
         return $this->render('AppBundle:Exhibition:index.html.twig', [
-            'pageTitle' => /** @Ignore */ $this->get('translator')->trans('Online Exhibitions'),
+            'pageTitle' => /** @Ignore */ $translator->trans('Online Exhibitions'),
         ]);
     }
 
     /**
      * @Route("/exhibition/{slug}", name="exhibition")
      */
-    public function detailAction(Request $request, $slug)
+    public function detailAction(Request $request,
+                                 TranslatorInterface $translator,
+                                 $slug)
     {
         $locale = $request->getLocale();
 
-        $slugEn = self::lookupLocalizedExhibition($slug, $this->get('translator'), $locale);
+        $slugEn = self::lookupLocalizedExhibition($slug, $translator, $locale);
 
 
         if (!array_key_exists($slugEn, self::$EXHIBITIONS)) {
             throw $this->createNotFoundException('This exhibition does not exist');
         }
 
-        return $this->renderExhibition($request, $slugEn);
+        return $this->renderExhibition($request, $translator, $slugEn);
     }
 }

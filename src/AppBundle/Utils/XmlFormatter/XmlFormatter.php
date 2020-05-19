@@ -35,19 +35,21 @@ class XmlFormatter
         $doc = new \DomDocument('1.0', 'UTF-8');
         $doc->preserveWhiteSpace = false;
         $doc->formatOutput = true;
+
+        return $doc;
     }
 
-    public function formatFile($fname_xml, $options = [])
+    public function formatFile($fnameXml, $options = [])
     {
         if (isset($this->adapter)) {
-            $res = $this->adapter->formatFile($fname_xml, $options);
+            $res = $this->adapter->formatFile($fnameXml, $options);
 
             return $res;
         }
 
         // load xml
         $doc = $this->instantiateDomDocument();
-        @$valid = $doc->load($fname_xml);
+        @$valid = $doc->load($fnameXml);
 
         $ret = $doc->saveXML();
 

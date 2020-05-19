@@ -3,17 +3,32 @@
 
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
+use Symfony\Component\HttpKernel\KernelInterface;
+
 class TilesCommand
-extends ContainerAwareCommand
+extends Command
 {
+    protected $kernel;
+    protected $imagickProcessor;
+
+    public function __construct(KernelInterface $kernel,
+                                \AppBundle\Utils\ImageMagick\ImageMagickProcessor $imagickProcessor)
+    {
+        parent::__construct();
+
+        $this->kernel = $kernel;
+        $this->imagickProcessor = $imagickProcessor;
+    }
+
     protected function configure()
     {
         $this
@@ -41,22 +56,18 @@ extends ContainerAwareCommand
 
         $DERIVATE = preg_replace('/\.(de|en)$/', '', pathinfo($fname, PATHINFO_FILENAME));
 
-        $kernel = $this->getContainer()->get('kernel');
-
-        $baseDir = realpath($kernel->getRootDir() . '/..');
+        $baseDir = realpath($this->kernel->getRootDir() . '/..');
 
         $srcPath = sprintf('@AppBundle/Resources/data/img/%s', $DERIVATE);
 
         try {
-            $srcDir = $kernel->locateResource($srcPath, $kernel->getResourcesOverrideDir());
+            $srcDir = $this->kernel->locateResource($srcPath, $this->kernel->getResourcesOverrideDir());
         }
         catch (\InvalidArgumentException $e) {
             $output->writeln(sprintf('<error>%s does not exist</error>', $srcPath));
 
             return 1;
         }
-
-        $imagickProcessor = $this->getContainer()->get('app.imagemagick');
 
         $files = [];
         foreach (new \GlobIterator($srcDir . '/f*.jpg') as $file) {
@@ -74,7 +85,7 @@ extends ContainerAwareCommand
                         $srcDir . '/' . $fname,
                         $srcDir . '/' . $fnameJpg,
                     ];
-                    $imagickProcessor->convert($convertArgs);
+                    $this->imagickProcessor->convert($convertArgs);
                     $files[] = $fnameJpg;
                 }
             }
@@ -88,7 +99,7 @@ extends ContainerAwareCommand
                         $srcDir . '/' . $fname,
                         $srcDir . '/' . $fnameJpg,
                     ];
-                    $imagickProcessor->convert($convertArgs);
+                    $this->imagickProcessor->convert($convertArgs);
                     $files[] = $fnameJpg;
                 }
             }
@@ -115,6 +126,7 @@ extends ContainerAwareCommand
             if (empty($size)) {
                 continue;
             }
+
             $width = $size[0];
             $height = $size[1];
             $pathinfo = pathinfo($fnameFull);
@@ -131,28 +143,30 @@ extends ContainerAwareCommand
                     $geom = sprintf('-geometry %dx', $widthScaled);
                     $fnameScaled = $targetDir . DIRECTORY_SEPARATOR . $fnameBase . '_' . $i . '.jpg';
                     $convertArgs = [
-                        $imagickProcessor->escapeshellarg($fnameFull),
+                        $this->imagickProcessor->escapeshellarg($fnameFull),
                         $geom,
-                        $imagickProcessor->escapeshellarg($fnameScaled)
+                        $this->imagickProcessor->escapeshellarg($fnameScaled)
                     ];
-                    $imagickProcessor->convert($convertArgs);
+
+                    $this->imagickProcessor->convert($convertArgs);
                 }
                 else {
                     $fnameScaled = $fnameFull;
                 }
 
                 $convertArgs = [
-                    $imagickProcessor->escapeshellarg($fnameScaled),
+                    $this->imagickProcessor->escapeshellarg($fnameScaled),
                     '-crop 256x256',
                     '+gravity',
-                    '-set ' . $imagickProcessor->escapeshellarg('filename:tile')
-                    . ' ' . $imagickProcessor->escapeshellarg('%[fx:page.y/256]-%[fx:page.x/256]'),
-                    $imagickProcessor->escapeshellarg($targetDir . DIRECTORY_SEPARATOR
+                    '-set ' . $this->imagickProcessor->escapeshellarg('filename:tile')
+                    . ' ' . $this->imagickProcessor->escapeshellarg('%[fx:page.y/256]-%[fx:page.x/256]'),
+                    $this->imagickProcessor->escapeshellarg($targetDir . DIRECTORY_SEPARATOR
                                                       . $fnameBase
                                                       . '_' . $i
                                                       . '_%[filename:tile].jpg'),
                 ];
-                $imagickProcessor->convert($convertArgs);
+
+                $this->imagickProcessor->convert($convertArgs);
 
                 foreach (glob($targetDir . DIRECTORY_SEPARATOR
                               . $fnameBase . '_' . $i . '_*.jpg') as $tilename)
@@ -182,5 +196,7 @@ extends ContainerAwareCommand
                 $zoomFactor *= 2;
             }
         }
+
+        return 0;
     }
 }

@@ -3,17 +3,29 @@
 
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
+use Symfony\Component\Translation\TranslatorInterface;
+
 class MetsCommand
-extends ContainerAwareCommand
+extends Command
 {
+    protected $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        parent::__construct();
+
+        $this->translator = $translator;
+    }
+
     protected function configure()
     {
         $this
@@ -107,8 +119,7 @@ extends ContainerAwareCommand
         }
 
         // set the publisher - needs to be localized
-        $translator = $this->getContainer()->get('translator');
-        $translator->setLocale(\AppBundle\Utils\Iso639::code3To1($article->language));
+        $this->translator->setLocale(\AppBundle\Utils\Iso639::code3To1($article->language));
 
         // TODO: allow to set a more complex structure
         $FILE_GROUPS = [
@@ -119,9 +130,11 @@ extends ContainerAwareCommand
         $translations = [];
         if (!empty($article->translatedFrom) && $article->translatedFrom != $article->language) {
             $FILE_GROUPS[] = 'TRANSLATION';
+
             if ($article->translatedFrom == 'yid') {
                 $translations[] = 'yl'; // yivo-transcript in latin letters
             }
+
             $translations[] = \AppBundle\Utils\Iso639::code3to1($article->language);
         }
 
@@ -130,7 +143,7 @@ extends ContainerAwareCommand
         $LOGICAL_STRUCTURE = [
             'content' => [
                 'TYPE' => 'content',
-                'LABEL' => /** @Ignore */ $translator->trans($LOGICAL_TYPE),
+                'LABEL' => /** @Ignore */ $this->translator->trans($LOGICAL_TYPE),
                 'ORDER' => 1,
                 'physical_start' => 1,
             ],
@@ -200,12 +213,15 @@ extends ContainerAwareCommand
 
                 foreach ($hrefs as $href) {
                     $id = sprintf('%s_%s', strtolower($group), md5($href));
+
                     if (!array_key_exists($page, $fileids_by_page)) {
                         $fileids_by_page[$page] = [];
                     }
+
                     if (!array_key_exists($group, $fileids_by_page[$page])) {
                         $fileids_by_page[$page][$group] = [];
                     }
+
                     $fileids_by_page[$page][$group][] = $id;
                     $xw->startElement('mets:file');
                     $xw->writeAttribute('ID', $id);
@@ -221,14 +237,17 @@ extends ContainerAwareCommand
                     $xw->endElement(); // </mets:file>
                 }
             }
+
             $xw->endElement(); // </mets:fileGrp>
         }
+
         $xw->endElement(); // </mets:fileSec>
 
         // struct maps
         foreach (['PHYSICAL', 'LOGICAL'] as $type) {
             $xw->startElement('mets:structMap');
             $xw->writeAttribute('TYPE', $type);
+
             if ('PHYSICAL' == $type) {
                 // physSequence
                 $xw->startElement('mets:div');
@@ -291,6 +310,7 @@ extends ContainerAwareCommand
                         $part = $logical_by_physical_start[$page];
                         $from = 'log_' . $ID . '_' . $part['ORDER'];
                     }
+
                     $to = sprintf('phys_dmd_%s_%s',
                                   $ID, $page);
                     $xw->startElement('mets:smLink');
@@ -303,13 +323,17 @@ extends ContainerAwareCommand
                                           $to);
                     $xw->endElement(); // </mets:smlink>
                 }
+
                 $xw->endElement(); // </mets:structLink>
             }
+
             $xw->endElement(); // </mets:structMap>
         }
 
         $xw->endElement(); // </mets:mets>
 
         echo $xw->outputMemory(true);
+
+        return 0;
     }
 }

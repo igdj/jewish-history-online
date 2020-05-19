@@ -21,7 +21,7 @@ extends EntityCommandBase
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $fname = $this->getContainer()->get('kernel')->getRootDir()
+        $fname = $this->rootDir
                . '/Resources/data/gnd2tgn.xlsx';
 
         $fs = new Filesystem();

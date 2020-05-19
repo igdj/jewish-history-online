@@ -1,14 +1,38 @@
 # app/config/services.yml
 services:
-    # explicit commands registration
-    # see https://stackoverflow.com/a/49136150
-    AppBundle\Command\:
-        resource: '%kernel.project_dir%/src/AppBundle/Command/*'
-        tags: ['console.command']
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $rootDir: '%kernel.root_dir%'
+            $dbconnAdmin: '@dbconn.admin'
+            
+    # makes classes in src/AppBundle available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    # together with the above _defaults, this is needed for Command-classes to work as in Sf 3.4
+    AppBundle\:
+        resource: '%kernel.project_dir%/src/AppBundle'
+        exclude: '%kernel.project_dir%/src/AppBundle/{Entity,Migrations,Tests,Utils/config_fonts.php}'
 
-    cocur_slugify:
-        class: Cocur\Slugify\Slugify
-        public: true
+    dbconn.admin:
+        class: Doctrine\DBAL\Connection
+        factory: Doctrine\DBAL\DriverManager::getConnection
+        arguments:
+            $params:
+                host:     '%database.host%'
+                port:     '%database.port%'
+                dbname:   '%database.admin_name%'
+                user:     '%database.admin_user%'
+                password: '%database.password%'
+                driver:  pdo_mysql
+                charset:  '%database.charset%' # UTF8
+                options:
+                        1002: "SET NAMES '%database.charset%' COLLATE '%database.charset%_unicode_ci'"
+                default_table_options:
+                    charset: '%database.charset%'
+                    collate: '%database.charset%_unicode_ci'
+                    engine:  MyISAM     # InnoDB
 
     twig.extension.text:
         class: Twig_Extensions_Extension_Text
@@ -21,43 +45,27 @@ services:
         tags:
           - { name: kernel.event_listener, event: kernel.exception, method: setLocale }
 
-    app.twig_extension:
-        class: AppBundle\Twig\AppExtension
-        arguments: [ "@translator", "@cocur_slugify" ]
-        public: false
-        tags:
-            - { name: twig.extension }
-        
-    app.imagemagick:
-        class:        AppBundle\Utils\ImageMagick\ImageMagickProcessor
+    AppBundle\Utils\ImageMagick\ImageMagickProcessor:
         arguments:    [ "%app.imagemagick.processor.arguments%" ]
-        public: true
         
     app.xslt_adapter:
         class:        "%app.xslt.adapter.class%"
         arguments:    [ "%app.xslt.adapter.arguments%" ]
-    app.xslt:
-        class:        AppBundle\Utils\Xsl\XsltProcessor
+    AppBundle\Utils\Xsl\XsltProcessor:
         calls:
             - [ setAdapter, [ '@app.xslt_adapter' ]]
-        public: true
 
     app.xml_formatter_adapter:
         class:        "%app.xml_formatter.adapter.class%"
         arguments:    [ "%app.xml_formatter.adapter.arguments%" ]
-    app.xml_formatter:
-        class:        AppBundle\Utils\XmlFormatter\XmlFormatter
+    AppBundle\Utils\XmlFormatter\XmlFormatter:
         calls:
             - [ setAdapter, [ '@app.xml_formatter_adapter' ]]
-        public: true
 
-    app.simplify_geojson:
-        class:        AppBundle\Utils\SimplifyGeojsonProcessor
+    AppBundle\Utils\SimplifyGeojsonProcessor:
         arguments:    [ "%app.simplify_geojson.processor.arguments%" ]
-        public: true
 
-    app.menu_builder:
-        class: AppBundle\Menu\Builder
+    AppBundle\Menu\Builder:
         arguments: [ "@knp_menu.factory", "@translator.default", "@request_stack", "@router"  ]
         tags:
             # The alias is what is used to retrieve the menu

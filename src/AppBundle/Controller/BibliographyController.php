@@ -3,22 +3,21 @@
 namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  *
  */
 class BibliographyController
-extends Controller
+extends BaseController
 {
     use SharingBuilderTrait;
 
     private function instantiateCiteProc($locale)
     {
-        $kernel = $this->get('kernel');
-        $path = $kernel->locateResource('@AppBundle/Resources/data/csl/jgo-infoclio-de.csl.xml',
-                                        $kernel->getResourcesOverrideDir());
+        $path = $this->locateResource('@AppBundle/Resources/data/csl/jgo-infoclio-de.csl.xml',
+                                      $this->getResourcesOverrideDir());
 
         $wrapSpan = function ($renderedText, $class) {
             return '<span class="citeproc-'. $class . '">' . $renderedText . '</span>';
@@ -35,7 +34,8 @@ extends Controller
                 'date' => 'data',
                 'URL' => 'URL',
                 'DOI' => 'DOI',
-            ] as $key => $class) {
+            ] as $key => $class)
+        {
             $additionalMarkup[$key] = function($cslItem, $renderedText) use ($wrapSpan, $class) {
                 return $wrapSpan($renderedText, $class);
             };
@@ -47,7 +47,8 @@ extends Controller
     /**
      * @Route("/bibliography", name="bibliography-index")
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request,
+                                TranslatorInterface $translator)
     {
         $qb = $this->getDoctrine()
                 ->getManager()
@@ -62,7 +63,7 @@ extends Controller
         $items = $query->getResult();
 
         return $this->render('AppBundle:Bibliography:index.html.twig', [
-            'pageTitle' => $this->get('translator')->trans('Bibliography'),
+            'pageTitle' => $translator->trans('Bibliography'),
             'items' => $items,
             'citeProc' => $this->instantiateCiteProc($request->getLocale()),
         ]);
@@ -71,11 +72,8 @@ extends Controller
     /**
      * @Route("/bibliography/isbn/beacon", name="bibliography-isbn-beacon")
      */
-    public function isbnBeaconAction()
+    public function isbnBeaconAction(TranslatorInterface $translator)
     {
-        $translator = $this->get('translator');
-        $twig = $this->get('twig');
-
         $bibitemRepo = $this->getDoctrine()
                 ->getRepository('AppBundle:Bibitem');
 
@@ -98,9 +96,8 @@ extends Controller
                         $this->generateUrl('bibliography-index', [], \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL))
               . "\n";
 
-        $globals = $twig->getGlobals();
         $ret .= '#NAME: '
-              . /** @Ignore */ $translator->trans($globals['siteName'])
+              . /** @Ignore */ $translator->trans($this->getGlobal('siteName'))
               . "\n";
         // $ret .= '#MESSAGE: ' . "\n";
 
@@ -114,6 +111,7 @@ extends Controller
                 $isbns[$isbn] += $bibitem['how_many'];
             }
         }
+
         foreach ($isbns as $isbn => $count) {
             $ret .=  $isbn . ($count > 1 ? '|' . $count : '') . "\n";
         }
@@ -147,7 +145,9 @@ extends Controller
      * @Route("/bibliography/{slug}", name="bibliography")
      * @Route("/bibliography/isbn/{isbn}", name="bibliography-by-isbn")
      */
-    public function detailAction(Request $request, $id = null, $slug = null, $isbn = null)
+    public function detailAction(Request $request,
+                                 TranslatorInterface $translator,
+                                 $id = null, $slug = null, $isbn = null)
     {
         $bibitemRepo = $this->getDoctrine()
                 ->getRepository('AppBundle:Bibitem');
@@ -208,7 +208,7 @@ extends Controller
             'citeProc' => $this->instantiateCiteProc($request->getLocale()),
             'pageMeta' => [
                 'jsonLd' => $bibitem->jsonLdSerialize($request->getLocale()),
-                'og' => $this->buildOg($bibitem, $request, $routeName, $routeParams),
+                'og' => $this->buildOg($bibitem, $request, $translator, $routeName, $routeParams),
                 'twitter' => $this->buildTwitter($bibitem, $request, $routeName, $routeParams,
                                                  [ 'citeProc' => $this->instantiateCiteProc($request->getLocale()) ]),
             ],

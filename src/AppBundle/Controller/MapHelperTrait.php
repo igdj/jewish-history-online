@@ -13,8 +13,6 @@ trait MapHelperTrait
      */
     protected function buildPlaceMarkers($result, $locale, $geoPrimary = null)
     {
-        $router = $this->get('router');
-
         $place = new \AppBundle\Entity\Place();
         $markers = [];
         foreach ($result as $position) {
@@ -39,7 +37,7 @@ trait MapHelperTrait
                 if (!empty($position['type'])) {
                     switch ($position['type']) {
                         case 'landmark':
-                            $position['url'] = $router->generate('landmark', [
+                            $position['url'] = $this->generateUrl('landmark', [
                                 'id' => $position['id'],
                             ]);
                             break;

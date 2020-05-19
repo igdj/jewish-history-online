@@ -5,6 +5,9 @@ namespace AppBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
+
+use Eko\FeedBundle\Feed\FeedManager;
 
 /**
  *
@@ -36,7 +39,7 @@ extends RenderTeiController
         }
     }
 
-    protected function renderSourceDescription($article)
+    protected function renderSourceDescription($article, $translator)
     {
         // localize labels in xslt
         $language = null;
@@ -52,13 +55,15 @@ extends RenderTeiController
             'params' => $params,
         ]);
 
-        list($authors, $sectionHeaders, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html);
-        $html = $this->adjustRefs($html, $refs, $language);
+        list($authors, $sectionHeaders, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html, $translator);
+        $html = $this->adjustRefs($html, $refs, $translator, $language);
 
         return $html;
     }
 
-    protected function renderArticle(Request $request, $article)
+    protected function renderArticle(Request $request,
+                                     TranslatorInterface $translator,
+                                     $article)
     {
         $generatePrintView = 'article-pdf' == $request->get('_route');
 
@@ -81,19 +86,17 @@ extends RenderTeiController
                                  $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl',
                                  [ 'params' => $params ]);
 
-        list($authors, $sectionHeaders, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html);
-        $html = $this->adjustRefs($html, $refs, $language);
+        list($authors, $sectionHeaders, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html, $translator);
+        $html = $this->adjustRefs($html, $refs, $translator, $language);
 
         $html = $this->adjustMedia($html, $request->getBaseURL() . '/viewer');
 
-        $sourceDescription = $this->renderSourceDescription($article);
+        $sourceDescription = $this->renderSourceDescription($article, $translator);
         if ($generatePrintView) {
             $html = $this->removeByCssSelector('<body>' . $html . '</body>',
                                                [ 'h2 + br', 'h3 + br' ]);
 
-            $templating = $this->get('templating');
-
-            $html = $templating->render('AppBundle:Article:article-printview.html.twig', [
+            $html = $this->renderView('AppBundle:Article:article-printview.html.twig', [
                 'article' => $article,
                 'meta' => $meta,
                 'source_description' => $sourceDescription,
@@ -109,7 +112,7 @@ extends RenderTeiController
             return;
         }
 
-        list($dummy, $dummy, $dummy, $entitiesSourceDescription, $dummy, $glossaryTermsSourceDescription, $refs) = $this->extractPartsFromHtml($sourceDescription);
+        list($dummy, $dummy, $dummy, $entitiesSourceDescription, $dummy, $glossaryTermsSourceDescription, $refs) = $this->extractPartsFromHtml($sourceDescription, $translator);
 
         $entities = array_merge($entities, $entitiesSourceDescription);
 
@@ -152,7 +155,7 @@ extends RenderTeiController
             'glossary_lookup' => $glossaryLookup,
             'pageMeta' => [
                 'jsonLd' => $article->jsonLdSerialize($request->getLocale()),
-                'og' => $this->buildOg($article, $request, 'article', [ 'slug' => $article->getSlug(true) ]),
+                'og' => $this->buildOg($article, $request, $translator, 'article', [ 'slug' => $article->getSlug(true) ]),
                 'twitter' => $this->buildTwitter($article, $request, 'article', [ 'slug' => $article->getSlug(true) ]),
             ],
             'route_params_locale_switch' => $localeSwitch,
@@ -164,7 +167,9 @@ extends RenderTeiController
      * @Route("/article.rss", name="article-index-rss")
      * @Route("/article", name="article-index")
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request,
+                                TranslatorInterface $translator,
+                                FeedManager $feedManager)
     {
         $language = null;
         $locale = $request->getLocale();
@@ -195,13 +200,15 @@ extends RenderTeiController
         if (!empty($language)) {
             $query->setParameter('language', $language);
         }
+
         if ('article-index-rss' == $request->get('_route')) {
             $query->setMaxResults(10);
         }
+
         $articles = $query->getResult();
 
         if ('article-index-rss' == $request->get('_route')) {
-            $feed = $this->get('eko_feed.feed.manager')->get('article');
+            $feed = $feedManager->get('article');
             $feed->addFromArray($articles);
 
             return new Response($feed->render('rss'), // // or 'atom'
@@ -211,7 +218,7 @@ extends RenderTeiController
         }
 
         return $this->render('AppBundle:Article:index.html.twig', [
-            'pageTitle' => $this->get('translator')->trans('Article Overview'),
+            'pageTitle' => $translator->trans('Article Overview'),
             'articles' => $articles,
         ]);
     }
@@ -221,7 +228,9 @@ extends RenderTeiController
      * @Route("/article/{slug}.pdf", name="article-pdf")
      * @Route("/article/{slug}", name="article")
      */
-    public function detailAction(Request $request, $slug)
+    public function detailAction(Request $request,
+                                 TranslatorInterface $translator,
+                                 $slug)
     {
         $criteria = [];
         $locale = $request->getLocale();
@@ -244,6 +253,6 @@ extends RenderTeiController
             throw $this->createNotFoundException('This article does not exist');
         }
 
-        return $this->renderArticle($request, $article);
+        return $this->renderArticle($request, $translator, $article);
     }
 }

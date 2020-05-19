@@ -104,10 +104,8 @@ extends EntityCommandBase
                 return 1;
             }
 
-            $em = $this->getContainer()->get('doctrine')->getManager();
-
             $uid = $article->uid; $language = $article->language;
-            $article = $em->getRepository('AppBundle\Entity\Article')
+            $article = $this->em->getRepository('AppBundle\Entity\Article')
                 ->findOneBy([
                     'uid' => $uid,
                     'language' => $language,
@@ -172,14 +170,16 @@ extends EntityCommandBase
             }
 
             if ($persist) {
-                $em->persist($article);
-                $em->flush();
+                $this->em->persist($article);
+                $this->em->flush();
                 $output->writeln(sprintf('<info>updated article %s</info>', $uid));
             }
         }
         else {
             $output->writeln($this->jsonPrettyPrint($entities));
         }
+
+        return 0;
     }
 
     protected function setPersonReference($article, $uri)

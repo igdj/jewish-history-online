@@ -4,14 +4,13 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  *
  */
 class PersonController
-extends Controller
+extends BaseController
 {
     use SharingBuilderTrait;
 
@@ -19,7 +18,8 @@ extends Controller
      * @Route("/person", name="person-index")
      * @Route("/about/authors", name="about-authors")
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request,
+                                TranslatorInterface $translator)
     {
         $route = $request->get('_route');
         $authorsOnly = 'about-authors' == $route;
@@ -49,7 +49,7 @@ extends Controller
 
         return $this->render('AppBundle:Person:index.html.twig', [
             'pageTitle' => /** @Ignore */
-                $this->get('translator')->trans($authorsOnly ? 'Authors' : 'Persons'),
+                $translator->trans($authorsOnly ? 'Authors' : 'Persons'),
             'persons' => $persons,
         ]);
     }
@@ -60,15 +60,13 @@ extends Controller
      * Provide a BEACON file as described in
      *  https://de.wikipedia.org/wiki/Wikipedia:BEACON
      */
-    public function gndBeaconAction()
+    public function gndBeaconAction(TranslatorInterface $translator,
+                                    \Twig_Environment $twig)
     {
-        $translator = $this->get('translator');
-        $twig = $this->get('twig');
-
-        $personRepo = $this->getDoctrine()
+        $repo = $this->getDoctrine()
                 ->getRepository('AppBundle:Person');
 
-        $query = $personRepo
+        $query = $repo
                 ->createQueryBuilder('P')
                 ->where('P.status >= 0')
                 ->andWhere('P.gnd IS NOT NULL')
@@ -85,9 +83,8 @@ extends Controller
                         $this->generateUrl('person-index', [], \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL))
               . "\n";
 
-        $globals = $twig->getGlobals();
         $ret .= '#NAME: '
-              . /** @Ignore */ $translator->trans($globals['siteName'])
+              . /** @Ignore */ $translator->trans($this->getGlobal('siteName'))
               . "\n";
         // $ret .= '#MESSAGE: ' . "\n";
 
@@ -105,7 +102,8 @@ extends Controller
      * @Route("/person/gnd/{gnd}.jsonld", name="person-by-gnd-jsonld")
      * @Route("/person/gnd/{gnd}", name="person-by-gnd")
      */
-    public function detailAction(Request $request, $id = null, $gnd = null)
+    public function detailAction(Request $request, TranslatorInterface $translator,
+                                 $id = null, $gnd = null)
     {
         $personRepo = $this->getDoctrine()
                 ->getRepository('AppBundle:Person');
@@ -139,7 +137,7 @@ extends Controller
             'person' => $person,
             'pageMeta' => [
                 'jsonLd' => $person->jsonLdSerialize($request->getLocale()),
-                'og' => $this->buildOg($person, $request, $routeName, $routeParams),
+                'og' => $this->buildOg($person, $request, $translator, $routeName, $routeParams),
                 'twitter' => $this->buildTwitter($person, $request, $routeName, $routeParams),
             ],
         ]);

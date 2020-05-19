@@ -3,28 +3,59 @@
 
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
+
+use Symfony\Component\Translation\TranslatorInterface;
 
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-use \FluidXml\FluidXml;
-use \FluidXml\FluidNamespace;
+use Doctrine\ORM\EntityManagerInterface;
+
+use FluidXml\FluidXml;
+use FluidXml\FluidNamespace;
 
 class ArticleDoiCommand
-extends ContainerAwareCommand
+extends Command
 {
+    protected $em;
+    protected $router;
+    protected $translator;
+    protected $prefix;
+    protected $baseUrl;
+    protected $user;
+    protected $password;
+
+    public function __construct(EntityManagerInterface $em,
+                                RouterInterface $router,
+                                TranslatorInterface $translator,
+                                ParameterBagInterface $params)
+    {
+        parent::__construct();
+
+        $this->em = $em;
+        $this->router = $router;
+        $this->translator = $translator;
+        $this->prefix = $params->get('app.datacite.prefix');
+
+        $this->baseUrl = $params->get('app.datacite.url');
+        $this->user = $params->get('app.datacite.user');
+        $this->password = $params->get('app.datacite.password');
+    }
+
     protected function configure()
     {
         $this
@@ -75,9 +106,7 @@ extends ContainerAwareCommand
             return 1;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
-
-        $entity = $em->getRepository('AppBundle\Entity\Article')
+        $entity = $this->em->getRepository('AppBundle\Entity\Article')
             ->findOneBy([
                 'uid' => $article->uid,
                 'language' => $article->language,
@@ -90,8 +119,7 @@ extends ContainerAwareCommand
         }
 
 
-        $prefix = $this->getContainer()->getParameter('app.datacite.prefix');
-        list($url, $metadata) = $this->buildDataCite($entity, $prefix);
+        list($url, $metadata) = $this->buildDataCite($entity, $this->prefix);
 
         $persist = false;
 
@@ -115,7 +143,7 @@ extends ContainerAwareCommand
         }
 
         if ($input->getOption('insert-missing') || $input->getOption('update')) {
-            $doi = $entity->buildDoi($prefix);
+            $doi = $entity->buildDoi($this->prefix);
             $success = $this->registerDoi($doi, $url, $metadata, $entity->getStatus() > 0);
             if (true === $success) {
                 $entity->setDoi($doi);
@@ -133,23 +161,17 @@ extends ContainerAwareCommand
         }
 
         if ($persist) {
-            $em->persist($entity);
-            $em->flush();
+            $this->em->persist($entity);
+            $this->em->flush();
         }
     }
 
     function registerDoi($doi, $url, $metadata, $isActive = true)
     {
-        // get settings from parameters.yml
-        $container = $this->getContainer();
-        $baseUrl =  $container->getParameter('app.datacite.url');
-        $user = $container->getParameter('app.datacite.user');
-        $password = $container->getParameter('app.datacite.password');
-
         // first step is to post metadata
-        $response = \Httpful\Request::post($baseUrl . 'metadata')
+        $response = \Httpful\Request::post($this->baseUrl . 'metadata')
             ->body($metadata)
-            ->authenticateWith($user, $password)
+            ->authenticateWith($this->user, $this->password)
             ->sendsXml()
             ->send();
 
@@ -163,18 +185,18 @@ extends ContainerAwareCommand
 
         if (!$isActive) {
             // delete-request sets to in_active
-            $response = \Httpful\Request::delete($baseUrl . 'metadata/' . $doi)
-                ->authenticateWith($user, $password)
+            $response = \Httpful\Request::delete($this->baseUrl . 'metadata/' . $doi)
+                ->authenticateWith($this->user, $this->password)
                 ->send();
         }
 
         // now mint the doi
         $mint = join("\n", [ 'doi=' . $doi, 'url=' . $url ]);
 
-        $response = \Httpful\Request::post($baseUrl . 'doi')
+        $response = \Httpful\Request::post($this->baseUrl . 'doi')
             ->addHeader('Content-Type', 'text/plain;charset=UTF-8')
             ->body($mint)
-            ->authenticateWith($user, $password)
+            ->authenticateWith($this->user, $this->password)
             ->send();
 
         if ($response->hasErrors()) {
@@ -200,8 +222,7 @@ extends ContainerAwareCommand
     protected function buildDataCite($entity, $prefix)
     {
         $locale = \AppBundle\Utils\Iso639::code3To1($entity->getLanguage());
-        $translator = $this->getContainer()->get('translator');
-        $translator->setLocale($locale);
+        $this->translator->setLocale($locale);
 
         $resource = new FluidXml(null);
         $resource->namespace('datacite', 'http://datacite.org/schema/kernel-4', FluidNamespace::MODE_IMPLICIT);
@@ -259,7 +280,7 @@ extends ContainerAwareCommand
 
         $root
             // set the publisher - maybe get from xml instead
-            ->addChild('publisher', $translator->trans('Institute for the History of the German Jews'));
+            ->addChild('publisher', $this->translator->trans('Institute for the History of the German Jews'));
 
         $publishedDate = $entity->getDatePublished();
         if (!is_null($publishedDate)) {
@@ -317,18 +338,16 @@ extends ContainerAwareCommand
            $root->addChild('resourceType', 'Article', [ 'resourceTypeGeneral' => 'Text' ]);
         }
 
-        $router = $this->getContainer()->get('router');
-
         /*
         // if you want to force https:// with UrlGeneratorInterface::ABSOLUTE_URL
-        $context = $router->getContext();
+        $context = $this->router->getContext();
         $context->setScheme('https');
         */
 
-        $url = $this->adjustUrlProduction($router->generate($routeName, [
-                                                                         $routeKey => $entity->getUid(),
-                                                                         '_locale' => $locale,
-                                                            ], UrlGeneratorInterface::ABSOLUTE_URL));
+        $url = $this->adjustUrlProduction($this->router->generate($routeName, [
+                $routeKey => $entity->getUid(),
+                '_locale' => $locale,
+            ], UrlGeneratorInterface::ABSOLUTE_URL));
 
         $root->addChild('language', $locale)
             ->addChild('alternateIdentifiers', true)
@@ -351,7 +370,7 @@ extends ContainerAwareCommand
                 // set standard rights for this license
                 switch ($rightsAttr['rightsURI']) {
                     case 'http://creativecommons.org/licenses/by-nc-nd/4.0/':
-                        $rights = $translator->trans('license.by-nc-nd');
+                        $rights = $this->translator->trans('license.by-nc-nd');
                         break;
                 }
             }
@@ -379,18 +398,17 @@ extends ContainerAwareCommand
         $relatedIdentifiers = $root->addChild('relatedIdentifiers', true);
 
         $relatedIdentifiers->addChild('relatedIdentifier',
-                                      $this->adjustUrlProduction($router->generate('home',
-                                                                 [ '_locale' => $locale, ],
-                                                                 UrlGeneratorInterface::ABSOLUTE_URL)),
-                                      [
-                                        'relatedIdentifierType' => 'URL',
-                                        'relationType' => 'IsPartOf',
-                                    ]);
-
-        $em = $this->getContainer()->get('doctrine')->getManager();
+            $this->adjustUrlProduction($this->router->generate('home',
+                                                               [ '_locale' => $locale, ],
+                                                               UrlGeneratorInterface::ABSOLUTE_URL)),
+            [
+                'relatedIdentifierType' => 'URL',
+                'relationType' => 'IsPartOf',
+            ]
+        );
 
         // connection to translation
-        $variants = $em
+        $variants = $this->em
             ->getRepository('AppBundle:Article')
             ->findBy([ 'uid' => $entity->getUid() ])
             ;
@@ -421,7 +439,7 @@ extends ContainerAwareCommand
         }
         else {
             // for interpretation: sources
-            $related = $em
+            $related = $this->em
                 ->getRepository('AppBundle:Article')
                 ->findBy([ 'isPartOf' => $entity ],
                          [ 'dateCreated' => 'ASC', 'name' => 'ASC'])

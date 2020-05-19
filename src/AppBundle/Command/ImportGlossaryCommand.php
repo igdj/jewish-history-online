@@ -3,7 +3,7 @@
 
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -11,9 +11,28 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
+use Doctrine\ORM\EntityManagerInterface;
+
+use Cocur\Slugify\SlugifyInterface;
+
 class ImportGlossaryCommand
-extends ContainerAwareCommand
+extends Command
 {
+    protected $em;
+    protected $slugify;
+    protected $rootDir;
+
+    public function __construct(EntityManagerInterface $em,
+                                SlugifyInterface $slugify,
+                                string $rootDir)
+    {
+        parent::__construct();
+
+        $this->em = $em;
+        $this->slugify = $slugify;
+        $this->rootDir = $rootDir;
+    }
+
     protected function configure()
     {
         $this
@@ -24,7 +43,7 @@ extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $fname = $this->getContainer()->get('kernel')->getRootDir()
+        $fname = $this->rootDir
                . '/Resources/data/glossary.xlsx';
 
         $fs = new Filesystem();
@@ -41,9 +60,7 @@ extends ContainerAwareCommand
         $reader->setHeaderRowNumber(0);
         $count = 0;
 
-        $entityManager = $this->getContainer()->get('doctrine')->getManager();
-        $termRepository = $entityManager->getRepository('AppBundle:GlossaryTerm');
-        $slugify = $this->getContainer()->get('cocur_slugify');
+        $termRepository = $this->em->getRepository('AppBundle:GlossaryTerm');
 
         foreach ($reader as $row) {
             $unique_values = array_unique(array_values($row));
@@ -65,7 +82,7 @@ extends ContainerAwareCommand
             if (is_null($term)) {
                 $term = new \AppBundle\Entity\GlossaryTerm();
                 $term->setTerm(trim($row['term']));
-                $term->setSlug($slugify->slugify($term->getTerm()));
+                $term->setSlug($this->slugify->slugify($term->getTerm()));
                 $term->setLanguage($row['language']);
             }
 
@@ -83,9 +100,9 @@ extends ContainerAwareCommand
                         // $output->writeln('Skip : ' . $key);
                 }
             }
-            $entityManager->persist($term);
+            $this->em->persist($term);
         }
 
-        $entityManager->flush();
+        $this->em->flush();
     }
 }

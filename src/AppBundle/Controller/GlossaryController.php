@@ -4,19 +4,19 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  *
  */
 class GlossaryController
-extends Controller
+extends BaseController
 {
     /**
      * @Route("/glossary", name="glossary-index")
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request,
+                                TranslatorInterface $translator)
     {
         $language = \AppBundle\Utils\Iso639::code1to3($request->getLocale());
 
@@ -27,7 +27,7 @@ extends Controller
                          [ 'term' => 'ASC' ]);
 
         return $this->render('AppBundle:Glossary:index.html.twig', [
-            'pageTitle' => $this->get('translator')->trans('Glossary'),
+            'pageTitle' => $translator->trans('Glossary'),
             'terms' => $terms,
         ]);
     }

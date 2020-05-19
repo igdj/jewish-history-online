@@ -1,2 +1,25 @@
 imports:
     - { resource: config.yml }
+
+monolog:
+    handlers:
+        main:
+            # exclude 403/404: https://symfony.com/blog/new-in-symfony-4-1-ignore-specific-http-codes-from-logs
+            type: 'fingers_crossed'
+            action_level: warning
+            handler: stream
+            excluded_http_codes: [403, 404]
+#        doctrine:
+#            action_level: debug
+#            type: stream
+#            path: %kernel.logs_dir%/%kernel.environment%_doctrine.log
+#            channels: doctrine
+#        console:
+#            type:   console
+#            verbosity_levels:
+#                VERBOSITY_NORMAL: NOTICE # DEBUG
+        stream:
+            type: stream
+            # log to var/logs/(dev|prod).log
+            path: "%kernel.logs_dir%/%kernel.environment%.log"
+            level: error

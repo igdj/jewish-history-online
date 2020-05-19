@@ -11,6 +11,7 @@
 namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Translation\TranslatorInterface;
 
 trait SharingBuilderTrait
 {
@@ -41,34 +42,18 @@ trait SharingBuilderTrait
      * Debug through https://developers.facebook.com/tools/debug/sharing/
      *
      */
-    public function buildOg($entity, $request, $routeName, $routeParams = [])
+    public function buildOg($entity, Request $request, TranslatorInterface $translator, $routeName, $routeParams = [])
     {
-        $translator = $this->get('translator');
-        $twig = $this->get('twig');
-        $globals = $twig->getGlobals();
-
         if (empty($routeParams)) {
             $routeParams = [ 'id' => $entity->getId() ];
         }
 
         $og = [
-            'og:site_name' => /** @Ignore */ $translator->trans($globals['siteName']),
+            'og:site_name' => /** @Ignore */ $translator->trans($this->getGlobal('siteName')),
             'og:locale' => $this->buildOgLocale($request),
             'og:url' => $this->generateUrl($routeName, $routeParams,
                                            \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL),
         ];
-
-        /*
-        foreach ($app['app_allowed_locales'] as $locale) {
-            $locale_full = $this->buildOgLocale($request, $locale);
-            if ($locale_full != $og['og:locale']) {
-                if (!isset($og['og:locale:alternate'])) {
-                    $og['og:locale:alternate'] = array();
-                }
-                $og['og:locale:alternate'][] = $locale_full;
-            }
-        }
-        */
 
         $baseUri = $request->getUriForPath('/');
 
@@ -94,8 +79,7 @@ trait SharingBuilderTrait
                 switch ($entity->getArticleSection()) {
                     case 'background':
                         $englishName = \AppBundle\Controller\TopicController::lookupLocalizedTopic($entity->getName(), $translator, $request->getLocale());
-                        $slugify = $this->get('cocur_slugify');
-                        $imgName = $slugify->slugify($englishName);
+                        $imgName = $this->slugify($englishName);
                         $og['og:image'] = $baseUri . 'img/topic/' . $imgName . '.jpg';
                         break;
 
@@ -123,7 +107,7 @@ trait SharingBuilderTrait
                             $thumb = sprintf('viewer/source-%05d/thumb.jpg',
                                              str_replace('jgo:source-', '', $uidSource));
 
-                            if (file_exists($globals['webDir'] . '/' . $thumb)) {
+                            if (file_exists($this->getGlobal('webDir') . '/' . $thumb)) {
                                 $og['og:image'] = $baseUri . $thumb;
                                 break;
                             }
@@ -150,15 +134,14 @@ trait SharingBuilderTrait
     {
         $twitter = [];
 
-        $twig = $this->get('twig');
-        $globals = $twig->getGlobals();
-        if (empty($globals['twitterSite'])) {
+        $twitterSite = $this->getGlobal('twitterSite');
+        if (empty($twitterSite)) {
             return $twitter;
         }
 
         // we don't put @ in parameters.yml since @keydocuments looks like a service
         $twitter['twitter:card'] = 'summary';
-        $twitter['twitter:site'] = '@' . $globals['twitterSite'];
+        $twitter['twitter:site'] = '@' . $twitterSite;
 
         if ($entity instanceof \AppBundle\Entity\TwitterSerializable) {
             $baseUri = $request->getUriForPath('/');

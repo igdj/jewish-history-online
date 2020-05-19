@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  *
@@ -31,10 +32,10 @@ extends RenderTeiController
         return $html;
     }
 
-    protected function renderTitleContent(Request $request, $title, $template)
+    protected function renderTitleContent(Request $request,
+                                          TranslatorInterface $translator,
+                                          $title, $template)
     {
-        $translator = $this->get('translator');
-
         return $this->render($template, [
             'pageTitle' => /** @Ignore */ $translator->trans($title),
             'title' => $title,
@@ -42,86 +43,99 @@ extends RenderTeiController
         ]);
     }
 
-    protected function renderAbout(Request $request, $title)
+    protected function renderAbout(Request $request,
+                                   TranslatorInterface $translator,
+                                   $title)
     {
-        return $this->renderTitleContent($request, $title, 'AppBundle:Default:sitetext-about.html.twig');
+        return $this->renderTitleContent($request, $translator, $title, 'AppBundle:Default:sitetext-about.html.twig');
     }
 
-    protected function renderAboutUs(Request $request, $title)
+    protected function renderAboutUs(Request $request,
+                                     TranslatorInterface $translator,
+                                     $title)
     {
-        return $this->renderTitleContent($request, $title, 'AppBundle:Default:sitetext-about-us.html.twig');
+        return $this->renderTitleContent($request, $translator, $title, 'AppBundle:Default:sitetext-about-us.html.twig');
     }
 
     /**
      * @Route("/about/edition", name="about")
      */
-    public function aboutAction(Request $request)
+    public function aboutAction(Request $request,
+                                TranslatorInterface $translator)
     {
-        return $this->renderAbout($request, 'About this edition');
+        return $this->renderAbout($request, $translator, 'About this edition');
     }
 
     /**
      * @Route("/about/goals", name="about-goals")
      */
-    public function goalsAction(Request $request)
+    public function goalsAction(Request $request,
+                                TranslatorInterface $translator)
     {
-        return $this->renderAbout($request, 'Goals');
+        return $this->renderAbout($request, $translator, 'Goals');
     }
 
     /**
      * @Route("/about/keydocuments", name="about-keydocuments")
      */
-    public function keydocumentsAction(Request $request)
+    public function keydocumentsAction(Request $request,
+                                       TranslatorInterface $translator)
     {
-        return $this->renderAbout($request, 'Key Documents');
+        return $this->renderAbout($request, $translator, 'Key Documents');
     }
 
     /**
      * @Route("/about/audience", name="about-audience")
      */
-    public function audienceAction(Request $request)
+    public function audienceAction(Request $request,
+                                   TranslatorInterface $translator)
     {
-        return $this->renderAbout($request, 'Target Audience');
+        return $this->renderAbout($request, $translator, 'Target Audience');
     }
 
     /**
      * @Route("/about/usage", name="about-usage")
      */
-    public function usageAction(Request $request)
+    public function usageAction(Request $request,
+                                TranslatorInterface $translator)
     {
-        return $this->renderAbout($request, 'Structure / How to Use this Edition');
+        return $this->renderAbout($request, $translator, 'Structure / How to Use this Edition');
     }
 
     /**
      * @Route("/about/editorial-model", name="about-editorialmodel")
      */
-    public function editorialmodelAction(Request $request)
+    public function editorialmodelAction(Request $request,
+                                         TranslatorInterface $translator)
     {
-        return $this->renderAbout($request, 'Editorial Model');
+        return $this->renderAbout($request, $translator, 'Editorial Model');
     }
 
     /**
      * @Route("/about/edition-guidelines", name="about-editionguidelines")
      */
-    public function editionguidelinesAction(Request $request)
+    public function editionguidelinesAction(Request $request,
+                                            TranslatorInterface $translator)
     {
-        return $this->renderAbout($request, 'Edition and Edition Guidelines');
+        return $this->renderAbout($request, $translator, 'Edition and Edition Guidelines');
     }
 
     /**
      * @Route("/about/technical-implementation", name="about-implementation")
      */
-    public function implementationAction(Request $request)
+    public function implementationAction(Request $request,
+                                         TranslatorInterface $translator)
     {
-        return $this->renderAbout($request, 'Technical Implementation');
+        return $this->renderAbout($request, $translator, 'Technical Implementation');
     }
 
     /**
      * @Route("/about/publications", name="about-publications")
      */
-    public function publicationsAction(Request $request)
+    public function publicationsAction(Request $request,
+                                       TranslatorInterface $translator)
     {
-        return $this->renderAbout($request, 'Presentations and Publications');
+        return $this->renderAbout($request, $translator, 'Presentations and Publications');
     }
 
     protected function buildNewsArticles(&$posts, $client)
@@ -147,6 +161,7 @@ extends RenderTeiController
                         $keywords[] = $categories[$category] = $categoryInfo['name'];
                     }
                 }
+
                 $article->setKeywords(join(' / ', $keywords));
             }
 
@@ -173,90 +188,98 @@ extends RenderTeiController
     /**
      * @Route("/about/news", name="about-news")
      */
-    public function newsAction(Request $request)
+    public function newsAction(Request $request,
+                               TranslatorInterface $translator)
     {
-        /* check if we have settings for wp-rest */
-        $url = $this->container->hasParameter('app.wp-rest.url')
-            ? $this->getParameter('app.wp-rest.url') : null;
+        try {
+            /* the following can fail */
+            $url = $this->getParameter('app.wp-rest.url');
 
-        if (!empty($url)) {
-            try {
-                $client = new \Vnn\WpApiClient\WpClient(
-                    new \Vnn\WpApiClient\Http\GuzzleAdapter(new \GuzzleHttp\Client()),
-                        $url);
-                $client->setCredentials(new \Vnn\WpApiClient\Auth\WpBasicAuth($this->getParameter('app.wp-rest.user'), $this->getParameter('app.wp-rest.password')));
+            if (!empty($url)) {
+                try {
+                    $client = new \Vnn\WpApiClient\WpClient(
+                        new \Vnn\WpApiClient\Http\GuzzleAdapter(new \GuzzleHttp\Client()),
+                            $url);
+                    $client->setCredentials(new \Vnn\WpApiClient\Auth\WpBasicAuth($this->getParameter('app.wp-rest.user'), $this->getParameter('app.wp-rest.password')));
 
-                $posts = $client->posts()->get(null, [
-                    'per_page' => 15,
-                    'lang' => $request->getLocale(),
-                ]);
-
-                if (!empty($posts)) {
-                    return $this->render('AppBundle:About:news.html.twig', [
-                        'articles' => $this->buildNewsArticles($posts, $client),
+                    $posts = $client->posts()->get(null, [
+                        'per_page' => 15,
+                        'lang' => $request->getLocale(),
                     ]);
+
+                    if (!empty($posts)) {
+                        return $this->render('AppBundle:About:news.html.twig', [
+                            'articles' => $this->buildNewsArticles($posts, $client),
+                        ]);
+                    }
+                }
+                catch (\Exception $e) {
+                    ;
                 }
             }
-            catch (\Exception $e) {
-                ;
-            }
+        }
+        catch (\InvalidArgumentException $e) {
+            ; // ignore
         }
 
         // static fallback
-        return $this->renderAbout($request, 'News');
+        return $this->renderAbout($request, $translator, 'News');
     }
 
     /**
      * @Route("/about/staff", name="about-staff")
      */
-    public function staffAction(Request $request)
+    public function staffAction(Request $request, TranslatorInterface $translator)
     {
-        return $this->renderAboutUs($request, 'Staff');
+        return $this->renderAboutUs($request, $translator, 'Staff');
     }
 
     /**
      * @Route("/about/editors", name="about-editors")
      */
-    public function editorsAction(Request $request)
+    public function editorsAction(Request $request, TranslatorInterface $translator)
     {
-        return $this->renderAboutUs($request, 'Editors');
+        return $this->renderAboutUs($request, $translator, 'Editors');
     }
 
     /**
      * @Route("/about/board", name="about-board")
      */
-    public function boardAction(Request $request)
+    public function boardAction(Request $request, TranslatorInterface $translator)
     {
-        return $this->renderAboutUs($request, 'Advisory Board');
+        return $this->renderAboutUs($request, $translator, 'Advisory Board');
     }
 
     /**
      * @Route("/about/sponsors", name="about-sponsors")
      */
-    public function sponsorsAction(Request $request)
+    public function sponsorsAction(Request $request,
+                                   TranslatorInterface $translator)
     {
-        return $this->renderAboutUs($request, 'Sponsors and Partners');
+        return $this->renderAboutUs($request, $translator, 'Sponsors and Partners');
     }
 
     /**
      * @Route("/about/cfp", name="about-cfp")
      */
-    public function cfpAction(Request $request)
+    public function cfpAction(Request $request,
+                              TranslatorInterface $translator)
     {
-        return $this->renderAboutUs($request, 'Become an Author');
+        return $this->renderAboutUs($request, $translator, 'Become an Author');
     }
 
     /**
      * @Route("/terms", name="terms")
      */
-    public function termsAction(Request $request)
+    public function termsAction(Request $request,
+                                TranslatorInterface $translator)
     {
-        return $this->renderTitleContent($request, 'Terms and Conditions', 'AppBundle:Default:sitetext.html.twig');
+        return $this->renderTitleContent($request, $translator, 'Terms and Conditions', 'AppBundle:Default:sitetext.html.twig');
     }
 
-    protected function sendMessage($data)
+    protected function sendMessage($mailer, $twig, $data)
     {
-        $template = $this->get('twig')->loadTemplate('AppBundle:Default:contact.email.twig');
+        $template = $twig->loadTemplate('AppBundle:Default:contact.email.twig');
 
         $subject = $template->renderBlock('subject', [ 'data' => $data ]);
         $textBody = $template->renderBlock('body_text', [ 'data' => $data ]);
@@ -277,7 +300,7 @@ extends RenderTeiController
         }
 
         try {
-            return $this->get('mailer')->send($message);
+            return $mailer->send($message);
         }
         catch (\Exception $e) {
             return false;
@@ -287,20 +310,21 @@ extends RenderTeiController
     /**
      * @Route("/contact", name="contact")
      */
-    public function contactAction(Request $request)
+    public function contactAction(Request $request,
+                                  TranslatorInterface $translator,
+                                  \Swift_Mailer $mailer,
+                                  \Twig_Environment $twig)
     {
-        $translator = $this->get('translator');
-
         $form = $this->createForm(\AppBundle\Form\Type\ContactType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->render('AppBundle:Default:contact-sent.html.twig', [
                 'pageTitle' => $translator->trans('Contact'),
-                'success' => $this->sendMessage($form->getData()),
+                'success' => $this->sendMessage($mailer, $twig, $form->getData()),
             ]);
         }
 
-        $response = $this->renderTitleContent($request, 'Contact', 'AppBundle:Default:sitetext.html.twig');
+        $response = $this->renderTitleContent($request, $translator, 'Contact', 'AppBundle:Default:sitetext.html.twig');
 
         // add anchors to sub-headings
         $anchors = [
@@ -327,10 +351,9 @@ extends RenderTeiController
             . $domDocument->saveHTML($node);
 
         return new Response(str_replace('%form%',
-                                        $this->get('twig')
-                                            ->render('AppBundle:Default:contact-form.html.twig', [
-                                                'form' => $form->createView(),
-                                            ]),
+                                        $this->renderView('AppBundle:Default:contact-form.html.twig', [
+                                            'form' => $form->createView(),
+                                        ]),
                                         $html));
     }
 }

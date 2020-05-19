@@ -3,8 +3,7 @@
 
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -13,9 +12,20 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
+use Symfony\Component\HttpKernel\KernelInterface;
+
 class ArticleValidateCommand
-extends ContainerAwareCommand
+extends Command
 {
+    protected $kernel;
+
+    public function __construct(KernelInterface $kernel)
+    {
+        parent::__construct();
+
+        $this->kernel = $kernel;
+    }
+
     protected function configure()
     {
         $this
@@ -43,7 +53,7 @@ extends ContainerAwareCommand
 
         $teiHelper = new \AppBundle\Utils\TeiHelper();
 
-        $fnameSchema = $this->getContainer()->get('kernel')
+        $fnameSchema = $this->kernel
                         ->locateResource('@AppBundle/Resources/data/basisformat.rng');
 
         $result = $teiHelper->validateXml($fname, $fnameSchema);

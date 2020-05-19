@@ -3,11 +3,68 @@
 
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
+
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
+
+use Doctrine\ORM\EntityManagerInterface;
+
+use Cocur\Slugify\SlugifyInterface;
+
+use AppBundle\Utils\Xsl\XsltProcessor;
+use AppBundle\Utils\XmlFormatter\XmlFormatter;
 
 abstract class EntityCommandBase
-extends ContainerAwareCommand
+extends Command
 {
+    protected $em;
+    protected $kernel;
+    protected $router;
+    protected $translator;
+    protected $slugify;
+    protected $dbconnAdmin;
+    protected $xsltProcessor;
+    protected $formatter;
+    protected $rootDir;
+
+    public function __construct(EntityManagerInterface $em,
+                                KernelInterface $kernel,
+                                RouterInterface $router,
+                                TranslatorInterface $translator,
+                                SlugifyInterface $slugify,
+                                ParameterBagInterface $params,
+                                \Doctrine\DBAL\Connection $dbconnAdmin,
+                                string $rootDir,
+                                XsltProcessor $xsltProcessor,
+                                XmlFormatter $formatter)
+    {
+        parent::__construct();
+
+        $this->em = $em;
+        $this->kernel = $kernel;
+        $this->router = $router;
+        $this->translator = $translator;
+        $this->slugify = $slugify;
+        $this->xsltProcessor = $xsltProcessor;
+        $this->formatter = $formatter;
+        $this->dbconnAdmin = $dbconnAdmin;
+        $this->rootDir = $rootDir;
+    }
+
+    /* the following two are used in RenderTeiTrait */
+    protected function locateResource($name, $dir = null, $first = true)
+    {
+        return $this->kernel->locateResource($name, $dir, $first);
+    }
+
+    protected function getResourcesOverrideDir()
+    {
+        return $this->kernel->getResourcesOverrideDir();
+    }
+
     protected function jsonPrettyPrint($structure)
     {
         return json_encode($structure, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
@@ -76,9 +133,8 @@ extends ContainerAwareCommand
             return -1;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
-
-        return $em->getRepository('AppBundle\Entity\Person')->findOneBy($condition);
+        return $this->em->getRepository('AppBundle\Entity\Person')
+            ->findOneBy($condition);
     }
 
     protected function insertMissingPerson($uri)
@@ -88,7 +144,6 @@ extends ContainerAwareCommand
             return 0;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
         $person = new \AppBundle\Entity\Person();
         $condition = $this->buildPersonConditionByUri($uri);
         foreach ($condition as $field => $value) {
@@ -140,8 +195,8 @@ extends ContainerAwareCommand
             }
         }
 
-        $em->persist($person);
-        $this->flushEm($em);
+        $this->em->persist($person);
+        $this->flushEm($this->em);
 
         return 1;
     }
@@ -161,9 +216,7 @@ extends ContainerAwareCommand
             return -1;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
-
-        return $em->getRepository('AppBundle\Entity\Organization')->findOneBy($condition);
+        return $this->em->getRepository('AppBundle\Entity\Organization')->findOneBy($condition);
     }
 
     protected function insertMissingOrganization($uri)
@@ -173,7 +226,6 @@ extends ContainerAwareCommand
             return 0;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
         $organization = new \AppBundle\Entity\Organization();
         $condition = $this->buildOrganizationConditionByUri($uri);
         foreach ($condition as $field => $value) {
@@ -226,8 +278,8 @@ extends ContainerAwareCommand
             }
         }
 
-        $em->persist($organization);
-        $this->flushEm($em);
+        $this->em->persist($organization);
+        $this->flushEm($this->em);
 
         return 1;
     }
@@ -261,9 +313,7 @@ extends ContainerAwareCommand
             return;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
-
-        return $em->getRepository('AppBundle\Entity\Place')->findOneBy($condition);
+        return $this->em->getRepository('AppBundle\Entity\Place')->findOneBy($condition);
     }
 
     protected function insertMissingPlace($uri, $additional = [])
@@ -273,7 +323,6 @@ extends ContainerAwareCommand
             return 0;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
         $entity = $this->findPlaceByUri($uri);
         if (!is_null($entity)) {
             // set gnd if given and not already set
@@ -285,8 +334,8 @@ extends ContainerAwareCommand
                 $gnd = $entity->getGnd();
                 if (empty($gnd)) {
                     $entity->setGnd($matches[1]);
-                    $em->persist($entity);
-                    $this->flushEm($em);
+                    $this->em->persist($entity);
+                    $this->flushEm($this->em);
                 }
             }
 
@@ -307,14 +356,14 @@ extends ContainerAwareCommand
 
                     $parent = null;
                     if (!empty($geo->tgnParent)) {
-                        $parent = $em->getRepository('AppBundle\Entity\Place')->findOneBy([
+                        $parent = $this->em->getRepository('AppBundle\Entity\Place')->findOneBy([
                             'tgn' => $geo->tgnParent,
                         ]);
 
                         if (is_null($parent)) {
                             $res = $this->insertMissingPlace('http://vocab.getty.edu/tgn/' . $geo->tgnParent);
                             if ($res >= 0) {
-                                $parent = $em->getRepository('AppBundle\Entity\Place')->findOneBy([ 'tgn' => $geo->tgnParent ]);
+                                $parent = $this->em->getRepository('AppBundle\Entity\Place')->findOneBy([ 'tgn' => $geo->tgnParent ]);
                             }
                         }
                     }
@@ -368,8 +417,8 @@ extends ContainerAwareCommand
             }
         }
 
-        $em->persist($entity);
-        $this->flushEm($em);
+        $this->em->persist($entity);
+        $this->flushEm($this->em);
 
         return 1;
     }
@@ -398,9 +447,7 @@ extends ContainerAwareCommand
             return;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
-
-        return $em->getRepository('AppBundle\Entity\Landmark')->findOneBy($condition);
+        return $this->em->getRepository('AppBundle\Entity\Landmark')->findOneBy($condition);
     }
 
     protected function buildEventConditionByUri($uri)
@@ -418,9 +465,7 @@ extends ContainerAwareCommand
             return;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
-
-        return $em->getRepository('AppBundle\Entity\Event')->findOneBy($condition);
+        return $this->em->getRepository('AppBundle\Entity\Event')->findOneBy($condition);
     }
 
     protected function insertMissingEvent($uri, $additional = [])
@@ -430,7 +475,6 @@ extends ContainerAwareCommand
             return 0;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
         $entity = new \AppBundle\Entity\Event();
         $condition = $this->buildEventConditionByUri($uri);
         foreach ($condition as $prefix => $value) {
@@ -478,8 +522,8 @@ extends ContainerAwareCommand
             }
         }
 
-        $em->persist($entity);
-        $this->flushEm($em);
+        $this->em->persist($entity);
+        $this->flushEm($this->em);
 
         return 1;
     }

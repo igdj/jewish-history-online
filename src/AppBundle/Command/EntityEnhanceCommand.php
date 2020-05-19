@@ -3,17 +3,41 @@
 
 namespace AppBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 class EntityEnhanceCommand
-extends ContainerAwareCommand
+extends Command
 {
+    protected $em;
+    protected $googleapisKey = '';
+    protected $rootDir;
+
+    public function __construct(EntityManagerInterface $em,
+                                ParameterBagInterface $params,
+                                string $rootDir)
+    {
+        parent::__construct();
+
+        $this->em = $em;
+
+        if ($params->has('googleapis.key')) {
+            $this->googleapisKey = $params->get('googleapis.key');
+        }
+
+        $this->rootDir = $rootDir;
+    }
+
     protected function configure()
     {
         $this
@@ -128,7 +152,7 @@ extends ContainerAwareCommand
         {
             $info = [];
 
-            $fnameFull = $this->getContainer()->get('kernel')->getRootDir()
+            $fnameFull = $this->rootDir
                        . '/Resources/data/' . $fname;
             $lines = file($fnameFull);
             foreach ($lines as $line) {
@@ -164,8 +188,7 @@ extends ContainerAwareCommand
         // currently beacon, entityfacts and wikidata
         $gndBeacon = $this->loadGndBeacon();
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $personRepository = $em->getRepository('AppBundle:Person');
+        $personRepository = $this->em->getRepository('AppBundle:Person');
         $persons = $personRepository->findBy([ 'status' => [0, 1] ]);
         foreach ($persons as $person) {
             $persist = false;
@@ -288,13 +311,13 @@ extends ContainerAwareCommand
 
                         $place = null;
                         if ($placeInfo['name'] == 'Altona') {
-                            $places = $em->getRepository('AppBundle:Place')->findByTgn('7012310');
+                            $places = $this->em->getRepository('AppBundle:Place')->findByTgn('7012310');
                         }
                         else if (!empty($placeInfo['gnd'])) {
-                            $places = $em->getRepository('AppBundle:Place')->findByGnd($placeInfo['gnd']);
+                            $places = $this->em->getRepository('AppBundle:Place')->findByGnd($placeInfo['gnd']);
                             if (empty($places)) {
                                 // try to lookup by name
-                                $places = $em->getRepository('AppBundle:Place')->findByName($placeInfo['name']);
+                                $places = $this->em->getRepository('AppBundle:Place')->findByName($placeInfo['name']);
                                 if (count($places) > 1) {
                                     $places[] = []; // skip if there are multiple matches
                                 }
@@ -316,7 +339,7 @@ extends ContainerAwareCommand
                                                    . '(\d+)$/', $uri, $matches))
                                     {
                                         $geonamesId = $matches[1];
-                                        $places = $em->getRepository('AppBundle:Place')->findByGeonames($geonamesId);
+                                        $places = $this->em->getRepository('AppBundle:Place')->findByGeonames($geonamesId);
                                         if (!empty($places)) {
                                             $place = $places[0];
                                         }
@@ -340,8 +363,8 @@ extends ContainerAwareCommand
             }
 
             if ($persist) {
-                $em->persist($person);
-                $em->flush();
+                $this->em->persist($person);
+                $this->em->flush();
             }
         }
     }
@@ -351,8 +374,7 @@ extends ContainerAwareCommand
         // currently only geonames
         // TODO: maybe get outlines
         // http://www.geonames.org/servlet/geonames?&srv=780&geonameId=2921044&type=json
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $placeRepository = $em->getRepository('AppBundle:Place');
+        $placeRepository = $this->em->getRepository('AppBundle:Place');
 
         foreach ([
                 'nation', 'country',
@@ -440,8 +462,8 @@ extends ContainerAwareCommand
                 }
 
                 if ($persist) {
-                    $em->persist($place);
-                    $em->flush();
+                    $this->em->persist($place);
+                    $this->em->flush();
                 }
             }
 
@@ -486,8 +508,8 @@ extends ContainerAwareCommand
                 }
 
                 if ($persist) {
-                    $em->persist($place);
-                    $em->flush();
+                    $this->em->persist($place);
+                    $this->em->flush();
                 }
             }
         }
@@ -498,14 +520,13 @@ extends ContainerAwareCommand
         // currently beacon
         $gndBeacon = $this->loadGndBeacon([ 'dasjuedischehamburg' => 'BEACON-GND-ORG-dasjuedischehamburg.txt' ]);
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $organizationRepository = $em->getRepository('AppBundle:Organization');
+        $organizationRepository = $this->em->getRepository('AppBundle:Organization');
         /*
         foreach ($organizationRepository->findAll() as $organization) {
             $organization->setAlternateName($organization->getAlternateName());
-            $em->persist($organization);
+            $this->em->persist($organization);
         }
-        $em->flush();
+        $this->em->flush();
         return;
         */
 
@@ -526,15 +547,14 @@ extends ContainerAwareCommand
             }
 
             if ($persist) {
-                $em->persist($organization);
-                $em->flush();
+                $this->em->persist($organization);
+                $this->em->flush();
             }
         }
 
         // currently only homepages
         /*
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $organizationRepository = $em->getRepository('AppBundle:Organization');
+        $organizationRepository = $this->em->getRepository('AppBundle:Organization');
         $organizations = $organizationRepository->findBy([ 'url' => null ]);
         foreach ($organizations as $organization) {
             $persist = false;
@@ -542,6 +562,7 @@ extends ContainerAwareCommand
             if (empty($gnd)) {
                 continue;
             }
+
             $corporateBody = \AppBundle\Utils\CorporateBodyData::fetchByGnd($gnd);
             if (is_null($corporateBody) || !$corporateBody->isDifferentiated) {
                 continue;
@@ -562,6 +583,7 @@ extends ContainerAwareCommand
                                 $persist = true;
                             }
                             break;
+
                         case 'homepage':
                             $val = $organization->getUrl();
                             if (empty($val)) {
@@ -573,8 +595,8 @@ extends ContainerAwareCommand
                 }
             }
             if ($persist) {
-                $em->persist($organization);
-                $em->flush();
+                $this->em->persist($organization);
+                $this->em->flush();
             }
         }
         */
@@ -596,9 +618,7 @@ extends ContainerAwareCommand
             $info_by_geonames[$info['geonameId']] = $info;
         }
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
-
-        $placeRepository = $em->getRepository('AppBundle:Place');
+        $placeRepository = $this->em->getRepository('AppBundle:Place');
         foreach ([ 'nation' ] as $type) {
             $places = $placeRepository->findBy([ 'type' => $type ]);
             foreach ($places as $country) {
@@ -642,8 +662,8 @@ extends ContainerAwareCommand
                 }
 
                 if ($persist) {
-                    $em->persist($country);
-                    $em->flush();
+                    $this->em->persist($country);
+                    $this->em->flush();
                 }
             }
         }
@@ -652,13 +672,7 @@ extends ContainerAwareCommand
     protected function enhanceBibitem()
     {
         // currently googleapis.com/books
-        $googleapisKey = '';
-        if ($this->getContainer()->hasParameter('googleapis.key')) {
-            $googleapisKey = $this->getContainer()->getParameter('googleapis.key');
-        }
-
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $bibitemRepository = $em->getRepository('AppBundle:Bibitem');
+        $bibitemRepository = $this->em->getRepository('AppBundle:Bibitem');
         $items = $bibitemRepository->findBy([ 'status' => [0, 1] ]);
         foreach ($items as $item) {
             $persist = false;
@@ -671,7 +685,7 @@ extends ContainerAwareCommand
             if (is_null($additional) || !array_key_exists('googleapis-books', $additional)) {
                 $url = sprintf('https://www.googleapis.com/books/v1/volumes?q=isbn:%s&key=%s',
                                $isbns[0],
-                               $googleapisKey);
+                               $this->googleapisKey);
                 // var_dump($url);
                 $result = $this->executeJsonQuery($url, [
                     'Accept' => 'application/json',
@@ -703,8 +717,8 @@ extends ContainerAwareCommand
             }
 
             if ($persist) {
-                $em->persist($item);
-                $em->flush();
+                $this->em->persist($item);
+                $this->em->flush();
             }
         }
     }

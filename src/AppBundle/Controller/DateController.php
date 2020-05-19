@@ -4,20 +4,20 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  *
  */
 class DateController
-extends Controller
+extends BaseController
 {
     /**
      * @Route("/chronology/partial", name="date-chronology-partial")
      * @Route("/chronology", name="date-chronology")
      */
-    public function chronologyAction(Request $request)
+    public function chronologyAction(Request $request,
+                                     TranslatorInterface $translator)
     {
         $criteria = [ 'status' => [ 1 ] ];
 
@@ -46,16 +46,15 @@ extends Controller
         $result = $queryBuilder->getQuery()->getResult();
 
         return $this->render('AppBundle:Date:chronology.html.twig', [
-            'pageTitle' =>  $this->get('translator')->trans('Chronology'),
+            'pageTitle' =>  $translator->trans('Chronology'),
             'articles' => $result,
         ]);
     }
 
-
     /**
      * @Route("/event", name="event-index")
      */
-    public function indexAction()
+    public function indexAction(TranslatorInterface $translator)
     {
         $qb = $this->getDoctrine()
                 ->getManager()
@@ -71,7 +70,7 @@ extends Controller
         $entities = $qb->getQuery()->getResult();
 
         return $this->render('AppBundle:Date:index.html.twig', [
-            'pageTitle' => $this->get('translator')->trans('Historical Epochs and Events'),
+            'pageTitle' => $translator->trans('Historical Epochs and Events'),
             'events' => $entities,
         ]);
     }
@@ -117,7 +116,7 @@ extends Controller
             'pageMeta' => [
                 'jsonLd' => $event->jsonLdSerialize($request->getLocale()),
                 /*
-                'og' => $this->buildOg($event, $request, $routeName, $routeParams),
+                'og' => $this->buildOg($event, $request, $translator, $routeName, $routeParams),
                 'twitter' => $this->buildTwitter($event, $request, $routeName, $routeParams),
                 */
             ],

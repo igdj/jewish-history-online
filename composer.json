@@ -14,6 +14,10 @@
             "type": "vcs"
         },
         {
+            "type": "vcs",
+            "url": "https://github.com/burki/SolrBundle.git"
+        },
+        {
             "type": "package",
             "package": {
                 "name": "citation-style-language/locales",
@@ -41,6 +45,7 @@
 
     "require": {
         "symfony/yaml": "^4.4",
+        "symfony/config": "^4.4",
         "symfony/expression-language": "^4.4",
         "symfony/console": "^4.4",
         "symfony/framework-bundle": "^4.4",
@@ -56,6 +61,7 @@
         "symfony/var-dumper": "^4.4",
         "symfony/var-exporter": "^4.4",
         "symfony/http-foundation": "^4.4",
+        "symfony/routing": "^4.4",
         "symfony/mime": "^4.4",
         "symfony/dom-crawler": "^4.4",
         "symfony/css-selector": "^4.4",
@@ -72,12 +78,12 @@
         "symfony/asset": "^4.4",
         "armin/scssphp-bundle": "^1.1",
 
-        "cocur/slugify": "^3.2",
+        "cocur/slugify": "^4.0",
         "twig/twig": "^2.11",
         "twig/extensions": "^1.5",
         "liip/url-auto-converter-bundle": "dev-master",
 
-        "doctrine/doctrine-bundle": "^1.10",
+        "doctrine/doctrine-bundle": "^2.0",
         "doctrine/orm": "^2.6",
         "stof/doctrine-extensions-bundle": "^1.3",
         "beberlei/doctrineextensions": "1.*",
@@ -85,7 +91,7 @@
 
         "jms/i18n-routing-bundle": "^3.0",
         "symfony/security-core": "^4.4",
-        "jms/translation-bundle": "^1.4",
+        "jms/translation-bundle": "^1.5",
 
         "sabre/xml": "2.*",
         "servo/fluidxml": "1.*",
@@ -111,11 +117,11 @@
 
         "mpdf/mpdf": "^7.1",
 
-        "floriansemm/solr-bundle": "dev-master",
-        "knplabs/knp-paginator-bundle": "^2.8",
+        "maxgr0/solr-bundle": "dev-master",
+        "knplabs/knp-paginator-bundle": "^5.2",
 
-        "presta/sitemap-bundle": "^1.7",
-        "eko/feedbundle": "^1.2",
+        "presta/sitemap-bundle": "^2.1",
+        "eko/feedbundle": "^2.0",
 
         "picturae/oai-pmh": "0.5.20",
         "symfony/psr-http-message-bridge": "^1.1",
