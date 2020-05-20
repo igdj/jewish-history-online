@@ -62,7 +62,7 @@ extends TopicController
         }
 
         return $this->render('home-preview' == $request->get('_route')
-            ? 'AppBundle:Default:home-preview.html.twig' : 'AppBundle:Default:home.html.twig', [
+            ? '@AppBundle/Default/home-preview.html.twig' : '@AppBundle/Default/home.html.twig', [
             'pageTitle' => $translator->trans('Welcome'),
             'topics' => $this->buildTopicsDescriptions($translator, $request->getLocale()),
             'markers' => $markers,

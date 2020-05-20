@@ -127,7 +127,7 @@ extends RenderTeiController
             }
         }
 
-        return $this->render('AppBundle:Education:index.html.twig', [
+        return $this->render('@AppBundle/Education/index.html.twig', [
             'pageTitle' => $translator->trans('Teaching Resources'),
             'structure' => $structure,
             'sourcesByUid' => $sourcesByUid,
@@ -142,7 +142,7 @@ extends RenderTeiController
     {
         return $this->renderTitleContent($request, $translator,
                                          'Guidelines for the Use of Materials in the Key Documents Edition',
-                                         'AppBundle:Default:sitetext-education.html.twig');
+                                         '@AppBundle/Default/sitetext-education.html.twig');
     }
 
     /**
@@ -153,6 +153,6 @@ extends RenderTeiController
     {
         return $this->renderTitleContent($request, $translator,
                                          'Information on Source Interpretation for Students',
-                                         'AppBundle:Default:sitetext-education.html.twig');
+                                         '@AppBundle/Default/sitetext-education.html.twig');
     }
 }

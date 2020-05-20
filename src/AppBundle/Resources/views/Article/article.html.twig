@@ -1,8 +1,8 @@
-{% extends 'AppBundle:Default:base.html.twig' %}
+{% extends '@AppBundle/Default/base.html.twig' %}
 
-{% import 'AppBundle:Shared:helper.html.twig' as helper %}
-{% import 'AppBundle:Shared:entity-lookup.html.twig' as entityLookup %}
-{% import 'AppBundle:Shared:map-leaflet.html.twig' as map %}
+{% import '@AppBundle/Shared/helper.html.twig' as helper %}
+{% import '@AppBundle/Shared/entity-lookup.html.twig' as entityLookup %}
+{% import '@AppBundle/Shared/map-leaflet.html.twig' as map %}
 
 {% block head %}
     {{ map.head() }}
@@ -76,7 +76,7 @@
             <a href="{{ path('source', { 'uid' : source.uid }) }}">{{ 'Display Source'|trans }} &gt;</a>
         </h3>
         {% endif %}
-{#{ dump(meta)}#}
+
         {{ helper.article_citation(article, meta, authors, name) }}
 
         {{ helper.article_license(license) }}
@@ -129,7 +129,7 @@
                     </div>
                     <div class="col-sm-8">
                     {% endif %}
-                            <p><a href="{{ path('topic-background', { 'slug' : slug }) }}">{{ topic }}</a></p>
+                        <p><a href="{{ path('topic-background', { 'slug' : slug }) }}">{{ topic }}</a></p>
                     {% if loop.last %}
                     </div>
                     {% endif %}

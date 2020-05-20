@@ -62,7 +62,7 @@ extends BaseController
         $query = $qb->getQuery();
         $items = $query->getResult();
 
-        return $this->render('AppBundle:Bibliography:index.html.twig', [
+        return $this->render('@AppBundle/Bibliography/index.html.twig', [
             'pageTitle' => $translator->trans('Bibliography'),
             'items' => $items,
             'citeProc' => $this->instantiateCiteProc($request->getLocale()),
@@ -202,7 +202,7 @@ extends BaseController
             return $this->buildRisResponse($bibitem);
         }
 
-        return $this->render('AppBundle:Bibliography:detail.html.twig', [
+        return $this->render('@AppBundle/Bibliography/detail.html.twig', [
             'pageTitle' => $bibitem->getName(true), //
             'bibitem' => $bibitem,
             'citeProc' => $this->instantiateCiteProc($request->getLocale()),

@@ -50,7 +50,6 @@
         "symfony/console": "^4.4",
         "symfony/framework-bundle": "^4.4",
 
-        "symfony/templating": "^4.4",
         "symfony/translation": "^4.4",
         "symfony/twig-bridge": "^4.4",
         "symfony/twig-bundle": "^4.4",

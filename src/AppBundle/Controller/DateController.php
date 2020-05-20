@@ -45,7 +45,7 @@ extends BaseController
 
         $result = $queryBuilder->getQuery()->getResult();
 
-        return $this->render('AppBundle:Date:chronology.html.twig', [
+        return $this->render('@AppBundle/Date/chronology.html.twig', [
             'pageTitle' =>  $translator->trans('Chronology'),
             'articles' => $result,
         ]);
@@ -69,7 +69,7 @@ extends BaseController
 
         $entities = $qb->getQuery()->getResult();
 
-        return $this->render('AppBundle:Date:index.html.twig', [
+        return $this->render('@AppBundle/Date/index.html.twig', [
             'pageTitle' => $translator->trans('Historical Epochs and Events'),
             'events' => $entities,
         ]);
@@ -110,7 +110,7 @@ extends BaseController
             return new JsonLdResponse($event->jsonLdSerialize($request->getLocale()));
         }
 
-        return $this->render('AppBundle:Date:detail.html.twig', [
+        return $this->render('@AppBundle/Date/detail.html.twig', [
             'pageTitle' => $event->getNameLocalized($request->getLocale()), // TODO: span in brackets
             'event' => $event,
             'pageMeta' => [

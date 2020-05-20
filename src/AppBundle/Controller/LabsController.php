@@ -17,7 +17,7 @@ extends BaseController
      */
     public function indexAction(TranslatorInterface $translator)
     {
-        return $this->render('AppBundle:Labs:index.html.twig', [
+        return $this->render('@AppBundle/Labs/index.html.twig', [
             'pageTitle' => $translator->trans('Labs'),
         ]);
     }
@@ -109,7 +109,7 @@ extends BaseController
             }
         }
 
-        return $this->render('AppBundle:Labs:person-by-year.html.twig', [
+        return $this->render('@AppBundle/Labs:person-by-year.html.twig', [
             'subtitle' => json_encode($subtitle),
             'categories' => json_encode($categories),
             'person_birth' => json_encode(array_values($total['birth'])),
@@ -174,7 +174,7 @@ extends BaseController
         }
 
         // display
-        return $this->render('AppBundle:Labs:person-by-place.html.twig', [
+        return $this->render('@AppBundle/Labs/person-by-place.html.twig', [
             'pageTitle' => sprintf('Persons by %s Place',
                                    'birthplace' == $field ? 'Birth' : 'Death'),
             'data' => json_encode($values_final),
@@ -260,7 +260,7 @@ extends BaseController
         }
 
         // display the static content
-        return $this->render('AppBundle:Labs:person-birth-death.html.twig', [
+        return $this->render('@AppBundle/Labs/person-birth-death.html.twig', [
             'dependencies' => $dependencies,
         ]);
     }

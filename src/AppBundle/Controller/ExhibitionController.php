@@ -79,7 +79,7 @@ extends BaseController
             $localeSwitch['en'] = [ 'slug' => $slug ];
         }
 
-        return $this->render('AppBundle:Exhibition:'
+        return $this->render('@AppBundle/Exhibition/'
                              . $slug
                              . '.' . $locale . '.html.twig', [
             'pageTitle' => /** @Ignore */ $translator->trans($exhibition['name']),
@@ -95,7 +95,7 @@ extends BaseController
     {
         $locale = $request->getLocale();
 
-        return $this->render('AppBundle:Exhibition:index.html.twig', [
+        return $this->render('@AppBundle/Exhibition/index.html.twig', [
             'pageTitle' => /** @Ignore */ $translator->trans('Online Exhibitions'),
         ]);
     }

@@ -1,6 +1,6 @@
-{% extends 'AppBundle:Default:base.html.twig' %}
+{% extends '@AppBundle/Default/base.html.twig' %}
 
-{% import 'AppBundle:Shared:helper.html.twig' as helper %}
+{% import '@AppBundle/Shared/helper.html.twig' as helper %}
 
 {% block head %}
     <script src="{{ app.request.basepath }}/js/seealso.js"></script>

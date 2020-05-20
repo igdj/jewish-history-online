@@ -1,6 +1,6 @@
-{% extends 'AppBundle:Default:base.html.twig' %}
+{% extends '@AppBundle/Default/base.html.twig' %}
 
-{% import 'AppBundle:Search:search-helper.html.twig' as searchHelper %}
+{% import '@AppBundle/Search/search-helper.html.twig' as searchHelper %}
 
 {% block body %}
     <h1>{{ 'Search' | trans }}</h1>

@@ -1,8 +1,8 @@
-{% extends 'AppBundle:Default:base.html.twig' %}
+{% extends '@AppBundle/Default/base.html.twig' %}
 
-{% import 'AppBundle:Shared:helper.html.twig' as helper %}
-{% import 'AppBundle:Shared:entity-lookup.html.twig' as entityLookup %}
-{% import 'AppBundle:Shared:map-leaflet.html.twig' as map %}
+{% import '@AppBundle/Shared/helper.html.twig' as helper %}
+{% import '@AppBundle/Shared/entity-lookup.html.twig' as entityLookup %}
+{% import '@AppBundle/Shared/map-leaflet.html.twig' as map %}
 
 {% block head %}
     {{ map.head() }}

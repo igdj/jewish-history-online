@@ -96,7 +96,7 @@ extends RenderTeiController
             $html = $this->removeByCssSelector('<body>' . $html . '</body>',
                                                [ 'h2 + br', 'h3 + br' ]);
 
-            $html = $this->renderView('AppBundle:Article:article-printview.html.twig', [
+            $html = $this->renderView('@AppBundle/Article/article-printview.html.twig', [
                 'article' => $article,
                 'meta' => $meta,
                 'source_description' => $sourceDescription,
@@ -139,7 +139,7 @@ extends RenderTeiController
             return new JsonLdResponse($article->jsonLdSerialize($request->getLocale()));
         }
 
-        return $this->render('AppBundle:Article:article.html.twig', [
+        return $this->render('@AppBundle/Article/article.html.twig', [
             'article' => $article,
             'meta' => $meta,
             'source_description' => $sourceDescription,
@@ -217,7 +217,7 @@ extends RenderTeiController
             );
         }
 
-        return $this->render('AppBundle:Article:index.html.twig', [
+        return $this->render('@AppBundle/Article/index.html.twig', [
             'pageTitle' => $translator->trans('Article Overview'),
             'articles' => $articles,
         ]);

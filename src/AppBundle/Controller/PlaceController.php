@@ -27,7 +27,7 @@ extends BaseController
         list($markers, $bounds) = $this->buildMap($request->getLocale(),
                                                   str_replace('place-map-', '', $request->get('_route')));
 
-        return $this->render('AppBundle:Place:map.html.twig', [
+        return $this->render('@AppBundle/Place/map.html.twig', [
             'pageTitle' => $translator->trans('Map'),
             'bounds' => $bounds,
             'markers' => $markers,
@@ -102,7 +102,7 @@ extends BaseController
                     ;
         }
 
-        return $this->render('AppBundle:Place:map-popup-content.html.twig', [
+        return $this->render('@AppBundle/Place/map-popup-content.html.twig', [
             'articles' => $articles,
         ]);
     }
@@ -117,7 +117,7 @@ extends BaseController
                 ->findBy([ 'type' => 'inhabited place' ],
                          [ 'name' => 'ASC' ]);
 
-        return $this->render('AppBundle:Place:index.html.twig', [
+        return $this->render('@AppBundle/Place/index.html.twig', [
             'pageTitle' => $translator->trans('Places'),
             'places' => $places,
         ]);
@@ -175,7 +175,7 @@ extends BaseController
             ->getResult();
 
 
-        return $this->render('AppBundle:Place:detail.html.twig', [
+        return $this->render('@AppBundle/Place/detail.html.twig', [
             'pageTitle' => $place->getNameLocalized($request->getLocale()),
             'place' => $place,
             'persons' => $persons,
@@ -206,7 +206,7 @@ extends BaseController
             return new JsonLdResponse($landmark->jsonLdSerialize($request->getLocale()));
         }
 
-        return $this->render('AppBundle:Place:landmark-detail.html.twig', [
+        return $this->render('@AppBundle/Place/landmark-detail.html.twig', [
             'pageTitle' => $landmark->getNameLocalized($request->getLocale()),
             'landmark' => $landmark,
             'pageMeta' => [
