@@ -45,6 +45,9 @@ services:
         tags:
           - { name: kernel.event_listener, event: kernel.exception, method: setLocale }
 
+    # So we can inject @solr.client, see https://github.com/floriansemm/SolrBundle/issues/191#issuecomment-466101623
+    FS\SolrBundle\SolrInterface: '@solr.client'
+
     AppBundle\Utils\ImageMagick\ImageMagickProcessor:
         arguments:    [ "%app.imagemagick.processor.arguments%" ]
         

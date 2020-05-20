@@ -3,8 +3,13 @@
 namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatorInterface;
+
+use Cocur\Slugify\SlugifyInterface;
+use FS\SolrBundle\SolrInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  *
@@ -12,6 +17,20 @@ use Symfony\Component\Translation\TranslatorInterface;
 class SearchController
 extends BaseController
 {
+    protected $solr;
+    protected $paginator;
+
+    public function __construct(KernelInterface $kernel,
+                                SlugifyInterface $slugify,
+                                SolrInterface $solr,
+                                PaginatorInterface $paginator)
+    {
+        parent::__construct($kernel, $slugify);
+
+        $this->solr = $solr;
+        $this->paginator = $paginator;
+    }
+
     protected function getQuery(Request $request, $facetNames = [])
     {
         $q = ''; $filter = [];
@@ -31,12 +50,15 @@ extends BaseController
         return [ $q, $filter ];
     }
 
+    /*
+     * set the locale-specific endpoint
+     */
     protected function getSolrClient($request)
     {
-        $solrClient = $this->get('solr.client')->getClient();
-
         $locale = $request->getLocale();
         $endpoint = 'jgo_presentation-' . $locale;
+
+        $solrClient = $this->solr->getClient();
 
         // set the proper $endpoint
         $solrClient->setDefaultEndpoint($endpoint);
@@ -120,9 +142,7 @@ extends BaseController
             */
 
             // build paginator - this one excecutes the quey
-            $paginator = $this->get('knp_paginator');
-
-            $pagination = $paginator->paginate(
+            $pagination = $this->paginator->paginate(
                 [ $solrClient, $solrQuery ],
                 $request->query->get('page', 1),
                 $resultsPerPage

@@ -118,13 +118,13 @@ fs_solr:
         jgo_presentation-de:
             host: localhost
             port: 8983
-            path: /solr
+            path: /
             core: jgo_presentation-de
             timeout: 15
         jgo_presentation-en:
             host: localhost
             port: 8983
-            path: /solr
+            path: /
             core: jgo_presentation-en
             timeout: 15
             
