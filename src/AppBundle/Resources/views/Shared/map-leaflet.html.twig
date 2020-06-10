@@ -1,12 +1,12 @@
 {% macro head() %}
-    <link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet-1.3.4/leaflet.css" />
-    <script src="{{ app.request.basepath }}/vendor/leaflet-1.3.4/leaflet.js"></script>
+    <link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet-1.6.0/leaflet.css" />
+    <script src="{{ app.request.basepath }}/vendor/leaflet-1.6.0/leaflet.js"></script>
 {% endmacro %}
 
 {% macro head_markercluster() %}
-    <link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet.markercluster-1.0.4/MarkerCluster.css" />
-    <link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet.markercluster-1.0.4/MarkerCluster.Default.css" />
-    <script src="{{ app.request.basepath }}/vendor/leaflet.markercluster-1.0.4/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet.markercluster-1.4.1/MarkerCluster.css" />
+    <link rel="stylesheet" href="{{ app.request.basepath }}/vendor/leaflet.markercluster-1.4.1/MarkerCluster.Default.css" />
+    <script src="{{ app.request.basepath }}/vendor/leaflet.markercluster-1.4.1/leaflet.markercluster.js"></script>
     <script>
         function escapeHtml(text) {
             return $('<div/>').text(text).html();
