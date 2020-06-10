@@ -93,7 +93,7 @@ trait SharingBuilderTrait
                         else {
                             // take the first source
                             $related = $this->getDoctrine()
-                                ->getRepository('AppBundle:Article')
+                                ->getRepository('\AppBundle\Entity\Article')
                                 ->findBy([ 'isPartOf' => $entity ],
                                          [ 'dateCreated' => 'ASC', 'name' => 'ASC'],
                                          1);

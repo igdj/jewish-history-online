@@ -45,7 +45,7 @@ extends BaseController
         $query = $this->getDoctrine()
             ->getManager()
             ->createQuery("SELECT a"
-                          . " FROM AppBundle:Article a"
+                          . " FROM \AppBundle\Entity\Article a"
                           . " WHERE a.status IN (1)"
                           . " AND a.uid IN (:refs)"
                           . (!empty($language) ? ' AND a.language=:language' : '')
@@ -151,7 +151,7 @@ extends BaseController
 
                     if (!empty($personGnds)) {
                         $persons = $this->getDoctrine()
-                            ->getRepository('AppBundle:Person')
+                            ->getRepository('\AppBundle\Entity\Person')
                             ->findBy([ 'gnd' => array_keys($personGnds) ])
                             ;
 
@@ -170,7 +170,7 @@ extends BaseController
 
                     if (!empty($personDjhs)) {
                         $persons = $this->getDoctrine()
-                            ->getRepository('AppBundle:Person')
+                            ->getRepository('\AppBundle\Entity\Person')
                             ->findBy([ 'djh' => array_keys($personDjhs) ])
                             ;
 
@@ -189,7 +189,7 @@ extends BaseController
 
                     if (!empty($personStolpersteine)) {
                         $persons = $this->getDoctrine()
-                            ->getRepository('AppBundle:Person')
+                            ->getRepository('\AppBundle\Entity\Person')
                             ->findBy([ 'stolpersteine' => array_keys($personStolpersteine) ])
                             ;
 
@@ -226,7 +226,7 @@ extends BaseController
 
                     if (!empty($placeTgns)) {
                         $places = $this->getDoctrine()
-                            ->getRepository('AppBundle:Place')
+                            ->getRepository('\AppBundle\Entity\Place')
                             ->findBy([ 'tgn' => array_keys($placeTgns) ])
                             ;
 
@@ -259,7 +259,7 @@ extends BaseController
 
                         // override the urls of thse entries that link to a Landmark
                         $landmarks = $this->getDoctrine()
-                            ->getRepository('AppBundle:Landmark')
+                            ->getRepository('\AppBundle\Entity\Landmark')
                             ->findBy([
                                 'geo' => $geos,
                                 'status' => [ 0, 1 ],
@@ -290,7 +290,7 @@ extends BaseController
 
                     if (!empty($organizationGnds)) {
                         $organizations = $this->getDoctrine()
-                            ->getRepository('AppBundle:Organization')
+                            ->getRepository('\AppBundle\Entity\Organization')
                             ->findBy([ 'gnd' => array_keys($organizationGnds) ])
                             ;
 
@@ -321,7 +321,7 @@ extends BaseController
 
                     if (!empty($dateGnds)) {
                         $events = $this->getDoctrine()
-                            ->getRepository('AppBundle:Event')
+                            ->getRepository('\AppBundle\Entity\Event')
                             ->findBy([ 'gnd' => array_keys($dateGnds) ])
                             ;
 
@@ -366,7 +366,7 @@ extends BaseController
 
         // lookup matching terms by slug
         foreach ($this->getDoctrine()
-                ->getRepository('AppBundle:GlossaryTerm')
+                ->getRepository('\AppBundle\Entity\GlossaryTerm')
                 ->findBy([
                    'status' => [ 0, 1 ],
                    'language' => $language,
@@ -578,7 +578,7 @@ extends BaseController
             $query = $this->getDoctrine()
                 ->getManager()
                 ->createQuery('SELECT b.slug'
-                              . ' FROM AppBundle:Bibitem b'
+                              . ' FROM \AppBundle\Entity\Bibitem b'
                               . ' WHERE b.slug IN (:slugs) AND b.status >= 0')
                 ->setParameter('slugs', array_values($bibitemsMap))
                 ;
@@ -622,7 +622,7 @@ extends BaseController
             $query = $this->getDoctrine()
                 ->getManager()
                 ->createQuery('SELECT p.slug, p.description, p.gender'
-                              . ' FROM AppBundle:Person p'
+                              . ' FROM \AppBundle\Entity\Person p'
                               . ' WHERE p.slug IN (:slugs)')
                 ->setParameter('slugs', $authorSlugs);
 

@@ -59,7 +59,7 @@ trait MapHelperTrait
     {
         switch ($mode) {
             case 'landmark':
-                $entityName = 'AppBundle:Article';
+                $entityName = '\AppBundle\Entity\Article';
                 $boundingBox = [
                     [ 53.549405, 9.950503 ], // Königsstraße
                     [ 53.6154844, 10.038958900000011 ], // Jüdischer Friedhof an der Ilandkoppel
@@ -67,7 +67,7 @@ trait MapHelperTrait
                 break;
 
             case 'mentioned':
-                $entityName = 'AppBundle:Article';
+                $entityName = '\AppBundle\Entity\Article';
                 $boundingBox = [
                     [ 60, -120 ],
                     [ -15, 120 ],
@@ -75,7 +75,7 @@ trait MapHelperTrait
                 break;
 
             default:
-                $entityName = 'AppBundle:SourceArticle';
+                $entityName = '\AppBundle\Entity\SourceArticle';
                 $boundingBox = [
                     [ 34.05, -118.2333 ], // LA, Sonderling
                     [ 60, 122 ],   // 59.35: Stockholm, 121.5: Shanghai
@@ -91,7 +91,7 @@ trait MapHelperTrait
         if ('mentioned' == $mode) {
             // set $geoPrimary = [ 'geo0' => 1, 'geo1' => 1, ... ] for quick lookup
             $geo = $this->getDoctrine()
-                ->getRepository('AppBundle:SourceArticle')
+                ->getRepository('\AppBundle\Entity\SourceArticle')
                 ->createQueryBuilder('A')
                 ->select('COALESCE(A.geo,P.geo) AS geo')
                 ->distinct()

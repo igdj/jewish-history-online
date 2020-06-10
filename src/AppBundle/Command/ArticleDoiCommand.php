@@ -409,7 +409,7 @@ extends Command
 
         // connection to translation
         $variants = $this->em
-            ->getRepository('AppBundle:Article')
+            ->getRepository('\AppBundle\Entity\Article')
             ->findBy([ 'uid' => $entity->getUid() ])
             ;
 
@@ -440,7 +440,7 @@ extends Command
         else {
             // for interpretation: sources
             $related = $this->em
-                ->getRepository('AppBundle:Article')
+                ->getRepository('\AppBundle\Entity\Article')
                 ->findBy([ 'isPartOf' => $entity ],
                          [ 'dateCreated' => 'ASC', 'name' => 'ASC'])
                 ;

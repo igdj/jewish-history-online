@@ -109,7 +109,7 @@ extends RenderTeiController
                 ->getManager()
                 ->createQueryBuilder()
                 ->select('S, A')
-                ->from('AppBundle:SourceArticle', 'S')
+                ->from('\AppBundle\Entity\SourceArticle', 'S')
                 ->leftJoin('S.isPartOf', 'A')
                 ->where('A.status IN (1) AND A.uid IN(:refs) AND A.language=:language')
                 ->orderBy('S.dateCreated', 'ASC')

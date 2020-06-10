@@ -171,7 +171,7 @@ implements EventSubscriberInterface
                             ->createQueryBuilder();
 
                         $qb->select([ 'E' ])
-                            ->from('AppBundle:' . ucfirst($routeName), 'E')
+                            ->from('\AppBundle\Entity\\' . ucfirst($routeName), 'E')
                             ->where('E.status IN (0,1)')
                             ;
                         $query = $qb->getQuery();
@@ -186,6 +186,7 @@ implements EventSubscriberInterface
                                 $url = $this->router->generate($routeName, [ 'id' => $entity->getId(), '_locale' => $defaults['_locale'] ],
                                                          UrlGeneratorInterface::ABSOLUTE_URL);
                             }
+
                             $this->addUrlDescription($urlDescriptions, $routeName . $entity->getId(), $defaults['_locale'], [ 'url' => $url, 'urlset' => $urlset ]);
                         }
                         break;
@@ -193,7 +194,7 @@ implements EventSubscriberInterface
                     case 'place':
                         $urlset = $routeName;
                         $places = $this->entityManager
-                                ->getRepository('AppBundle:Place')
+                                ->getRepository('\AppBundle\Entity\Place')
                                 ->findBy([ 'type' => 'inhabited place' ],
                                          [ 'name' => 'ASC' ]);
 
@@ -207,6 +208,7 @@ implements EventSubscriberInterface
                                 $url = $this->router->generate($routeName, [ 'id' => $entity->getId(), '_locale' => $defaults['_locale'] ],
                                                          UrlGeneratorInterface::ABSOLUTE_URL);
                             }
+
                             $this->addUrlDescription($urlDescriptions, $routeName  . $entity->getId(), $defaults['_locale'], [ 'url' => $url, 'urlset' => $urlset ]);
                         }
                         break;
@@ -217,7 +219,7 @@ implements EventSubscriberInterface
                             ->createQueryBuilder();
 
                         $qb->select([ 'B' ])
-                            ->from('AppBundle:Bibitem', 'B')
+                            ->from('\AppBundle\Entity\Bibitem', 'B')
                             ->where('B.status IN (0,1)')
                             ;
                         $query = $qb->getQuery();
@@ -242,7 +244,7 @@ implements EventSubscriberInterface
                             ->createQueryBuilder();
 
                         $qb->select('A')
-                                ->from('AppBundle:Article', 'A')
+                                ->from('\AppBundle\Entity\Article', 'A')
                                 ;
                         foreach ($criteria as $field => $cond) {
                             $qb->andWhere('A.' . $field
@@ -261,6 +263,7 @@ implements EventSubscriberInterface
                                 $url = $this->router->generate($routeName, [ 'uid' => $article->getUid(), '_locale' => $defaults['_locale'] ],
                                                          UrlGeneratorInterface::ABSOLUTE_URL);
                             }
+
                             $this->addUrlDescription($urlDescriptions, $article->getUid(), $defaults['_locale'], [ 'url' => $url, 'urlset' => $urlset ]);
                         }
 

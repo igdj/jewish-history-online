@@ -32,7 +32,7 @@ extends BaseController
                 'P',
                 "CONCAT(COALESCE(P.familyName,P.givenName), ' ', COALESCE(P.givenName, '')) HIDDEN nameSort"
             ])
-            ->from('AppBundle:Person', 'P')
+            ->from('\AppBundle\Entity\Person', 'P')
             ->where('P.status IN (0,1)')
             ->orderBy('nameSort')
             ;
@@ -64,7 +64,7 @@ extends BaseController
                                     \Twig_Environment $twig)
     {
         $repo = $this->getDoctrine()
-                ->getRepository('AppBundle:Person');
+                ->getRepository('\AppBundle\Entity\Person');
 
         $query = $repo
                 ->createQueryBuilder('P')
@@ -106,7 +106,7 @@ extends BaseController
                                  $id = null, $gnd = null)
     {
         $personRepo = $this->getDoctrine()
-                ->getRepository('AppBundle:Person');
+                ->getRepository('\AppBundle\Entity\Person');
 
         if (!empty($id)) {
             $person = $personRepo->findOneById($id);

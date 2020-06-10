@@ -302,9 +302,9 @@ extends BaseController
         $em = $this->getDoctrine()->getEntityManager();
         $qb = $em->createQueryBuilder();
         $qb->select("P.id, CONCAT(COALESCE(P.givenName,''), ' ', COALESCE(P.familyName, '')) AS name, count(AR.id) AS counter")
-            ->from('AppBundle:Person', 'P')
+            ->from('\AppBundle\Entity\Person', 'P')
             ->join('P.articleReferences', 'AR')
-            ->join('AppBundle:Article', 'A',
+            ->join('\AppBundle\Entity\Article', 'A',
                    \Doctrine\ORM\Query\Expr\Join::WITH,
                    'A = AR.article')
             ->where('P.status IN (0,1)')
@@ -331,11 +331,11 @@ extends BaseController
 
         $qb = $em->createQueryBuilder();
         $qb->select('AP.id AS prId, A.id as articleId', 'P.id AS personId')
-            ->from('AppBundle:ArticlePerson', 'AP')
-            ->join('AppBundle:Article', 'A',
+            ->from('\AppBundle\Entity\ArticlePerson', 'AP')
+            ->join('\AppBundle\Entity\Article', 'A',
                    \Doctrine\ORM\Query\Expr\Join::WITH,
                    'A = AP.article')
-            ->join('AppBundle:Person', 'P',
+            ->join('\AppBundle\Entity\Person', 'P',
                    \Doctrine\ORM\Query\Expr\Join::WITH,
                    'P = AP.person')
             ->where('A.status = 1')
@@ -380,7 +380,7 @@ extends BaseController
     protected function buildNode($type, $id)
     {
         $repo = $this->getDoctrine()
-                ->getRepository('AppBundle:' . ucfirst($type));
+                ->getRepository('\AppBundle\Entity\\' . ucfirst($type));
 
         $entity = $repo->findOneById($id);
 
@@ -429,11 +429,11 @@ extends BaseController
 
             $qb = $em->createQueryBuilder();
             $qb->select('A.id AS articleId, T.id AS targetId')
-                ->from('AppBundle:' . $relation, 'AR')
-                ->join('AppBundle:Article', 'A',
+                ->from('\AppBundle\Entity\\' . $relation, 'AR')
+                ->join('\AppBundle\Entity\Article', 'A',
                     \Doctrine\ORM\Query\Expr\Join::WITH,
                     'A = AR.article')
-                ->join('AppBundle:' . $target, 'T',
+                ->join('\AppBundle\Entity\\' . $target, 'T',
                        \Doctrine\ORM\Query\Expr\Join::WITH,
                        'T = AR.' . $type)
                 ->where('A.status = 1')

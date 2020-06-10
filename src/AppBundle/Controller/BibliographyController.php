@@ -55,7 +55,7 @@ extends BaseController
                 ->createQueryBuilder();
 
         $qb->select([ 'B', "B.slug HIDDEN nameSort" ])
-            ->from('AppBundle:Bibitem', 'B')
+            ->from('\AppBundle\Entity\Bibitem', 'B')
             ->where('B.status IN (0,1)')
             ->orderBy('nameSort')
             ;
@@ -75,7 +75,7 @@ extends BaseController
     public function isbnBeaconAction(TranslatorInterface $translator)
     {
         $bibitemRepo = $this->getDoctrine()
-                ->getRepository('AppBundle:Bibitem');
+                ->getRepository('\AppBundle\Entity\Bibitem');
 
         $query = $bibitemRepo
                 ->createQueryBuilder('B')
@@ -150,7 +150,7 @@ extends BaseController
                                  $id = null, $slug = null, $isbn = null)
     {
         $bibitemRepo = $this->getDoctrine()
-                ->getRepository('AppBundle:Bibitem');
+                ->getRepository('\AppBundle\Entity\Bibitem');
 
         if (!empty($id)) {
             $bibitem = $bibitemRepo->findOneById($id);
@@ -229,7 +229,7 @@ extends BaseController
             if (preg_match('/^urn:bibnum:(.+)$/', $id, $matches)) {
                 $slug = $matches[1];
                 $bibitemRepo = $this->getDoctrine()
-                        ->getRepository('AppBundle:Bibitem');
+                        ->getRepository('\AppBundle\Entity\Bibitem');
                 $bibitem = $bibitemRepo->findOneBySlug($slug);
             }
         }

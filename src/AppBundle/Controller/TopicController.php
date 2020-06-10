@@ -129,7 +129,7 @@ extends RenderTeiController
         $criteria = [ 'slug' => $slug, 'language' => \AppBundle\Utils\Iso639::code1to3($locale) ];
 
         $article = $this->getDoctrine()
-                ->getRepository('AppBundle:Article')
+                ->getRepository('\AppBundle\Entity\Article')
                 ->findOneBy($criteria);
         if (isset($article)) {
             $meta = $article;
@@ -210,7 +210,7 @@ extends RenderTeiController
                 ->getManager()
                 ->createQueryBuilder()
                 ->select('A, S')
-                ->from('AppBundle:SourceArticle', 'S')
+                ->from('\AppBundle\Entity\SourceArticle', 'S')
                 ->leftJoin('S.isPartOf', 'A')
                 ->where("A.status IN (1) AND A.keywords LIKE :topic AND A.articleSection <> 'background'"
                         . (!empty($language) ? ' AND A.language=:language' : ''))

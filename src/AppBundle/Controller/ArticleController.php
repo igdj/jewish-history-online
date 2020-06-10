@@ -120,13 +120,13 @@ extends RenderTeiController
         $glossaryLookup = $this->buildGlossaryLookup($glossaryTerms, $request->getLocale());
 
         $related = $this->getDoctrine()
-            ->getRepository('AppBundle:Article')
+            ->getRepository('\AppBundle\Entity\Article')
             ->findBy([ 'isPartOf' => $article ],
                      [ 'dateCreated' => 'ASC', 'name' => 'ASC']);
 
         $localeSwitch = [];
         $translations = $this->getDoctrine()
-            ->getRepository('AppBundle:Article')
+            ->getRepository('\AppBundle\Entity\Article')
             ->findBy([ 'uid' => $article->getUid() ]);
         foreach ($translations as $translation) {
             if ($article->getLanguage() != $translation->getLanguage()) {
@@ -189,7 +189,7 @@ extends RenderTeiController
         $qb->select([ 'A',
                 $sort . ' HIDDEN articleSort'
             ])
-            ->from('AppBundle:Article', 'A')
+            ->from('\AppBundle\Entity\Article', 'A')
             ->where('A.status = 1')
             ->andWhere('A.language = :language')
             ->andWhere("A.articleSection IN ('background', 'interpretation')")
@@ -246,7 +246,7 @@ extends RenderTeiController
         }
 
         $article = $this->getDoctrine()
-                ->getRepository('AppBundle:Article')
+                ->getRepository('\AppBundle\Entity\Article')
                 ->findOneBy($criteria);
 
         if (!$article) {

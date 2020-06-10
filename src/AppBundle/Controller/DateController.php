@@ -30,7 +30,7 @@ extends BaseController
                 ->getManager()
                 ->createQueryBuilder()
                 ->select('S, A')
-                ->from('AppBundle:SourceArticle', 'S')
+                ->from('\AppBundle\Entity\SourceArticle', 'S')
                 ->leftJoin('S.isPartOf', 'A')
                 ->orderBy('S.dateCreated', 'ASC')
                 ;
@@ -62,7 +62,7 @@ extends BaseController
 
         $qb->select([
                 'E'            ])
-            ->from('AppBundle:Event', 'E')
+            ->from('\AppBundle\Entity\Event', 'E')
             ->where('E.status IN (0,1) AND E.startDate IS NOT NULL AND E.name IS NOT NULL')
             ->orderBy("CAST(E.startDate AS integer), E.startDate")
             ;
@@ -84,7 +84,7 @@ extends BaseController
     public function detailAction(Request $request, $id = null, $gnd = null)
     {
         $eventRepo = $this->getDoctrine()
-                ->getRepository('AppBundle:Event');
+                ->getRepository('\AppBundle\Entity\Event');
 
         if (!empty($id)) {
             $event = $eventRepo->findOneById($id);

@@ -188,7 +188,7 @@ extends Command
         // currently beacon, entityfacts and wikidata
         $gndBeacon = $this->loadGndBeacon();
 
-        $personRepository = $this->em->getRepository('AppBundle:Person');
+        $personRepository = $this->em->getRepository('\AppBundle\Entity\Person');
         $persons = $personRepository->findBy([ 'status' => [0, 1] ]);
         foreach ($persons as $person) {
             $persist = false;
@@ -311,13 +311,13 @@ extends Command
 
                         $place = null;
                         if ($placeInfo['name'] == 'Altona') {
-                            $places = $this->em->getRepository('AppBundle:Place')->findByTgn('7012310');
+                            $places = $this->em->getRepository('\AppBundle\Entiy\Place')->findByTgn('7012310');
                         }
                         else if (!empty($placeInfo['gnd'])) {
-                            $places = $this->em->getRepository('AppBundle:Place')->findByGnd($placeInfo['gnd']);
+                            $places = $this->em->getRepository('\AppBundle\Entiy\Place')->findByGnd($placeInfo['gnd']);
                             if (empty($places)) {
                                 // try to lookup by name
-                                $places = $this->em->getRepository('AppBundle:Place')->findByName($placeInfo['name']);
+                                $places = $this->em->getRepository('\AppBundle\Entiy\Place')->findByName($placeInfo['name']);
                                 if (count($places) > 1) {
                                     $places[] = []; // skip if there are multiple matches
                                 }
@@ -339,7 +339,7 @@ extends Command
                                                    . '(\d+)$/', $uri, $matches))
                                     {
                                         $geonamesId = $matches[1];
-                                        $places = $this->em->getRepository('AppBundle:Place')->findByGeonames($geonamesId);
+                                        $places = $this->em->getRepository('\AppBundle\Entiy\Place')->findByGeonames($geonamesId);
                                         if (!empty($places)) {
                                             $place = $places[0];
                                         }
@@ -374,7 +374,7 @@ extends Command
         // currently only geonames
         // TODO: maybe get outlines
         // http://www.geonames.org/servlet/geonames?&srv=780&geonameId=2921044&type=json
-        $placeRepository = $this->em->getRepository('AppBundle:Place');
+        $placeRepository = $this->em->getRepository('\AppBundle\Entiy\Place');
 
         foreach ([
                 'nation', 'country',
@@ -520,7 +520,7 @@ extends Command
         // currently beacon
         $gndBeacon = $this->loadGndBeacon([ 'dasjuedischehamburg' => 'BEACON-GND-ORG-dasjuedischehamburg.txt' ]);
 
-        $organizationRepository = $this->em->getRepository('AppBundle:Organization');
+        $organizationRepository = $this->em->getRepository('\AppBundle\Entity\Organization');
         /*
         foreach ($organizationRepository->findAll() as $organization) {
             $organization->setAlternateName($organization->getAlternateName());
@@ -554,7 +554,7 @@ extends Command
 
         // currently only homepages
         /*
-        $organizationRepository = $this->em->getRepository('AppBundle:Organization');
+        $organizationRepository = $this->em->getRepository('\AppBundle\Entity\Organization');
         $organizations = $organizationRepository->findBy([ 'url' => null ]);
         foreach ($organizations as $organization) {
             $persist = false;
@@ -618,7 +618,7 @@ extends Command
             $info_by_geonames[$info['geonameId']] = $info;
         }
 
-        $placeRepository = $this->em->getRepository('AppBundle:Place');
+        $placeRepository = $this->em->getRepository('\AppBundle\Entity\Place');
         foreach ([ 'nation' ] as $type) {
             $places = $placeRepository->findBy([ 'type' => $type ]);
             foreach ($places as $country) {
@@ -672,7 +672,7 @@ extends Command
     protected function enhanceBibitem()
     {
         // currently googleapis.com/books
-        $bibitemRepository = $this->em->getRepository('AppBundle:Bibitem');
+        $bibitemRepository = $this->em->getRepository('\AppBundle\Entity\Bibitem');
         $items = $bibitemRepository->findBy([ 'status' => [0, 1] ]);
         foreach ($items as $item) {
             $persist = false;

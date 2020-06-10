@@ -87,7 +87,7 @@ extends ArticleController
             $relatedCriteria->orderBy([ 'dateCreated' => 'ASC', 'name' => 'ASC' ]);
 
             $related = $this->getDoctrine()
-                ->getRepository('AppBundle:Article')
+                ->getRepository('\AppBundle\Entity\Article')
                 ->matching($relatedCriteria);
         }
 
@@ -319,7 +319,7 @@ extends ArticleController
         }
 
         $article = $this->getDoctrine()
-                ->getRepository('AppBundle:SourceArticle')
+                ->getRepository('\AppBundle\Entity\SourceArticle')
                 ->findOneBy($criteria);
 
         if (!$article) {
@@ -375,7 +375,7 @@ extends ArticleController
         $fs = new \Symfony\Component\Filesystem\Filesystem();
 
         $result = $this->getDoctrine()
-                ->getRepository('AppBundle:SourceArticle')
+                ->getRepository('\AppBundle\Entity\SourceArticle')
                 ->findByUid($uid);
 
         $ret = [];
@@ -555,7 +555,7 @@ extends ArticleController
         }
 
         return $this->getDoctrine()
-                ->getRepository('AppBundle:SourceArticle')
+                ->getRepository('\AppBundle\Entity\SourceArticle')
                 ->findOneBy($criteria);
     }
 

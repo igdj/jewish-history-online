@@ -48,7 +48,7 @@ extends BaseController
             $ids = explode(',', $ids);
             $qb = $this->getDoctrine()
                     ->getRepository(in_array($mode, [ 'mentioned', 'landmark' ])
-                                             ? 'AppBundle:Article' : 'AppBundle:SourceArticle')
+                                             ? '\AppBundle\Entity\Article' : '\AppBundle\Entity\SourceArticle')
                     ->createQueryBuilder('A')
                     ;
 
@@ -113,7 +113,7 @@ extends BaseController
     public function indexAction(TranslatorInterface $translator)
     {
         $places = $this->getDoctrine()
-                ->getRepository('AppBundle:Place')
+                ->getRepository('\AppBundle\Entity\Place')
                 ->findBy([ 'type' => 'inhabited place' ],
                          [ 'name' => 'ASC' ]);
 
@@ -132,7 +132,7 @@ extends BaseController
     public function detailAction(Request $request, $id = null, $tgn = null)
     {
         $placeRepo = $this->getDoctrine()
-                ->getRepository('AppBundle:Place');
+                ->getRepository('\AppBundle\Entity\Place');
 
         if (!empty($id)) {
             $place = $placeRepo->findOneById($id);
@@ -163,7 +163,7 @@ extends BaseController
                 'P',
                 "CONCAT(COALESCE(P.familyName,P.givenName), ' ', COALESCE(P.givenName, '')) HIDDEN nameSort"
             ])
-            ->from('AppBundle:Person', 'P')
+            ->from('\AppBundle\Entity\Person', 'P')
             ->where("P.birthPlace = :place OR P.deathPlace = :place")
             ->andWhere('P.status <> -1')
             ->orderBy('P.birthDate')
@@ -192,7 +192,7 @@ extends BaseController
     public function landmarkDetailAction(Request $request, $id = null)
     {
         $landmarkRepo = $this->getDoctrine()
-                ->getRepository('AppBundle:Landmark');
+                ->getRepository('\AppBundle\Entity\Landmark');
 
         if (!empty($id)) {
             $landmark = $landmarkRepo->findOneById($id);

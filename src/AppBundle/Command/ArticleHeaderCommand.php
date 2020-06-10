@@ -119,7 +119,7 @@ extends EntityCommandBase
             $this->em->persist($entity);
 
             // set the (non-deleted)sources belonging to this article to publish as well
-            $sourceArticles = $this->em->getRepository('AppBundle:Article')
+            $sourceArticles = $this->em->getRepository('\AppBundle\Entity\Article')
                 ->findBy([ 'isPartOf' => $entity  ],
                          [ 'dateCreated' => 'ASC', 'name' => 'ASC']);
 
@@ -233,7 +233,7 @@ extends EntityCommandBase
                     $currentValues = $entity->$methodGet();
                     foreach ($value as $singleValue) {
                         $criteria = [ $key => $singleValue ];
-                        $relatedEntity = $this->em->getRepository('AppBundle:' . $repoClass)
+                        $relatedEntity = $this->em->getRepository('\AppBundle\Entity\\' . $repoClass)
                             ->findOneBy($criteria);
 
                         if (!is_null($relatedEntity)) {
@@ -258,7 +258,7 @@ extends EntityCommandBase
                     }
                 }
                 else {
-                    $relatedEntity = $this->em->getRepository('AppBundle:' . $repoClass)
+                    $relatedEntity = $this->em->getRepository('\AppBundle\Entity\\' . $repoClass)
                         ->findOneBy($criteria);
 
                     if (!is_null($relatedEntity)) {

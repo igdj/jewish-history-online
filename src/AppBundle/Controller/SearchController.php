@@ -261,7 +261,7 @@ extends BaseController
         $articles = [];
         if (!empty($articleIds)) {
             $qb = $this->getDoctrine()
-                    ->getRepository('AppBundle:Article')
+                    ->getRepository('\AppBundle\Entity\Article')
                     ->createQueryBuilder('A')
                     ;
             $qb->select('A.id, A.uid, A.slug, A.articleSection')

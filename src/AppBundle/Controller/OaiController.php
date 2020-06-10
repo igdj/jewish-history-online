@@ -431,7 +431,7 @@ implements InterfaceRepository
             ->createQueryBuilder();
 
         $qb->select('A.uid')
-            ->from('AppBundle:Article', 'A');
+            ->from('\AppBundle\Entity\Article', 'A');
 
         foreach ($criteria as $field => $cond) {
             $qb->andWhere('A.' . $field

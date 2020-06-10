@@ -19,7 +19,7 @@ extends BaseController
                                 TranslatorInterface $translator)
     {
         $organizations = $this->getDoctrine()
-                ->getRepository('AppBundle:Organization')
+                ->getRepository('\AppBundle\Entity\Organization')
                 ->findBy([ 'status' => [ 0, 1 ] ],
                          [ 'name' => 'ASC' ]);
 
@@ -56,7 +56,7 @@ extends BaseController
     public function gndBeaconAction(TranslatorInterface $translator)
     {
         $repo = $this->getDoctrine()
-                ->getRepository('AppBundle:Organization');
+                ->getRepository('\AppBundle\Entity\Organization');
 
         $query = $repo
                 ->createQueryBuilder('O')
@@ -97,7 +97,7 @@ extends BaseController
     public function detailAction(Request $request, $id = null, $gnd = null)
     {
         $organizationRepo = $this->getDoctrine()
-                ->getRepository('AppBundle:Organization');
+                ->getRepository('\AppBundle\Entity\Organization');
 
         if (!empty($id)) {
             $organization = $organizationRepo->findOneById($id);

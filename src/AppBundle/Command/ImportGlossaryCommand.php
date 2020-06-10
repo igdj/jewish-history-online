@@ -60,7 +60,7 @@ extends Command
         $reader->setHeaderRowNumber(0);
         $count = 0;
 
-        $termRepository = $this->em->getRepository('AppBundle:GlossaryTerm');
+        $termRepository = $this->em->getRepository('\AppBundle\Entity\GlossaryTerm');
 
         foreach ($reader as $row) {
             $unique_values = array_unique(array_values($row));

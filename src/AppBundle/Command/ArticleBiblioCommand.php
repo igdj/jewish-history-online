@@ -57,7 +57,7 @@ extends EntityCommandBase
             }
 
             $query = $this->em
-                ->createQuery('SELECT DISTINCT b.slug FROM AppBundle:Bibitem b WHERE b.status >= 0')
+                ->createQuery('SELECT DISTINCT b.slug FROM \AppBundle\Entity\Bibitem b WHERE b.status >= 0')
                 ;
 
             $items = array_flip(array_map(function ($res) { return $res['slug']; },
