@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="{{ app.request.getLocale() }}"
+<html class="no-js" lang="{{ app.request.getLocale() }}{% if 'en' == app.request.getLocale() %}-us{% endif %}"
       prefix="og: http://ogp.me/ns# profile: http://ogp.me/ns/profile# place: http://ogp.me/ns/place# books: http://ogp.me/ns/books#">
     <head>
         <meta charset="utf-8" />
@@ -10,23 +10,21 @@
         {% endif %}
         {{ siteName|trans }}
         </title>
-        {# TODO: switch to https://github.com/mnater/Hyphenopoly #}
-        <script src="{{ app.request.basepath }}/vendor/Hyphenator-5.3.0/Hyphenator_Loader.js" type="text/javascript"></script>
+        {# see https://github.com/mnater/Hyphenopoly#usage-browser #}
         <script type="text/javascript">
-            Hyphenator_Loader.init(
-                {
-                    "en": "automatically",
-                    "de": "Silbentrennungsalgorithmus"
+            var Hyphenopoly = {
+                require: {
+                    "de": "Silbentrennungsalgorithmus",
+                    "en-us": "Supercalifragilisticexpialidocious"
                 },
-                "{{ app.request.basepath }}/vendor/Hyphenator-5.3.0/Hyphenator.js",
-                {
-                    'classname': 'dta-p',
-                    'useCSS3hyphenation': true,
-                    // displaytogglebox : true,
-                    // 'hyphenchar': '|' // just for debugging
+                setup: {
+                    selectors: {
+                        ".dta-p": {}
+                    }
                 }
-            );
+            };
         </script>
+        <script src="{{ app.request.basepath }}/vendor/Hyphenopoly-4.5.0/Hyphenopoly_Loader.js" type="text/javascript"></script>
 
         {% if pageMeta is defined %}
             {% if pageMeta.og is defined %}
