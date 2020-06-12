@@ -65,8 +65,8 @@
         if (!String.prototype.startsWith) {
             // Polyfill for IE 11
             String.prototype.startsWith = function(searchString, position) {
-              position = position || 0;
-              return this.indexOf(searchString, position) === position;
+                position = position || 0;
+                return this.indexOf(searchString, position) === position;
             };
         }
         </script>
@@ -119,8 +119,6 @@
                 return false;
             });
 
-            // $('#back-to-top').tooltip('show');
-
             // typeahead for search
             var $input = $('#header-search');
             $input.typeahead({
@@ -152,7 +150,7 @@
                     }
                 }
                 else {
-                  // Nothing is active so it is a new value (or maybe empty value)
+                    // Nothing is active so it is a new value (or maybe empty value)
                 }
             });
         });
