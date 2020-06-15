@@ -8,10 +8,11 @@
     {{ map.head() }}
 
     <script src="{{ app.request.basepath }}/js/screenfull.min.js"></script>
-    <script src="{{ app.request.basepath }}/viewer/shared/iview2/js/iview-client-base.min.js"></script>
-    <script src="{{ app.request.basepath }}/viewer/shared/iview2/js/iview-client-desktop.min.js"></script>
-    <script src="{{ app.request.basepath }}/viewer/shared/iview2/js/iview-client-mets.js"></script>
-    <link href="{{ app.request.basepath }}/viewer/shared/iview2/css/default.css" type="text/css" rel="stylesheet">
+    <script src="{{ app.request.basepath }}/viewer/shared/iview2-2018.06/js/iview-client-base.min.js"></script>
+    <script src="{{ app.request.basepath }}/viewer/shared/iview2-2018.06/js/iview-client-desktop.min.js"></script>
+    <script src="{{ app.request.basepath }}/viewer/shared/iview2-2018.06/js/iview-client-mets.js"></script>
+    <script src="{{ app.request.basepath }}/viewer/shared/iview2-2018.06/js/iview-client-tei.js"></script>
+    <link href="{{ app.request.basepath }}/viewer/shared/iview2-2018.06/css/default.css" type="text/css" rel="stylesheet">
 
     {# TODO: move to some shared style-sheet #}
     <style>
@@ -29,8 +30,8 @@
     {{ entityLookup.head(entity_lookup, bibitem_lookup, glossary_lookup) }}
     <script>
         function setViewerClose(id) {
-            var $button = $( '[data-id="CloseViewerGroup"] > button' );
-            var $span = $( '[data-id="CloseViewerGroup"] span.glyphicon' );
+            var $button = $( '[data-id="CloseViewerButton"]' );
+            var $span = $( '[data-id="CloseViewerButton"] .glyphicon' );
             if (screenfull.isFullscreen) {
                 $button.attr('title', '{{ 'Exit Fullscreen Mode'|trans }}');
                 $span.removeClass('glyphicon-fullscreen');
@@ -82,10 +83,11 @@
                 derivate: "{{ path }}",
                 i18nURL: "{{ app.request.basepath }}/viewer/shared/iview2-i18n/{lang}.json",
                 lang: "{{ app.request.locale }}",
-                text: {
-                    // showOnStart: ["transcription"], // we set this below depending on viewer width
-                    enabled: true
-                },
+                "text.enabled": "true",
+                // TODO:
+                "text.showOnStart": [
+                    // "transcription" // set this dynamically based on viewer-width
+                ],
                 metadataURL: "",
                 objId: "",
                 webApplicationBaseURL: "{{ app.request.basepath }}/viewer/shared",
@@ -115,11 +117,15 @@
                 }
             };
 
+            // display based on viewer-width
+            // TODO: for english, prefer translation of transcription for
+            // non-enlish texts
             if ($( '#image-viewer' ).width() > 800) {
-                viewer_options.text.showOnStart = [ 'transcription' ];
+                viewer_options["text.showOnStart"] = [ 'transcription' ];
             }
 
-            window['viewer'] = new mycore.viewer.MyCoReViewer($( '#image-viewer' ), viewer_options);
+            window['viewer'] = new mycore.viewer.MyCoReViewer($( '#image-viewer' ),
+                                                              viewer_options);
 
             // a bit of a hack - some event or setting would be nicer
             setTimeout(function() {

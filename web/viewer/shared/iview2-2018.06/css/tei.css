@@ -1,0 +1,456 @@
+[data-id^=layer-] {
+  /* quote mess */
+  /* place holders */
+  /* dramae */
+  /* lb @n */
+  /* renditions inline */
+  /* renditions block */
+  /* cast lists */
+  /* tables */
+  /* lists */
+  /* all things brace ... */
+}
+[data-id^=layer-] .head {
+  text-align: center;
+  font-size: 1.2em;
+  margin-top: 1em;
+}
+[data-id^=layer-] .dta-head {
+  text-align: center;
+  font-size: 1.2em;
+  margin-bottom: 0.5em;
+}
+[data-id^=layer-] .fw-top {
+  text-align: center;
+  margin-bottom: 2em;
+  color: #666666;
+}
+[data-id^=layer-] .fw-pageNum {
+  display: none;
+}
+[data-id^=layer-] .fw-bottom-sig {
+  margin-top: 1em;
+  font-size: .8em;
+  color: #666666;
+}
+[data-id^=layer-] .fw-bottom-catch {
+  text-align: right;
+  margin-top: 1em;
+  margin-right: 1em;
+  font-size: .8em;
+  color: #666666;
+}
+[data-id^=layer-] blockquote:before,
+[data-id^=layer-] blockquote:after,
+[data-id^=layer-] q:before,
+[data-id^=layer-] q:after {
+  /* see http://www.paulchaplin.com/blog/css-reset-and-quirky-quotes */
+  content: "";
+  content: none;
+}
+[data-id^=layer-] .ph,
+[data-id^=layer-] .phbl {
+  color: #666666;
+}
+[data-id^=layer-] .phbl {
+  display: block;
+  text-align: center;
+}
+[data-id^=layer-] .titlepage {
+  text-align: center;
+}
+[data-id^=layer-] .byline {
+  font-size: .9em;
+  margin: 1em 0;
+}
+[data-id^=layer-] .dta-anzeige {
+  color: #aaaaaa;
+}
+[data-id^=layer-] .dedication {
+  padding-left: 2em;
+}
+[data-id^=layer-] .footnote {
+  color: #333;
+  font-size: .8em;
+  margin-top: .5em;
+  margin-left: 1em;
+}
+[data-id^=layer-] .endnote {
+  color: #333;
+  font-size: .8em;
+  margin-top: .5em;
+  margin-bottom: 0.5em;
+}
+[data-id^=layer-] .endnote-indent {
+  text-indent: 1em;
+}
+[data-id^=layer-] .fn-intext {
+  vertical-align: super;
+  font-size: 0.8em;
+}
+[data-id^=layer-] .fn-sign {
+  vertical-align: super;
+  font-size: 0.8em;
+}
+[data-id^=layer-] .dta-marginal {
+  position: absolute;
+  width: 140px;
+  text-indent: 0;
+  background: #fff;
+  padding: 0 4px;
+  border: 1px solid #D1C5A4;
+  font-size: smaller;
+  z-index: 10000;
+}
+[data-id^=layer-] .dta-marginal-left {
+  left: -150px;
+  text-align: right;
+}
+[data-id^=layer-] .dta-marginal-right {
+  right: -150px;
+  text-align: left;
+}
+[data-id^=layer-] .dta-argument {
+  text-align: center;
+  font-size: 0.9em;
+}
+[data-id^=layer-] .dta-metamark {
+  color: #666666;
+}
+[data-id^=layer-] .dta-cb {
+  font-size: .8em;
+  color: #666;
+  text-align: center;
+  display: block;
+  margin: 5px;
+}
+[data-id^=layer-] .poem {
+  padding-left: 2em;
+  margin-bottom: 1em;
+}
+[data-id^=layer-] .dta-salute {
+  margin-top: 1em;
+  display: inline;
+}
+[data-id^=layer-] .speaker {
+  font-weight: bold;
+}
+[data-id^=layer-] .stage {
+  font-style: italic;
+  font-size: 0.9em;
+}
+[data-id^=layer-] .stage .c {
+  font-style: italic;
+  font-size: 0.9em;
+}
+[data-id^=layer-] div.stage {
+  margin-bottom: 0.5em;
+}
+[data-id^=layer-] div.dta-figure {
+  font-size: .9em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+[data-id^=layer-] div.dta-figure p {
+  margin-left: 1em;
+  display: inline;
+}
+[data-id^=layer-] .titlepart {
+  font-size: 1em;
+}
+[data-id^=layer-] .titlepart-main {
+  margin-bottom: 1em;
+  font-size: 1.6em;
+}
+[data-id^=layer-] .titlepart-volume {
+  font-size: 1em;
+}
+[data-id^=layer-] .titlepart-edition {
+  font-size: 1em;
+}
+[data-id^=layer-] .titlepart-copyright {
+  font-size: 1em;
+}
+[data-id^=layer-] .titlepart-desc {
+  font-size: 1em;
+}
+[data-id^=layer-] .titlepart-sub {
+  font-size: 1.3em;
+  margin-bottom: 0.5em;
+}
+[data-id^=layer-] .docauthor {
+  font-size: 1em;
+  margin-bottom: 0.5em;
+}
+[data-id^=layer-] .gap {
+  color: #666666;
+}
+[data-id^=layer-] .dta-foreign {
+  color: #666666;
+}
+[data-id^=layer-] .dta-foreign:before {
+  content: "[";
+}
+[data-id^=layer-] .dta-foreign:after {
+  content: "]";
+}
+[data-id^=layer-] .dta-corr {
+  border-bottom: dotted 2px #97002d;
+}
+[data-id^=layer-] .dta-reg {
+  border-bottom: dotted 2px #2d9700;
+}
+[data-id^=layer-] .dta-abbr {
+  border-bottom: dotted 2px #002d97;
+}
+[data-id^=layer-] .dta-supplied {
+  color: #2d9700;
+}
+[data-id^=layer-] .dta-del {
+  background: #f0f0f0;
+  color: darkred;
+  text-decoration: line-through;
+}
+[data-id^=layer-] .dta-add {
+  background: #f0f0f0;
+  color: #006400;
+}
+[data-id^=layer-] .dta-sp {
+  margin-bottom: 1em;
+}
+[data-id^=layer-] .dta-in-sp {
+  display: inline;
+}
+[data-id^=layer-] .dta-actor {
+  float: right;
+}
+[data-id^=layer-] .dta-lb-n {
+  float: right;
+}
+[data-id^=layer-] .aq {
+  font-family: sans-serif;
+}
+[data-id^=layer-] .b {
+  font-weight: bold;
+}
+[data-id^=layer-] .blue {
+  color: #0000ff;
+}
+[data-id^=layer-] .fr {
+  border: 1px dotted #c0c0c0;
+}
+[data-id^=layer-] .g {
+  letter-spacing: 0.125em;
+}
+[data-id^=layer-] .g:before {
+  content: '';
+  margin-left: 0.125em;
+}
+[data-id^=layer-] .g:after {
+  content: '';
+  margin-right: 0em;
+}
+[data-id^=layer-] .i {
+  font-style: italic;
+}
+[data-id^=layer-] .in {
+  font-size: 150%;
+}
+[data-id^=layer-] .k {
+  font-variant: small-caps;
+}
+[data-id^=layer-] .larger {
+  font-size: larger;
+}
+[data-id^=layer-] .red {
+  color: #ff0000;
+}
+[data-id^=layer-] .s {
+  text-decoration: line-through;
+}
+[data-id^=layer-] .smaller {
+  font-size: smaller;
+}
+[data-id^=layer-] .sub {
+  vertical-align: sub;
+  font-size: 0.7em;
+}
+[data-id^=layer-] .sup {
+  vertical-align: super;
+  font-size: 0.7em;
+}
+[data-id^=layer-] .u {
+  text-decoration: underline;
+}
+[data-id^=layer-] .uu {
+  border-bottom: double 3px #000000;
+}
+[data-id^=layer-] .c {
+  display: block;
+  text-align: center;
+}
+[data-id^=layer-] .et {
+  display: block;
+  margin-left: 2em;
+  text-indent: 0;
+}
+[data-id^=layer-] .et2 {
+  display: block;
+  margin-left: 4em;
+  text-indent: 0;
+}
+[data-id^=layer-] .et3 {
+  display: block;
+  margin-left: 6em;
+  text-indent: 0;
+}
+[data-id^=layer-] .dta-in-sp .et {
+  display: inline;
+  text-indent: 2em;
+}
+[data-id^=layer-] .right {
+  display: block;
+  text-align: right;
+}
+[data-id^=layer-] .cw {
+  text-align: right;
+}
+[data-id^=layer-] table.dta-castgroup {
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0;
+  width: 100%;
+}
+[data-id^=layer-] td.castitem {
+  border-right: 1px solid #333;
+  padding-right: 10px;
+  padding-left: 0;
+  padding-bottom: 5px;
+}
+[data-id^=layer-] .castitem {
+  margin-bottom: 5px;
+}
+[data-id^=layer-] td.roledesc {
+  vertical-align: middle;
+  padding-left: 5px;
+}
+[data-id^=layer-] .dta-table {
+  margin-top: 0;
+  margin-left: auto;
+  margin-right: auto;
+  background: #fff;
+  border-collapse: collapse;
+}
+[data-id^=layer-] .dta-table td {
+  vertical-align: top;
+  border: 1px solid #ccc;
+  padding: 3px;
+}
+[data-id^=layer-] caption h1,
+[data-id^=layer-] caption h2,
+[data-id^=layer-] caption h3,
+[data-id^=layer-] caption h4,
+[data-id^=layer-] caption h5,
+[data-id^=layer-] caption h6 {
+  font-size: 1em;
+  white-space: nowrap;
+  padding-bottom: 5px;
+}
+[data-id^=layer-] ul.dta {
+  list-style-type: none;
+  padding-left: 2em;
+}
+[data-id^=layer-] ul.dta li {
+  margin-bottom: 3px;
+}
+[data-id^=layer-] .dta-bibl {
+  font-size: 0.9em;
+}
+[data-id^=layer-] .dta-columntext {
+  white-space: normal;
+}
+[data-id^=layer-] .dta-columntext td {
+  padding-left: 10px;
+  padding-right: 2em;
+}
+[data-id^=layer-] table.list {
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0;
+}
+[data-id^=layer-] td.item-right {
+  border-left: 1px solid #333;
+  padding-right: 10px;
+  padding-left: 0;
+  padding-bottom: 5px;
+  padding-left: 2em;
+}
+[data-id^=layer-] td.item-left {
+  border-right: 1px solid #333;
+  padding-right: 10px;
+  padding-left: 0;
+  padding-bottom: 5px;
+  padding-left: 2em;
+}
+[data-id^=layer-] td.dta-list-trailer {
+  vertical-align: middle;
+  padding-left: 5px;
+  text-indent: 0 !important;
+}
+[data-id^=layer-] td.dta-list-head {
+  vertical-align: middle;
+  padding-right: 2em;
+}
+[data-id^=layer-] .dta-list {
+  padding-left: 2em;
+  margin-bottom: 1em;
+}
+[data-id^=layer-] .dta-list-item {
+  text-indent: -1em;
+  margin-bottom: .5em;
+}
+[data-id^=layer-] .dta-list-item-noindent {
+  text-indent: 0em;
+  margin-bottom: 0.5em !important;
+}
+[data-id^=layer-] .dta-list-item table {
+  text-indent: 0em;
+}
+[data-id^=layer-] .braced-base {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 5px 0 5px;
+}
+[data-id^=layer-] p .braced-base {
+  text-indent: 0 !important;
+}
+[data-id^=layer-] .braced-left-right {
+  border-left: 1px solid #333;
+  border-right: 1px solid #333;
+  margin-left: 1em;
+}
+[data-id^=layer-] .braced-left {
+  border-left: 1px solid #333;
+  margin-left: 1em;
+}
+[data-id^=layer-] .braced-right {
+  border-right: 1px solid #333333;
+}
+[data-id^=layer-] .braced-base .dta-list-item {
+  text-indent: 0;
+  margin-bottom: 0;
+}
+[data-id^=layer-] .dta-pb {
+  color: #666;
+  font-size: 0.9em;
+}
+[data-id^=layer-] .dta-p {
+  text-indent: 1em;
+  margin: 0px 0;
+}
+[data-id^=layer-] p {
+  -webkit-margin-before: 0em;
+  -webkit-margin-after: 0em;
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px;
+}

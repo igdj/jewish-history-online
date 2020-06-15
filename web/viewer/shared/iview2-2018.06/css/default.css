@@ -204,11 +204,37 @@
 .mycoreViewer textarea.form-control {
   min-height: 300px;
 }
+.mycoreViewer .altoSelectable .textContainer {
+  z-index: 5;
+}
+.mycoreViewer .altoSelectable .textContainer * {
+  z-index: 5;
+}
+.mycoreViewer .altoTop .textContainer {
+  z-index: 5;
+}
+.mycoreViewer .altoTop .textContainer * {
+  z-index: 5;
+}
 .mycoreViewer .textContainer {
   z-index: 3;
+  text-align: left;
 }
 .mycoreViewer .textContainer * {
   z-index: 3;
+}
+.mycoreViewer .textContainer .altoLine span {
+  cursor: text;
+}
+.mycoreViewer .textContainer span[contenteditable=true] {
+  background-color: lightgreen;
+  border: 3px darkgreen solid;
+}
+.mycoreViewer .textContainer .unconfident {
+  background-color: mistyrose;
+}
+.mycoreViewer .textContainer .edited {
+  background-color: lightblue;
 }
 .mycoreViewer .textContainer .line {
   position: absolute;
@@ -233,11 +259,34 @@
   cursor: text;
   color: transparent;
 }
+.mycoreViewer .alto-editor-widget th[data-sort] {
+  cursor: pointer;
+}
+.mycoreViewer .alto-editor-widget .btn-toolbar.action {
+  padding-top: 20px;
+}
+.mycoreViewer .alto-editor-widget .glyphicon-remove {
+  color: red;
+  cursor: pointer;
+}
+.mycoreViewer .grabbable {
+  cursor: move;
+  /* fallback if grab cursor is unsupported */
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+.mycoreViewer .grab {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
 .mycoreViewer > div:not(.navbar) {
   top: 51px;
 }
 .mycoreViewer .navbar {
   z-index: 15;
+  min-height: 51px;
 }
 .mycoreViewer .navbar div img {
   margin-top: 11px;
@@ -245,10 +294,15 @@
 .mycoreViewer .navbar .btn-group {
   margin-left: 25px;
 }
+.mycoreViewer .navbar .btn-group .glyphicon.textpresent,
+.mycoreViewer .navbar .btn-group .fa.textpresent {
+  margin-right: 5px;
+}
 .mycoreViewer .navbar .btn-group .dropdown-menu {
   cursor: pointer;
 }
-.mycoreViewer .navbar .btn-group .dropdown-toggle .glyphicon {
+.mycoreViewer .navbar .btn-group .dropdown-toggle .glyphicon,
+.mycoreViewer .navbar .btn-group .dropdown-toggle .fa {
   margin-right: 5px;
 }
 @media (max-width: 620px) {
@@ -297,7 +351,7 @@
 .mycoreViewer .textSearch .expander {
   cursor: pointer;
   font-size: 10px;
-  top: -4px;
+  top: 3px;
   width: 10px;
   height: 10px;
   display: inline-block;
@@ -309,7 +363,7 @@
 .mycoreViewer .chapterTreeDesktop ol,
 .mycoreViewer .textSearch ol {
   border: none;
-  border-radius: 0px;
+  border-radius: 0;
   padding-left: 15px;
 }
 .mycoreViewer .chapterTreeDesktop .list-group-item,
@@ -325,15 +379,15 @@
 .mycoreViewer .chapterTreeDesktop li.list-group-item,
 .mycoreViewer .textSearch li.list-group-item {
   border: none;
-  border-radius: 0px;
-  margin-bottom: 0px;
-  display: inline-block;
-  width: 100%;
+  margin: 3px;
+  display: flex;
+  border-radius: 0;
 }
 .mycoreViewer .chapterTreeDesktop li.list-group-item span.childLabel,
 .mycoreViewer .textSearch li.list-group-item span.childLabel {
   color: gray;
-  float: right;
+  text-align: right;
+  min-width: 7rem;
 }
 .mycoreViewer .chapterTreeDesktop li a,
 .mycoreViewer .textSearch li a {
@@ -342,8 +396,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  display: inline-block;
-  width: calc(100% - 72px);
+  flex-grow: 1;
 }
 .mycoreViewer .chapterTreeDesktop li[data-selected=true],
 .mycoreViewer .textSearch li[data-selected=true] {

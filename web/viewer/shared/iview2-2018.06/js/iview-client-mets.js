@@ -13,8 +13,9 @@ var mycore;
             (function (mets) {
                 var MetsStructureModel = (function (_super) {
                     __extends(MetsStructureModel, _super);
-                    function MetsStructureModel(_rootChapter, _imageList, _chapterToImageMap, _imageToChapterMap, _imageHrefImageMap, altoPresent) {
+                    function MetsStructureModel(smLinkMap, _rootChapter, _imageList, _chapterToImageMap, _imageToChapterMap, _imageHrefImageMap, altoPresent) {
                         _super.call(this, _rootChapter, _imageList, _chapterToImageMap, _imageToChapterMap, _imageHrefImageMap, altoPresent);
+                        this.smLinkMap = smLinkMap;
                         this.altoPresent = altoPresent;
                     }
                     return MetsStructureModel;
@@ -39,57 +40,58 @@ var mycore;
                         this.hrefResolverElement = document.createElement("a");
                     }
                     MetsStructureBuilder.prototype.processMets = function () {
-                        var logicalStructMap = this.getStructMap("LOGICAL");
-                        var physicalStructMap = this.getStructMap("PHYSICAL");
+                        var _this = this;
                         var files = this.getFiles("IVIEW2");
                         if (files.length == 0) {
                             files = this.getFiles("MASTER");
                         }
-                        var altoFiles = this.getFiles("ALTO");
-                        var teiTranscriptionFiles = this.getFiles("TRANSCRIPTION");
-                        var teiTranslationFiles = this.getFiles("TRANSLATION");
-                        this._chapterIdMap = new MyCoReMap();
                         this._idFileMap = this.getIdFileMap(files);
+                        var useFilesMap = new MyCoReMap();
+                        this.getGroups().map(function (node) {
+                            return node.getAttribute("USE");
+                        })
+                            .map(function (s) { return s.toUpperCase(); })
+                            .filter(function (s) { return s != "MASTER"; })
+                            .forEach(function (s) {
+                            var files = _this.getFiles(s);
+                            useFilesMap.set(s, files);
+                            _this._idFileMap.mergeIn(_this.getIdFileMap(files));
+                        });
+                        this._chapterIdMap = new MyCoReMap();
                         this._idPhysicalFileMap = this.getIdPhysicalFileMap();
-                        if (altoFiles != null) {
-                            this._idFileMap.mergeIn(this.getIdFileMap(altoFiles));
-                        }
-                        if (teiTranscriptionFiles != null) {
-                            this._idFileMap.mergeIn(this.getIdFileMap(teiTranscriptionFiles));
-                        }
-                        if (teiTranslationFiles != null) {
-                            this._idFileMap.mergeIn(this.getIdFileMap(teiTranslationFiles));
-                        }
+                        this._smLinkMap = new MyCoReMap();
                         this._chapterImageMap = new MyCoReMap();
                         this._imageChapterMap = new MyCoReMap();
                         this._improvisationMap = new MyCoReMap();
-                        this._metsChapter = this.processChapter(null, this.getFirstElementChild(this.getStructMap("LOGICAL")), 1);
+                        this._metsChapter = this.processChapter(null, this.getFirstElementChild(this.getStructMap("LOGICAL")));
                         this._imageHrefImageMap = new MyCoReMap();
-                        this._imageList = new Array();
+                        this._imageList = [];
                         this._idImageMap = new MyCoReMap();
                         this.processImages();
-                        this._structureModel = new widgets.mets.MetsStructureModel(this._metsChapter, this._imageList, this._chapterImageMap, this._imageChapterMap, this._imageHrefImageMap, altoFiles != null && altoFiles.length > 0);
+                        this._structureModel = new widgets.mets.MetsStructureModel(this._smLinkMap, this._metsChapter, this._imageList, this._chapterImageMap, this._imageChapterMap, this._imageHrefImageMap, useFilesMap.has("ALTO") && useFilesMap.get("ALTO").length > 0);
                         return this._structureModel;
                     };
                     MetsStructureBuilder.prototype.getStructMap = function (type) {
                         var logicalStructMapPath = "//mets:structMap[@TYPE='" + type + "']";
                         return singleSelectShim(this.metsDocument, logicalStructMapPath, MetsStructureBuilder.NS_MAP);
                     };
+                    MetsStructureBuilder.prototype.getGroups = function () {
+                        var fileGroupPath = '//mets:fileSec//mets:fileGrp';
+                        return getNodesShim(this.metsDocument, fileGroupPath, this.metsDocument.documentElement, MetsStructureBuilder.NS_MAP, 4, null);
+                    };
                     MetsStructureBuilder.prototype.getFiles = function (group) {
                         var fileGroupPath = "//mets:fileSec//mets:fileGrp[@USE='" + group + "']";
                         var fileSectionResult = singleSelectShim(this.metsDocument, fileGroupPath, MetsStructureBuilder.NS_MAP);
+                        var nodeArray = [];
                         if (fileSectionResult != null) {
-                            var nodeArray = XMLUtil.nodeListToNodeArray(fileSectionResult.childNodes);
-                        }
-                        else {
-                            nodeArray = new Array();
+                            nodeArray = XMLUtil.nodeListToNodeArray(fileSectionResult.childNodes);
                         }
                         return nodeArray;
                     };
                     MetsStructureBuilder.prototype.getStructLinks = function () {
                         var structLinkPath = "//mets:structLink";
                         var structLinkResult = singleSelectShim(this.metsDocument, structLinkPath, MetsStructureBuilder.NS_MAP);
-                        var nodeArray = new Array();
+                        var nodeArray = [];
                         XMLUtil.iterateChildNodes(structLinkResult, function (currentChild) {
                             if (currentChild instanceof Element || "getAttribute" in currentChild) {
                                 nodeArray.push(currentChild);
@@ -97,22 +99,21 @@ var mycore;
                         });
                         return nodeArray;
                     };
-                    MetsStructureBuilder.prototype.processChapter = function (parent, chapter, defaultOrder) {
+                    MetsStructureBuilder.prototype.processChapter = function (parent, chapter) {
                         if (chapter.nodeName.toString() == "mets:mptr") {
                             return;
                         }
                         var chapterObject = new viewer.model.StructureChapter(parent, chapter.getAttribute("TYPE"), chapter.getAttribute("ID"), chapter.getAttribute("LABEL"));
                         var chapterChildren = chapter.childNodes;
                         this._chapterIdMap.set(chapterObject.id, chapterObject);
-                        var that = this;
                         for (var i = 0; i < chapterChildren.length; i++) {
                             var elem = chapterChildren[i];
                             if ((elem instanceof Element || "getAttribute" in elem)) {
                                 if (elem.nodeName.indexOf("fptr") != -1) {
                                     this.processFPTR(chapterObject, elem);
                                 }
-                                else if (elem.nodeName.indexOf("div")) {
-                                    chapterObject.chapter.push(that.processChapter(chapterObject, elem, i + 1));
+                                else if (elem.nodeName.indexOf("div") != -1) {
+                                    chapterObject.chapter.push(this.processChapter(chapterObject, elem));
                                 }
                             }
                         }
@@ -124,8 +125,7 @@ var mycore;
                         if (elem.nodeName.indexOf("seq")) {
                             XMLUtil.iterateChildNodes(elem, function (child) {
                                 if ((child instanceof Element || "getAttribute" in child)) {
-                                    var elem = child;
-                                    _this.parseArea(parent, elem);
+                                    _this.parseArea(parent, child);
                                 }
                             });
                         }
@@ -136,24 +136,32 @@ var mycore;
                     MetsStructureBuilder.prototype.parseArea = function (parent, area) {
                         var blockList;
                         if (!parent.additional.has("blocklist")) {
-                            blockList = new Array();
+                            blockList = [];
                             parent.additional.set("blocklist", blockList);
                         }
                         else {
                             blockList = parent.additional.get("blocklist");
                         }
+                        var fileID = area.getAttribute("FILEID");
+                        if (fileID == null) {
+                            throw "@FILEID of mets:area is required but not set!";
+                        }
+                        var href = this.getAttributeNs(this.getFirstElementChild(this._idFileMap.get(fileID)), "xlink", "href");
+                        if (href == null) {
+                            throw "couldn't find href of @FILEID in mets:area! " + fileID;
+                        }
+                        var blockEntry = {
+                            fileId: href
+                        };
                         var beType = area.getAttribute("BETYPE");
                         if (beType == "IDREF") {
-                            var href = this.getAttributeNs(this.getFirstElementChild(this._idFileMap.get(area.getAttribute("FILEID"))), "xlink", "href");
-                            blockList.push({
-                                fileId: href,
-                                fromId: area.getAttribute("BEGIN"),
-                                toId: area.getAttribute("END")
-                            });
+                            blockEntry.fromId = area.getAttribute("BEGIN");
+                            blockEntry.toId = area.getAttribute("END");
                         }
                         else {
-                            throw "unknown beType found! " + beType;
+                            console.warn("mets:area/@FILEID='" + href + "' has no BETYPE attribute");
                         }
+                        blockList.push(blockEntry);
                     };
                     MetsStructureBuilder.prototype.getIdFileMap = function (fileGrpChildren) {
                         var map = new MyCoReMap();
@@ -199,8 +207,10 @@ var mycore;
                         this._idPhysicalFileMap.forEach(function (k, v) {
                             var physFileDiv = _this._idPhysicalFileMap.get(k);
                             var image = _this.parseFile(physFileDiv, count++);
-                            _this._imageList.push(image);
-                            _this._idImageMap.set(k, image);
+                            if (image != null) {
+                                _this._imageList.push(image);
+                                _this._idImageMap.set(k, image);
+                            }
                         });
                         this._imageList = this._imageList.sort(function (x, y) { return x.order - y.order; });
                         this.makeLinks();
@@ -212,8 +222,7 @@ var mycore;
                     };
                     MetsStructureBuilder.prototype.makeLinks = function () {
                         var _this = this;
-                        var structLinkChildren = this.getStructLinks();
-                        structLinkChildren.forEach(function (elem) {
+                        this.getStructLinks().forEach(function (elem) {
                             var chapterId = _this.getAttributeNs(elem, "xlink", "from");
                             var physFileId = _this.getAttributeNs(elem, "xlink", "to");
                             _this.makeLink(_this._chapterIdMap.get(chapterId), _this._idImageMap.get(physFileId));
@@ -231,59 +240,62 @@ var mycore;
                         if (!this._imageChapterMap.has(image.id)) {
                             this._imageChapterMap.set(image.id, chapter);
                         }
+                        if (!this._smLinkMap.has(chapter.id)) {
+                            this._smLinkMap.set(chapter.id, []);
+                        }
+                        this._smLinkMap.get(chapter.id).push(image.href);
                     };
                     MetsStructureBuilder.prototype.extractTranslationLanguage = function (href) {
                         return href.split("/")[1].split(".")[1];
                     };
                     MetsStructureBuilder.prototype.parseFile = function (physFileDiv, defaultOrder) {
                         var _this = this;
-                        var img;
-                        var type = physFileDiv.getAttribute("TYPE");
-                        var id = physFileDiv.getAttribute("ID");
-                        var order = parseInt(physFileDiv.getAttribute("ORDER") || "" + defaultOrder, 10);
-                        var orderLabel = physFileDiv.getAttribute("ORDERLABEL");
-                        var contentIds = physFileDiv.getAttribute("CONTENTIDS");
+                        var type = physFileDiv.getAttribute('TYPE');
+                        var id = physFileDiv.getAttribute('ID');
+                        var order = parseInt(physFileDiv.getAttribute('ORDER') || '' + defaultOrder, 10);
+                        var orderLabel = physFileDiv.getAttribute('ORDERLABEL');
+                        var contentIds = physFileDiv.getAttribute('CONTENTIDS');
                         var additionalHrefs = new MyCoReMap();
                         var imgHref = null;
                         var imgMimeType = null;
-                        this.hrefResolverElement.href = "./";
+                        this.hrefResolverElement.href = './';
                         var base = this.hrefResolverElement.href;
                         XMLUtil.iterateChildNodes(physFileDiv, function (child) {
-                            if (child instanceof Element || "getAttribute" in child) {
+                            if (child instanceof Element || 'getAttribute' in child) {
                                 var childElement = child;
-                                var fileId = childElement.getAttribute("FILEID");
+                                var fileId = childElement.getAttribute('FILEID');
                                 var file = _this._idFileMap.get(fileId);
-                                var href = _this.getAttributeNs(_this.getFirstElementChild(file), "xlink", "href");
-                                var mimetype = file.getAttribute("MIMETYPE");
+                                var href = _this.getAttributeNs(_this.getFirstElementChild(file), 'xlink', 'href');
+                                var mimetype = file.getAttribute('MIMETYPE');
                                 _this.hrefResolverElement.href = href;
                                 href = _this.hrefResolverElement.href.substr(base.length);
-                                var use = file.parentNode.getAttribute("USE");
-                                if (use == "MASTER" || use == "IVIEW2") {
+                                var use = file.parentNode.getAttribute('USE');
+                                if (use === 'MASTER' || use === 'IVIEW2') {
                                     imgHref = href;
                                     imgMimeType = mimetype;
                                 }
-                                else if (use == "ALTO") {
+                                else if (use === 'ALTO') {
                                     additionalHrefs.set(MetsStructureBuilder.ALTO_TEXT, href);
                                 }
-                                else if (use == "TRANSCRIPTION") {
-                                    additionalHrefs.set(MetsStructureBuilder.TEI_TRANSCRIPTION, href);
-                                }
-                                else if (use == "TRANSLATION") {
-                                    additionalHrefs.set(MetsStructureBuilder.TEI_TRANSLATION + "." + _this.extractTranslationLanguage(href), href);
+                                else if (use.indexOf("TEI.") == 0) {
+                                    additionalHrefs.set(use, href);
                                 }
                                 else {
-                                    console.log("Unknown File Group : " + use);
+                                    console.warn('Unknown File Group : ' + use);
                                 }
                             }
                         });
-                        if (imgHref.indexOf("http:") + imgHref.indexOf("file:") + imgHref.indexOf("urn:") != -3) {
+                        if (imgHref === null) {
+                            console.warn('Unable to find MASTER|IVIEW2 file for ' + id);
+                            return null;
+                        }
+                        if (imgHref.indexOf('http:') + imgHref.indexOf('file:') + imgHref.indexOf('urn:') !== -3) {
                             var parser = document.createElement('a');
                             parser.href = imgHref;
                             imgHref = parser.pathname;
                         }
-                        var that = this;
                         return new viewer.model.StructureImage(type, id, order, orderLabel, imgHref, imgMimeType, function (cb) {
-                            cb(that.tilePathBuilder(imgHref));
+                            cb(_this.tilePathBuilder(imgHref));
                         }, additionalHrefs, contentIds);
                     };
                     MetsStructureBuilder.METS_NAMESPACE_URI = "http://www.loc.gov/METS/";
@@ -365,6 +377,42 @@ var mycore;
                 events.MetsLoadedEvent = MetsLoadedEvent;
             })(events = components.events || (components.events = {}));
         })(components = viewer.components || (viewer.components = {}));
+    })(viewer = mycore.viewer || (mycore.viewer = {}));
+})(mycore || (mycore = {}));
+var mycore;
+(function (mycore) {
+    var viewer;
+    (function (viewer) {
+        var widgets;
+        (function (widgets) {
+            var alto;
+            (function (alto) {
+                var AltoChange = (function () {
+                    function AltoChange(file, type, pageOrder) {
+                        this.file = file;
+                        this.type = type;
+                        this.pageOrder = pageOrder;
+                    }
+                    return AltoChange;
+                }());
+                alto.AltoChange = AltoChange;
+                var AltoWordChange = (function (_super) {
+                    __extends(AltoWordChange, _super);
+                    function AltoWordChange(file, hpos, vpos, width, height, from, to, pageOrder) {
+                        _super.call(this, file, AltoWordChange.TYPE, pageOrder);
+                        this.hpos = hpos;
+                        this.vpos = vpos;
+                        this.width = width;
+                        this.height = height;
+                        this.from = from;
+                        this.to = to;
+                    }
+                    AltoWordChange.TYPE = "AltoWordChange";
+                    return AltoWordChange;
+                }(AltoChange));
+                alto.AltoWordChange = AltoWordChange;
+            })(alto = widgets.alto || (widgets.alto = {}));
+        })(widgets = viewer.widgets || (viewer.widgets = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
 })(mycore || (mycore = {}));
 var mycore;
@@ -607,6 +655,7 @@ var mycore;
                         this._previewBackBufferAreaZoom = null;
                         this._imgPreviewLoaded = false;
                         this._imgNotPreviewLoaded = false;
+                        this.htmlContent = new ViewerProperty(this, "htmlContent");
                         this._tilePath = _tilePaths;
                         this.loadTile(new Position3D(0, 0, 0));
                     }
@@ -645,23 +694,10 @@ var mycore;
                         }
                         ctx.restore();
                     };
-                    TileImagePage.prototype.setAltoContent = function (value) {
-                        if (value != this._altoContent) {
-                            this._altoContent = value;
-                            this.updateHTML();
-                        }
-                    };
-                    TileImagePage.prototype.registerHTMLPage = function (elem) {
-                        this._rootElem = elem;
-                        this.updateHTML();
+                    TileImagePage.prototype.getHTMLContent = function () {
+                        return this.htmlContent;
                     };
                     TileImagePage.prototype.updateHTML = function () {
-                        if (this._altoContent != null && this._rootElem != null) {
-                            while (this._rootElem.children.length > 0) {
-                                this._rootElem.removeChild(this._rootElem.children.item(0));
-                            }
-                            this._rootElem.appendChild(this._altoContent);
-                        }
                         if (typeof this.refreshCallback != "undefined" && this.refreshCallback != null) {
                             this.refreshCallback();
                         }
@@ -838,31 +874,6 @@ var mycore;
         })(widgets = viewer.widgets || (viewer.widgets = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
 })(mycore || (mycore = {}));
-var json = {
-    "resources": {
-        "script": ["http://archive.thulb.uni-jena.de/hisbest/modules/iview2/js/iview-client-base.js", "http://archive.thulb.uni-jena.de/hisbest/modules/iview2/js/iview-client-desktop.js", "http://archive.thulb.uni-jena.de/hisbest/modules/iview2/js/iview-client-mets.js", "http://archive.thulb.uni-jena.de/hisbest/modules/iview2/js/iview-client-logo.js", "http://archive.thulb.uni-jena.de/hisbest/modules/iview2/js/iview-client-metadata.js"],
-        "css": ["http://archive.thulb.uni-jena.de/hisbest/modules/iview2/css/default.css", "http://archive.thulb.uni-jena.de/hisbest/css/urmelLogo.css"]
-    },
-    "properties": {
-        "derivateURL": "http://archive.thulb.uni-jena.de/hisbest/servlets/MCRFileNodeServlet/HisBest_derivate_00016280/",
-        "metsURL": "http://archive.thulb.uni-jena.de/hisbest/servlets/MCRMETSServlet/HisBest_derivate_00016280",
-        "i18nURL": "http://archive.thulb.uni-jena.de/hisbest/servlets/MCRLocaleServlet/{lang}/component.iview2.*",
-        "derivate": "HisBest_derivate_00016280",
-        "filePath": "/2_8_30.tif",
-        "mobile": false,
-        "tileProviderPath": "http://archive.thulb.uni-jena.de/hisbest/servlets/MCRTileServlet/",
-        "imageXmlPath": "http://archive.thulb.uni-jena.de/hisbest/servlets/MCRTileServlet/",
-        "pdfCreatorURI": "http://wrackdm17.thulb.uni-jena.de/mets-printer/pdf",
-        "text.enabled": "false",
-        "logoURL": "http://archive.thulb.uni-jena.de/hisbest/images/Urmel_Logo_leicht_grau.svg",
-        "doctype": "mets",
-        "webApplicationBaseURL": "http://archive.thulb.uni-jena.de/hisbest/",
-        "metadataURL": "http://archive.thulb.uni-jena.de/hisbest/receive/HisBest_cbu_00029645?XSL.Transformer\u003dmycoreobject-viewer",
-        "pdfCreatorStyle": "pdf",
-        "objId": "HisBest_cbu_00029645",
-        "lang": "de"
-    }
-};
 var mycore;
 (function (mycore) {
     var viewer;
@@ -917,7 +928,7 @@ var mycore;
             var alto;
             (function (alto) {
                 var AltoElement = (function () {
-                    function AltoElement(_parent, _type, _id, _width, _height, _hpos, _vpos) {
+                    function AltoElement(_parent, _type, _id, _width, _height, _hpos, _vpos, _wc) {
                         this._parent = _parent;
                         this._type = _type;
                         this._id = _id;
@@ -925,7 +936,8 @@ var mycore;
                         this._height = _height;
                         this._hpos = _hpos;
                         this._vpos = _vpos;
-                        this._children = new Array();
+                        this._wc = _wc;
+                        this._children = [];
                         this._content = null;
                         this._style = null;
                     }
@@ -946,6 +958,9 @@ var mycore;
                     };
                     AltoElement.prototype.getWidth = function () {
                         return this._width;
+                    };
+                    AltoElement.prototype.getWordConfidence = function () {
+                        return this._wc;
                     };
                     AltoElement.prototype.getChildren = function () {
                         return this._children;
@@ -973,6 +988,9 @@ var mycore;
                     };
                     AltoElement.prototype.getBlockVPos = function () {
                         return this._vpos;
+                    };
+                    AltoElement.prototype.asRect = function () {
+                        return Rect.fromXYWH(this.getHPos(), this.getVPos(), this.getWidth(), this.getHeight());
                     };
                     return AltoElement;
                 }());
@@ -1041,9 +1059,10 @@ var mycore;
                         var height = parseFloat(src.getAttribute("HEIGHT"));
                         var hpos = parseFloat(src.getAttribute("HPOS"));
                         var vpos = parseFloat(src.getAttribute("VPOS"));
+                        var wc = parseFloat(src.getAttribute("WC"));
                         var id = src.getAttribute("ID");
                         var styleID = src.getAttribute("STYLEREFS");
-                        var altoElement = new alto.AltoElement(parent, type, id, width, height, hpos, vpos);
+                        var altoElement = new alto.AltoElement(parent, type, id, width, height, hpos, vpos, wc);
                         if (styleID != null) {
                             var style = this._allStyles[styleID];
                             if (style != null) {
@@ -1365,13 +1384,14 @@ var mycore;
                 var AltoHTMLGenerator = (function () {
                     function AltoHTMLGenerator() {
                     }
-                    AltoHTMLGenerator.prototype.generateHtml = function (alto) {
+                    AltoHTMLGenerator.prototype.generateHtml = function (alto, altoID) {
                         var _this = this;
                         var fontFamily = "sans-serif";
                         var element = document.createElement("div");
                         element.style.position = "absolute";
                         element.style.whiteSpace = "nowrap";
                         element.style.fontFamily = "sans-serif";
+                        element.setAttribute("data-id", altoID);
                         var endecoderElem = document.createElement("span");
                         var mesureCanvas = document.createElement("canvas");
                         var ctx = mesureCanvas.getContext("2d");
@@ -1385,8 +1405,8 @@ var mycore;
                             blockFontSize *= 0.9;
                             var blockDiv = "<div";
                             blockDiv += " class='altoBlock'";
-                            blockDiv += " style='top: " + block.getVPos() + "px;";
-                            blockDiv += " left: " + block.getHPos() + "px;";
+                            blockDiv += " style='";
+                            blockDiv += " transform: translate(" + Math.round(block.getHPos()) + "px," + Math.round(block.getVPos()) + "px );";
                             blockDiv += " width: " + block.getWidth() + "px;";
                             blockDiv += " height: " + block.getHeight() + "px;";
                             blockDiv += " font-size: " + blockFontSize + "px;";
@@ -1395,13 +1415,11 @@ var mycore;
                             }
                             blockDiv += "'>";
                             block.getChildren().map(function (line) {
-                                endecoderElem.innerHTML = _this.getLineAsString(line);
                                 var lineDiv = "<p";
                                 lineDiv += " class='altoLine'";
                                 lineDiv += " style='height: " + line.getHeight() + "px;";
                                 lineDiv += " width: " + line.getWidth() + "px;";
-                                lineDiv += " left: " + line.getHPos() + "px;";
-                                lineDiv += " top: " + line.getVPos() + "px;";
+                                lineDiv += " transform: translate(" + Math.round(line.getHPos() - block.getHPos()) + "px, " + Math.round(line.getVPos() - block.getVPos()) + "px);";
                                 var lineStyle = line.getStyle();
                                 if (lineStyle != null) {
                                     var lineFontStyle = lineStyle.getFontStyle();
@@ -1414,7 +1432,7 @@ var mycore;
                                         }
                                     }
                                 }
-                                lineDiv += "'>" + endecoderElem.innerHTML + "</p>";
+                                lineDiv += "'>" + _this.getLineAsElement(line) + "</p>";
                                 blockDiv += lineDiv;
                             });
                             blockDiv += "</div>";
@@ -1425,16 +1443,15 @@ var mycore;
                         return element;
                     };
                     AltoHTMLGenerator.prototype.getWordsArray = function (line) {
-                        var tmpElement = document.createElement("span");
                         return line.getChildren()
-                            .filter(function (elementInLine) { return elementInLine.getType() === AltoElementType.String; })
-                            .map(function (word, wordCount, allWords) {
-                            tmpElement.innerText = word.getContent();
-                            return tmpElement.innerHTML;
-                        });
+                            .filter(function (elementInLine) { return elementInLine.getType() === AltoElementType.String; });
                     };
                     AltoHTMLGenerator.prototype.getLineAsString = function (line) {
-                        return this.getWordsArray(line).join(" ");
+                        var span = document.createElement("span");
+                        return this.getWordsArray(line).map(function (line) {
+                            span.innerText = line.getContent();
+                            return span.innerHTML;
+                        }).join(" ");
                     };
                     AltoHTMLGenerator.prototype.getFontSize = function (ctx, block, fontFamily) {
                         var _this = this;
@@ -1456,11 +1473,20 @@ var mycore;
                             var line = block.getChildren()[0];
                             return getLineHeight(line, line.getHeight());
                         }
-                        var maxSize = 9999;
+                        var maxSize = block.getChildren().reduce(function (acc, line) {
+                            return Math.max(acc, line.getHeight());
+                        }, 0);
                         block.getChildren().forEach(function (line) {
                             maxSize = getLineHeight(line, maxSize);
                         });
                         return maxSize;
+                    };
+                    AltoHTMLGenerator.prototype.getLineAsElement = function (line) {
+                        var span = document.createElement("word");
+                        return this.getWordsArray(line).map(function (word) {
+                            span.innerText = word.getContent();
+                            return "<span data-vpos=\"" + word.getVPos() + "\"\n                            data-hpos=\"" + word.getHPos() + "\"\n                            data-word=\"" + word.getContent() + "\"\n                            data-width=\"" + word.getWidth() + "\"\n                            data-height=\"" + word.getHeight() + "\"\n                            data-wc=\"" + word.getWordConfidence() + "\"\n                        >" + span.innerHTML + "</span>";
+                        }).join(" ");
                     };
                     return AltoHTMLGenerator;
                 }());
@@ -1477,6 +1503,7 @@ var mycore;
         (function (components) {
             var RequestAltoModelEvent = mycore.viewer.components.events.RequestAltoModelEvent;
             var AltoHTMLGenerator = mycore.viewer.widgets.alto.AltoHTMLGenerator;
+            var PageLoadedEvent = mycore.viewer.components.events.PageLoadedEvent;
             var MyCoReMetsPageProviderComponent = (function (_super) {
                 __extends(MyCoReMetsPageProviderComponent, _super);
                 function MyCoReMetsPageProviderComponent(_settings) {
@@ -1485,6 +1512,8 @@ var mycore;
                     this._imageInformationMap = new MyCoReMap();
                     this._imagePageMap = new MyCoReMap();
                     this._altoHTMLGenerator = new AltoHTMLGenerator();
+                    this._imageHTMLMap = new MyCoReMap();
+                    this._imageCallbackMap = new MyCoReMap();
                 }
                 MyCoReMetsPageProviderComponent.prototype.init = function () {
                     if (this._settings.doctype == 'mets') {
@@ -1494,12 +1523,36 @@ var mycore;
                 MyCoReMetsPageProviderComponent.prototype.getPage = function (image, resolve) {
                     var _this = this;
                     if (this._imagePageMap.has(image)) {
-                        resolve(this.createPageFromMetadata(image, this._imageInformationMap.get(image)));
+                        resolve(this._imagePageMap.get(image));
                     }
                     else {
-                        this.getPageMetadata(image, function (metadata) {
-                            resolve(_this.createPageFromMetadata(image, metadata));
-                        });
+                        if (this._imageCallbackMap.has(image)) {
+                            this._imageCallbackMap.get(image).push(resolve);
+                        }
+                        else {
+                            var initialArray = new Array();
+                            initialArray.push(resolve);
+                            this._imageCallbackMap.set(image, initialArray);
+                            this.getPageMetadata(image, function (metadata) {
+                                var imagePage = _this.createPageFromMetadata(image, metadata);
+                                if (!_this._imageHTMLMap.has(image)) {
+                                    _this.trigger(new RequestAltoModelEvent(_this, image, function (page, altoHref, altoModel) {
+                                        if (!_this._imageHTMLMap.has(image)) {
+                                            var htmlElement = _this._altoHTMLGenerator.generateHtml(altoModel, altoHref);
+                                            imagePage.getHTMLContent().value = htmlElement;
+                                            _this._imageHTMLMap.set(image, htmlElement);
+                                        }
+                                    }));
+                                }
+                                var resolveList = _this._imageCallbackMap.get(image);
+                                var pop;
+                                while (pop = resolveList.pop()) {
+                                    pop(imagePage);
+                                }
+                                _this._imagePageMap.set(image, imagePage);
+                                _this.trigger(new PageLoadedEvent(_this, image, imagePage));
+                            });
+                        }
                     }
                 };
                 MyCoReMetsPageProviderComponent.prototype.createPageFromMetadata = function (imageId, metadata) {
@@ -1540,26 +1593,11 @@ var mycore;
                     configurable: true
                 });
                 MyCoReMetsPageProviderComponent.prototype.handle = function (e) {
-                    var _this = this;
                     if (e.type == components.events.RequestPageEvent.TYPE) {
-                        var rpe = e;
-                        var pageAltoSynchronize = Utils.synchronize([
-                            function (synchronizeObj) { return synchronizeObj.page != null; },
-                            function (synchronizeObj) { return synchronizeObj.altoModel != null; },
-                        ], function (synchronizeObj) {
-                            var htmlElement = _this._altoHTMLGenerator.generateHtml(synchronizeObj.altoModel);
-                            synchronizeObj.page.setAltoContent(htmlElement);
+                        var rpe_1 = e;
+                        this.getPage(rpe_1._pageId, function (page) {
+                            rpe_1._onResolve(rpe_1._pageId, page);
                         });
-                        var synchronizeObj = { page: null, altoModel: null };
-                        this.getPage(rpe._pageId, function (page) {
-                            synchronizeObj.page = page;
-                            pageAltoSynchronize(synchronizeObj);
-                            rpe._onResolve(rpe._pageId, page);
-                        });
-                        this.trigger(new RequestAltoModelEvent(this, rpe._pageId, function (page, altoHref, altoModel) {
-                            synchronizeObj.altoModel = altoModel;
-                            pageAltoSynchronize(synchronizeObj);
-                        }));
                     }
                     return;
                 };
@@ -1576,162 +1614,30 @@ var mycore;
     (function (viewer) {
         var widgets;
         (function (widgets) {
-            var tei;
-            (function (tei) {
-                var TEILayer = (function () {
-                    function TEILayer(_id, _label, mapping, contentLocation, teiStylesheet) {
-                        this._id = _id;
-                        this._label = _label;
-                        this.mapping = mapping;
-                        this.contentLocation = contentLocation;
-                        this.teiStylesheet = teiStylesheet;
-                    }
-                    TEILayer.prototype.getId = function () {
-                        return this._id;
-                    };
-                    TEILayer.prototype.getLabel = function () {
-                        return this._label;
-                    };
-                    TEILayer.prototype.resolveLayer = function (pageHref, callback) {
-                        if (this.mapping.has(pageHref)) {
-                            var settings = {};
-                            settings.async = true;
-                            settings.success = function (data, textStatus, jqXHR) {
-                                callback(true, jQuery(data));
-                            };
-                            jQuery.ajax(this.contentLocation + this.mapping.get(pageHref) + "?XSL.Style=" + this.teiStylesheet, settings);
-                        }
-                        else {
-                            callback(false);
-                        }
-                    };
-                    return TEILayer;
-                }());
-                tei.TEILayer = TEILayer;
-            })(tei = widgets.tei || (widgets.tei = {}));
-        })(widgets = viewer.widgets || (viewer.widgets = {}));
-    })(viewer = mycore.viewer || (mycore.viewer = {}));
-})(mycore || (mycore = {}));
-var mycore;
-(function (mycore) {
-    var viewer;
-    (function (viewer) {
-        var components;
-        (function (components) {
-            var MyCoReTEILayerProvider = (function (_super) {
-                __extends(MyCoReTEILayerProvider, _super);
-                function MyCoReTEILayerProvider(_settings) {
-                    _super.call(this);
-                    this._settings = _settings;
-                    this._model = null;
-                    // dbu
-                    if (this._settings.derivateContentTransformerServlet == null) {
-                        this._settings.derivateContentTransformerServlet =
-                        this._settings.webApplicationBaseURL + "servlets/MCRDerivateContentTransformerServlet/";
-                    }
-                    this.contentLocation = this._settings.derivateContentTransformerServlet + this._settings.derivate + "/";
-                }
-                MyCoReTEILayerProvider.prototype.init = function () {
-                    if (this._settings.doctype == "mets") {
-                        this.trigger(new components.events.WaitForEvent(this, components.events.StructureModelLoadedEvent.TYPE));
-                    }
-                };
-                MyCoReTEILayerProvider.prototype.handle = function (e) {
-                    var _this = this;
-                    if (e.type == components.events.StructureModelLoadedEvent.TYPE) {
-                        var smle = e;
-                        this._model = smle.structureModel;
-                        var transcriptions = new MyCoReMap();
-                        var translations = new MyCoReMap();
-                        var languages = new Array();
-                        smle.structureModel._imageList.forEach(function (image) {
-                            var additionalHrefs = image.additionalHrefs;
-                            if (additionalHrefs.has(MyCoReTEILayerProvider.TEI_TRANSCRIPTION)) {
-                                transcriptions.set(image.href, additionalHrefs.get(MyCoReTEILayerProvider.TEI_TRANSCRIPTION));
-                            }
-                            additionalHrefs.forEach(function (name, href) {
-                                if (name.indexOf(MyCoReTEILayerProvider.TEI_TRANSLATION + ".") == 0) {
-                                    var language = name.split(".")[1];
-                                    if (!translations.has(language)) {
-                                        translations.set(language, new MyCoReMap());
-                                    }
-                                    var idHrefTranslationMap = translations.get(language);
-                                    idHrefTranslationMap.set(image.href, href);
-                                    if (languages.indexOf(language) == -1) {
-                                        languages.push(language);
-                                    }
-                                }
-                            });
-                        });
-                        if (!transcriptions.isEmpty()) {
-                            this.trigger(new components.events.ProvideLayerEvent(this, new viewer.widgets.tei.TEILayer("transcription", "transcription", transcriptions, this.contentLocation, this._settings.teiStylesheet || "html")));
-                        }
-                        var order = ["de", "en"];
-                        if (languages.length != 0) {
-                            languages
-                                .sort(function (l1, l2) {
-                                var l1Order = order.indexOf(l1);
-                                var l2Order = order.indexOf(l2);
-                                return l1Order - l2Order;
-                            })
-                                .forEach(function (language) {
-                                var translationMap = translations.get(language);
-                                _this.trigger(new components.events.ProvideLayerEvent(_this, new viewer.widgets.tei.TEILayer("translation_" + language, "translation_" + language, translationMap, _this.contentLocation, _this._settings.teiStylesheet || "html")));
-                            });
-                        }
-                        return;
-                    }
-                };
-                Object.defineProperty(MyCoReTEILayerProvider.prototype, "handlesEvents", {
-                    get: function () {
-                        if (this._settings.doctype == "mets") {
-                            return [components.events.StructureModelLoadedEvent.TYPE];
-                        }
-                        else {
-                            return [];
-                        }
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                MyCoReTEILayerProvider.TEI_TRANSCRIPTION = "TeiTranscriptionHref";
-                MyCoReTEILayerProvider.TEI_TRANSLATION = "TeiTranslationHref";
-                return MyCoReTEILayerProvider;
-            }(components.ViewerComponent));
-            components.MyCoReTEILayerProvider = MyCoReTEILayerProvider;
-        })(components = viewer.components || (viewer.components = {}));
-    })(viewer = mycore.viewer || (mycore.viewer = {}));
-})(mycore || (mycore = {}));
-addViewerComponent(mycore.viewer.components.MyCoReTEILayerProvider);
-var mycore;
-(function (mycore) {
-    var viewer;
-    (function (viewer) {
-        var widgets;
-        (function (widgets) {
             var modal;
             (function (modal) {
-                var IviewPrintModalWindow = (function (_super) {
-                    __extends(IviewPrintModalWindow, _super);
-                    function IviewPrintModalWindow(_mobile) {
+                var ViewerPrintModalWindow = (function (_super) {
+                    __extends(ViewerPrintModalWindow, _super);
+                    function ViewerPrintModalWindow(_mobile) {
+                        var _this = this;
                         _super.call(this, _mobile, "CreatePDF");
                         this.checkEventHandler = null;
                         this.rangeInputEventHandler = null;
+                        this.chapterInputEventHandler = null;
                         this.okayClickHandler = null;
-                        var that = this;
                         this._inputRow = jQuery("<div></div>");
                         this._inputRow.addClass("row");
                         this._inputRow.appendTo(this.modalBody);
                         this._previewBox = jQuery("<div></div>");
                         this._previewBox.addClass("printPreview");
-                        this._previewBox.addClass("col-sm-6");
+                        this._previewBox.addClass("col-sm-12");
                         this._previewBox.addClass("thumbnail");
                         this._previewBox.appendTo(this._inputRow);
                         this._previewImage = jQuery("<img />");
                         this._previewImage.appendTo(this._previewBox);
                         this._pageSelectBox = jQuery("<form></form>");
                         this._pageSelectBox.addClass("printForm");
-                        this._pageSelectBox.addClass("col-sm-6");
+                        this._pageSelectBox.addClass("col-sm-12");
                         this._pageSelectBox.appendTo(this._inputRow);
                         this._selectGroup = jQuery("<div></div>");
                         this._selectGroup.addClass("form-group");
@@ -1739,11 +1645,12 @@ var mycore;
                         this._createRadioAllPages();
                         this._createRadioCurrentPage();
                         this._createRadioRangePages();
+                        this._createRadioChapters();
                         this._validationRow = jQuery("<div></div>");
                         this._validationRow.addClass("row");
                         this._validationRow.appendTo(this.modalBody);
                         this._validationMessage = jQuery("<p></p>");
-                        this._validationMessage.addClass("col-sm-6");
+                        this._validationMessage.addClass("col-sm-12");
                         this._validationMessage.addClass("pull-right");
                         this._validationMessage.appendTo(this._validationRow);
                         this._okayButton = jQuery("<a>OK</a>");
@@ -1755,27 +1662,26 @@ var mycore;
                         this._maximalPageNumber = jQuery("<span></span>");
                         this._maximalPageNumber.text("");
                         this._maximalPageMessage.children().append(this._maximalPageNumber);
-                        var that = this;
                         this._okayButton.click(function () {
-                            if (that.okayClickHandler != null) {
-                                that.okayClickHandler();
+                            if (_this.okayClickHandler != null) {
+                                _this.okayClickHandler();
                             }
                         });
                     }
-                    IviewPrintModalWindow.prototype._createRadioAllPages = function () {
+                    ViewerPrintModalWindow.prototype._createRadioAllPages = function () {
+                        var _this = this;
                         this._radioAllPages = jQuery("<div></div>");
                         this._radioAllPages.addClass("radio");
                         this._radioAllPagesLabelElement = jQuery("<label></label>");
                         this._radioAllPagesInput = jQuery("<input>");
                         this._radioAllPagesInput.attr("type", "radio");
-                        this._radioAllPagesInput.attr("name", IviewPrintModalWindow.INPUT_IDENTIFIER);
-                        this._radioAllPagesInput.attr("id", IviewPrintModalWindow.INPUT_IDENTIFIER);
-                        this._radioAllPagesInput.attr("value", IviewPrintModalWindow.INPUT_ALL_VALUE);
+                        this._radioAllPagesInput.attr("name", ViewerPrintModalWindow.INPUT_IDENTIFIER);
+                        this._radioAllPagesInput.attr("id", ViewerPrintModalWindow.INPUT_IDENTIFIER);
+                        this._radioAllPagesInput.attr("value", ViewerPrintModalWindow.INPUT_ALL_VALUE);
                         this._radioAllPagesLabel = jQuery("<p></p>");
-                        var that = this;
                         this._radioAllPagesInput.change(function () {
-                            if (that.checkEventHandler != null) {
-                                that.checkEventHandler(IviewPrintModalWindow.INPUT_ALL_VALUE);
+                            if (_this.checkEventHandler != null) {
+                                _this.checkEventHandler(ViewerPrintModalWindow.INPUT_ALL_VALUE);
                             }
                         });
                         this._radioAllPages.append(this._radioAllPagesLabelElement);
@@ -1783,20 +1689,20 @@ var mycore;
                         this._radioAllPagesLabelElement.append(this._radioAllPagesLabel);
                         this._radioAllPages.appendTo(this._selectGroup);
                     };
-                    IviewPrintModalWindow.prototype._createRadioCurrentPage = function () {
+                    ViewerPrintModalWindow.prototype._createRadioCurrentPage = function () {
+                        var _this = this;
                         this._radioCurrentPage = jQuery("<div></div>");
                         this._radioCurrentPage.addClass("radio");
                         this._radioCurrentPageLabelElement = jQuery("<label></label>");
                         this._radioCurrentPageInput = jQuery("<input>");
                         this._radioCurrentPageInput.attr("type", "radio");
-                        this._radioCurrentPageInput.attr("name", IviewPrintModalWindow.INPUT_IDENTIFIER);
-                        this._radioCurrentPageInput.attr("id", IviewPrintModalWindow.INPUT_IDENTIFIER);
-                        this._radioCurrentPageInput.attr("value", IviewPrintModalWindow.INPUT_CURRENT_VALUE);
+                        this._radioCurrentPageInput.attr("name", ViewerPrintModalWindow.INPUT_IDENTIFIER);
+                        this._radioCurrentPageInput.attr("id", ViewerPrintModalWindow.INPUT_IDENTIFIER);
+                        this._radioCurrentPageInput.attr("value", ViewerPrintModalWindow.INPUT_CURRENT_VALUE);
                         this._radioCurrentPageLabel = jQuery("<p></p>");
-                        var that = this;
                         this._radioCurrentPageInput.change(function () {
-                            if (that.checkEventHandler != null) {
-                                that.checkEventHandler(IviewPrintModalWindow.INPUT_CURRENT_VALUE);
+                            if (_this.checkEventHandler != null) {
+                                _this.checkEventHandler(ViewerPrintModalWindow.INPUT_CURRENT_VALUE);
                             }
                         });
                         this._radioCurrentPage.append(this._radioCurrentPageLabelElement);
@@ -1804,27 +1710,27 @@ var mycore;
                         this._radioCurrentPageLabelElement.append(this._radioCurrentPageLabel);
                         this._radioCurrentPage.appendTo(this._selectGroup);
                     };
-                    IviewPrintModalWindow.prototype._createRadioRangePages = function () {
+                    ViewerPrintModalWindow.prototype._createRadioRangePages = function () {
                         var _this = this;
                         this._radioRangePages = jQuery("<div></div>");
                         this._radioRangePages.addClass("radio");
                         this._radioRangePagesLabelElement = jQuery("<label></label>");
                         this._radioRangePagesInput = jQuery("<input>");
                         this._radioRangePagesInput.attr("type", "radio");
-                        this._radioRangePagesInput.attr("name", IviewPrintModalWindow.INPUT_IDENTIFIER);
-                        this._radioRangePagesInput.attr("id", IviewPrintModalWindow.INPUT_IDENTIFIER);
-                        this._radioRangePagesInput.attr("value", IviewPrintModalWindow.INPUT_RANGE_VALUE);
+                        this._radioRangePagesInput.attr("name", ViewerPrintModalWindow.INPUT_IDENTIFIER);
+                        this._radioRangePagesInput.attr("id", ViewerPrintModalWindow.INPUT_IDENTIFIER);
+                        this._radioRangePagesInput.attr("value", ViewerPrintModalWindow.INPUT_RANGE_VALUE);
                         this._radioRangePagesLabel = jQuery("<p></p>");
                         this._radioRangePagesInputText = jQuery("<input>");
                         this._radioRangePagesInputText.addClass("form-control");
                         this._radioRangePagesInputText.attr("type", "text");
-                        this._radioRangePagesInputText.attr("name", IviewPrintModalWindow.INPUT_RANGE_TEXT_IDENTIFIER);
-                        this._radioRangePagesInputText.attr("id", IviewPrintModalWindow.INPUT_RANGE_TEXT_IDENTIFIER);
+                        this._radioRangePagesInputText.attr("name", ViewerPrintModalWindow.INPUT_RANGE_TEXT_IDENTIFIER);
+                        this._radioRangePagesInputText.attr("id", ViewerPrintModalWindow.INPUT_RANGE_TEXT_IDENTIFIER);
                         this._radioRangePagesInputText.attr("placeholder", "1,3-5,8");
                         var that = this;
                         var onActivateHandler = function () {
                             if (that.checkEventHandler != null) {
-                                that.checkEventHandler(IviewPrintModalWindow.INPUT_RANGE_VALUE);
+                                that.checkEventHandler(ViewerPrintModalWindow.INPUT_RANGE_VALUE);
                             }
                             _this._radioRangePagesInputText.focus();
                         };
@@ -1848,7 +1754,38 @@ var mycore;
                         this._radioRangePagesLabelElement.append(this._radioRangePagesInputText);
                         this._radioRangePages.appendTo(this._selectGroup);
                     };
-                    Object.defineProperty(IviewPrintModalWindow.prototype, "rangeChecked", {
+                    ViewerPrintModalWindow.prototype._createRadioChapters = function () {
+                        var _this = this;
+                        this._radioChapter = jQuery("<div></div>");
+                        this._radioChapter.addClass("radio");
+                        this._radioChapterInput = jQuery("<input>");
+                        this._radioChapterInput.attr("type", "radio");
+                        this._radioChapterInput.attr("name", ViewerPrintModalWindow.INPUT_IDENTIFIER);
+                        this._radioChapterInput.attr("id", ViewerPrintModalWindow.INPUT_IDENTIFIER);
+                        this._radioChapterInput.attr("value", ViewerPrintModalWindow.INPUT_CHAPTER_VALUE);
+                        this._chapterLabelElement = jQuery("<label></label>");
+                        this._radioChapterLabel = jQuery("<p></p>");
+                        this._chapterSelect = jQuery("<select></select>");
+                        this._radioRangePages.append(this._chapterLabelElement);
+                        this._chapterLabelElement.append(this._radioChapterInput);
+                        this._chapterLabelElement.append(this._radioChapterLabel);
+                        this._chapterLabelElement.append(this._chapterSelect);
+                        this._radioChapter.appendTo(this._selectGroup);
+                        var onActivate = function () {
+                            if (_this.checkEventHandler != null) {
+                                _this.checkEventHandler(ViewerPrintModalWindow.INPUT_CHAPTER_VALUE);
+                            }
+                        };
+                        this._radioChapterInput.change(onActivate);
+                        this._chapterSelect.change(function () {
+                            onActivate();
+                            _this.chapterChecked = true;
+                            if (_this.chapterInputEventHandler != null) {
+                                _this.chapterInputEventHandler(_this._chapterSelect.val());
+                            }
+                        });
+                    };
+                    Object.defineProperty(ViewerPrintModalWindow.prototype, "rangeChecked", {
                         get: function () {
                             return this._radioRangePagesInput.prop("checked");
                         },
@@ -1858,7 +1795,7 @@ var mycore;
                         enumerable: true,
                         configurable: true
                     });
-                    Object.defineProperty(IviewPrintModalWindow.prototype, "allChecked", {
+                    Object.defineProperty(ViewerPrintModalWindow.prototype, "allChecked", {
                         get: function () {
                             return this._radioAllPagesInput.prop("checked");
                         },
@@ -1868,7 +1805,7 @@ var mycore;
                         enumerable: true,
                         configurable: true
                     });
-                    Object.defineProperty(IviewPrintModalWindow.prototype, "currentChecked", {
+                    Object.defineProperty(ViewerPrintModalWindow.prototype, "currentChecked", {
                         get: function () {
                             return this._radioCurrentPageInput.prop("checked");
                         },
@@ -1878,7 +1815,17 @@ var mycore;
                         enumerable: true,
                         configurable: true
                     });
-                    Object.defineProperty(IviewPrintModalWindow.prototype, "validationResult", {
+                    Object.defineProperty(ViewerPrintModalWindow.prototype, "chapterChecked", {
+                        get: function () {
+                            return this._radioChapterInput.prop("checked");
+                        },
+                        set: function (checked) {
+                            this._radioChapterInput.prop("checked", checked);
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+                    Object.defineProperty(ViewerPrintModalWindow.prototype, "validationResult", {
                         set: function (success) {
                             if (success) {
                                 this._validationMessage.removeClass("text-danger");
@@ -1894,7 +1841,7 @@ var mycore;
                         enumerable: true,
                         configurable: true
                     });
-                    Object.defineProperty(IviewPrintModalWindow.prototype, "validationMessage", {
+                    Object.defineProperty(ViewerPrintModalWindow.prototype, "validationMessage", {
                         get: function () {
                             return this._validationMessage.text();
                         },
@@ -1904,7 +1851,7 @@ var mycore;
                         enumerable: true,
                         configurable: true
                     });
-                    Object.defineProperty(IviewPrintModalWindow.prototype, "currentPageLabel", {
+                    Object.defineProperty(ViewerPrintModalWindow.prototype, "currentPageLabel", {
                         get: function () {
                             return this._radioCurrentPageLabel.text();
                         },
@@ -1914,7 +1861,7 @@ var mycore;
                         enumerable: true,
                         configurable: true
                     });
-                    Object.defineProperty(IviewPrintModalWindow.prototype, "allPagesLabel", {
+                    Object.defineProperty(ViewerPrintModalWindow.prototype, "allPagesLabel", {
                         get: function () {
                             return this._radioAllPagesLabel.text();
                         },
@@ -1924,7 +1871,7 @@ var mycore;
                         enumerable: true,
                         configurable: true
                     });
-                    Object.defineProperty(IviewPrintModalWindow.prototype, "rangeLabel", {
+                    Object.defineProperty(ViewerPrintModalWindow.prototype, "rangeLabel", {
                         get: function () {
                             return this._radioRangePagesLabel.text();
                         },
@@ -1934,7 +1881,7 @@ var mycore;
                         enumerable: true,
                         configurable: true
                     });
-                    Object.defineProperty(IviewPrintModalWindow.prototype, "previewImageSrc", {
+                    Object.defineProperty(ViewerPrintModalWindow.prototype, "previewImageSrc", {
                         get: function () {
                             return this._previewImage.attr("src");
                         },
@@ -1944,14 +1891,14 @@ var mycore;
                         enumerable: true,
                         configurable: true
                     });
-                    Object.defineProperty(IviewPrintModalWindow.prototype, "rangeInputVal", {
+                    Object.defineProperty(ViewerPrintModalWindow.prototype, "rangeInputVal", {
                         get: function () {
                             return this._radioRangePagesInputText.val();
                         },
                         enumerable: true,
                         configurable: true
                     });
-                    Object.defineProperty(IviewPrintModalWindow.prototype, "rangeInputEnabled", {
+                    Object.defineProperty(ViewerPrintModalWindow.prototype, "rangeInputEnabled", {
                         get: function () {
                             return this._radioRangePagesInputText.attr("enabled") == "true";
                         },
@@ -1962,14 +1909,24 @@ var mycore;
                         enumerable: true,
                         configurable: true
                     });
-                    Object.defineProperty(IviewPrintModalWindow.prototype, "maximalPages", {
+                    Object.defineProperty(ViewerPrintModalWindow.prototype, "chapterLabel", {
+                        get: function () {
+                            return this._radioChapterLabel.text();
+                        },
+                        set: function (label) {
+                            this._radioChapterLabel.text(label);
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+                    Object.defineProperty(ViewerPrintModalWindow.prototype, "maximalPages", {
                         set: function (number) {
                             this._maximalPageNumber.text(number);
                         },
                         enumerable: true,
                         configurable: true
                     });
-                    Object.defineProperty(IviewPrintModalWindow.prototype, "maximalPageMessage", {
+                    Object.defineProperty(ViewerPrintModalWindow.prototype, "maximalPageMessage", {
                         set: function (message) {
                             this._maximalPageNumber.detach();
                             var messageDiv = this._maximalPageMessage.find(".message");
@@ -1979,15 +1936,28 @@ var mycore;
                         enumerable: true,
                         configurable: true
                     });
-                    IviewPrintModalWindow.INPUT_IDENTIFIER = "pages";
-                    IviewPrintModalWindow.INPUT_RANGE_IDENTIFIER = "range";
-                    IviewPrintModalWindow.INPUT_RANGE_TEXT_IDENTIFIER = IviewPrintModalWindow.INPUT_RANGE_IDENTIFIER + "-text";
-                    IviewPrintModalWindow.INPUT_ALL_VALUE = "all";
-                    IviewPrintModalWindow.INPUT_RANGE_VALUE = "range";
-                    IviewPrintModalWindow.INPUT_CURRENT_VALUE = "current";
-                    return IviewPrintModalWindow;
+                    ViewerPrintModalWindow.prototype.setChapterTree = function (chapters) {
+                        this._chapterSelect.html(chapters.map(function (entry) {
+                            return "<option value=\"" + entry.id + "\">" + entry.label + "</option>";
+                        }).join(""));
+                    };
+                    Object.defineProperty(ViewerPrintModalWindow.prototype, "chapterInputVal", {
+                        get: function () {
+                            return this._chapterSelect.val();
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+                    ViewerPrintModalWindow.INPUT_IDENTIFIER = "pages";
+                    ViewerPrintModalWindow.INPUT_RANGE_IDENTIFIER = "range";
+                    ViewerPrintModalWindow.INPUT_RANGE_TEXT_IDENTIFIER = ViewerPrintModalWindow.INPUT_RANGE_IDENTIFIER + "-text";
+                    ViewerPrintModalWindow.INPUT_CHAPTER_VALUE = "chapter";
+                    ViewerPrintModalWindow.INPUT_ALL_VALUE = "all";
+                    ViewerPrintModalWindow.INPUT_RANGE_VALUE = "range";
+                    ViewerPrintModalWindow.INPUT_CURRENT_VALUE = "current";
+                    return ViewerPrintModalWindow;
                 }(modal.IviewModalWindow));
-                modal.IviewPrintModalWindow = IviewPrintModalWindow;
+                modal.ViewerPrintModalWindow = ViewerPrintModalWindow;
             })(modal = widgets.modal || (widgets.modal = {}));
         })(widgets = viewer.widgets || (viewer.widgets = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
@@ -2006,22 +1976,22 @@ var mycore;
                     this._enabled = (this._settings.pdfCreatorStyle != null && this._settings.pdfCreatorStyle.length != 0) ||
                         this._settings.pdfCreatorURI;
                 }
-                MyCoRePrintComponent.prototype.buildPDFRequestLink = function (pages) {
-                    var metsLocationFormatString = "{metsURL}/mets.xml?XSL.Style={pdfCreatorStyle}";
-                    var defaultFormatString = "{pdfCreatorURI}?mets={metsLocation}&pages={pages}";
-                    var metsLocation = encodeURIComponent(ViewerFormatString(metsLocationFormatString, this._settings));
-                    this._settings["metsLocation"] = metsLocation;
-                    this._settings["pages"] = pages;
-                    return ViewerFormatString(this._settings.pdfCreatorFormatString || defaultFormatString, this._settings);
-                };
-                MyCoRePrintComponent.prototype.buildRestrictionLink = function () {
-                    var defaultFormatString = "{pdfCreatorURI}?getRestrictions";
-                    return ViewerFormatString(this._settings.pdfCreatorRestrictionFormatString || defaultFormatString, this._settings);
-                };
+                Object.defineProperty(MyCoRePrintComponent.prototype, "handlesEvents", {
+                    get: function () {
+                        if (this._settings.doctype == 'mets' && this._enabled) {
+                            return [viewer.widgets.toolbar.events.ButtonPressedEvent.TYPE, components.events.LanguageModelLoadedEvent.TYPE, components.events.StructureModelLoadedEvent.TYPE, components.events.ImageChangedEvent.TYPE, components.events.ProvideToolbarModelEvent.TYPE];
+                        }
+                        else {
+                            return [];
+                        }
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 MyCoRePrintComponent.prototype.init = function () {
                     if (this._settings.doctype == 'mets' && this._enabled) {
                         this._resolveMaxRequests();
-                        this._modalWindow = new mycore.viewer.widgets.modal.IviewPrintModalWindow(this._settings.mobile);
+                        this.initModalWindow();
                         this.trigger(new components.events.WaitForEvent(this, components.events.LanguageModelLoadedEvent.TYPE));
                         this.trigger(new components.events.WaitForEvent(this, components.events.StructureModelLoadedEvent.TYPE));
                         this.trigger(new components.events.WaitForEvent(this, components.events.ProvideToolbarModelEvent.TYPE));
@@ -2046,78 +2016,16 @@ var mycore;
                     }
                     if (e.type == components.events.LanguageModelLoadedEvent.TYPE) {
                         var languageModelLoadedEvent = e;
-                        this._printButton.tooltip = languageModelLoadedEvent.languageModel.getTranslation("toolbar.pdf");
-                        this._modalWindow.closeLabel = languageModelLoadedEvent.languageModel.getTranslation("createPdf.cancel");
-                        this._modalWindow.currentPageLabel = languageModelLoadedEvent.languageModel.getTranslation("createPdf.range.currentPage");
-                        this._modalWindow.allPagesLabel = languageModelLoadedEvent.languageModel.getTranslation("createPdf.range.allPages");
-                        this._modalWindow.rangeLabel = languageModelLoadedEvent.languageModel.getTranslation("createPdf.range.manual");
-                        this._modalWindow.title = languageModelLoadedEvent.languageModel.getTranslation("createPdf.title");
-                        this._languageModel = languageModelLoadedEvent.languageModel;
-                        this._modalWindow.maximalPageMessage = languageModelLoadedEvent.languageModel.getTranslation("createPdf.maximalPages");
-                        var that = this;
-                        this._modalWindow.checkEventHandler = function (wich) {
-                            if (wich == "range") {
-                                that._modalWindow.rangeInputEnabled = false;
-                                _this._modalWindow.validationMessage = "";
-                                that._modalWindow.previewImageSrc = null;
-                                that._modalWindow.rangeInputEventHandler = function (ip) {
-                                    var validationResult = that.validateRange(ip);
-                                    if (validationResult.valid) {
-                                        that._modalWindow.validationMessage = "";
-                                        that._modalWindow.validationResult = true;
-                                        that._structureModel.imageList[validationResult.firstPage].requestImgdataUrl(function (url) {
-                                            that._modalWindow.previewImageSrc = url;
-                                        });
-                                    }
-                                    else {
-                                        that._modalWindow.validationMessage = validationResult.text;
-                                        that._modalWindow.validationResult = validationResult.valid;
-                                        that._modalWindow.previewImageSrc = null;
-                                    }
-                                };
-                            }
-                            else {
-                                that._modalWindow.rangeInputEventHandler = null;
-                                that._modalWindow.rangeInputEnabled = false;
-                                if (wich == "all") {
-                                    var allCount = _this._structureModel.imageList.length + 1;
-                                    var maxRange = _this._maxPages;
-                                    if (allCount > maxRange) {
-                                        var msg = that._languageModel.getTranslation("createPdf.errors.tooManyPages");
-                                        that._modalWindow.validationMessage = msg;
-                                        that._modalWindow.validationResult = false;
-                                        that._modalWindow.previewImageSrc = null;
-                                    }
-                                    else {
-                                        that._modalWindow.validationResult = true;
-                                        that._structureModel.imageList[0].requestImgdataUrl(function (url) {
-                                            that._modalWindow.previewImageSrc = url;
-                                        });
-                                    }
-                                }
-                                else if (wich == "current") {
-                                    that._modalWindow.validationMessage = "";
-                                    _this._currentImage.requestImgdataUrl(function (url) {
-                                        that._modalWindow.previewImageSrc = url;
-                                    });
-                                    that._modalWindow.validationResult = true;
-                                }
-                            }
-                        };
-                        this._modalWindow.okayClickHandler = function () {
-                            var page;
-                            if (that._modalWindow.currentChecked) {
-                                page = that._currentImage.order;
-                            }
-                            if (that._modalWindow.allChecked) {
-                                page = "1-" + that._structureModel._imageList.length;
-                            }
-                            if (that._modalWindow.rangeChecked) {
-                                page = that._modalWindow.rangeInputVal;
-                            }
-                            window.location.href = that.buildPDFRequestLink(page);
-                        };
-                        this._modalWindow.currentChecked = true;
+                        var languageModel = languageModelLoadedEvent.languageModel;
+                        this._printButton.tooltip = languageModel.getTranslation("toolbar.pdf");
+                        this._modalWindow.closeLabel = languageModel.getTranslation("createPdf.cancel");
+                        this._modalWindow.currentPageLabel = languageModel.getTranslation("createPdf.range.currentPage");
+                        this._modalWindow.allPagesLabel = languageModel.getTranslation("createPdf.range.allPages");
+                        this._modalWindow.rangeLabel = languageModel.getTranslation("createPdf.range.manual");
+                        this._modalWindow.chapterLabel = languageModel.getTranslation("createPdf.range.chapter");
+                        this._modalWindow.title = languageModel.getTranslation("createPdf.title");
+                        this._languageModel = languageModel;
+                        this._modalWindow.maximalPageMessage = languageModel.getTranslation("createPdf.maximalPages");
                     }
                     if (e.type == viewer.widgets.toolbar.events.ButtonPressedEvent.TYPE) {
                         var bpe = e;
@@ -2133,6 +2041,7 @@ var mycore;
                     if (e.type == components.events.StructureModelLoadedEvent.TYPE) {
                         var smle = e;
                         this._structureModel = smle.structureModel;
+                        this._modalWindow.setChapterTree(this.getChapterViewModel());
                     }
                     if (e.type == components.events.ImageChangedEvent.TYPE) {
                         var ice = e;
@@ -2145,6 +2054,149 @@ var mycore;
                             }
                         }
                     }
+                };
+                MyCoRePrintComponent.prototype.getChapterViewModel = function (chapter, indent) {
+                    if (chapter === void 0) { chapter = this._structureModel.rootChapter; }
+                    if (indent === void 0) { indent = 0; }
+                    var chapterVM = [];
+                    var indentStr = "";
+                    for (var i = 0; i < indent; i++) {
+                        indentStr += "&nbsp;&nbsp;";
+                    }
+                    var combinedLabel = indentStr + chapter.label;
+                    var MAX_LENGHT = 25 + indentStr.length;
+                    if (combinedLabel.length > MAX_LENGHT) {
+                        combinedLabel = combinedLabel.substr(0, MAX_LENGHT) + "...";
+                    }
+                    chapterVM.push({ id: chapter.id, label: combinedLabel });
+                    var indentIncr = indent + 1;
+                    for (var _i = 0, _a = chapter.chapter; _i < _a.length; _i++) {
+                        var childChapter = _a[_i];
+                        chapterVM.push.apply(chapterVM, this.getChapterViewModel(childChapter, indentIncr));
+                    }
+                    return chapterVM;
+                };
+                MyCoRePrintComponent.prototype.initModalWindow = function () {
+                    var _this = this;
+                    this._modalWindow = new mycore.viewer.widgets.modal.ViewerPrintModalWindow(this._settings.mobile);
+                    this._modalWindow.checkEventHandler = function (wich) {
+                        if (wich == "range") {
+                            _this.handleRangeChecked();
+                        }
+                        else if (wich == "chapter") {
+                            _this.handleChapterChecked();
+                        }
+                        else {
+                            _this._modalWindow.rangeInputEventHandler = null;
+                            _this._modalWindow.chapterInputEventHandler = null;
+                            _this._modalWindow.rangeInputEnabled = false;
+                            if (wich == "all") {
+                                _this.handleAllChecked();
+                            }
+                            else if (wich == "current") {
+                                _this.handleCurrentChecked();
+                            }
+                        }
+                    };
+                    this._modalWindow.okayClickHandler = function () {
+                        var page;
+                        if (_this._modalWindow.currentChecked) {
+                            page = _this._currentImage.order;
+                        }
+                        if (_this._modalWindow.allChecked) {
+                            page = "1-" + _this._structureModel._imageList.length;
+                        }
+                        if (_this._modalWindow.rangeChecked) {
+                            page = _this._modalWindow.rangeInputVal;
+                        }
+                        if (_this._modalWindow.chapterChecked) {
+                            var chapter = _this.findChapterWithID(_this._modalWindow.chapterInputVal);
+                            page = _this.getRangeOfChapter(chapter);
+                        }
+                        window.location.href = _this.buildPDFRequestLink(page);
+                    };
+                    this._modalWindow.currentChecked = true;
+                };
+                MyCoRePrintComponent.prototype.handleChapterChecked = function () {
+                    var _this = this;
+                    this._modalWindow.rangeInputEnabled = false;
+                    this._modalWindow.validationMessage = "";
+                    this._modalWindow.previewImageSrc = null;
+                    this._modalWindow.chapterInputEventHandler = function (chapterID) {
+                        var chapter = _this.findChapterWithID(chapterID);
+                        var range = _this.getRangeOfChapter(chapter);
+                        var validationResult = _this.validateRange(range);
+                        if (validationResult.valid) {
+                            _this._modalWindow.validationMessage = "";
+                            _this._modalWindow.validationResult = true;
+                            _this._structureModel.imageList[validationResult.firstPage].requestImgdataUrl(function (url) {
+                                _this._modalWindow.previewImageSrc = url;
+                            });
+                        }
+                        else {
+                            _this._modalWindow.validationMessage = validationResult.text;
+                            _this._modalWindow.validationResult = validationResult.valid;
+                            _this._modalWindow.previewImageSrc = null;
+                        }
+                    };
+                    this._modalWindow.chapterInputEventHandler(this._modalWindow.chapterInputVal);
+                };
+                MyCoRePrintComponent.prototype.handleCurrentChecked = function () {
+                    var _this = this;
+                    this._modalWindow.validationMessage = "";
+                    this._currentImage.requestImgdataUrl(function (url) {
+                        _this._modalWindow.previewImageSrc = url;
+                    });
+                    this._modalWindow.validationResult = true;
+                };
+                MyCoRePrintComponent.prototype.handleAllChecked = function () {
+                    var _this = this;
+                    var allCount = this._structureModel.imageList.length + 1;
+                    var maxRange = this._maxPages;
+                    if (allCount > maxRange) {
+                        this._modalWindow.validationMessage = this._languageModel.getTranslation("createPdf.errors.tooManyPages");
+                        this._modalWindow.validationResult = false;
+                        this._modalWindow.previewImageSrc = null;
+                    }
+                    else {
+                        this._modalWindow.validationResult = true;
+                        this._structureModel.imageList[0].requestImgdataUrl(function (url) {
+                            _this._modalWindow.previewImageSrc = url;
+                        });
+                    }
+                };
+                MyCoRePrintComponent.prototype.handleRangeChecked = function () {
+                    var _this = this;
+                    this._modalWindow.rangeInputEnabled = true;
+                    this._modalWindow.validationMessage = "";
+                    this._modalWindow.previewImageSrc = null;
+                    this._modalWindow.rangeInputEventHandler = function (ip) {
+                        var validationResult = _this.validateRange(ip);
+                        if (validationResult.valid) {
+                            _this._modalWindow.validationMessage = "";
+                            _this._modalWindow.validationResult = true;
+                            _this._structureModel.imageList[validationResult.firstPage].requestImgdataUrl(function (url) {
+                                _this._modalWindow.previewImageSrc = url;
+                            });
+                        }
+                        else {
+                            _this._modalWindow.validationMessage = validationResult.text;
+                            _this._modalWindow.validationResult = validationResult.valid;
+                            _this._modalWindow.previewImageSrc = null;
+                        }
+                    };
+                };
+                MyCoRePrintComponent.prototype.buildPDFRequestLink = function (pages) {
+                    var metsLocationFormatString = "{metsURL}/mets.xml?XSL.Style={pdfCreatorStyle}";
+                    var defaultFormatString = "{pdfCreatorURI}?mets={metsLocation}&pages={pages}";
+                    var metsLocation = encodeURIComponent(ViewerFormatString(metsLocationFormatString, this._settings));
+                    this._settings["metsLocation"] = metsLocation;
+                    this._settings["pages"] = pages;
+                    return ViewerFormatString(this._settings.pdfCreatorFormatString || defaultFormatString, this._settings);
+                };
+                MyCoRePrintComponent.prototype.buildRestrictionLink = function () {
+                    var defaultFormatString = "{pdfCreatorURI}?getRestrictions";
+                    return ViewerFormatString(this._settings.pdfCreatorRestrictionFormatString || defaultFormatString, this._settings);
                 };
                 MyCoRePrintComponent.prototype._resolveMaxRequests = function () {
                     var that = this;
@@ -2161,6 +2213,19 @@ var mycore;
                         }
                     });
                 };
+                MyCoRePrintComponent.prototype.findChapterWithID = function (id, chapter) {
+                    if (chapter === void 0) { chapter = this._structureModel.rootChapter; }
+                    if (chapter.id == id)
+                        return chapter;
+                    for (var _i = 0, _a = chapter.chapter; _i < _a.length; _i++) {
+                        var child = _a[_i];
+                        var foundChapter = this.findChapterWithID(id, child);
+                        if (foundChapter != null) {
+                            return foundChapter;
+                        }
+                    }
+                    return null;
+                };
                 MyCoRePrintComponent.prototype.validateRange = function (range) {
                     var ranges = range.split(",");
                     var firstPage = 99999;
@@ -2169,24 +2234,23 @@ var mycore;
                     }
                     var pc = 0;
                     var maxRange = this._maxPages;
-                    for (var rangeIndex in ranges) {
-                        var range = ranges[rangeIndex];
-                        if (range.indexOf("-") == -1) {
-                            if (!this.isValidPage(range)) {
+                    for (var _i = 0, ranges_1 = ranges; _i < ranges_1.length; _i++) {
+                        var range_1 = ranges_1[_i];
+                        if (range_1.indexOf("-") == -1) {
+                            if (!this.isValidPage(range_1)) {
                                 return {
                                     valid: false,
                                     text: this._languageModel.getTranslation("createPdf.errors.rangeInvalid")
                                 };
                             }
-                            var page = parseInt(range);
+                            var page = parseInt(range_1);
                             if (page < firstPage) {
                                 firstPage = page;
                             }
                             pc++;
-                            continue;
                         }
                         else {
-                            var pages = range.split("-");
+                            var pages = range_1.split("-");
                             if (pages.length != 2) {
                                 return {
                                     valid: false,
@@ -2219,7 +2283,6 @@ var mycore;
                             if (startPage < firstPage) {
                                 firstPage = startPage;
                             }
-                            continue;
                         }
                     }
                     return { valid: true, text: "", firstPage: firstPage - 1 };
@@ -2230,18 +2293,54 @@ var mycore;
                     }
                     return false;
                 };
-                Object.defineProperty(MyCoRePrintComponent.prototype, "handlesEvents", {
-                    get: function () {
-                        if (this._settings.doctype == 'mets' && this._enabled) {
-                            return [viewer.widgets.toolbar.events.ButtonPressedEvent.TYPE, components.events.LanguageModelLoadedEvent.TYPE, components.events.StructureModelLoadedEvent.TYPE, components.events.ImageChangedEvent.TYPE, components.events.ProvideToolbarModelEvent.TYPE];
+                MyCoRePrintComponent.prototype.getRangeOfChapter = function (chapter) {
+                    var imageToChapterMap = this._structureModel._imageToChapterMap;
+                    var ranges = [];
+                    var chapterEqOrContains = function (root, child) {
+                        if (root == child) {
+                            return true;
+                        }
+                        if (child.parent != null) {
+                            return chapterEqOrContains(root, child.parent);
+                        }
+                        return false;
+                    };
+                    var start = null;
+                    var last = null;
+                    for (var _i = 0, _a = this._structureModel.imageList; _i < _a.length; _i++) {
+                        var img = _a[_i];
+                        if (imageToChapterMap.has(img.id)) {
+                            var linkedChapter = imageToChapterMap.get(img.id);
+                            if (chapterEqOrContains(chapter, linkedChapter)) {
+                                if (start == null) {
+                                    start = img;
+                                }
+                                else {
+                                    last = img;
+                                }
+                                continue;
+                            }
+                        }
+                        if (start != null && last != null) {
+                            ranges.push(start.order + "-" + last.order);
+                        }
+                        else if (start != null) {
+                            ranges.push((start.order) + "");
                         }
                         else {
-                            return [];
                         }
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
+                        start = last = null;
+                    }
+                    if (start != null && last != null) {
+                        ranges.push((start.order + 1) + "-" + (last.order + 1));
+                    }
+                    else if (start != null) {
+                        ranges.push((start.order + 1) + "");
+                    }
+                    else {
+                    }
+                    return ranges.join(",");
+                };
                 return MyCoRePrintComponent;
             }(components.ViewerComponent));
             components.MyCoRePrintComponent = MyCoRePrintComponent;
@@ -2257,15 +2356,25 @@ var mycore;
         (function (widgets) {
             var canvas;
             (function (canvas) {
-                var HighlightAltoCanvasPageLayer = (function () {
-                    function HighlightAltoCanvasPageLayer() {
+                var HighlightAltoChapterCanvasPageLayer = (function () {
+                    function HighlightAltoChapterCanvasPageLayer() {
                         this.selectedChapter = null;
                         this.highlightedChapter = null;
                         this.fadeAnimation = null;
                         this.chaptersToClear = new MyCoReMap();
+                        this.enabled = true;
                     }
-                    HighlightAltoCanvasPageLayer.prototype.draw = function (ctx, id, pageSize, drawOnHtml) {
+                    HighlightAltoChapterCanvasPageLayer.prototype.isEnabled = function () {
+                        return this.enabled;
+                    };
+                    HighlightAltoChapterCanvasPageLayer.prototype.setEnabled = function (enabled) {
+                        this.enabled = enabled;
+                    };
+                    HighlightAltoChapterCanvasPageLayer.prototype.draw = function (ctx, id, pageSize, drawOnHtml) {
                         if (drawOnHtml === void 0) { drawOnHtml = false; }
+                        if (!this.isEnabled()) {
+                            return;
+                        }
                         var selected = this.isChapterSelected();
                         var highlighted = this.isHighlighted();
                         var animated = this.fadeAnimation != null && this.fadeAnimation.isRunning;
@@ -2286,24 +2395,32 @@ var mycore;
                             if (this.fadeAnimation != null) {
                                 rgba = "rgba(0,0,0," + this.fadeAnimation.value + ")";
                             }
-                            this.darkenPage(ctx, pageSize, rgba);
+                            if (!this.isLinkedWithoutBlocks(id)) {
+                                this.darkenPage(ctx, pageSize, rgba);
+                            }
                             this.clearRects(ctx, id);
                         }
                         if (highlighted && selected) {
-                            this.drawRects(ctx, id, this.highlightedChapter.pages, "rgba(0,0,0,0.2)");
+                            this.drawRects(ctx, id, this.highlightedChapter.boundingBoxMap, "rgba(0,0,0,0.2)");
                         }
                     };
-                    HighlightAltoCanvasPageLayer.prototype.isChapterSelected = function () {
-                        return this.selectedChapter != null && !this.selectedChapter.pages.isEmpty();
+                    HighlightAltoChapterCanvasPageLayer.prototype.isChapterSelected = function () {
+                        return this.selectedChapter != null && !this.selectedChapter.boundingBoxMap.isEmpty();
                     };
-                    HighlightAltoCanvasPageLayer.prototype.isHighlighted = function () {
-                        var highlighted = this.highlightedChapter != null && !this.highlightedChapter.pages.isEmpty();
+                    HighlightAltoChapterCanvasPageLayer.prototype.isHighlighted = function () {
+                        var highlighted = this.highlightedChapter != null && !this.highlightedChapter.boundingBoxMap.isEmpty();
                         if (highlighted && this.isChapterSelected()) {
                             return this.highlightedChapter.chapterId !== this.selectedChapter.chapterId;
                         }
                         return highlighted;
                     };
-                    HighlightAltoCanvasPageLayer.prototype.darkenPage = function (ctx, pageSize, rgba) {
+                    HighlightAltoChapterCanvasPageLayer.prototype.isLinkedWithoutBlocks = function (fileID) {
+                        return !this.chaptersToClear.filter(function (id, area) {
+                            var rects = area.boundingBoxMap.get(fileID);
+                            return rects != null && rects.length === 0;
+                        }).isEmpty();
+                    };
+                    HighlightAltoChapterCanvasPageLayer.prototype.darkenPage = function (ctx, pageSize, rgba) {
                         ctx.save();
                         {
                             ctx.strokeStyle = rgba;
@@ -2315,11 +2432,11 @@ var mycore;
                         }
                         ctx.restore();
                     };
-                    HighlightAltoCanvasPageLayer.prototype.clearRects = function (ctx, id) {
+                    HighlightAltoChapterCanvasPageLayer.prototype.clearRects = function (ctx, id) {
                         ctx.save();
                         {
                             this.chaptersToClear.values.forEach(function (chapterArea) {
-                                chapterArea.pages.hasThen(id, function (rects) {
+                                chapterArea.boundingBoxMap.hasThen(id, function (rects) {
                                     rects.forEach(function (rect) {
                                         ctx.clearRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
                                     });
@@ -2328,7 +2445,7 @@ var mycore;
                         }
                         ctx.restore();
                     };
-                    HighlightAltoCanvasPageLayer.prototype.drawRects = function (ctx, pageId, pages, rgba) {
+                    HighlightAltoChapterCanvasPageLayer.prototype.drawRects = function (ctx, pageId, pages, rgba) {
                         ctx.save();
                         {
                             ctx.strokeStyle = rgba;
@@ -2344,9 +2461,9 @@ var mycore;
                         }
                         ctx.restore();
                     };
-                    return HighlightAltoCanvasPageLayer;
+                    return HighlightAltoChapterCanvasPageLayer;
                 }());
-                canvas.HighlightAltoCanvasPageLayer = HighlightAltoCanvasPageLayer;
+                canvas.HighlightAltoChapterCanvasPageLayer = HighlightAltoChapterCanvasPageLayer;
             })(canvas = widgets.canvas || (widgets.canvas = {}));
         })(widgets = viewer.widgets || (viewer.widgets = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
@@ -2366,8 +2483,8 @@ var mycore;
                     this._settings = _settings;
                     this.container = container;
                     this.pageLayout = null;
-                    this.highlightLayer = new viewer.widgets.canvas.HighlightAltoCanvasPageLayer();
-                    this._chapterAreaContainer = null;
+                    this.highlightLayer = new viewer.widgets.canvas.HighlightAltoChapterCanvasPageLayer();
+                    this._altoChapterContainer = null;
                     this.selectedChapter = null;
                     this.highlightedChapter = null;
                 }
@@ -2384,12 +2501,20 @@ var mycore;
                             return [components.events.ChapterChangedEvent.TYPE,
                                 components.events.PageLayoutChangedEvent.TYPE,
                                 components.events.RequestPageEvent.TYPE,
-                                components.events.MetsLoadedEvent.TYPE
+                                components.events.MetsLoadedEvent.TYPE,
+                                components.events.TextEditEvent.TYPE
                             ];
                         }
                         else {
                             return [];
                         }
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(MyCoReHighlightAltoComponent.prototype, "isEnabled", {
+                    get: function () {
+                        return this._model != null && this._model._textContentPresent;
                     },
                     enumerable: true,
                     configurable: true
@@ -2400,8 +2525,8 @@ var mycore;
                 MyCoReHighlightAltoComponent.prototype.getPageController = function () {
                     return this.pageLayout.getPageController();
                 };
-                MyCoReHighlightAltoComponent.prototype.getChapterAreaContainer = function () {
-                    return this._chapterAreaContainer;
+                MyCoReHighlightAltoComponent.prototype.getAltoChapterContainer = function () {
+                    return this._altoChapterContainer;
                 };
                 MyCoReHighlightAltoComponent.prototype.setChapter = function (chapterId, triggerChapterChangeEvent, forceChange) {
                     if (triggerChapterChangeEvent === void 0) { triggerChapterChangeEvent = false; }
@@ -2410,24 +2535,24 @@ var mycore;
                         return;
                     }
                     this.selectedChapter = chapterId;
-                    if (this._chapterAreaContainer === null) {
+                    if (this._altoChapterContainer === null || !this._altoChapterContainer.hasLoadedPages()) {
                         return;
                     }
-                    var chapterArea = chapterId != null ? this._chapterAreaContainer.chapters.get(chapterId) : null;
-                    this.highlightLayer.selectedChapter = chapterArea;
+                    this.highlightLayer.selectedChapter = chapterId != null ? this._altoChapterContainer.chapters.get(chapterId) : null;
                     this.handleDarkenPageAnimation();
                     this.trigger(new components.events.RedrawEvent(this));
                     if (triggerChapterChangeEvent) {
-                        var chapter = this._chapterAreaContainer.getChapter(chapterId);
+                        var chapter = this._altoChapterContainer.getChapter(chapterId);
                         this.trigger(new components.events.ChapterChangedEvent(this, chapter));
                     }
                 };
                 MyCoReHighlightAltoComponent.prototype.setHighlightChapter = function (chapterId) {
-                    if (this._chapterAreaContainer === null || this.highlightedChapter === chapterId) {
+                    if (this._altoChapterContainer === null ||
+                        !this._altoChapterContainer.hasLoadedPages() ||
+                        this.highlightedChapter === chapterId) {
                         return;
                     }
-                    var chapterArea = chapterId != null ? this._chapterAreaContainer.chapters.get(chapterId) : null;
-                    this.highlightLayer.highlightedChapter = chapterArea;
+                    this.highlightLayer.highlightedChapter = chapterId != null ? this._altoChapterContainer.chapters.get(chapterId) : null;
                     this.highlightedChapter = chapterId;
                     if (this.selectedChapter == null) {
                         this.handleDarkenPageAnimation();
@@ -2459,15 +2584,19 @@ var mycore;
                     if (e.type == components.events.MetsLoadedEvent.TYPE) {
                         var mle = e;
                         this._model = mle.mets.model;
-                        this._chapterAreaContainer = new ChapterAreaContainer(this._model);
+                        if (!this.isEnabled) {
+                            return;
+                        }
+                        this._altoChapterContainer = new AltoChapterContainer(this._model);
                         if (this.selectedChapter != null) {
                             this.setChapter(this.selectedChapter, false, true);
                         }
+                        this.trigger(new components.events.RequestDesktopInputEvent(this, new HighlightAltoInputListener(this)));
                     }
                     if (e.type == components.events.RequestPageEvent.TYPE) {
-                        var rpe_1 = e;
-                        this.trigger(new RequestAltoModelEvent(this, rpe_1._pageId, function (page, altoHref, altoModel) {
-                            _this._chapterAreaContainer.addPage(rpe_1._pageId, altoHref, altoModel);
+                        var rpe_2 = e;
+                        this.trigger(new RequestAltoModelEvent(this, rpe_2._pageId, function (page, altoHref, altoModel) {
+                            _this._altoChapterContainer.addPage(rpe_2._pageId, altoHref, altoModel);
                         }));
                     }
                     if (e.type == components.events.ChapterChangedEvent.TYPE) {
@@ -2479,7 +2608,10 @@ var mycore;
                     }
                     if (e.type == components.events.PageLayoutChangedEvent.TYPE) {
                         this.pageLayout = e.pageLayout;
-                        this.trigger(new components.events.RequestDesktopInputEvent(this, new HighlightAltoInputListener(this)));
+                    }
+                    if (e.type == components.events.TextEditEvent.TYPE) {
+                        var tee = e;
+                        this.highlightLayer.setEnabled(!tee.edit);
                     }
                 };
                 return MyCoReHighlightAltoComponent;
@@ -2500,24 +2632,28 @@ var mycore;
                     this.component.setHighlightChapter(chapterId);
                 };
                 HighlightAltoInputListener.prototype.getChapterId = function (position) {
-                    var pageHitInfo = this.component.getPageLayout().getPageHitInfo(position);
+                    var pageLayout = this.component.getPageLayout();
+                    if (pageLayout == null) {
+                        return null;
+                    }
+                    var pageHitInfo = pageLayout.getPageHitInfo(position);
                     if (pageHitInfo.id == null) {
                         return null;
                     }
-                    var chapterAreaContainer = this.component.getChapterAreaContainer();
-                    if (chapterAreaContainer === null) {
+                    var altoChapterContainer = this.component.getAltoChapterContainer();
+                    if (altoChapterContainer === null) {
                         return null;
                     }
-                    var chapters = chapterAreaContainer.chapters;
-                    var pageChapterMap = chapterAreaContainer.pageChapterMap;
+                    var chapters = altoChapterContainer.chapters;
+                    var pageChapterMap = altoChapterContainer.pageChapterMap;
                     var chapterIdsOnPage = pageChapterMap.get(pageHitInfo.id);
                     if (chapterIdsOnPage == null || chapterIdsOnPage.length <= 0) {
                         return null;
                     }
                     for (var _i = 0, chapterIdsOnPage_1 = chapterIdsOnPage; _i < chapterIdsOnPage_1.length; _i++) {
                         var chapterId = chapterIdsOnPage_1[_i];
-                        var chapterArea = chapters.get(chapterId);
-                        var rectsOfChapter = chapterArea.pages.get(pageHitInfo.id);
+                        var altoChapter = chapters.get(chapterId);
+                        var rectsOfChapter = altoChapter.boundingBoxMap.get(pageHitInfo.id);
                         if (rectsOfChapter == null) {
                             continue;
                         }
@@ -2533,49 +2669,40 @@ var mycore;
                 };
                 return HighlightAltoInputListener;
             }(viewer.widgets.canvas.DesktopInputAdapter));
-            var ChapterAreaContainer = (function () {
-                function ChapterAreaContainer(_model) {
+            var AltoChapterContainer = (function () {
+                function AltoChapterContainer(_model) {
                     var _this = this;
                     this._model = _model;
                     this.chapters = new MyCoReMap();
                     this.pageChapterMap = new MyCoReMap();
                     this._loadedPages = {};
-                    this._model.chapterToImageMap.keys.forEach(function (chapterId) {
-                        _this.chapters.set(chapterId, new ChapterArea(chapterId));
-                    });
-                    var blocklistChapters = this.getAllBlocklistChapters(this._model.rootChapter);
-                    this._model.imageList.forEach(function (image) {
-                        var chaptersOfPage = _this.pageChapterMap.get(image.href);
-                        if (chaptersOfPage == null) {
-                            chaptersOfPage = new Array();
-                            _this.pageChapterMap.set(image.href, chaptersOfPage);
-                        }
-                        var altoHref = image.additionalHrefs.get("AltoHref");
-                        blocklistChapters.filter(function (chapter) {
-                            var blocklist = chapter.additional.get("blocklist");
-                            for (var _i = 0, blocklist_1 = blocklist; _i < blocklist_1.length; _i++) {
-                                var block = blocklist_1[_i];
-                                if (block.fileId == altoHref) {
-                                    return true;
-                                }
+                    this._model.smLinkMap.forEach(function (chapterId, linkedImages) {
+                        _this.chapters.set(chapterId, new AltoChapter(chapterId));
+                        for (var _i = 0, linkedImages_1 = linkedImages; _i < linkedImages_1.length; _i++) {
+                            var imageHref = linkedImages_1[_i];
+                            if (!_this.pageChapterMap.has(imageHref)) {
+                                _this.pageChapterMap.set(imageHref, []);
                             }
-                            return false;
-                        }).forEach(function (chapter) {
-                            chaptersOfPage.push(chapter.id);
-                        });
+                            _this.pageChapterMap.get(imageHref).push(chapterId);
+                        }
                     });
                 }
-                ChapterAreaContainer.prototype.getBlocklistOfChapter = function (chapterId) {
-                    var chapter = this.getChapter(chapterId);
-                    if (chapter == null) {
-                        return;
-                    }
-                    return chapter.additional.get("blocklist");
+                AltoChapterContainer.prototype.hasLoadedPages = function () {
+                    return Object.keys(this._loadedPages).length > 0;
                 };
-                ChapterAreaContainer.prototype.getChapter = function (chapterId) {
+                AltoChapterContainer.prototype.getAreaListOfChapter = function (chapter) {
+                    var blocklist = chapter.additional.get("blocklist");
+                    if (blocklist == null) {
+                        return [];
+                    }
+                    return blocklist.map(function (block) {
+                        return new MetsArea(block.fileId, block.fromId, block.toId);
+                    });
+                };
+                AltoChapterContainer.prototype.getChapter = function (chapterId) {
                     return this.findChapter(this._model.rootChapter, chapterId);
                 };
-                ChapterAreaContainer.prototype.findChapter = function (from, chapterId) {
+                AltoChapterContainer.prototype.findChapter = function (from, chapterId) {
                     if (from.id == chapterId) {
                         return from;
                     }
@@ -2588,13 +2715,16 @@ var mycore;
                     }
                     return null;
                 };
-                ChapterAreaContainer.prototype.getBlocklistOfChapterAndAltoHref = function (chapterId, altoHref) {
-                    return this.getBlocklistOfChapter(chapterId).filter(function (_a) {
-                        var fileId = _a.fileId, fromId = _a.fromId, toId = _a.toId;
-                        return fileId == altoHref;
+                AltoChapterContainer.prototype.getBlocklistOfChapterAndAltoHref = function (chapterId, altoHref) {
+                    var chapter = this.getChapter(chapterId);
+                    if (chapter == null) {
+                        return [];
+                    }
+                    return this.getAreaListOfChapter(chapter).filter(function (area) {
+                        return altoHref === area.altoRef;
                     });
                 };
-                ChapterAreaContainer.prototype.getAllBlocklistChapters = function (from) {
+                AltoChapterContainer.prototype.getAllBlocklistChapters = function (from) {
                     var _this = this;
                     var chapters = [];
                     if (from.additional.get("blocklist") != null) {
@@ -2605,7 +2735,7 @@ var mycore;
                     });
                     return chapters;
                 };
-                ChapterAreaContainer.prototype.addPage = function (pageId, altoHref, alto) {
+                AltoChapterContainer.prototype.addPage = function (pageId, altoHref, alto) {
                     var _this = this;
                     if (this._loadedPages[pageId] != null) {
                         return;
@@ -2615,26 +2745,151 @@ var mycore;
                         chapterIds.map(function (chapterId) { return _this.chapters.get(chapterId); }).forEach(function (chapter) {
                             chapter.addPage(pageId, alto, _this.getBlocklistOfChapterAndAltoHref(chapter.chapterId, altoHref));
                         });
+                        chapterIds.map(function (chapterId) { return _this.chapters.get(chapterId); }).forEach(function (chapter, i, chapters) {
+                            var maximizedRect = chapter.maximize(pageId);
+                            if (maximizedRect == null) {
+                                return;
+                            }
+                            chapter.boundingBoxMap.set(pageId, [maximizedRect]);
+                            for (var j = 0; j < chapters.length; j++) {
+                                if (i == j) {
+                                    continue;
+                                }
+                                var otherBoundingBox = chapters[j].maximize(pageId);
+                                chapter.fixBoundingBox(pageId, otherBoundingBox);
+                                chapter.fixIntersections(pageId, chapters[j]);
+                            }
+                            var altoRects = chapter.altoRectMap.get(pageId);
+                            chapter.cutVerticalBoundingBox(pageId, altoRects[0].getY());
+                            chapter.cutVerticalBoundingBox(pageId, altoRects[altoRects.length - 1].getY() + altoRects[altoRects.length - 1].getHeight());
+                            chapter.fixEmptyAreas(pageId, alto);
+                        });
                     });
                 };
-                return ChapterAreaContainer;
+                return AltoChapterContainer;
             }());
-            components.ChapterAreaContainer = ChapterAreaContainer;
-            var ChapterArea = (function () {
-                function ChapterArea(chapterId) {
+            components.AltoChapterContainer = AltoChapterContainer;
+            var AltoChapter = (function () {
+                function AltoChapter(chapterId) {
                     this.chapterId = chapterId;
-                    this.pages = new MyCoReMap();
+                    this.boundingBoxMap = new MyCoReMap();
+                    this.altoRectMap = new MyCoReMap();
+                    this.metsAreas = new MyCoReMap();
                 }
-                ChapterArea.prototype.addPage = function (pageId, altoFile, metsBlocklist) {
-                    var altoBlocks = this.getAltoBlocks(altoFile, metsBlocklist);
-                    var areas = this.getAreas(altoFile, altoBlocks);
-                    this.pages.set(pageId, areas);
+                AltoChapter.prototype.addPage = function (pageId, altoFile, metsAreas) {
+                    var altoBlocks = this.getAltoBlocks(altoFile, metsAreas);
+                    var areaRects = this.getAreaRects(altoFile, altoBlocks);
+                    this.altoRectMap.set(pageId, areaRects);
+                    this.boundingBoxMap.set(pageId, areaRects);
+                    this.metsAreas.set(pageId, metsAreas);
                 };
-                ChapterArea.prototype.getAltoBlocks = function (altoFile, metsBlocklist) {
+                AltoChapter.prototype.maximize = function (pageId) {
+                    var boundingBox = this.boundingBoxMap.get(pageId);
+                    if (boundingBox == null || boundingBox.length == 0) {
+                        return null;
+                    }
+                    return boundingBox.reduce(function (a, b) {
+                        return a.maximizeRect(b);
+                    });
+                };
+                AltoChapter.prototype.fixBoundingBox = function (pageId, rect) {
+                    if (rect == null) {
+                        return;
+                    }
+                    var thisBoundingBox = this.boundingBoxMap.get(pageId);
+                    var _loop_1 = function(thisBBRect) {
+                        if (!thisBBRect.intersectsArea(rect) || this_1.intersectsText(pageId, rect)) {
+                            return "continue";
+                        }
+                        thisBoundingBox = thisBoundingBox.filter(function (rect) { return rect !== thisBBRect; });
+                        thisBBRect.difference(rect).forEach(function (rect) { return thisBoundingBox.push(rect); });
+                        this_1.boundingBoxMap.set(pageId, thisBoundingBox);
+                        this_1.fixBoundingBox(pageId, rect);
+                    };
+                    var this_1 = this;
+                    for (var _i = 0, thisBoundingBox_1 = thisBoundingBox; _i < thisBoundingBox_1.length; _i++) {
+                        var thisBBRect = thisBoundingBox_1[_i];
+                        var state_1 = _loop_1(thisBBRect);
+                        if (state_1 === "continue") continue;
+                    }
+                };
+                AltoChapter.prototype.intersectsText = function (pageId, rect) {
+                    var rects = this.altoRectMap.get(pageId);
+                    for (var _i = 0, rects_1 = rects; _i < rects_1.length; _i++) {
+                        var altoRect = rects_1[_i];
+                        if (altoRect.intersectsArea(rect)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                };
+                AltoChapter.prototype.fixIntersections = function (pageId, other) {
+                    var thisAreas = this.boundingBoxMap.get(pageId);
+                    var otherAreas = other.boundingBoxMap.get(pageId);
+                    var _loop_2 = function(thisArea) {
+                        for (var _i = 0, otherAreas_1 = otherAreas; _i < otherAreas_1.length; _i++) {
+                            var otherArea = otherAreas_1[_i];
+                            if (!thisArea.intersectsArea(otherArea)) {
+                                continue;
+                            }
+                            thisAreas = thisAreas.filter(function (rect) { return rect !== thisArea; });
+                            thisArea.difference(otherArea).forEach(function (rect) { return thisAreas.push(rect); });
+                            this_2.boundingBoxMap.set(pageId, thisAreas);
+                            this_2.fixIntersections(pageId, other);
+                            return { value: void 0 };
+                        }
+                    };
+                    var this_2 = this;
+                    for (var _a = 0, thisAreas_1 = thisAreas; _a < thisAreas_1.length; _a++) {
+                        var thisArea = thisAreas_1[_a];
+                        var state_2 = _loop_2(thisArea);
+                        if (typeof state_2 === "object") return state_2.value;
+                    }
+                };
+                AltoChapter.prototype.cutVerticalBoundingBox = function (pageId, y) {
+                    var thisAreas = this.boundingBoxMap.get(pageId);
+                    var _loop_3 = function(thisArea) {
+                        if (!thisArea.intersectsVertical(y)) {
+                            return "continue";
+                        }
+                        thisAreas = thisAreas.filter(function (rect) { return rect !== thisArea; });
+                        var cutY = y - thisArea.getY();
+                        thisAreas.push(Rect.fromXYWH(thisArea.getX(), thisArea.getY(), thisArea.getWidth(), cutY));
+                        thisAreas.push(Rect.fromXYWH(thisArea.getX(), thisArea.getY() + cutY + 1, thisArea.getWidth(), thisArea.getHeight() - (cutY + 1)));
+                        this_3.boundingBoxMap.set(pageId, thisAreas);
+                    };
+                    var this_3 = this;
+                    for (var _i = 0, thisAreas_2 = thisAreas; _i < thisAreas_2.length; _i++) {
+                        var thisArea = thisAreas_2[_i];
+                        var state_3 = _loop_3(thisArea);
+                        if (state_3 === "continue") continue;
+                    }
+                };
+                AltoChapter.prototype.fixEmptyAreas = function (pageId, alto) {
+                    var thisAreas = this.boundingBoxMap.get(pageId);
+                    var thisMetsAreas = this.metsAreas.get(pageId);
+                    var textBlockIds = alto.allElements.map(function (block) { return block.getId(); });
+                    var textAreas = alto.allElements
+                        .filter(function (block) {
+                        return thisMetsAreas.some(function (metsArea) { return metsArea.contains(textBlockIds, block.getId()); });
+                    })
+                        .map(function (block) { return block.asRect(); });
+                    thisAreas = thisAreas.filter(function (area) {
+                        for (var _i = 0, textAreas_1 = textAreas; _i < textAreas_1.length; _i++) {
+                            var textArea = textAreas_1[_i];
+                            if (area.intersectsArea(textArea)) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    });
+                    this.boundingBoxMap.set(pageId, thisAreas);
+                };
+                AltoChapter.prototype.getAltoBlocks = function (altoFile, metsAreas) {
                     var allBlocks = altoFile.allElements;
                     var ids = allBlocks.map(function (block) { return block.getId(); });
                     var blocks = [];
-                    metsBlocklist.map(function (blockFromTo) { return [ids.indexOf(blockFromTo.fromId), ids.indexOf(blockFromTo.toId)]; })
+                    metsAreas.map(function (metsArea) { return [ids.indexOf(metsArea.begin), ids.indexOf(metsArea.end)]; })
                         .forEach(function (_a) {
                         var fromIndex = _a[0], toIndex = _a[1];
                         for (var i = fromIndex; i <= toIndex; i++) {
@@ -2647,49 +2902,866 @@ var mycore;
                     });
                     return blocks;
                 };
-                ChapterArea.prototype.getAreas = function (altoFile, blocks) {
-                    var areas = [];
-                    var area = null;
-                    var maxBottom = null;
-                    var maxRight = null;
+                AltoChapter.prototype.getAreaRects = function (altoFile, blocks) {
                     var padding = Math.ceil(altoFile.pageHeight * 0.004);
-                    var blockFaultiness = Math.ceil(altoFile.pageHeight * 0.005);
-                    blocks.forEach(function (block) {
-                        var blockX = block.getBlockHPos();
-                        var blockY = block.getBlockVPos();
-                        var blockW = block.getWidth();
-                        var blockH = block.getHeight();
-                        if (area == null) {
-                            newArea();
-                            return;
-                        }
-                        if (isAssignable()) {
-                            area = area.maximize(blockX, blockY, blockW, blockH);
-                            return;
-                        }
-                        area = area.increase(padding);
-                        areas.push(area);
-                        newArea();
-                        function newArea() {
-                            area = Rect.fromXYWH(blockX, blockY, blockW, blockH);
-                            maxRight = area.getX() + area.getWidth();
-                            maxBottom = area.getY() + area.getHeight();
-                        }
-                        function isAssignable() {
-                            return (blockY >= maxBottom - blockFaultiness) && (blockX <= maxRight);
-                        }
+                    return blocks.map(function (block) {
+                        return Rect
+                            .fromXYWH(block.getBlockHPos(), block.getBlockVPos(), block.getWidth(), block.getHeight())
+                            .increase(padding);
                     });
-                    if (area != null) {
-                        area = area.increase(padding);
-                        areas.push(area);
-                    }
-                    return areas;
                 };
-                return ChapterArea;
+                return AltoChapter;
             }());
-            components.ChapterArea = ChapterArea;
+            components.AltoChapter = AltoChapter;
+            var MetsArea = (function () {
+                function MetsArea(altoRef, begin, end) {
+                    this.altoRef = altoRef;
+                    this.begin = begin;
+                    this.end = end;
+                }
+                MetsArea.prototype.contains = function (blockIds, paragraph) {
+                    var index = blockIds.indexOf(paragraph);
+                    return index >= blockIds.indexOf(this.begin) && index <= blockIds.indexOf(this.end);
+                };
+                return MetsArea;
+            }());
+            components.MetsArea = MetsArea;
         })(components = viewer.components || (viewer.components = {}));
     })(viewer = mycore.viewer || (mycore.viewer = {}));
 })(mycore || (mycore = {}));
 addViewerComponent(mycore.viewer.components.MyCoReHighlightAltoComponent);
+var mycore;
+(function (mycore) {
+    var viewer;
+    (function (viewer) {
+        var widgets;
+        (function (widgets) {
+            var alto;
+            (function (alto) {
+                var AltoEditorWidget = (function () {
+                    function AltoEditorWidget(container, i18n) {
+                        var _this = this;
+                        this.i18n = i18n;
+                        this.idChangeMap = new MyCoReMap();
+                        this.fileChangeMap = new MyCoReMap();
+                        this.idViewMap = new MyCoReMap();
+                        this.changeClickHandler = new Array();
+                        this.changeRemoveClickHandler = new Array();
+                        this.submitClickHandler = new Array();
+                        this.applyClickHandler = new Array();
+                        this.deleteClickHandler = new Array();
+                        this.downArrow = jQuery("\n<span class='glyphicon glyphicon-arrow-down sortArrow'>\n</span> \n");
+                        this.upArrow = jQuery("    \n<span class='glyphicon glyphicon-arrow-up sortArrow'>\n</span> \n");
+                        this.widgetElement = jQuery(this.createHTML());
+                        this.widgetElement.appendTo(container);
+                        this.tableContainer = this.widgetElement.find("tbody.table-line-container");
+                        this.buttonContainer = this.widgetElement.find("div.button-group-container");
+                        this.changeWordButton = this.widgetElement.find("button.changeWord");
+                        this.submitButton = this.widgetElement.find(".submit-button");
+                        this.applyButton = this.widgetElement.find(".apply-button");
+                        this.deleteButton = this.widgetElement.find(".delete-button");
+                        this.pageHeading = this.widgetElement.find("[data-sort=pageHeading]");
+                        this.actionHeading = this.widgetElement.find("[data-sort=actionHeading]");
+                        this.infoHeading = this.widgetElement.find("[data-sort=infoHeading]");
+                        this.pageHeading.click(this.getSortClickEventHandler('pageHeading'));
+                        this.actionHeading.click(this.getSortClickEventHandler('actionHeading'));
+                        this.infoHeading.click(this.getSortClickEventHandler('infoHeading'));
+                        this.submitButton.click(function () {
+                            _this.submitClickHandler.forEach(function (e) {
+                                e();
+                            });
+                        });
+                        this.applyButton.click(function () {
+                            _this.applyClickHandler.forEach(function (e) {
+                                e();
+                            });
+                        });
+                        this.deleteButton.click(function () {
+                            _this.deleteClickHandler.forEach(function (e) {
+                                e();
+                            });
+                        });
+                    }
+                    AltoEditorWidget.prototype.enableApplyButton = function (enabled) {
+                        if (enabled === void 0) { enabled = true; }
+                        if (enabled) {
+                            this.applyButton.show();
+                        }
+                        else {
+                            this.applyButton.hide();
+                        }
+                    };
+                    AltoEditorWidget.prototype.addChangeClickedEventHandler = function (handler) {
+                        this.changeClickHandler.push(handler);
+                    };
+                    AltoEditorWidget.prototype.addSubmitClickHandler = function (handler) {
+                        this.submitClickHandler.push(handler);
+                    };
+                    AltoEditorWidget.prototype.addApplyClickHandler = function (handler) {
+                        this.applyClickHandler.push(handler);
+                    };
+                    AltoEditorWidget.prototype.addDeleteClickHandler = function (handler) {
+                        this.deleteClickHandler.push(handler);
+                    };
+                    AltoEditorWidget.prototype.addChangeRemoveClickHandler = function (handler) {
+                        this.changeRemoveClickHandler.push(handler);
+                    };
+                    AltoEditorWidget.prototype.getSortClickEventHandler = function (byClicked) {
+                        var _this = this;
+                        return function (ev) {
+                            var currentSort = _this.getCurrentSortMethod();
+                            if (currentSort == null || currentSort.sortBy !== byClicked) {
+                                _this.sortBy(byClicked, true);
+                            }
+                            else {
+                                _this.sortBy(byClicked, !currentSort.down);
+                            }
+                        };
+                    };
+                    AltoEditorWidget.prototype.getCurrentSortMethod = function () {
+                        var headerAttached, arrowAttached;
+                        if ((headerAttached = (arrowAttached = this.downArrow).parent()).length > 0 ||
+                            (headerAttached = (arrowAttached = this.upArrow).parent()).length > 0) {
+                            var sortBy = headerAttached.attr("data-sort");
+                            return { sortBy: sortBy, down: arrowAttached[0] === this.downArrow[0] };
+                        }
+                        return null;
+                    };
+                    AltoEditorWidget.prototype.sortBy = function (by, down) {
+                        var _this = this;
+                        this.downArrow.detach();
+                        this.upArrow.detach();
+                        var elem = this.widgetElement.find("[data-sort=" + by + "]");
+                        if (down) {
+                            elem.append(this.downArrow);
+                        }
+                        else {
+                            elem.append(this.upArrow);
+                        }
+                        var sortedList = [];
+                        this.idViewMap.forEach(function (k, v) {
+                            v.detach();
+                            sortedList.push(v);
+                        });
+                        sortedList.sort(this.getSortFn(by, down)).forEach(function (v) {
+                            _this.tableContainer.append(v);
+                        });
+                    };
+                    AltoEditorWidget.prototype.getSortFn = function (by, down) {
+                        var _this = this;
+                        var headerIndex = ["action", "pageHeading", "actionHeading", "infoHeading"];
+                        switch (by) {
+                            case headerIndex[1]:
+                                return function (x, y) {
+                                    var order1 = _this.idChangeMap.get(x.attr("data-id")).pageOrder;
+                                    var order2 = _this.idChangeMap.get(y.attr("data-id")).pageOrder;
+                                    return (down ? 1 : -1) * (order1 - order2);
+                                };
+                            case headerIndex[2]:
+                            case headerIndex[3]:
+                                return function (x, y) {
+                                    var text1 = jQuery(x.children("td").get(headerIndex.indexOf(by))).text();
+                                    var text2 = jQuery(y.children("td").get(headerIndex.indexOf(by))).text();
+                                    return (down ? 1 : -1) * text1.localeCompare(text2);
+                                };
+                        }
+                        return function (x, y) { return -1; };
+                    };
+                    AltoEditorWidget.prototype.createHTML = function () {
+                        return "\n<div class=\"alto-editor-widget container-fluid\">\n    <h3 class=\"small-heading\">" + this.getLabel("altoWidget.heading") + "</h3>     \n    <div class=\"btn-toolbar edit\">\n        <div class=\"btn-group btn-group-xs button-group-container\">\n            <button type=\"button\" class=\"btn btn-default changeWord\">" + this.getLabel("altoWidget.changeWord") + "</button>\n        </div>\n    </div>\n    <h3 class=\"small-heading\">" + this.getLabel("altoWidget.changesHeading") + "</h3>\n    <div class=\"table-responsive\">\n        <table class=\"table table-condensed\">\n            <thead>\n                <tr>\n                    <th></th>\n                    <th data-sort=\"pageHeading\">" + this.getLabel("altoWidget.table.page") + "</th>\n                    <th data-sort=\"actionHeading\">" + this.getLabel("altoWidget.table.action") + "</th>\n                    <th data-sort=\"infoHeading\">" + this.getLabel("altoWidget.table.info") + "</th>\n                </tr>\n            </thead>\n            <tbody class=\"table-line-container\">\n                \n            </tbody>\n        </table>\n    </div>\n    <div class=\"btn-toolbar action\">\n        <div class=\"btn-group btn-group-xs button-group-container\">\n            <button type=\"button\" class=\"btn btn-primary apply-button\">" + this.getLabel("altoWidget.apply") + "</button>\n            <button type=\"button\" class=\"btn btn-success submit-button\">" + this.getLabel("altoWidget.submit") + "</button>\n            <button type=\"button\" class=\"btn btn-danger delete-button\">" + this.getLabel("altoWidget.delete") + "</button>\n        </div>\n    </div>\n</div>\n";
+                    };
+                    AltoEditorWidget.prototype.getLabel = function (id) {
+                        return this.i18n.getTranslation(id);
+                    };
+                    AltoEditorWidget.prototype.hasChange = function (key) {
+                        return this.idChangeMap.has(key);
+                    };
+                    AltoEditorWidget.prototype.getChange = function (key) {
+                        return this.idChangeMap.get(key);
+                    };
+                    AltoEditorWidget.prototype.getChanges = function () {
+                        return this.idChangeMap;
+                    };
+                    AltoEditorWidget.prototype.getChangesInFile = function (file) {
+                        return this.fileChangeMap.get(file) || [];
+                    };
+                    AltoEditorWidget.prototype.addChange = function (key, change) {
+                        if (this.idChangeMap.values.indexOf(change) != -1) {
+                            return;
+                        }
+                        this.idChangeMap.set(key, change);
+                        var changes = this.fileChangeMap.get(change.file);
+                        if (!this.fileChangeMap.has(change.file)) {
+                            changes = [];
+                            this.fileChangeMap.set(change.file, changes);
+                        }
+                        changes.push(change);
+                        this.addRow(key, change);
+                    };
+                    AltoEditorWidget.prototype.addRow = function (id, change) {
+                        var _this = this;
+                        var view = jQuery("\n<tr data-id=\"" + id + "\">\n    " + this.getChangeHTMLContent(change) + "\n</tr>\n");
+                        var sortMethod = this.getCurrentSortMethod();
+                        if (sortMethod != null) {
+                            var sortFn_1 = this.getSortFn(sortMethod.sortBy, sortMethod.down);
+                            var inserted_1 = false;
+                            this.tableContainer.children("tr").each(function (i, elem) {
+                                var jqElem = jQuery(elem);
+                                if (!inserted_1 && sortFn_1(view, jqElem) == -1) {
+                                    view.insertBefore(jqElem);
+                                    inserted_1 = true;
+                                }
+                            });
+                            if (!inserted_1) {
+                                this.tableContainer.append(view);
+                            }
+                        }
+                        else {
+                            this.tableContainer.append(view);
+                        }
+                        view.click(function (e) {
+                            if (jQuery(e.target).hasClass("remove")) {
+                                _this.changeRemoveClickHandler.forEach(function (handler) {
+                                    handler(change);
+                                });
+                            }
+                            else {
+                                _this.changeClickHandler.forEach(function (handler) {
+                                    handler(change);
+                                });
+                            }
+                        });
+                        this.idViewMap.set(id, view);
+                    };
+                    AltoEditorWidget.prototype.getChangeText = function (change) {
+                        if (change.type == alto.AltoWordChange.TYPE) {
+                            var wc = change;
+                            return wc.from + " => " + wc.to;
+                        }
+                    };
+                    AltoEditorWidget.prototype.updateChange = function (change) {
+                        var changeID = this.getChangeID(change);
+                        this.idViewMap.get(changeID).html(this.getChangeHTMLContent(change));
+                    };
+                    AltoEditorWidget.prototype.getChangeID = function (change) {
+                        var changeID = null;
+                        this.idChangeMap.forEach(function (k, v) {
+                            if (v == change) {
+                                changeID = k;
+                            }
+                        });
+                        return changeID;
+                    };
+                    AltoEditorWidget.prototype.getChangeHTMLContent = function (change) {
+                        return "\n<td><span class=\"glyphicon glyphicon-remove remove\"></span></td>\n<td>" + change.pageOrder + "</td>\n<td>" + this.i18n.getTranslation("altoWidget.change." + change.type) + "</td>\n<td>" + this.getChangeText(change) + "</td>\n";
+                    };
+                    AltoEditorWidget.prototype.removeChange = function (wordChange) {
+                        var changeID = this.getChangeID(wordChange);
+                        this.idViewMap.get(changeID).remove();
+                        this.idViewMap.remove(changeID);
+                        this.idChangeMap.remove(changeID);
+                        if (this.fileChangeMap.has(wordChange.file)) {
+                            var changes = this.fileChangeMap.get(wordChange.file);
+                            var index = 0;
+                            while ((index = changes.indexOf(wordChange, index)) != -1) {
+                                changes.splice(index, 1);
+                            }
+                        }
+                    };
+                    return AltoEditorWidget;
+                }());
+                alto.AltoEditorWidget = AltoEditorWidget;
+            })(alto = widgets.alto || (widgets.alto = {}));
+        })(widgets = viewer.widgets || (viewer.widgets = {}));
+    })(viewer = mycore.viewer || (mycore.viewer = {}));
+})(mycore || (mycore = {}));
+var mycore;
+(function (mycore) {
+    var viewer;
+    (function (viewer) {
+        var components;
+        (function (components) {
+            var WaitForEvent = mycore.viewer.components.events.WaitForEvent;
+            var ShowContentEvent = mycore.viewer.components.events.ShowContentEvent;
+            var AltoEditorWidget = mycore.viewer.widgets.alto.AltoEditorWidget;
+            var AltoWordChange = mycore.viewer.widgets.alto.AltoWordChange;
+            var DesktopInputAdapter = mycore.viewer.widgets.canvas.DesktopInputAdapter;
+            var PageLoadedEvent = mycore.viewer.components.events.PageLoadedEvent;
+            var MyCoReAltoEditorComponent = (function (_super) {
+                __extends(MyCoReAltoEditorComponent, _super);
+                function MyCoReAltoEditorComponent(_settings, _container) {
+                    _super.call(this);
+                    this._settings = _settings;
+                    this._container = _container;
+                    this.highlightWordLayer = new HighligtAltoWordCanvasPageLayer(this);
+                    this.altoIDImageMap = new MyCoReMap();
+                    this.imageHrefAltoContentMap = new MyCoReMap();
+                    this.altoHrefImageHrefMap = new MyCoReMap();
+                    this.imageHrefAltoHrefMap = new MyCoReMap();
+                    this.initialHtmlApplyList = new Array();
+                    this.everythingLoadedSynchronize = Utils.synchronize([
+                        function (obj) { return obj._toolbarModel != null; },
+                        function (obj) { return obj._languageModel != null; },
+                        function (obj) { return obj._structureModel != null; },
+                        function (obj) { return obj._altoPresent; }
+                    ], function (obj) {
+                        obj.completeLoaded();
+                    });
+                    this.currentEditWord = null;
+                    this.beforeEditWord = null;
+                }
+                MyCoReAltoEditorComponent.prototype.init = function () {
+                    var _this = this;
+                    if (this.editorEnabled()) {
+                        this.container = jQuery("<div></div>");
+                        this.containerTitle = jQuery("<span>ALTO-Editor</span>");
+                        this.trigger(new WaitForEvent(this, components.events.ProvideToolbarModelEvent.TYPE));
+                        this.container.bind("iviewResize", function () {
+                            _this.updateContainerSize();
+                        });
+                    }
+                };
+                MyCoReAltoEditorComponent.prototype.editorEnabled = function () {
+                    return typeof this._settings.altoEditorPostURL !== "undefined" && this._settings.altoEditorPostURL != null;
+                };
+                MyCoReAltoEditorComponent.prototype.handle = function (e) {
+                    var _this = this;
+                    if (e.type == components.events.StructureModelLoadedEvent.TYPE) {
+                        var structureModelLodedEvent = e;
+                        this._structureModel = structureModelLodedEvent.structureModel;
+                        this._structureImages = this._structureModel.imageList;
+                        for (var imageIndex in this._structureImages) {
+                            var image = this._structureImages[imageIndex];
+                            var altoHref = image.additionalHrefs.get("AltoHref");
+                            this._altoPresent = this._altoPresent || altoHref != null;
+                            if (this._altoPresent) {
+                                if (altoHref == null) {
+                                    console.warn("there is no alto.xml for " + image.href);
+                                    continue;
+                                }
+                                this.altoHrefImageHrefMap.set(altoHref, image.href);
+                            }
+                        }
+                        this.everythingLoadedSynchronize(this);
+                    }
+                    if (e.type == components.events.LanguageModelLoadedEvent.TYPE) {
+                        var lmle = e;
+                        this._languageModel = lmle.languageModel;
+                        this.everythingLoadedSynchronize(this);
+                    }
+                    if (e.type == components.events.ProvideToolbarModelEvent.TYPE) {
+                        var ptme = e;
+                        this._toolbarModel = ptme.model;
+                        this._sidebarControllDropdownButton = ptme.model._sidebarControllDropdownButton;
+                        this.everythingLoadedSynchronize(this);
+                    }
+                    if (e.type == viewer.widgets.toolbar.events.DropdownButtonPressedEvent.TYPE) {
+                        var dbpe = e;
+                        if (dbpe.childId === MyCoReAltoEditorComponent.DROP_DOWN_CHILD_ID) {
+                            this.openEditor();
+                        }
+                    }
+                    if (e.type == components.events.PageLoadedEvent.TYPE) {
+                        var ple_1 = e;
+                        var altoContent = ple_1.abstractPage.getHTMLContent();
+                        if (altoContent.value != null) {
+                            this.updateHTML(ple_1.abstractPage.id, altoContent.value);
+                        }
+                        else {
+                            altoContent.addObserver({
+                                propertyChanged: function (old, _new) {
+                                    _this.updateHTML(ple_1.abstractPage.id, _new.value);
+                                }
+                            });
+                        }
+                    }
+                    if (e.type == components.events.ShowContentEvent.TYPE) {
+                        var sce = e;
+                        if (sce.containerDirection == components.events.ShowContentEvent.DIRECTION_WEST) {
+                            if (sce.size == 0) {
+                                this.toggleEditWord(false);
+                            }
+                        }
+                    }
+                    if (e.type == components.events.RequestStateEvent.TYPE) {
+                        var requestStateEvent = e;
+                        if ("altoChangePID" in this._settings && this._settings.altoChangePID != null) {
+                            requestStateEvent.stateMap.set("altoChangeID", this._settings.altoChangePID);
+                        }
+                    }
+                };
+                MyCoReAltoEditorComponent.prototype.openEditor = function () {
+                    this.trigger(new ShowContentEvent(this, this.container, ShowContentEvent.DIRECTION_WEST, 400, this.containerTitle));
+                };
+                MyCoReAltoEditorComponent.prototype.updateHTML = function (pageId, element) {
+                    var structureImage = this._structureModel.imageHrefImageMap.get(pageId);
+                    var altoHref = structureImage.additionalHrefs.get("AltoHref");
+                    this.altoIDImageMap.set(element.getAttribute("data-id"), structureImage);
+                    this.imageHrefAltoContentMap.set(structureImage.href, element);
+                    this.imageHrefAltoHrefMap.set(structureImage.href, altoHref);
+                    this.syncChanges(element, altoHref);
+                    if (this.isEditing()) {
+                        this.applyConfidenceLevel(element);
+                    }
+                    else {
+                        this.removeConfidenceLevel(element);
+                    }
+                };
+                MyCoReAltoEditorComponent.prototype.mouseClick = function (position, ev) {
+                    if (this.isEditing()) {
+                        var element = ev.target;
+                        var vpos = parseInt(element.getAttribute("data-vpos")), hpos = parseInt(element.getAttribute("data-hpos")), width = parseInt(element.getAttribute("data-width")), height = parseInt(element.getAttribute("data-height"));
+                        if (!isNaN(vpos) && !isNaN(hpos)) {
+                            if (this.currentEditWord !== element) {
+                                this.editWord(element, vpos, hpos, width, height);
+                                var range = document.createRange();
+                                range.selectNodeContents(this.currentEditWord);
+                                var selection = window.getSelection();
+                                selection.removeAllRanges();
+                                selection.addRange(range);
+                            }
+                            return;
+                        }
+                    }
+                    ev.preventDefault();
+                };
+                MyCoReAltoEditorComponent.prototype.editWord = function (element, vpos, hpos, width, height) {
+                    if (this.currentEditWord != null) {
+                        this.applyEdit(this.currentEditWord, this.currentAltoID, this.currentOrder);
+                    }
+                    var findAltoID = function (el) {
+                        return el.getAttribute("data-id") == null ? findAltoID(el.parentElement) : el.getAttribute("data-id");
+                    };
+                    var altoID = findAltoID(element);
+                    this.currentAltoID = altoID;
+                    this.currentOrder = this.altoIDImageMap.get(altoID).order;
+                    this.currentEditWord = element;
+                    this.beforeEditWord = element.innerText;
+                    this.currentEditWord.setAttribute("contenteditable", "true");
+                    this.highlightWordLayer.setHighlightedWord({
+                        vpos: vpos,
+                        hpos: hpos,
+                        width: width,
+                        height: height,
+                        id: this.currentAltoID
+                    });
+                    this.trigger(new components.events.RedrawEvent(this));
+                };
+                MyCoReAltoEditorComponent.prototype.keyDown = function (e) {
+                    if (this.currentEditWord != null) {
+                        if (e.keyCode == MyCoReAltoEditorComponent.ENTER_KEY) {
+                            this.applyEdit(this.currentEditWord, this.currentAltoID, this.currentOrder);
+                            return;
+                        }
+                        if (e.keyCode == MyCoReAltoEditorComponent.ESC_KEY) {
+                            this.abortEdit(this.currentEditWord);
+                            return;
+                        }
+                    }
+                };
+                MyCoReAltoEditorComponent.prototype.abortEdit = function (element) {
+                    element.innerText = this.beforeEditWord;
+                    this.endEdit(element);
+                };
+                MyCoReAltoEditorComponent.prototype.resetWordEdit = function (element) {
+                    if (this.currentEditWord == element) {
+                        this.abortEdit(element);
+                    }
+                    element.innerText = element.getAttribute("data-word");
+                    if (element.classList.contains("edited")) {
+                        element.classList.remove("edited");
+                    }
+                };
+                MyCoReAltoEditorComponent.prototype.applyEdit = function (element, altoID, order) {
+                    var vpos = parseInt(element.getAttribute("data-vpos")), hpos = parseInt(element.getAttribute("data-hpos")), width = parseInt(element.getAttribute("data-width")), height = parseInt(element.getAttribute("data-height")), newWord = element.innerHTML;
+                    var key = this.calculateChangeKey(altoID, vpos, hpos);
+                    var oldWord = element.getAttribute("data-word");
+                    if (!this.editorWidget.hasChange(key)) {
+                        if (oldWord !== newWord) {
+                            var wordChange = new AltoWordChange(altoID, hpos, vpos, width, height, oldWord, newWord, order);
+                            this.editorWidget.addChange(key, wordChange);
+                            element.classList.add("edited");
+                        }
+                    }
+                    else {
+                        var wordChange = this.editorWidget.getChange(key);
+                        if (oldWord !== newWord) {
+                            wordChange.to = newWord;
+                            this.editorWidget.updateChange(wordChange);
+                        }
+                        else {
+                            this.editorWidget.removeChange(wordChange);
+                            if (element.classList.contains("edited")) {
+                                element.classList.remove("edited");
+                            }
+                        }
+                    }
+                    this.endEdit(element);
+                };
+                MyCoReAltoEditorComponent.prototype.calculateChangeKey = function (altoID, vpos, hpos) {
+                    return altoID + "_" + vpos + "_" + hpos;
+                };
+                MyCoReAltoEditorComponent.prototype.endEdit = function (element) {
+                    this.currentEditWord = this.currentOrder = this.currentAltoID = this.beforeEditWord = null;
+                    element.setAttribute("contenteditable", "false");
+                    this.highlightWordLayer.setHighlightedWord(null);
+                    viewerClearTextSelection();
+                    this.trigger(new components.events.RedrawEvent(this));
+                };
+                Object.defineProperty(MyCoReAltoEditorComponent.prototype, "handlesEvents", {
+                    get: function () {
+                        return this.editorEnabled() ? [
+                            components.events.StructureModelLoadedEvent.TYPE,
+                            components.events.LanguageModelLoadedEvent.TYPE,
+                            components.events.ProvideToolbarModelEvent.TYPE,
+                            viewer.widgets.toolbar.events.DropdownButtonPressedEvent.TYPE,
+                            components.events.ImageChangedEvent.TYPE,
+                            components.events.PageLoadedEvent.TYPE,
+                            components.events.ShowContentEvent.TYPE,
+                            components.events.RequestStateEvent.TYPE
+                        ] : [];
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                MyCoReAltoEditorComponent.prototype.toggleEditWord = function (enable) {
+                    var _this = this;
+                    if (enable === void 0) { enable = null; }
+                    if (this.editorWidget == null) {
+                        return;
+                    }
+                    enable = enable == null ? !this.editorWidget.changeWordButton.hasClass("active") : enable;
+                    var button = this.editorWidget.changeWordButton;
+                    if (enable) {
+                        button.addClass("active");
+                        this.imageHrefAltoContentMap.values.forEach(function (html) {
+                            _this.applyConfidenceLevel(html);
+                        });
+                    }
+                    else {
+                        button.removeClass("active");
+                        if (this.currentEditWord != null) {
+                            this.endEdit(this.currentEditWord);
+                        }
+                        this.imageHrefAltoContentMap.values.forEach(function (html) {
+                            _this.removeConfidenceLevel(html);
+                        });
+                    }
+                    this.trigger(new components.events.TextEditEvent(this, enable));
+                    this.trigger(new components.events.RedrawEvent(this));
+                };
+                MyCoReAltoEditorComponent.prototype.isEditing = function () {
+                    return this.editorWidget != null && this.editorWidget.changeWordButton.hasClass("active");
+                };
+                MyCoReAltoEditorComponent.prototype.completeLoaded = function () {
+                    var _this = this;
+                    this._altoDropdownChildItem = {
+                        id: MyCoReAltoEditorComponent.DROP_DOWN_CHILD_ID,
+                        label: this._languageModel.getTranslation("altoEditor")
+                    };
+                    this._sidebarControllDropdownButton.children.push(this._altoDropdownChildItem);
+                    this._sidebarControllDropdownButton.children = this._sidebarControllDropdownButton.children;
+                    this.editorWidget = new AltoEditorWidget(this.container, this._languageModel);
+                    this.containerTitle.text("" + this._languageModel.getTranslation("altoEditor"));
+                    if (typeof this._settings.altoReviewer !== "undefined" && this._settings.altoReviewer != null && this._settings.altoReviewer) {
+                        this.editorWidget.enableApplyButton(true);
+                    }
+                    if (typeof this._settings.altoChanges != "undefined" && this._settings.altoChanges != null) {
+                        if ("wordChanges" in this._settings.altoChanges && this._settings.altoChanges.wordChanges instanceof Array) {
+                            this._settings.altoChanges.wordChanges.forEach(function (change) {
+                                change.pageOrder = _this._structureModel.imageHrefImageMap.get(_this.altoHrefImageHrefMap.get(change.file)).order;
+                                _this.editorWidget.addChange(_this.calculateChangeKey(change.file, change.hpos, change.vpos), change);
+                                _this.initialHtmlApplyList.push(change);
+                            });
+                        }
+                    }
+                    this.editorWidget.changeWordButton.click(function (ev) {
+                        _this.toggleEditWord();
+                    });
+                    this.editorWidget.addChangeClickedEventHandler(function (change) {
+                        _this.trigger(new components.events.ImageSelectedEvent(_this, _this._structureModel.imageHrefImageMap.get(_this.altoHrefImageHrefMap.get(change.file))));
+                    });
+                    var submitSuccess = function (result) {
+                        _this._settings.altoChangePID = result.pid;
+                        var title = "altoChanges.save.successful.title";
+                        var msg = "altoChanges.save.successful.message";
+                        new mycore.viewer.widgets.modal.ViewerInfoModal(_this._settings.mobile, title, msg)
+                            .updateI18n(_this._languageModel)
+                            .show();
+                    };
+                    var applySuccess = function () {
+                        _this._settings.altoChangePID = null;
+                        _this.trigger(new components.events.UpdateURLEvent(_this));
+                        window.location.reload(true);
+                    };
+                    var errorSaveCallback = function (jqXHR) {
+                        console.log(jqXHR);
+                        var img = _this._settings.webApplicationBaseURL + "/modules/iview2/img/sad-emotion-egg.jpg";
+                        var title = "altoChanges.save.failed.title";
+                        var msg = "altoChanges.save.failed.message";
+                        new mycore.viewer.widgets.modal.ViewerErrorModal(_this._settings.mobile, title, msg, img)
+                            .updateI18n(_this._languageModel)
+                            .show();
+                    };
+                    var errorDeleteCallback = function (jqXHR) {
+                        console.log(jqXHR);
+                        var img = _this._settings.webApplicationBaseURL + "/modules/iview2/img/sad-emotion-egg.jpg";
+                        var title = "altoChanges.delete.failed.title";
+                        var msg = "altoChanges.delete.failed.message";
+                        new mycore.viewer.widgets.modal.ViewerErrorModal(_this._settings.mobile, title, msg, img)
+                            .updateI18n(_this._languageModel)
+                            .show();
+                    };
+                    this.editorWidget.addSubmitClickHandler(function () {
+                        _this.submitChanges(submitSuccess, errorSaveCallback);
+                    });
+                    this.editorWidget.addApplyClickHandler(function () {
+                        var title = "altoChanges.applyChanges.title";
+                        var msg = "altoChanges.applyChanges.message";
+                        new mycore.viewer.widgets.modal.ViewerConfirmModal(_this._settings.mobile, title, msg, function (confirm) {
+                            if (!confirm) {
+                                return;
+                            }
+                            _this.submitChanges(function (result) {
+                                _this._settings.altoChangePID = result.pid;
+                                _this.applyChanges(applySuccess, errorSaveCallback);
+                            }, errorSaveCallback);
+                        }).updateI18n(_this._languageModel).show();
+                    });
+                    this.editorWidget.addDeleteClickHandler(function () {
+                        var title = "altoChanges.removeChanges.title";
+                        var msg = "altoChanges.removeChanges.message";
+                        new mycore.viewer.widgets.modal.ViewerConfirmModal(_this._settings.mobile, title, msg, function (confirm) {
+                            if (_this._settings.altoChangePID) {
+                                var requestURL = _this._settings.altoEditorPostURL;
+                                requestURL += "/delete/" + _this._settings.altoChangePID;
+                                jQuery.ajax(requestURL, {
+                                    contentType: "application/json",
+                                    type: "POST",
+                                    success: function () {
+                                        _this._settings.altoChangePID = null;
+                                        _this.trigger(new components.events.UpdateURLEvent(_this));
+                                    },
+                                    error: errorDeleteCallback
+                                });
+                            }
+                            _this.editorWidget.getChanges().forEach(function (file, change) {
+                                _this.removeChange(change);
+                            });
+                        }).updateI18n(_this._languageModel).show();
+                    });
+                    this.editorWidget.addChangeRemoveClickHandler(function (change) {
+                        var title = "altoChanges.removeChange.title";
+                        var msg = "altoChanges.removeChange.message";
+                        new mycore.viewer.widgets.modal.ViewerConfirmModal(_this._settings.mobile, title, msg, function (confirm) {
+                            if (!confirm) {
+                                return;
+                            }
+                            _this.removeChange(change);
+                        }).updateI18n(_this._languageModel).show();
+                    });
+                    this.trigger(new components.events.AddCanvasPageLayerEvent(this, 2, this.highlightWordLayer));
+                    this.trigger(new components.events.RequestDesktopInputEvent(this, new EditAltoInputListener(this)));
+                    this.trigger(new components.events.WaitForEvent(this, PageLoadedEvent.TYPE));
+                    if (this._settings.leftShowOnStart === 'altoEditor') {
+                        this.openEditor();
+                    }
+                    this.updateContainerSize();
+                };
+                MyCoReAltoEditorComponent.prototype.removeChange = function (change) {
+                    this.editorWidget.removeChange(change);
+                    var imageHref = this.altoHrefImageHrefMap.get(change.file);
+                    if (this.imageHrefAltoContentMap.has(imageHref)) {
+                        var altoContent = this.imageHrefAltoContentMap.get(imageHref);
+                        if (change.type === AltoWordChange.TYPE) {
+                            var wordChange = change;
+                            var searchResult = this.findChange(wordChange, altoContent);
+                            if (searchResult.length == 0) {
+                                console.log("Could not find change " + wordChange);
+                            }
+                            else {
+                                this.resetWordEdit(searchResult.get(0));
+                            }
+                        }
+                    }
+                    this.trigger(new components.events.RedrawEvent(this));
+                };
+                MyCoReAltoEditorComponent.prototype.applyChanges = function (successCallback, errorCallback) {
+                    var requestURL = this._settings.altoEditorPostURL;
+                    requestURL += "/apply/" + this._settings.altoChangePID;
+                    jQuery.ajax(requestURL, {
+                        contentType: "application/json",
+                        type: "POST"
+                    }).done(successCallback)
+                        .fail(errorCallback);
+                };
+                MyCoReAltoEditorComponent.prototype.submitChanges = function (successCallback, errorCallback) {
+                    var changeSet = {
+                        "wordChanges": this.editorWidget.getChanges().values,
+                        "derivateID": this._settings.derivate
+                    };
+                    var requestURL = this._settings.altoEditorPostURL;
+                    if (typeof this._settings.altoChangePID !== "undefined" && this._settings.altoChangePID != null) {
+                        requestURL += "/update/" + this._settings.altoChangePID;
+                    }
+                    else {
+                        requestURL += "/store";
+                    }
+                    jQuery.ajax(requestURL, {
+                        data: this.prepareData(changeSet),
+                        contentType: "application/json",
+                        type: "POST"
+                    }).done(successCallback)
+                        .fail(errorCallback);
+                };
+                MyCoReAltoEditorComponent.prototype.prepareData = function (changeSet) {
+                    var copy = JSON.parse(JSON.stringify(changeSet));
+                    copy.wordChanges.forEach(function (val) {
+                        if ("pageOrder" in val) {
+                            delete val.pageOrder;
+                        }
+                    });
+                    return JSON.stringify(copy);
+                };
+                MyCoReAltoEditorComponent.prototype.findChange = function (wordChange, altoContent) {
+                    var find = ("[data-hpos=" + wordChange.hpos + "][data-vpos=" + wordChange.vpos + "]") +
+                        ("[data-width=" + wordChange.width + "][data-height=" + wordChange.height + "]");
+                    var searchResult = jQuery(altoContent).find(find);
+                    return searchResult;
+                };
+                MyCoReAltoEditorComponent.prototype.updateContainerSize = function () {
+                    this.container.css({
+                        "height": (this.container.parent().height() - this.containerTitle.parent().outerHeight()) + "px",
+                        "overflow-y": "scroll"
+                    });
+                };
+                MyCoReAltoEditorComponent.prototype.drag = function (currentPosition, startPosition, startViewport, e) {
+                    if (e.target !== this.currentEditWord) {
+                        e.preventDefault();
+                    }
+                };
+                MyCoReAltoEditorComponent.prototype.mouseDown = function (position, e) {
+                    if (e.target !== this.currentEditWord) {
+                        e.preventDefault();
+                    }
+                };
+                MyCoReAltoEditorComponent.prototype.syncChanges = function (altoContent, href) {
+                    var _this = this;
+                    var changesInFile = this.editorWidget.getChangesInFile(href);
+                    changesInFile.forEach(function (change) {
+                        if (change.type == AltoWordChange.TYPE) {
+                            var wordChange = change;
+                            var elementToChange = _this.findChange(wordChange, altoContent);
+                            if (elementToChange.length > 0) {
+                                elementToChange[0].innerText = wordChange.to;
+                                elementToChange.addClass("edited");
+                            }
+                            else {
+                                console.log("Could not find Change: " + change);
+                            }
+                        }
+                    });
+                };
+                MyCoReAltoEditorComponent.prototype.applyConfidenceLevel = function (altoContent) {
+                    jQuery(altoContent).find("[data-wc]:not([data-wc='1'])").each(function (i, e) {
+                        var element = jQuery(e);
+                        var wc = parseFloat(element.attr("data-wc"));
+                        if (wc < 0.9) {
+                            element.addClass('unconfident');
+                        }
+                    });
+                };
+                MyCoReAltoEditorComponent.prototype.removeConfidenceLevel = function (altoContent) {
+                    jQuery(altoContent).find(".unconfident").removeClass("unconfident");
+                };
+                MyCoReAltoEditorComponent.DROP_DOWN_CHILD_ID = "altoButtonChild";
+                MyCoReAltoEditorComponent.ENTER_KEY = 13;
+                MyCoReAltoEditorComponent.ESC_KEY = 27;
+                return MyCoReAltoEditorComponent;
+            }(components.ViewerComponent));
+            components.MyCoReAltoEditorComponent = MyCoReAltoEditorComponent;
+            var EditAltoInputListener = (function (_super) {
+                __extends(EditAltoInputListener, _super);
+                function EditAltoInputListener(editAltoComponent) {
+                    _super.call(this);
+                    this.editAltoComponent = editAltoComponent;
+                }
+                EditAltoInputListener.prototype.mouseDown = function (position, e) {
+                    if (this.editAltoComponent.isEditing()) {
+                        this.editAltoComponent.mouseDown(position, e);
+                    }
+                };
+                EditAltoInputListener.prototype.mouseUp = function (position, e) {
+                };
+                EditAltoInputListener.prototype.mouseMove = function (position, e) {
+                };
+                EditAltoInputListener.prototype.mouseClick = function (position, e) {
+                    if (this.editAltoComponent.isEditing()) {
+                        this.editAltoComponent.mouseClick(position, e);
+                    }
+                };
+                EditAltoInputListener.prototype.mouseDoubleClick = function (position, e) {
+                };
+                EditAltoInputListener.prototype.keydown = function (e) {
+                    this.editAltoComponent.keyDown(e);
+                };
+                EditAltoInputListener.prototype.mouseDrag = function (currentPosition, startPosition, startViewport, e) {
+                    if (this.editAltoComponent.isEditing()) {
+                        this.editAltoComponent.drag(currentPosition, startPosition, startViewport, e);
+                    }
+                };
+                return EditAltoInputListener;
+            }(DesktopInputAdapter));
+            components.EditAltoInputListener = EditAltoInputListener;
+            var HighligtAltoWordCanvasPageLayer = (function () {
+                function HighligtAltoWordCanvasPageLayer(component) {
+                    this.component = component;
+                    this.highlightedWord = null;
+                }
+                HighligtAltoWordCanvasPageLayer.prototype.getHighlightedWord = function () {
+                    return this.highlightedWord;
+                };
+                HighligtAltoWordCanvasPageLayer.prototype.setHighlightedWord = function (word) {
+                    this.highlightedWord = word;
+                };
+                HighligtAltoWordCanvasPageLayer.prototype.draw = function (ctx, id, pageSize, drawOnHtml) {
+                    var _this = this;
+                    if (drawOnHtml) {
+                        return;
+                    }
+                    ctx.save();
+                    {
+                        if (this.highlightedWord != null && id == this.component.altoHrefImageHrefMap.get(this.highlightedWord.id)) {
+                            this.strokeWord(ctx, this.highlightedWord.hpos, this.highlightedWord.vpos, this.highlightedWord.width, this.highlightedWord.height, HighligtAltoWordCanvasPageLayer.EDIT_HIGHLIGHT_COLOR);
+                        }
+                        var file = this.component.imageHrefAltoHrefMap.get(id);
+                        if (typeof file !== "undefined") {
+                            this.component.editorWidget.getChangesInFile(file)
+                                .forEach(function (change) {
+                                if (change.type == AltoWordChange.TYPE) {
+                                    var wordChange = change;
+                                    _this.strokeWord(ctx, wordChange.hpos, wordChange.vpos, wordChange.width, wordChange.height, HighligtAltoWordCanvasPageLayer.EDITED_HIGHLIGHT_COLOR);
+                                }
+                            });
+                        }
+                    }
+                    ctx.restore();
+                };
+                HighligtAltoWordCanvasPageLayer.prototype.strokeWord = function (ctx, hpos, vpos, wwidth, wheight, color) {
+                    var width = 5 * window.devicePixelRatio;
+                    var gap = width / 2 + 5 * devicePixelRatio;
+                    ctx.rect(hpos - gap, vpos - gap, wwidth + (gap * 2), wheight + (gap * 2));
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = width;
+                    ctx.stroke();
+                };
+                HighligtAltoWordCanvasPageLayer.EDIT_HIGHLIGHT_COLOR = "#90EE90";
+                HighligtAltoWordCanvasPageLayer.EDITED_HIGHLIGHT_COLOR = "#ADD8E6";
+                return HighligtAltoWordCanvasPageLayer;
+            }());
+            components.HighligtAltoWordCanvasPageLayer = HighligtAltoWordCanvasPageLayer;
+        })(components = viewer.components || (viewer.components = {}));
+    })(viewer = mycore.viewer || (mycore.viewer = {}));
+})(mycore || (mycore = {}));
+addViewerComponent(mycore.viewer.components.MyCoReAltoEditorComponent);
 console.log("METS MODULE");

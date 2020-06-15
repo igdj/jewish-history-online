@@ -124,18 +124,16 @@ extends Command
         // TODO: allow to set a more complex structure
         $FILE_GROUPS = [
             'MASTER',
-            'TRANSCRIPTION',
+            'TEI.TRANSCRIPTION', // changed in iview 2018.06 from TRANSCRIPTION
         ];
 
-        $translations = [];
         if (!empty($article->translatedFrom) && $article->translatedFrom != $article->language) {
-            $FILE_GROUPS[] = 'TRANSLATION';
-
             if ($article->translatedFrom == 'yid') {
-                $translations[] = 'yl'; // yivo-transcript in latin letters
+                $FILE_GROUPS[] = 'TEI.TRANSLATION.YL'; // yivo-transcript in latin letters
             }
 
-            $translations[] = \AppBundle\Utils\Iso639::code3to1($article->language);
+            $code1 =  \AppBundle\Utils\Iso639::code3to1($article->language);
+            $FILE_GROUPS[] = 'TEI.TRANSLATION.' . strtoupper($code1) ; // changed in iview 2018.06 from TRANSLATION
         }
 
         $LOGICAL_TYPE = 'Source';
@@ -183,18 +181,10 @@ extends Command
                 else {
                     $mime = 'text/xml';
 
-                    if ('TRANSLATION' == $group) {
-                        /*
-                        the following must correspond to in iview-client-mets.js
-                        // tei/translation.de/THULB_129846422_1801_1802_LLZ_001_18010701_001.xml -> de
-                        MetsStructureBuilder.prototype.extractTranslationLanguage = function (href) {
-                            return href.split("/")[1].split(".")[1];
-                        };
-                        */
-                        foreach ($translations as $code1) {
-                            $hrefs[] = sprintf('tei/translation.%s/page-%d.xml',
-                                               $code1, $page);
-                        }
+                    if (preg_match('/^TEI\.TRANSLATION\.(.+)/', $group, $matches)) {
+                        $code1 = strtolower($matches[1]);
+                        $hrefs[] = sprintf('tei/translation.%s/page-%d.xml',
+                                           $code1, $page);
                     }
                     else {
                         // language of the transcription
