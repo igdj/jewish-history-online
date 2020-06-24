@@ -644,7 +644,12 @@ class TeiHelper
                     if (!empty($data['bibl']['orgName'])) {
                         $structure['repository'] = $data['bibl']['orgName']['@value'];
                     }
-                    $structure['idno'] = [ 'idno' => [ '@type' => 'URLImages', '@value' => $data['URLImages']] ];
+                    $structure['idno'] = [
+                        'idno' => [
+                            '@type' => 'URLImages',
+                            '@value' => htmlspecialchars($data['URLImages'], ENT_XML1, 'UTF-8'),
+                        ],
+                    ];
 
                     $this->addChildStructure($self, $structure, 'tei:');
                 },
