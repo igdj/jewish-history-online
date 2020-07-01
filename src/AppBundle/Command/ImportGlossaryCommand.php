@@ -16,23 +16,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Cocur\Slugify\SlugifyInterface;
 
 class ImportGlossaryCommand
-extends Command
+extends EntityCommandBase
 {
-    protected $em;
-    protected $slugify;
-    protected $rootDir;
-
-    public function __construct(EntityManagerInterface $em,
-                                SlugifyInterface $slugify,
-                                string $rootDir)
-    {
-        parent::__construct();
-
-        $this->em = $em;
-        $this->slugify = $slugify;
-        $this->rootDir = $rootDir;
-    }
-
     protected function configure()
     {
         $this
@@ -43,8 +28,15 @@ extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $fname = $this->rootDir
-               . '/Resources/data/glossary.xlsx';
+        $fname = '/Resources/data/glossary.xlsx';
+
+        try {
+            $fname = $this->locateResource('@AppBundle' . $fname,
+                                           $this->getResourcesOverrideDir());
+        }
+        catch (\InvalidArgumentException $e) {
+            $fname = $this->getRootDir() . $fname;
+        }
 
         $fs = new Filesystem();
 
@@ -79,6 +71,7 @@ extends Command
                 'term' => $row['term'],
                 'language' => $row['language'],
             ]);
+
             if (is_null($term)) {
                 $term = new \AppBundle\Entity\GlossaryTerm();
                 $term->setTerm(trim($row['term']));
