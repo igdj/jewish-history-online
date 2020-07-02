@@ -150,14 +150,20 @@
 
         .source-description,
         .article .dta-p, .article span.dta-opener, .article div.dta-closer,
-        .article div.dta-bibl
+        .article div.dta-list, .article div.dta-bibl
         {
             font-size: 14px;
+        }
+
+        .article div.dta-list {
+            padding-left:0em;
         }
 
         .article > div.dta-endnote {
             margin-top: 0;
         }
+
+        .article .dta-abbr { border-bottom: none }
         </style>
 
         {% block head %}{% endblock %}
