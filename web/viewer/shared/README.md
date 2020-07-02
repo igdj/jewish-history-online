@@ -1,7 +1,7 @@
 MyCoRe-Viewer
 =============
 
-iview2/ contains the code for the MyCoRe-Viewer
+iview2-VERSION/ contains the code for the MyCoRe-Viewer
 (https://www.mycore.de/documentation/frontend/frontend_image_viewer/) used to display the source images as well as the TEI-transcription and possible translations as described by the METS-Container located in web/viewer/source-{id}.
 
 The repository for the MyCoRE-Viewer is https://github.com/MyCoRe-Org/mycore/tree/master/mycore-viewer
@@ -35,7 +35,7 @@ The only change currently needed to make iview2 work on this site is an adjustme
 
 In
 
-    iview2/js/iview-client-mets.js
+    iview2/js/iview-client-tei.js
 
 replace the line
 
@@ -54,6 +54,10 @@ so our viewer-setting
     derivateContentTransformerServlet: "{{ path('tei2html', {'path' : ''}) }}"
 
 is properly picked up. For additional info about the viewer, have a look at the examples in https://github.com/MyCoRe-Org/mycore/tree/master/mycore-viewer/src/main/resources/example
+
+## TODO: Upgrade to 2019.06
+
+Switch to Bootstrap 4 / Fontawesome, see https://github.com/MyCoRe-Org/mycore/commit/b184a4a082b0f8a58d2b024c3cc89282052eaf1c#diff-5ddc56ba3dfd307bcff1b8c1bc4f9157
 
 ## Upgrade to 2018.06
 
