@@ -96,7 +96,7 @@ extends RenderTeiController
     public function indexAction(Request $request,
                                 TranslatorInterface $translator)
     {
-        return $this->render('@AppBundle/Topic/index.html.twig', [
+        return $this->render('@App/Topic/index.html.twig', [
             'pageTitle' => $translator->trans('Topics'),
             'topics' => $this->buildTopicsDescriptions($translator, $request->getLocale()),
         ]);
@@ -169,7 +169,7 @@ extends RenderTeiController
             $html = $this->removeByCssSelector('<body>' . $html . '</body>',
                                                [ 'h2 + br', 'h3 + br' ]);
 
-            $html = $this->renderView('@AppBundle/Article/article-printview.html.twig', [
+            $html = $this->renderView('@App/Article/article-printview.html.twig', [
                 'name' => $topics[$slug],
                 'html' => preg_replace('/<\/?body>/', '', $html),
                 'authors' => $authors,
@@ -255,7 +255,7 @@ extends RenderTeiController
             $sourcesPrimary = & $sources;
         }
 
-        return $this->render('@AppBundle/Topic/background.html.twig', [
+        return $this->render('@App/Topic/background.html.twig', [
             'slug' => $slug,
             'name' => $topics[$slug],
             'pageTitle' => $topics[$slug], // TODO: Prepend Einfuehrung, append authors in brackets

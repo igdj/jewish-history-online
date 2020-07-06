@@ -41,7 +41,7 @@ extends BaseController
             });
         }
 
-        return $this->render('@AppBundle/Organization/index.html.twig', [
+        return $this->render('@App/Organization/index.html.twig', [
             'pageTitle' => $translator->trans('Organizations'),
             'organizations' => $organizations,
         ]);
@@ -114,7 +114,7 @@ extends BaseController
             return new JsonLdResponse($organization->jsonLdSerialize($request->getLocale()));
         }
 
-        return $this->render('@AppBundle/Organization/detail.html.twig', [
+        return $this->render('@App/Organization/detail.html.twig', [
             'pageTitle' => $organization->getNameLocalized($request->getLocale()),
             'organization' => $organization,
             'pageMeta' => [

@@ -19,7 +19,7 @@ extends ArticleController
     {
         $sourceArticle = $parts['article'];
 
-        $html = $this->renderView('@AppBundle/Article/source-printview.html.twig', [
+        $html = $this->renderView('@App/Article/source-printview.html.twig', [
             'article' => $sourceArticle,
             'meta' => $sourceArticle,
             'layers' => $parts['layers'],
@@ -238,7 +238,7 @@ extends ArticleController
 
                 // AV plus transcript and maybe translation
                 // should be handled through iview2 in the future
-                return $this->render('@AppBundle/Article/viewer-layers.html.twig', [
+                return $this->render('@App/Article/viewer-layers.html.twig', [
                     'article' => $sourceArticle,
                     'html' => $player,
                     'layers' => $layers,
@@ -260,7 +260,7 @@ extends ArticleController
                 ]);
             }
 
-            return $this->render('@AppBundle/Article/viewer-media.html.twig', [
+            return $this->render('@App/Article/viewer-media.html.twig', [
                 'article' => $sourceArticle,
                 'html' => $html,
                 'description' => $sourceDescription,
@@ -281,7 +281,7 @@ extends ArticleController
             ]);
         }
 
-        return $this->render('@AppBundle/Article/viewer.html.twig', [
+        return $this->render('@App/Article/viewer.html.twig', [
             'article' => $sourceArticle,
             'description' => $sourceDescription,
             'name' => $sourceArticle->getName(),
@@ -388,7 +388,7 @@ extends ArticleController
             $locale = \AppBundle\Utils\Iso639::code3to1($sourceArticle->getLanguage());
             if (in_array($locale, [ 'en', 'de' ])) {
                 $translator->setLocale($locale);
-                $content = $this->renderView('@AppBundle/Article/readme-' . $locale . '.txt.twig',
+                $content = $this->renderView('@App/Article/readme-' . $locale . '.txt.twig',
                                              [ 'meta' => $sourceArticle ]);
                 $tempnam = $fs->tempnam(sys_get_temp_dir(), 'readme-' . $locale);
                 file_put_contents($tempnam,
@@ -671,7 +671,7 @@ extends ArticleController
             };
         }
 
-        $template = $twig->loadTemplate('@AppBundle/Article/mods-fragments.xml.twig');
+        $template = $twig->loadTemplate('@App/Article/mods-fragments.xml.twig');
         $context = $twig->getGlobals();
 
         // add mets:rightsMD / mets:digiprovMD to mets:dmdSec

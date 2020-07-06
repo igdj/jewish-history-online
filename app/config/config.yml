@@ -20,13 +20,9 @@ twig:
     globals:
         siteName: "Key Documents of German-Jewish History"
         slugify: "@cocur_slugify"
-        webDir: "%kernel.root_dir%/../web"
+        webDir: "%kernel.project_dir%/web"
         piwikSiteId: "%piwik.site_id%"
         twitterSite: "%twitter.site%"
-    paths:
-        '%kernel.project_dir%/vendor/knplabs/knp-paginator-bundle/templates': KnpPaginatorBundle
-        '%kernel.root_dir%/Resources/AppBundle/views': AppBundle
-        '%kernel.root_dir%/../src/AppBundle/Resources/views': AppBundle
     form_themes:
         - 'bootstrap_3_horizontal_layout.html.twig'
     strict_variables: false     # TODO: make safe for '%kernel.debug%'
@@ -137,9 +133,9 @@ knp_paginator:
         sort_direction_name: direction # sort direction query parameter name
         #distinct: true                 # ensure distinct results, useful when ORM queries are using GROUP BY statements
     template:
-        # pagination: KnpPaginatorBundle:Pagination:sliding.html.twig     # sliding pagination controls template
-        pagination: '@KnpPaginatorBundle/Pagination/twitter_bootstrap_v3_pagination.html.twig'
-        sortable: '@KnpPaginatorBundle/Pagination:sortable_link.html.twig' # sort link template
+        # pagination: @KnpPaginator/Pagination/sliding.html.twig     # sliding pagination controls template
+        pagination: '@KnpPaginator/Pagination/twitter_bootstrap_v3_pagination.html.twig'
+        sortable: '@KnpPaginator/Pagination:sortable_link.html.twig' # sort link template
        
 eko_feed:
     feeds:

@@ -179,7 +179,7 @@ extends BaseController
             }
         }
 
-        return $this->render('@AppBundle/Search/index.html.twig', [
+        return $this->render('@App/Search/index.html.twig', [
             'pageTitle' => $translator->trans('Search'),
             'results' => $results,
             'meta' => $meta,

@@ -26,7 +26,7 @@ extends BaseController
                            'language' => $language ],
                          [ 'term' => 'ASC' ]);
 
-        return $this->render('@AppBundle/Glossary/index.html.twig', [
+        return $this->render('@App/Glossary/index.html.twig', [
             'pageTitle' => $translator->trans('Glossary'),
             'terms' => $terms,
         ]);
@@ -50,7 +50,7 @@ extends BaseController
             return $this->redirectToRoute('glossary-index');
         }
 
-        return $this->render('@AppBundle/Glossary/detail.html.twig',
+        return $this->render('@App/Glossary/detail.html.twig',
                              [ 'term' => $term ]);
     }
     */

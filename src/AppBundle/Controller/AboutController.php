@@ -47,14 +47,14 @@ extends RenderTeiController
                                    TranslatorInterface $translator,
                                    $title)
     {
-        return $this->renderTitleContent($request, $translator, $title, '@AppBundle/Default/sitetext-about.html.twig');
+        return $this->renderTitleContent($request, $translator, $title, '@App/Default/sitetext-about.html.twig');
     }
 
     protected function renderAboutUs(Request $request,
                                      TranslatorInterface $translator,
                                      $title)
     {
-        return $this->renderTitleContent($request, $translator, $title, '@AppBundle/Default/sitetext-about-us.html.twig');
+        return $this->renderTitleContent($request, $translator, $title, '@App/Default/sitetext-about-us.html.twig');
     }
 
     /**
@@ -208,7 +208,7 @@ extends RenderTeiController
                     ]);
 
                     if (!empty($posts)) {
-                        return $this->render('@AppBundle/About/news.html.twig', [
+                        return $this->render('@App/About/news.html.twig', [
                             'articles' => $this->buildNewsArticles($posts, $client),
                         ]);
                     }
@@ -274,12 +274,12 @@ extends RenderTeiController
     public function termsAction(Request $request,
                                 TranslatorInterface $translator)
     {
-        return $this->renderTitleContent($request, $translator, 'Terms and Conditions', '@AppBundle/Default/sitetext.html.twig');
+        return $this->renderTitleContent($request, $translator, 'Terms and Conditions', '@App/Default/sitetext.html.twig');
     }
 
     protected function sendMessage($mailer, $twig, $data)
     {
-        $template = $twig->loadTemplate('@AppBundle/Default/contact.email.twig');
+        $template = $twig->loadTemplate('@App/Default/contact.email.twig');
 
         $subject = $template->renderBlock('subject', [ 'data' => $data ]);
         $textBody = $template->renderBlock('body_text', [ 'data' => $data ]);
@@ -318,13 +318,13 @@ extends RenderTeiController
         $form = $this->createForm(\AppBundle\Form\Type\ContactType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->render('@AppBundle/Default/contact-sent.html.twig', [
+            return $this->render('@App/Default/contact-sent.html.twig', [
                 'pageTitle' => $translator->trans('Contact'),
                 'success' => $this->sendMessage($mailer, $twig, $form->getData()),
             ]);
         }
 
-        $response = $this->renderTitleContent($request, $translator, 'Contact', '@AppBundle/Default/sitetext.html.twig');
+        $response = $this->renderTitleContent($request, $translator, 'Contact', '@App/Default/sitetext.html.twig');
 
         // add anchors to sub-headings
         $anchors = [
@@ -351,7 +351,7 @@ extends RenderTeiController
             . $domDocument->saveHTML($node);
 
         return new Response(str_replace('%form%',
-                                        $this->renderView('@AppBundle/Default/contact-form.html.twig', [
+                                        $this->renderView('@App/Default/contact-form.html.twig', [
                                             'form' => $form->createView(),
                                         ]),
                                         $html));

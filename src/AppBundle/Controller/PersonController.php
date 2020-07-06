@@ -47,7 +47,7 @@ extends BaseController
 
         $persons = $qb->getQuery()->getResult();
 
-        return $this->render('@AppBundle/Person/index.html.twig', [
+        return $this->render('@App/Person/index.html.twig', [
             'pageTitle' => /** @Ignore */
                 $translator->trans($authorsOnly ? 'Authors' : 'Persons'),
             'persons' => $persons,
@@ -132,7 +132,7 @@ extends BaseController
             return new JsonLdResponse($person->jsonLdSerialize($request->getLocale()));
         }
 
-        return $this->render('@AppBundle/Person/detail.html.twig', [
+        return $this->render('@App/Person/detail.html.twig', [
             'pageTitle' => $person->getFullname(true), // TODO: lifespan in brackets
             'person' => $person,
             'pageMeta' => [

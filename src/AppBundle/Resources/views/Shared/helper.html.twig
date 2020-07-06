@@ -217,7 +217,7 @@
 {% endmacro %}
 
 {% macro source_meta(meta, description, mets, printview = false, interpretations = null) %}
-    {% import '@AppBundle/Shared/map-leaflet.html.twig' as map %}
+    {% import '@App/Shared/map-leaflet.html.twig' as map %}
     {% import _self as helper %}
                         <dl{% if printview %} class="dl-horizontal"{% endif %}>
                         {% if meta.dateCreated is not empty %}
@@ -391,7 +391,7 @@
 
 {% macro source_sidebar(meta, description, interpretations, related, mets) %}
     {% import _self as helper %}
-    {% import '@AppBundle/Shared/map-leaflet.html.twig' as map %}
+    {% import '@App/Shared/map-leaflet.html.twig' as map %}
             <div class="container-fluid box">
                 <div class="row box-color-title">
                     <div class="col-sm-12">

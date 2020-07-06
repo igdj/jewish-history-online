@@ -1,6 +1,6 @@
-{% extends '@AppBundle/Default/base.html.twig' %}
+{% extends '@App/Default/base.html.twig' %}
 
-{% import '@AppBundle/Shared/map-leaflet.html.twig' as map %}
+{% import '@App/Shared/map-leaflet.html.twig' as map %}
 
 {% block head %}
     {{ map.head() }}
@@ -106,7 +106,7 @@
 {% endblock %}
 
 {% block contenttop %}
-{% embed '@AppBundle/Default/contenttop_skeleton.html.twig' %}
+{% embed '@App/Default/contenttop_skeleton.html.twig' %}
 
 {% block carousel %}
     <div class="row">

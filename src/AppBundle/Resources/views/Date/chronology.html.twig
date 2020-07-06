@@ -1,8 +1,8 @@
 {% extends app.request.attributes.get('_route') == 'date-chronology-partial'
-    ? '@AppBundle/Default/partial.html.twig'
-    : '@AppBundle/Default/base.html.twig'
+    ? '@App/Default/partial.html.twig'
+    : '@App/Default/base.html.twig'
 %}
-{% import '@AppBundle/Shared/helper.html.twig' as helper %}
+{% import '@App/Shared/helper.html.twig' as helper %}
 
 {% set embedded = app.request.attributes.get('_route') == 'date-chronology-partial' %}
 
