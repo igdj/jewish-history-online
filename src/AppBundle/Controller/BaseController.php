@@ -11,18 +11,25 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 use Cocur\Slugify\SlugifyInterface;
 
+use Sylius\Bundle\ThemeBundle\Context\SettableThemeContext;
+
 abstract class BaseController
 extends AbstractController
 {
+    use \AppBundle\Utils\LocateDataTrait;
+
     private $kernel;
     private $slugify;
+    private $themeContext;
     private $globals = null;
 
     public function __construct(KernelInterface $kernel,
-                                SlugifyInterface $slugify)
+                                SlugifyInterface $slugify,
+                                SettableThemeContext $themeContext)
     {
         $this->kernel = $kernel;
         $this->slugify = $slugify;
+        $this->themeContext = $themeContext;
     }
 
     protected function slugify($string, $options = null)
@@ -43,25 +50,5 @@ extends AbstractController
 
         return array_key_exists($key, $this->globals)
             ? $this->globals[$key] : null;
-    }
-
-    protected function locateResource($name, $dir = null, $first = true)
-    {
-        return $this->kernel->locateResource($name, $dir, $first);
-    }
-
-    protected function getResourcesOverrideDir()
-    {
-        return $this->kernel->getResourcesOverrideDir();
-    }
-
-    protected function getRootDir()
-    {
-        return $this->kernel->getRootDir();
-    }
-
-    protected function getProjectDir()
-    {
-        return $this->kernel->getProjectDir();
     }
 }

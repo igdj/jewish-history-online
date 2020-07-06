@@ -24,8 +24,7 @@ extends Command
     protected $rootDir;
 
     public function __construct(EntityManagerInterface $em,
-                                ParameterBagInterface $params,
-                                string $rootDir)
+                                ParameterBagInterface $params)
     {
         parent::__construct();
 
@@ -34,8 +33,6 @@ extends Command
         if ($params->has('googleapis.key')) {
             $this->googleapisKey = $params->get('googleapis.key');
         }
-
-        $this->rootDir = $rootDir;
     }
 
     protected function configure()

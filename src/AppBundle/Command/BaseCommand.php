@@ -1,5 +1,5 @@
 <?php
-// src/AppBundle/Command/EntityCommandBase.php
+// src/AppBundle/Command/BaseCommand.php
 
 namespace AppBundle\Command;
 
@@ -14,21 +14,29 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use Cocur\Slugify\SlugifyInterface;
 
+use Sylius\Bundle\ThemeBundle\Context\SettableThemeContext;
+use Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface;
+
+use AppBundle\Utils\ImageMagick\ImageMagickProcessor;
 use AppBundle\Utils\Xsl\XsltProcessor;
 use AppBundle\Utils\XmlFormatter\XmlFormatter;
 
-abstract class EntityCommandBase
+abstract class BaseCommand
 extends Command
 {
+    use \AppBundle\Utils\LocateDataTrait;
+
     protected $em;
     protected $kernel;
     protected $router;
     protected $translator;
     protected $slugify;
     protected $dbconnAdmin;
+    protected $themeRepository;
+    protected $themeContext;
+    protected $imagickProcessor;
     protected $xsltProcessor;
     protected $formatter;
-    protected $rootDir;
 
     public function __construct(EntityManagerInterface $em,
                                 KernelInterface $kernel,
@@ -37,9 +45,13 @@ extends Command
                                 SlugifyInterface $slugify,
                                 ParameterBagInterface $params,
                                 \Doctrine\DBAL\Connection $dbconnAdmin,
-                                string $rootDir,
+                                ThemeRepositoryInterface $themeRepository,
+                                SettableThemeContext $themeContext,
+                                ?string $siteTheme,
+                                ImageMagickProcessor $imagickProcessor,
                                 XsltProcessor $xsltProcessor,
-                                XmlFormatter $formatter)
+                                XmlFormatter $formatter
+                                )
     {
         parent::__construct();
 
@@ -48,21 +60,19 @@ extends Command
         $this->router = $router;
         $this->translator = $translator;
         $this->slugify = $slugify;
+        $this->dbconnAdmin = $dbconnAdmin;
+        $this->themeRepository = $themeRepository;
+        $this->themeContext = $themeContext;
+        $this->imagickProcessor = $imagickProcessor;
         $this->xsltProcessor = $xsltProcessor;
         $this->formatter = $formatter;
-        $this->dbconnAdmin = $dbconnAdmin;
-        $this->rootDir = $rootDir;
-    }
 
-    /* the following two are used in RenderTeiTrait */
-    protected function locateResource($name, $dir = null, $first = true)
-    {
-        return $this->kernel->locateResource($name, $dir, $first);
-    }
-
-    protected function getResourcesOverrideDir()
-    {
-        return $this->kernel->getResourcesOverrideDir();
+        if (!is_null($siteTheme)) {
+            $theme = $this->themeRepository->findOneByName($siteTheme);
+            if (!is_null($theme)) {
+                $this->themeContext->setTheme($theme);
+            }
+        }
     }
 
     protected function jsonPrettyPrint($structure)
@@ -98,7 +108,6 @@ extends Command
         catch (\FS\SolrBundle\SolrException $e) {
         }
     }
-
 
     protected function buildPersonConditionByUri($uri)
     {

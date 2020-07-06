@@ -15,20 +15,8 @@ use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class TilesCommand
-extends Command
+extends BaseCommand
 {
-    protected $kernel;
-    protected $imagickProcessor;
-
-    public function __construct(KernelInterface $kernel,
-                                \AppBundle\Utils\ImageMagick\ImageMagickProcessor $imagickProcessor)
-    {
-        parent::__construct();
-
-        $this->kernel = $kernel;
-        $this->imagickProcessor = $imagickProcessor;
-    }
-
     protected function configure()
     {
         $this
@@ -56,12 +44,10 @@ extends Command
 
         $DERIVATE = preg_replace('/\.(de|en)$/', '', pathinfo($fname, PATHINFO_FILENAME));
 
-        $baseDir = realpath($this->kernel->getRootDir() . '/..');
-
-        $srcPath = sprintf('@AppBundle/Resources/data/img/%s', $DERIVATE);
+        $srcPath = sprintf('img/%s', $DERIVATE);
 
         try {
-            $srcDir = $this->kernel->locateResource($srcPath, $this->kernel->getResourcesOverrideDir());
+            $srcDir = $this->locateData($srcPath);
         }
         catch (\InvalidArgumentException $e) {
             $output->writeln(sprintf('<error>%s does not exist</error>', $srcPath));
@@ -105,6 +91,8 @@ extends Command
             }
         }
 
+        $baseDir = realpath($this->getProjectDir());
+
         $targetPath = sprintf('web/viewer/%s', $DERIVATE);
         if (!is_dir($baseDir . '/' . $targetPath)) {
             mkdir($baseDir . '/' . $targetPath);
@@ -122,6 +110,7 @@ extends Command
             if (!file_exists($fnameFull)) {
                 continue;
             }
+
             $size = @getimagesize($fnameFull);
             if (empty($size)) {
                 continue;

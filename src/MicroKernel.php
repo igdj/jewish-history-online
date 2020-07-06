@@ -69,6 +69,9 @@ extends Kernel
             // converturls filter
             new \Liip\UrlAutoConverterBundle\LiipUrlAutoConverterBundle(),
 
+            // theme, must come after FrameworkBundle
+            new \Sylius\Bundle\ThemeBundle\SyliusThemeBundle(),
+
             // solr
             new \FS\SolrBundle\FSSolrBundle(),
             new \Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
@@ -94,12 +97,12 @@ extends Kernel
     // see https://github.com/symfony/symfony-standard/blob/master/app/AppKernel.php
     public function getCacheDir()
     {
-        return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
+        return $this->getProjectDir() . '/var/cache/'.$this->getEnvironment();
     }
 
     public function getLogDir()
     {
-        return dirname(__DIR__).'/var/logs';
+        return $this->getProjectDir() . '/var/logs';
     }
 
     /*
@@ -111,7 +114,7 @@ extends Kernel
      */
     public function getResourcesOverrideDir()
     {
-        return realpath($this->getRootDir() . '/../app/Resources');
+        return realpath($this->getProjectDir() . '/app/Resources');
     }
 
     /*
@@ -119,8 +122,8 @@ extends Kernel
      */
     protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
     {
-        $loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yml');
-        $loader->load(__DIR__ . '/config/services.yml');
+        $loader->load($this->getProjectDir() . '/app/config/config_' . $this->getEnvironment() . '.yml');
+        $loader->load($this->getProjectDir() . '/app/config/services.yml');
     }
 
     /*

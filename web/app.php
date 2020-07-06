@@ -3,7 +3,7 @@
 use Symfony\Component\HttpFoundation\Request;
 
 $loader = require __DIR__.'/../app/config/autoload.php';
-require_once __DIR__.'/../app/MicroKernel.php';
+require_once __DIR__.'/../src/MicroKernel.php';
 
 $kernel = MicroKernel::fromEnvironment();
 

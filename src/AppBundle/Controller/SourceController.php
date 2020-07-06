@@ -15,6 +15,46 @@ use AppBundle\Utils\ImageMagick\ImageMagickProcessor;
 class SourceController
 extends ArticleController
 {
+    static function mb_wordwrap($str, $width = 75, $break = "\n", $cut = false)
+    {
+        $lines = explode($break, $str);
+
+        foreach ($lines as &$line) {
+            $line = rtrim($line);
+            if (mb_strlen($line) <= $width) {
+                continue;
+            }
+
+            $words = explode(' ', $line);
+            $line = '';
+            $actual = '';
+            foreach ($words as $word) {
+                if (mb_strlen($actual.$word) <= $width) {
+                    $actual .= $word.' ';
+                }
+                else {
+                    if ($actual != '') {
+                        $line .= rtrim($actual).$break;
+                    }
+
+                    $actual = $word;
+                    if ($cut) {
+                        while (mb_strlen($actual) > $width) {
+                            $line .= mb_substr($actual, 0, $width).$break;
+                            $actual = mb_substr($actual, $width);
+                        }
+                    }
+
+                    $actual .= ' ';
+                }
+            }
+
+            $line .= trim($actual);
+        }
+
+        return implode($break, $lines);
+    }
+
     protected function renderSourcePdf($parts)
     {
         $sourceArticle = $parts['article'];
@@ -338,39 +378,7 @@ extends ArticleController
         return sprintf('%s-%05d', $matches[1], $matches[2]);
     }
 
-    static function mb_wordwrap($str, $width = 75, $break = "\n", $cut = false) {
-        $lines = explode($break, $str);
-        foreach ($lines as &$line) {
-            $line = rtrim($line);
-            if (mb_strlen($line) <= $width)
-                continue;
-            $words = explode(' ', $line);
-            $line = '';
-            $actual = '';
-            foreach ($words as $word) {
-                if (mb_strlen($actual.$word) <= $width) {
-                    $actual .= $word.' ';
-                }
-                else {
-                    if ($actual != '') {
-                        $line .= rtrim($actual).$break;
-                    }
-                    $actual = $word;
-                    if ($cut) {
-                        while (mb_strlen($actual) > $width) {
-                            $line .= mb_substr($actual, 0, $width).$break;
-                            $actual = mb_substr($actual, $width);
-                        }
-                    }
-                    $actual .= ' ';
-                }
-            }
-            $line .= trim($actual);
-        }
-        return implode($break, $lines);
-    }
-
-    protected function renderReadme($uid)
+    protected function renderReadme($translator, $uid)
     {
         $fs = new \Symfony\Component\Filesystem\Filesystem();
 
@@ -379,8 +387,6 @@ extends ArticleController
                 ->findByUid($uid);
 
         $ret = [];
-
-        $translator = $this->getTranslator();
 
         $defaultLocale = $translator->getLocale();
 
@@ -404,11 +410,11 @@ extends ArticleController
 
     protected function buildImgSrcPath($relPath)
     {
-        $imgDir = '@AppBundle/Resources/data/img/';
+        $imgDir = 'img/';
         $srcPath = $imgDir . $relPath;
 
         try {
-            $srcPathFull = $this->locateResource($srcPath);
+            $srcPathFull = $this->locateData($srcPath);
 
             return $srcPathFull;
         }
@@ -467,7 +473,7 @@ extends ArticleController
             return false;
         }
 
-        $baseDir = realpath($this->getRootDir() . '/..');
+        $baseDir = realpath($this->getProjectDir());
         $relPath = sprintf('viewer/%s', $dir);
         $filePath = $baseDir . '/web/' . $relPath;
 
@@ -563,6 +569,7 @@ extends ArticleController
      * @Route("/source/{uid}.zip", name="source-download")
      */
     public function downloadAction(Request $request,
+                                   TranslatorInterface $translator,
                                    ImageMagickProcessor $imagickProcessor,
                                    $uid)
     {
@@ -584,7 +591,7 @@ extends ArticleController
         }
 
         // generate README.txt / LIESMICH.txt
-        $readme = $this->renderReadme($uid);
+        $readme = $this->renderReadme($translator, $uid);
         if (false !== $readme) {
             $files = array_merge($files, $readme);
         }
@@ -725,7 +732,7 @@ extends ArticleController
         $fname .= '.xml';
 
         // check if source is splitted into individual files one per page
-        $baseDir = realpath($this->getRootDir() . '/..');
+        $baseDir = realpath($this->getProjectDir());
 
         $targetPath = sprintf('web/viewer/%s', $uid);
         $targetDir = realpath($baseDir . '/' . $targetPath);
@@ -793,11 +800,14 @@ extends ArticleController
         $derivate = preg_replace('/[^0-9a-zA-Z_\-\:]/', '', $parts[0]);
         $fname = preg_replace('/[^0-9a-zA-Z\.]/', '', $parts[1]);
 
-        $srcPath = sprintf('@AppBundle/Resources/data/img/%s', $derivate);
+        $srcPath = sprintf('img/%s', $derivate);
 
         try {
-            $fnameFull = $this->locateResource($srcPath . '/' . $fname, $this->getResourcesOverrideDir());
-        } catch (\InvalidArgumentException $e) {
+            $fnameFull = $this->locateData($srcPath . '/' . $fname);
+        }
+        catch (\InvalidArgumentException $e) {
+            var_dump($e);
+            exit;
             throw $this->createNotFoundException('This source-image does not exist');
         }
 

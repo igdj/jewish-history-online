@@ -16,8 +16,7 @@ extends BaseController
 
     private function instantiateCiteProc($locale)
     {
-        $path = $this->locateResource('@AppBundle/Resources/data/csl/jgo-infoclio-de.csl.xml',
-                                      $this->getResourcesOverrideDir());
+        $path = $this->locateData('csl/jgo-infoclio-de.csl.xml');
 
         $wrapSpan = function ($renderedText, $class) {
             return '<span class="citeproc-'. $class . '">' . $renderedText . '</span>';

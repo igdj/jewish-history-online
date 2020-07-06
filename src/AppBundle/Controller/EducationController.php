@@ -71,17 +71,17 @@ extends RenderTeiController
     public function indexAction(Request $request,
                                 TranslatorInterface $translator)
     {
-        $fname = '/Resources/data/education.json';
+        $fname = 'education.json';
 
         try {
-            $fname = $this->locateResource('@AppBundle' . $fname,
-                                           $this->getResourcesOverrideDir());
+            $fname = $this->locateData($fname);
+
+            $structure = json_decode(file_get_contents($fname), true);
         }
         catch (\InvalidArgumentException $e) {
-            $fname = $this->getRootDir() . $fname;
+            $structure = [];
         }
 
-        $structure = json_decode(file_get_contents($fname), true);
 
         // make sure we only pick-up the published ones in the current language
         $language = \AppBundle\Utils\Iso639::code1to3($request->getLocale());

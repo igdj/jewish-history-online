@@ -15,22 +15,10 @@ use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class ThumbnailCommand
-extends Command
+extends BaseCommand
 {
     static $widthScaled = 293;
     static $quality = 85;
-
-    protected $kernel;
-    protected $imagickProcessor;
-
-    public function __construct(KernelInterface $kernel,
-                                \AppBundle\Utils\ImageMagick\ImageMagickProcessor $imagickProcessor)
-    {
-        parent::__construct();
-
-        $this->kernel = $kernel;
-        $this->imagickProcessor = $imagickProcessor;
-    }
 
     protected function configure()
     {
@@ -76,17 +64,17 @@ extends Command
 
         $DERIVATE = preg_replace('/\.(de|en)$/', '', pathinfo($fname, PATHINFO_FILENAME));
 
-        $baseDir = realpath($this->kernel->getRootDir() . '/..');
+        $baseDir = realpath($this->getProjectDir());
 
         $convertArgs = [];
 
         $facsimile = $teiHelper->getFirstPbFacs($fname);
 
         if (!empty($facsimile)) {
-            $srcPath = sprintf('@AppBundle/Resources/data/img/%s', $DERIVATE);
+            $srcPath = sprintf('img/%s', $DERIVATE);
 
             try {
-                $srcDir = $this->kernel->locateResource($srcPath, $this->kernel->getResourcesOverrideDir());
+                $srcDir = $this->locateData($srcPath);
             }
             catch (\InvalidArgumentException $e) {
                 $output->writeln(sprintf('<error>%s does not exist</error>', $srcPath));

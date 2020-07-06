@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class ArticleHeaderCommand
-extends EntityCommandBase
+extends BaseCommand
 {
     protected function configure()
     {

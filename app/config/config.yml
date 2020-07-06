@@ -28,6 +28,10 @@ twig:
     strict_variables: false     # TODO: make safe for '%kernel.debug%'
     exception_controller: null
 
+sylius_theme:
+    sources:
+        filesystem: ~
+
 # Doctrine Configuration
 doctrine:
     dbal:

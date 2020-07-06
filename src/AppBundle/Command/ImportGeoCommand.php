@@ -18,12 +18,16 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use Cocur\Slugify\SlugifyInterface;
 
+use Sylius\Bundle\ThemeBundle\Context\SettableThemeContext;
+use Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface;
+
+use AppBundle\Utils\ImageMagick\ImageMagickProcessor;
 use AppBundle\Utils\Xsl\XsltProcessor;
 use AppBundle\Utils\XmlFormatter\XmlFormatter;
 use AppBundle\Utils\SimplifyGeojsonProcessor;
 
 class ImportGeoCommand
-extends EntityCommandBase
+extends BaseCommand
 {
     protected $simplifier;
 
@@ -34,14 +38,20 @@ extends EntityCommandBase
                                 SlugifyInterface $slugify,
                                 ParameterBagInterface $params,
                                 \Doctrine\DBAL\Connection $dbconnAdmin,
-                                string $rootDir,
+                                ThemeRepositoryInterface $themeRepository,
+                                SettableThemeContext $themeContext,
+                                ?string $siteTheme,
+                                ImageMagickProcessor $imagickProcessor,
                                 XsltProcessor $xsltProcessor,
                                 XmlFormatter $formatter,
                                 SimplifyGeojsonProcessor $simplifier
                                 )
     {
         parent::__construct($em, $kernel, $router, $translator, $slugify, $params,
-                            $dbconnAdmin, $rootDir, $xsltProcessor, $formatter);
+                            $dbconnAdmin,
+                            $themeRepository, $themeContext, $siteTheme,
+                            $imagickProcessor,
+                            $xsltProcessor, $formatter);
 
         $this->simplifier = $simplifier;
     }
@@ -153,8 +163,7 @@ extends EntityCommandBase
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dir = $this->rootDir
-             . '/Resources/data/geo';
+        $dir = $this->locateData('geo/');
 
         $fs = new Filesystem();
 

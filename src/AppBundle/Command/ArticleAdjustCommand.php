@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class ArticleAdjustCommand
-extends EntityCommandBase
+extends BaseCommand
 {
     protected function configure()
     {
@@ -484,8 +484,7 @@ extends EntityCommandBase
 
         if ($input->getOption('tidy')) {
             // first check if it is valid
-            $fnameSchema = $this->kernel
-                            ->locateResource('@AppBundle/Resources/data/basisformat.rng');
+            $fnameSchema = $this->locateData('basisformat.rng');
 
             // we pass the string as stream_wrapper
             $stream = fopen('php://memory','r+');

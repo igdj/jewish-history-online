@@ -13,8 +13,7 @@ trait RenderTeiTrait
     protected function locateTeiResource($fnameXml)
     {
         try {
-            $pathToXml = $this->locateResource('@AppBundle/Resources/data/tei/' . $fnameXml,
-                                               $this->getResourcesOverrideDir());
+            $pathToXml = $this->locateData('tei/' . $fnameXml);
         }
         catch (\InvalidArgumentException $e) {
             return false;
@@ -40,8 +39,7 @@ trait RenderTeiTrait
             }
         }
 
-        $pathToXslt = $this->locateResource('@AppBundle/Resources/data/xsl/' . $fnameXslt,
-                                            $this->getResourcesOverrideDir());
+        $pathToXslt = $this->locateData('xsl/' . $fnameXslt);
 
         return $this->xsltProcessor->transformFileToXml($pathToXml, $pathToXslt, $options);
     }

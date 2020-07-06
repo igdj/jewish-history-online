@@ -11,7 +11,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 class ImportEducationCommand
-extends EntityCommandBase
+extends BaseCommand
 {
     protected function configure()
     {
@@ -23,14 +23,15 @@ extends EntityCommandBase
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $fname = '/Resources/data/education.xlsx';
+        $fname = 'education.xlsx';
 
         try {
-            $fname = $this->locateResource('@AppBundle' . $fname,
-                                           $this->getResourcesOverrideDir());
+            $fname = $this->locateData($fname);
         }
         catch (\InvalidArgumentException $e) {
-            $fname = $this->getRootDir() . $fname;
+            $output->writeln(sprintf('<error>%s does not exist</error>', $fname));
+
+            return 1;
         }
 
         $fs = new Filesystem();

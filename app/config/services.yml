@@ -5,7 +5,7 @@ services:
         autoconfigure: true
         public: false
         bind:
-            $rootDir: '%kernel.root_dir%'
+            $siteTheme: '%app.site_theme%'
             $dbconnAdmin: '@dbconn.admin'
             
     # makes classes in src/AppBundle available to be used as services
@@ -44,6 +44,13 @@ services:
         class: AppBundle\EventListener\LanguageListener
         tags:
           - { name: kernel.event_listener, event: kernel.exception, method: setLocale }
+
+    # theme selection
+    app.theme_request.kernel_request_listener:
+        class: AppBundle\EventListener\ThemeRequestListener
+        arguments: ['@sylius.repository.theme', '@sylius.theme.context.settable']
+        tags:
+        - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
 
     # So we can inject @solr.client, see https://github.com/floriansemm/SolrBundle/issues/191#issuecomment-466101623
     FS\SolrBundle\SolrInterface: '@solr.client'

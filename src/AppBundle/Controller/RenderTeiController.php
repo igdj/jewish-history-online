@@ -10,9 +10,11 @@ use Symfony\Component\CssSelector\CssSelectorConverter;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
+use Cocur\Slugify\SlugifyInterface;
+
 use Doctrine\ORM\EntityManagerInterface;
 
-use Cocur\Slugify\SlugifyInterface;
+use Sylius\Bundle\ThemeBundle\Context\SettableThemeContext;
 
 use AppBundle\Utils\Xsl\XsltProcessor;
 
@@ -26,9 +28,10 @@ extends BaseController
 
     public function __construct(KernelInterface $kernel,
                                 SlugifyInterface $slugify,
+                                SettableThemeContext $themeContext,
                                 XsltProcessor $xsltProcessor)
     {
-        parent::__construct($kernel, $slugify);
+        parent::__construct($kernel, $slugify, $themeContext);
 
         $this->xsltProcessor = $xsltProcessor;
     }
@@ -446,8 +449,7 @@ extends BaseController
         // mpdf
         $pdfGenerator = new \AppBundle\Utils\PdfGenerator([
             'fontDir' => [
-                $this->getProjectDir()
-                    . '/app/Resources/data/font',
+                $this->locateData('font/'),
             ],
             'fontdata' => [
                 'roboto' => [
@@ -514,7 +516,7 @@ extends BaseController
         return preg_replace('/<\/?body>/', '', $crawler->html());
     }
 
-    protected function extractPartsFromHtml($html, TranslatorInterface $translator)
+    protected function extractPartsFromHtml(string $html, TranslatorInterface $translator)
     {
         $crawler = new \Symfony\Component\DomCrawler\Crawler();
         $crawler->addHtmlContent($html);

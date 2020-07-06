@@ -12,7 +12,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 class ArticleBiblioCommand
-extends EntityCommandBase
+extends BaseCommand
 {
     protected function configure()
     {

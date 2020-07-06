@@ -53,8 +53,7 @@ extends Command
 
         $teiHelper = new \AppBundle\Utils\TeiHelper();
 
-        $fnameSchema = $this->kernel
-                        ->locateResource('@AppBundle/Resources/data/basisformat.rng');
+        $fnameSchema = $this->locateData('basisformat.rng');
 
         $result = $teiHelper->validateXml($fname, $fnameSchema);
 
