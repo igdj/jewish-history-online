@@ -8,6 +8,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
+/**
+ * Import Entities from data/gnd2tgn.xlsx (currently only places).
+ */
 class ImportEntityCommand
 extends BaseCommand
 {

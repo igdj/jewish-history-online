@@ -21,6 +21,9 @@ use AppBundle\Utils\ImageMagick\ImageMagickProcessor;
 use AppBundle\Utils\Xsl\XsltProcessor;
 use AppBundle\Utils\XmlFormatter\XmlFormatter;
 
+/**
+ * Shared Base for all Commands.
+ */
 abstract class BaseCommand
 extends Command
 {
@@ -31,6 +34,7 @@ extends Command
     protected $router;
     protected $translator;
     protected $slugify;
+    protected $params;
     protected $dbconnAdmin;
     protected $themeRepository;
     protected $themeContext;
@@ -51,7 +55,7 @@ extends Command
                                 ImageMagickProcessor $imagickProcessor,
                                 XsltProcessor $xsltProcessor,
                                 XmlFormatter $formatter
-                                )
+                            )
     {
         parent::__construct();
 
@@ -60,6 +64,7 @@ extends Command
         $this->router = $router;
         $this->translator = $translator;
         $this->slugify = $slugify;
+        $this->params = $params;
         $this->dbconnAdmin = $dbconnAdmin;
         $this->themeRepository = $themeRepository;
         $this->themeContext = $themeContext;
@@ -72,6 +77,13 @@ extends Command
             if (!is_null($theme)) {
                 $this->themeContext->setTheme($theme);
             }
+        }
+    }
+
+    protected function getParameter(string $name)
+    {
+        if ($this->params->has($name)) {
+            return $this->params->get($name);
         }
     }
 

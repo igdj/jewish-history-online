@@ -10,6 +10,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
+/**
+ * Extract entities from TEI and add missing or update relations.
+ */
 class ArticleEntityCommand
 extends BaseCommand
 {
@@ -27,7 +30,7 @@ extends BaseCommand
                 'insert-missing',
                 null,
                 InputOption::VALUE_NONE,
-                'If set, missing entries will be added to person/place/organization'
+                'If set, missing entries will be added to person/place/organization/landmark/event'
             )
             ->addOption(
                 'set-references',
@@ -171,7 +174,7 @@ extends BaseCommand
 
             if ($persist) {
                 $this->em->persist($article);
-                $this->em->flush();
+                $this->flushEm($this->em);
                 $output->writeln(sprintf('<info>updated article %s</info>', $uid));
             }
         }

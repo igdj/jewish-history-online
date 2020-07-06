@@ -15,6 +15,9 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
+/**
+ * Lookup article-information from TEI header.
+ */
 class ArticleHeaderCommand
 extends BaseCommand
 {
@@ -130,7 +133,7 @@ extends BaseCommand
                 }
             }
 
-            $this->em->flush();
+            $this->flushEm($this->em);
         }
 
         if (!($input->getOption('insert-missing') || $input->getOption('update'))) {
@@ -272,7 +275,7 @@ extends BaseCommand
         $output->writeln($this->jsonPrettyPrint($entity));
 
         $this->em->persist($entity);
-        $this->em->flush();
+        $this->flushEm($this->em);
         // $output->writeln($text);
 
         return 0;

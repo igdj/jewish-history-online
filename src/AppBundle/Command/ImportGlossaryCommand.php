@@ -15,6 +15,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use Cocur\Slugify\SlugifyInterface;
 
+/**
+ * Import Glossary from data/glossary.xlsx (one line per item and language).
+ */
 class ImportGlossaryCommand
 extends BaseCommand
 {
@@ -97,6 +100,6 @@ extends BaseCommand
             $this->em->persist($term);
         }
 
-        $this->em->flush();
+        $this->flushEm($this->em);
     }
 }

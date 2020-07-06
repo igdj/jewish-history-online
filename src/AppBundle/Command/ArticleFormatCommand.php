@@ -14,6 +14,9 @@ use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 use AppBundle\Utils\XmlFormatter\XmlFormatter;
 
+/**
+ * Run XmlFormatter::formatFile() to normalize TEI.
+ */
 class ArticleFormatCommand
 extends Command
 {

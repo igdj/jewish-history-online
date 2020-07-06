@@ -14,18 +14,12 @@ use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 use Symfony\Component\HttpKernel\KernelInterface;
 
+/**
+ * Validate TEI against data/basisformat.rng.
+ */
 class ArticleValidateCommand
-extends Command
+extends BaseCommand
 {
-    protected $kernel;
-
-    public function __construct(KernelInterface $kernel)
-    {
-        parent::__construct();
-
-        $this->kernel = $kernel;
-    }
-
     protected function configure()
     {
         $this

@@ -9,41 +9,26 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * Set additional information from various Web services.
+ */
 class EntityEnhanceCommand
-extends Command
+extends BaseCommand
 {
-    protected $em;
-    protected $googleapisKey = '';
-    protected $rootDir;
-
-    public function __construct(EntityManagerInterface $em,
-                                ParameterBagInterface $params)
-    {
-        parent::__construct();
-
-        $this->em = $em;
-
-        if ($params->has('googleapis.key')) {
-            $this->googleapisKey = $params->get('googleapis.key');
-        }
-    }
-
     protected function configure()
     {
         $this
             ->setName('entity:enhance')
-            ->setDescription('Enhance Person/Place/Organization/Bibitem Entities')
+            ->setDescription('Enhance Entities with additional information from Web services')
             ->addArgument(
                 'type',
                 InputArgument::REQUIRED,
-                'which entities do you want to enhance (person / place / organization / bibitem)'
+                'which entities do you want to enhance (person / organization / place / country / bibitem)'
             )
         ;
     }
@@ -109,7 +94,7 @@ extends Command
     protected function executeJsonQuery($url, $headers = [], $assoc = false)
     {
         if (!isset($this->client)) {
-            $this->client = new \EasyRdf_Http_Client();
+            $this->client = new \EasyRdf\Http\Client();
         }
 
         $this->client->setUri($url);
@@ -145,12 +130,11 @@ extends Command
     {
         $gndBeacon = [];
 
-        foreach ($files as $key => $fname)
-        {
+        foreach ($files as $key => $fname) {
             $info = [];
 
-            $fnameFull = $this->rootDir
-                       . '/Resources/data/' . $fname;
+            $fnameFull = $this->locateData($fname);
+
             $lines = file($fnameFull);
             foreach ($lines as $line) {
                 if (empty($line)) {
@@ -308,13 +292,13 @@ extends Command
 
                         $place = null;
                         if ($placeInfo['name'] == 'Altona') {
-                            $places = $this->em->getRepository('\AppBundle\Entiy\Place')->findByTgn('7012310');
+                            $places = $this->em->getRepository('\AppBundle\Entity\Place')->findByTgn('7012310');
                         }
                         else if (!empty($placeInfo['gnd'])) {
-                            $places = $this->em->getRepository('\AppBundle\Entiy\Place')->findByGnd($placeInfo['gnd']);
+                            $places = $this->em->getRepository('\AppBundle\Entity\Place')->findByGnd($placeInfo['gnd']);
                             if (empty($places)) {
                                 // try to lookup by name
-                                $places = $this->em->getRepository('\AppBundle\Entiy\Place')->findByName($placeInfo['name']);
+                                $places = $this->em->getRepository('\AppBundle\Entity\Place')->findByName($placeInfo['name']);
                                 if (count($places) > 1) {
                                     $places[] = []; // skip if there are multiple matches
                                 }
@@ -336,7 +320,7 @@ extends Command
                                                    . '(\d+)$/', $uri, $matches))
                                     {
                                         $geonamesId = $matches[1];
-                                        $places = $this->em->getRepository('\AppBundle\Entiy\Place')->findByGeonames($geonamesId);
+                                        $places = $this->em->getRepository('\AppBundle\Entity\Place')->findByGeonames($geonamesId);
                                         if (!empty($places)) {
                                             $place = $places[0];
                                         }
@@ -361,7 +345,7 @@ extends Command
 
             if ($persist) {
                 $this->em->persist($person);
-                $this->em->flush();
+                $this->flushEm($this->em);
             }
         }
     }
@@ -371,7 +355,7 @@ extends Command
         // currently only geonames
         // TODO: maybe get outlines
         // http://www.geonames.org/servlet/geonames?&srv=780&geonameId=2921044&type=json
-        $placeRepository = $this->em->getRepository('\AppBundle\Entiy\Place');
+        $placeRepository = $this->em->getRepository('\AppBundle\Entity\Place');
 
         foreach ([
                 'nation', 'country',
@@ -460,7 +444,7 @@ extends Command
 
                 if ($persist) {
                     $this->em->persist($place);
-                    $this->em->flush();
+                    $this->flushEm($this->em);
                 }
             }
 
@@ -506,7 +490,7 @@ extends Command
 
                 if ($persist) {
                     $this->em->persist($place);
-                    $this->em->flush();
+                    $this->flushEm($this->em);
                 }
             }
         }
@@ -523,7 +507,7 @@ extends Command
             $organization->setAlternateName($organization->getAlternateName());
             $this->em->persist($organization);
         }
-        $this->em->flush();
+        $this->flushEm($this->em);
         return;
         */
 
@@ -545,7 +529,7 @@ extends Command
 
             if ($persist) {
                 $this->em->persist($organization);
-                $this->em->flush();
+                $this->flushEm($this->em);
             }
         }
 
@@ -593,7 +577,7 @@ extends Command
             }
             if ($persist) {
                 $this->em->persist($organization);
-                $this->em->flush();
+                $this->flushEm($this->em);
             }
         }
         */
@@ -660,7 +644,7 @@ extends Command
 
                 if ($persist) {
                     $this->em->persist($country);
-                    $this->em->flush();
+                    $this->flushEm($this->em);
                 }
             }
         }
@@ -668,7 +652,12 @@ extends Command
 
     protected function enhanceBibitem()
     {
-        // currently googleapis.com/books
+        // currently only googleapis.com/books
+        $googleapisKey = $this->getParameter('googleapis.key');
+        if (empty($googleapisKey)) {
+            return;
+        }
+
         $bibitemRepository = $this->em->getRepository('\AppBundle\Entity\Bibitem');
         $items = $bibitemRepository->findBy([ 'status' => [0, 1] ]);
         foreach ($items as $item) {
@@ -682,12 +671,13 @@ extends Command
             if (is_null($additional) || !array_key_exists('googleapis-books', $additional)) {
                 $url = sprintf('https://www.googleapis.com/books/v1/volumes?q=isbn:%s&key=%s',
                                $isbns[0],
-                               $this->googleapisKey);
+                               $googleapisKey);
                 // var_dump($url);
                 $result = $this->executeJsonQuery($url, [
                     'Accept' => 'application/json',
                     // 'Accept-Language' => $locale, // date-format!
                 ]);
+                // var_dump($result);
 
                 if (false !== $result && $result['totalItems'] > 0) {
                     $resultItem = $result['items'][0];
@@ -715,7 +705,7 @@ extends Command
 
             if ($persist) {
                 $this->em->persist($item);
-                $this->em->flush();
+                $this->flushEm($this->em);
             }
         }
     }

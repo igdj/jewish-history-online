@@ -1,8 +1,6 @@
 <?php
 // src/AppBundle/Command/ImportGeoCommand.php
 
-/* boundary download on: https://mapzen.com/data/borders/ */
-
 namespace AppBundle\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,6 +24,9 @@ use AppBundle\Utils\Xsl\XsltProcessor;
 use AppBundle\Utils\XmlFormatter\XmlFormatter;
 use AppBundle\Utils\SimplifyGeojsonProcessor;
 
+/**
+ * Import administrative boundaries downloaded from https://mapzen.com/data/borders/.
+ */
 class ImportGeoCommand
 extends BaseCommand
 {
@@ -111,13 +112,14 @@ extends BaseCommand
                 $additional['boundary'] = $simplified;
                 $country->setAdditional($additional);
                 $this->em->persist($country);
-                $this->em->flush();
+                $this->flushEm($this->em);
             }
         }
 
         $level = in_array($countryCode, [ 'CZ', 'HU' ]) ? 6 : 4;
         $fname = file_exists($dir . '/' . 'admin_level_' . $level . '.reduced.geojson')
-            ? $dir . '/' . 'admin_level_' . $level . '.reduced.geojson' : $dir . '/' . 'admin_level_' . $level . '.geojson';
+            ? $dir . '/' . 'admin_level_' . $level . '.reduced.geojson'
+            : $dir . '/' . 'admin_level_' . $level . '.geojson';
         $info = file_get_contents($fname);
         if (false !== $info) {
             $level4geojson = json_decode($info, true);
@@ -144,7 +146,7 @@ extends BaseCommand
                                     $additional['boundary'] = $simplified;
                                     $child->setAdditional($additional);
                                     $this->em->persist($child);
-                                    $this->em->flush();
+                                    $this->flushEm($this->em);
                                     unset($additional);
                                     unset($simplified);
                                 }
@@ -163,7 +165,7 @@ extends BaseCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dir = $this->locateData('geo/');
+        $dir = $this->locateData($fname = 'geo/');
 
         $fs = new Filesystem();
 

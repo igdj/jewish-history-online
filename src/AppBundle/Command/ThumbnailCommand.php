@@ -14,6 +14,9 @@ use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 use Symfony\Component\HttpKernel\KernelInterface;
 
+/**
+ * Command that creates a thumbnail for the source.
+ */
 class ThumbnailCommand
 extends BaseCommand
 {

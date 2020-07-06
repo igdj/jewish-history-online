@@ -11,6 +11,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
+/**
+ * Extract bibliographic items from TEI and insert/update into Bibitem.
+ */
 class ArticleBiblioCommand
 extends BaseCommand
 {
@@ -209,7 +212,7 @@ extends BaseCommand
 
             if ($persist) {
                 $this->em->persist($article);
-                $this->em->flush();
+                $this->flushEm($this->em);
                 $output->writeln(sprintf('<info>updated article %s</info>', $uid));
             }
         }

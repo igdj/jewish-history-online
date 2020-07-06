@@ -28,6 +28,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use FluidXml\FluidXml;
 use FluidXml\FluidNamespace;
 
+/**
+ * Assign DOIs through DataCite MDS API.
+ */
 class ArticleDoiCommand
 extends Command
 {
@@ -162,7 +165,7 @@ extends Command
 
         if ($persist) {
             $this->em->persist($entity);
-            $this->em->flush();
+            $this->flushEm($this->em);
         }
     }
 

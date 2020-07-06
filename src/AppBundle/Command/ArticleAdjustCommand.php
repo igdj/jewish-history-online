@@ -15,6 +15,9 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
+/**
+ * Insert information from Admin-Database into manually created TEI.
+ */
 class ArticleAdjustCommand
 extends BaseCommand
 {

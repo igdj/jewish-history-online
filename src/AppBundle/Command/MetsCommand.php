@@ -12,20 +12,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
-use Symfony\Component\Translation\TranslatorInterface;
-
+/**
+ * Generate METS for MyCoRe-Viewer.
+ */
 class MetsCommand
-extends Command
+extends BaseCommand
 {
-    protected $translator;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        parent::__construct();
-
-        $this->translator = $translator;
-    }
-
     protected function configure()
     {
         $this

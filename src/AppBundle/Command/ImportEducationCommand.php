@@ -10,6 +10,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
+/**
+ * Read Education entries from data/education.xlsx and write proper JSON-structure.
+ */
 class ImportEducationCommand
 extends BaseCommand
 {

@@ -11,6 +11,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
+/**
+ * Lookup author(s) and translator and insert/update corresponding Person.
+ */
 class ArticleAuthorCommand
 extends BaseCommand
 {
@@ -149,7 +152,7 @@ extends BaseCommand
 
                 // var_dump(json_encode($person));
                 $this->em->persist($person);
-                $this->em->flush();
+                $this->flushEm($this->em);
             }
         }
     }

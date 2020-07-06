@@ -14,6 +14,10 @@ use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 use Symfony\Component\HttpKernel\KernelInterface;
 
+/**
+ * Command that creates a tiles in proper zoom levels for the source.
+ * For the naming scheme, see https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
+ */
 class TilesCommand
 extends BaseCommand
 {

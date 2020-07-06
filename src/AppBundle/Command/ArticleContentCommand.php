@@ -15,6 +15,9 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
+/**
+ * Set Article.description as plain-text for Solr indexing.
+ */
 class ArticleContentCommand
 extends BaseCommand
 {
@@ -87,9 +90,9 @@ extends BaseCommand
 
         $entity = $this->em->getRepository('AppBundle\Entity\Article')
             ->findOneBy([
-                         'uid' => $article->uid,
-                         'language' => $article->language,
-                         ]);
+                'uid' => $article->uid,
+                'language' => $article->language,
+            ]);
 
         if (is_null($entity)) {
             $output->writeln(sprintf('<error>no article found for %s - %s</error>',
@@ -154,8 +157,8 @@ extends BaseCommand
         }
 
         $this->em->persist($entity);
-        $this->em->flush();
-        //     $output->writeln($text);
+        $this->flushEm($this->em);
+        // $output->writeln($text);
 
         return 0;
     }

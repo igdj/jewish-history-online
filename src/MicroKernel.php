@@ -97,24 +97,12 @@ extends Kernel
     // see https://github.com/symfony/symfony-standard/blob/master/app/AppKernel.php
     public function getCacheDir()
     {
-        return $this->getProjectDir() . '/var/cache/'.$this->getEnvironment();
+        return $this->getProjectDir() . '/var/cache/' . $this->getEnvironment();
     }
 
     public function getLogDir()
     {
         return $this->getProjectDir() . '/var/logs';
-    }
-
-    /*
-     * we pass this $dir to locateResources
-     * so the method will first look for a local bundle-override file named
-     * app/Resources/<BundleName>/path/without/Resources
-     *
-     * @see https://api.symfony.com/2.8/Symfony/Component/HttpKernel/Kernel.html#method_locateResource
-     */
-    public function getResourcesOverrideDir()
-    {
-        return realpath($this->getProjectDir() . '/app/Resources');
     }
 
     /*

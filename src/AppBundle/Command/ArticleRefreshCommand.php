@@ -15,6 +15,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
+/**
+ * Meta command that calls article:* commands in a single run.
+ */
 class ArticleRefreshCommand
 extends Command
 {
@@ -22,7 +25,7 @@ extends Command
     {
         $this
             ->setName('article:refresh')
-            ->setDescription('Meta command to article:adjust / article:header / article:content / articlce:entity / article:biblio ')
+            ->setDescription('Meta command to article:adjust / article:header / article:content / articlce:entity / article:biblio')
             ->addArgument(
                 'file',
                 InputArgument::REQUIRED,
@@ -39,8 +42,6 @@ extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // for calling other commands, see https://symfony.com/doc/3.4/console/calling_commands.html
-
         $fnameInput = $input->getArgument('file');
         $quiet = $input->getOption('quiet');
 
@@ -123,6 +124,8 @@ extends Command
 
         $intermediateOutput = $quiet ? new NullOutput() : $output;
         foreach ($commands as $name => $calls) {
+            // How to Call Other Commands, see https://symfony.com/doc/4.4/console/calling_commands.html
+
             $command = $this->getApplication()->find($name);
 
             foreach ($calls as $call) {
