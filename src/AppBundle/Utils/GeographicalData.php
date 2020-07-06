@@ -10,11 +10,11 @@ class GeographicalData
      *
      * @throws NoResultException
      *
-     * @return \EasyRdf_Graph graph object representing the query result
+     * @return \EasyRdf\Graph graph object representing the query result
      */
     protected function executeRdfQuery($query, $headers = [])
     {
-        $client = new \EasyRdf_Http_Client($query);
+        $client = new \EasyRdf\Http\Client($query);
         if (empty($headers)) {
             $headers['Accept'] = 'application/rdf+xml';
         }
@@ -31,11 +31,11 @@ class GeographicalData
         $content = $response->getBody();
         // the graph is too big for stuff like http://vocab.getty.edu/tgn/7003669
         $content = preg_replace('/\s*<skos\:narrower rdf\:resource\=\"[^"]*\"\s*\/>\s*/', '', $content);
-        $graph = new \EasyRdf_Graph($query);
+        $graph = new \EasyRdf\Graph($query);
         try {
             $num_triples = $graph->parse($content);
         }
-        catch (\EasyRdf_Exception $e) {
+        catch (\EasyRdf\Exception $e) {
             throw new \Exception(sprintf('Problem executing query %s: %s', $query, $e->getMessage()));
         }
 
@@ -76,7 +76,7 @@ class GeographicalData
             else if ($count == 1) {
                 $property = $resource->get($key);
 
-                if (isset($property) && !($property instanceof \EasyRdf_Resource)) {
+                if (isset($property) && !($property instanceof \EasyRdf\Resource)) {
                     $value = $property->getValue();
                     if (!empty($value)) {
                         $values[$target] = $value;
@@ -91,11 +91,11 @@ class GeographicalData
     {
         $parts = preg_split('/\:/', $identifier, 2);
         if ('tgn' == $parts[0]) {
-            \EasyRdf_Namespace::set('gvp', 'http://vocab.getty.edu/ontology#');
+            \EasyRdf\RdfNamespace::set('gvp', 'http://vocab.getty.edu/ontology#');
             $url = sprintf('http://vocab.getty.edu/%s/%s', $parts[0], $parts[1]);
         }
         else if ('gnd' == $parts[0]) {
-            \EasyRdf_Namespace::set('gnd', 'https://d-nb.info/standards/elementset/gnd#');
+            \EasyRdf\RdfNamespace::set('gnd', 'https://d-nb.info/standards/elementset/gnd#');
             $url = sprintf('https://d-nb.info/%s/%s/about/lds', $parts[0], $parts[1]);
             $uri = sprintf('https://d-nb.info/%s/%s', $parts[0], $parts[1]);
         }
@@ -424,7 +424,7 @@ class GeographicalData
 
             // echo $graph->dump();
         }
-        
+
         return $place;
     }
 

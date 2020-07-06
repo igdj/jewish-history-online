@@ -36,7 +36,7 @@ class BiographicalWikidata
      */
     protected static function executeHttpQuery($url, $headers = [])
     {
-        $client = new \EasyRdf_Http_Client($url);
+        $client = new \EasyRdf\Http\Client($url);
         /* if (empty($headers)) {
             $headers['Accept'] = 'application/rdf+xml';
         }
@@ -48,7 +48,7 @@ class BiographicalWikidata
         try {
             $response = $client->request();
         }
-        catch (\EasyRdf_Exception $e) {
+        catch (\EasyRdf\Exception $e) {
             // currently frequent timeouts
             return null;
         }

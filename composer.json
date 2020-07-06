@@ -100,8 +100,8 @@
         "html2text/html2text": "4.0.*",
 
         "semsol/arc2": "^2.4",
-        "easyrdf/easyrdf": "^0.9",
-        "ml/json-ld": "1.0.*",
+        "sweetyrdf/easyrdf": "^1.1",
+        "ml/json-ld": "1.1.*",
 
         "citation-style-language/locales": "@dev",
         "seboettg/citeproc-php": "dev-master#8a0d677",

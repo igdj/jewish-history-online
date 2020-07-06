@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9a8d5e9b190498e1b4d8a97e3115fea7",
+    "content-hash": "ecf921c7b71da491572ab63f621a7563",
     "packages": [
         {
             "name": "armin/scssphp-bundle",
@@ -1566,68 +1566,6 @@
             "time": "2020-05-29T18:32:49+00:00"
         },
         {
-            "name": "easyrdf/easyrdf",
-            "version": "0.9.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/easyrdf/easyrdf.git",
-                "reference": "acd09dfe0555fbcfa254291e433c45fdd4652566"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/easyrdf/easyrdf/zipball/acd09dfe0555fbcfa254291e433c45fdd4652566",
-                "reference": "acd09dfe0555fbcfa254291e433c45fdd4652566",
-                "shasum": ""
-            },
-            "require": {
-                "ext-mbstring": "*",
-                "ext-pcre": "*",
-                "php": ">=5.2.8"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~3.5",
-                "sami/sami": "~1.4",
-                "squizlabs/php_codesniffer": "~1.4.3"
-            },
-            "suggest": {
-                "ml/json-ld": "~1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "EasyRdf_": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Nicholas Humfrey",
-                    "email": "njh@aelius.com",
-                    "homepage": "http://www.aelius.com/njh/",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Alexey Zakhlestin",
-                    "email": "indeyets@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "EasyRdf is a PHP library designed to make it easy to consume and produce RDF.",
-            "homepage": "http://www.easyrdf.org/",
-            "keywords": [
-                "Linked Data",
-                "RDF",
-                "Semantic Web",
-                "Turtle",
-                "rdfa",
-                "sparql"
-            ],
-            "time": "2015-02-27T09:45:49+00:00"
-        },
-        {
             "name": "egulias/email-validator",
             "version": "2.1.18",
             "source": {
@@ -2947,17 +2885,16 @@
         },
         {
             "name": "ml/json-ld",
-            "version": "1.0.8",
-            "target-dir": "ML/JsonLD",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lanthaler/JsonLD.git",
-                "reference": "da8efc590273f0420e79cb110778508875690bde"
+                "reference": "252c1a2b1b15727dd6486453e61f7a3d97bead7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lanthaler/JsonLD/zipball/da8efc590273f0420e79cb110778508875690bde",
-                "reference": "da8efc590273f0420e79cb110778508875690bde",
+                "url": "https://api.github.com/repos/lanthaler/JsonLD/zipball/252c1a2b1b15727dd6486453e61f7a3d97bead7f",
+                "reference": "252c1a2b1b15727dd6486453e61f7a3d97bead7f",
                 "shasum": ""
             },
             "require": {
@@ -2971,8 +2908,8 @@
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "ML\\JsonLD": ""
+                "psr-4": {
+                    "ML\\JsonLD\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2993,7 +2930,7 @@
                 "JSON-LD",
                 "jsonld"
             ],
-            "time": "2018-01-28T12:53:52+00:00"
+            "time": "2020-06-10T10:05:49+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -4746,6 +4683,78 @@
                 "tree"
             ],
             "time": "2020-03-30T09:00:40+00:00"
+        },
+        {
+            "name": "sweetyrdf/easyrdf",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sweetyrdf/easyrdf.git",
+                "reference": "2423a740ed4c461d28b445214950c3a36692d7f0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sweetyrdf/easyrdf/zipball/2423a740ed4c461d28b445214950c3a36692d7f0",
+                "reference": "2423a740ed4c461d28b445214950c3a36692d7f0",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "ext-pcre": "*",
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "ml/json-ld": "^1.1",
+                "php-coveralls/php-coveralls": "^2.2",
+                "phpunit/phpunit": "~4.8.36|^6|^7",
+                "sami/sami": ">=3.3",
+                "semsol/arc2": "^2.4",
+                "squizlabs/php_codesniffer": "~1.4.3",
+                "zendframework/zend-http": "^2.3"
+            },
+            "suggest": {
+                "ml/json-ld": "^1.1",
+                "semsol/arc2": "^2.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EasyRdf\\": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Nicholas Humfrey",
+                    "email": "njh@aelius.com",
+                    "homepage": "http://www.aelius.com/njh/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Alexey Zakhlestin",
+                    "email": "indeyets@gmail.com",
+                    "homepage": "http://indeyets.ru/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Konrad Abicht",
+                    "email": "k.abicht@gmail.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "EasyRdf is a PHP library designed to make it easy to consume and produce RDF.",
+            "keywords": [
+                "Linked Data",
+                "RDF",
+                "Semantic Web",
+                "Turtle",
+                "rdfa",
+                "sparql"
+            ],
+            "time": "2020-06-25T15:56:32+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
