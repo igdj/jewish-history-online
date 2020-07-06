@@ -122,8 +122,8 @@ extends Kernel
      */
     protected function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
     {
-        $loader->load($this->getProjectDir() . '/app/config/config_' . $this->getEnvironment() . '.yml');
-        $loader->load($this->getProjectDir() . '/app/config/services.yml');
+        $loader->load($this->getProjectDir() . '/config/config_' . $this->getEnvironment() . '.yml');
+        $loader->load($this->getProjectDir() . '/config/services.yml');
     }
 
     /*
