@@ -276,6 +276,10 @@ class GeographicalData
                     $values['type'] = 'administrative division';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300387131':
+                    $values['type'] = 'regional division';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300387333':
                     $values['type'] = 'district'; // Bezirk
                     break;
