@@ -2,12 +2,12 @@
 {# guide for localizing as described in
    http://donna-oberes.blogspot.de/2014/01/symfony-internalizationlocalization-and.html
 #}
-{% extends '@AppBundle/Default/base.html.twig' %}
+{% extends '@App/Default/base.html.twig' %}
 
 {% block body %}
     <h1>{{ 'Page not found'|trans }}</h1>
 
     <p>
-        {{ 'error.404.description'|trans({'%url%': path('home') })|raw }}
+        {{ 'error.404.description'|trans({'url': path('home') })|raw }}
     </p>
 {% endblock %}

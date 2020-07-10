@@ -93,10 +93,10 @@ place.oneormany:                    "{count, plural, one {Ort} other {Orte}}"
 sourcearticle.oneormany:            "{count, plural, one {Quelle} other {Quellen}}"
 exhibitionarticle.oneormany:        "{count, plural, one {Ausstellung} other {Ausstellungen}}"
 bibitem.oneormany:                  "Bibliografie"
-epoch.century:                      "%century%. Jahrhundert"
-epoch.century-nd:                   "%century%. Jahrhundert"
-epoch.century-bce:                  "%century%. Jahrhundert v.d.Z."
-epoch.decade:                       "%epoch%er-Jahre"
+epoch.century:                      "{century}. Jahrhundert"
+epoch.century-nd:                   "{century}. Jahrhundert"
+epoch.century-bce:                  "{century}. Jahrhundert v.d.Z."
+epoch.decade:                       "{epoch}er-Jahre"
 Image:                              Bild
 Transcript:                         Transkript
 Transcription:                      Transkript
@@ -108,6 +108,6 @@ Next:                               Weiter
 Page not found:                     Seite nicht gefunden
 error.404.description:              >
     Diese Seite wurde nicht gefunden. Bitte prüfen Sie die Adresse
-    oder gehen Sie <a href="%url%">zurück zur Startseite</a>.
+    oder gehen Sie <a href="{url}">zurück zur Startseite</a>.
 "Key Documents of German-Jewish History - Articles": "Hamburger Schlüsseldokumente zur deutsch-jüdischen Geschichte - Beiträge"
 Latest Articles from the Digital Source Edition:    Neuste Artikel in der Online-Quellenedition

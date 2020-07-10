@@ -4,8 +4,8 @@
 /**
  * see http://symfony.com/doc/current/cookbook/templating/twig_extension.html
  *
- * register in
- *   app/config/services.yml
+ * If not aut-registered, you can activate in
+ *   config/services.yml
  * as
  * services:
  *   app.twig_extension:
@@ -93,11 +93,11 @@ extends AbstractExtension
         }
 
         return /** @Ignore */ $this->translator->trans($class, [
-            '%epoch%' => $epoch,
-            '%century%' => is_numeric($epoch)
+            'epoch' => $epoch,
+            'century' => is_numeric($epoch)
                 ? abs(intval($epoch / 100)) + 1
                 : '',
-            '%decade%' => is_numeric($epoch) ?  $epoch % 100 : '',
+            'decade' => is_numeric($epoch) ?  $epoch % 100 : '',
         ]);
     }
 
