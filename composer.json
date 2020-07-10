@@ -78,8 +78,8 @@
         "armin/scssphp-bundle": "^1.1",
 
         "cocur/slugify": "^4.0",
-        "twig/twig": "^2.11",
-        "twig/extensions": "^1.5",
+        "twig/twig": "^2.13",
+        "twig/string-extra": "^3.0",
         "liip/url-auto-converter-bundle": "dev-master",
 
         "doctrine/doctrine-bundle": "^2.0",

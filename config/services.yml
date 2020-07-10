@@ -34,8 +34,8 @@ services:
                     collate: '%database.charset%_unicode_ci'
                     engine:  MyISAM     # InnoDB
 
-    twig.extension.text:
-        class: Twig_Extensions_Extension_Text
+    twig.extra.string:
+        class: Twig\Extra\String\StringExtension
         tags:
             - { name: twig.extension }
 

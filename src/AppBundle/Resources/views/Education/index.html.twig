@@ -53,7 +53,7 @@
             </div>
             <div class="col-sm-8 xs-12">
         <a href="{{ path }}">
-            <b>{{ source.name|truncate(160, true, '...') }}</b>{% if source.contentLocation is not empty %}, {{ source.contentLocation.name }}{% endif %}
+            <b>{{ source.name|u.truncate(160, true, '...') }}</b>{% if source.contentLocation is not empty %}, {{ source.contentLocation.name }}{% endif %}
         {% if source.dateCreated is not empty %},
             {% if source.dateCreatedDisplay is not empty %}{{ source.dateCreatedDisplay }}{% else %}{{ source.dateCreated|dateincomplete }}{% endif %}
         {% endif %}
@@ -146,7 +146,7 @@
                     <div class="container-fluid">
                         {% set count = 0 %}
                         {% for entry in entries %}
-                            {% if sourcesByUid[entry.url] is defined or entry.provider == 'Geschichtomat'or entry.title is not empty %}
+                            {% if sourcesByUid[entry.url] is defined or entry.provider == 'Geschichtomat' or entry.title is not empty %}
                         {% if count % 2 == 0 %}
                             {% if count != 0 %}
                         </div><!-- .row -->
