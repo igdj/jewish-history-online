@@ -8,7 +8,8 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\CssSelector\CssSelectorConverter;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Cocur\Slugify\SlugifyInterface;
 

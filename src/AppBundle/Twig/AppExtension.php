@@ -18,6 +18,8 @@
 
 namespace AppBundle\Twig;
 
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -30,7 +32,7 @@ extends AbstractExtension
     private $translator;
     private $slugifyer;
 
-    public function __construct(\Symfony\Component\Translation\TranslatorInterface $translator,
+    public function __construct(TranslatorInterface $translator,
                                 SlugifyInterface $slugifyer)
     {
         $this->translator = $translator;

@@ -5,7 +5,8 @@ namespace AppBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Translation\TranslatorInterface;
+
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Cocur\Slugify\SlugifyInterface;
 use FS\SolrBundle\SolrInterface;

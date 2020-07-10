@@ -7,8 +7,9 @@ use Symfony\Component\Console\Command\Command;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Doctrine\ORM\EntityManagerInterface;
 

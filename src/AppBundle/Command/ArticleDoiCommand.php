@@ -17,11 +17,11 @@ use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-use Symfony\Component\Translation\TranslatorInterface;
-
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Doctrine\ORM\EntityManagerInterface;
 

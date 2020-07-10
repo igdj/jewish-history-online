@@ -5,7 +5,8 @@ namespace AppBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 
