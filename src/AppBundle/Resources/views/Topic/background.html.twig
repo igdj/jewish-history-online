@@ -73,35 +73,12 @@
             <h3 class="pdf-link">
                 <a href="{{ path(app.request.attributes.get('_route') ~ '-pdf', app.request.attributes.get('_route_params')) }}">{{ 'Print Version'|trans }}</a>
             </h3>
-            {#
-            <div class="container-fluid box">
-                <div class="row box-color-title">
-                    <div class="col-sm-12">
-                        <h4>{{ 'Content'|trans }}</h4>
-                    </div>
-                </div>
-                <div class="row box-color-content">
-                    {% if section_headers is not empty %}
-                    <div class="col-sm-12">
-                        {% for header in section_headers %}
-                            <p><a href="#{{ header['id'] }}">{{ header['text'] }}</a></p>
-                        {% endfor %}
-                        <hr />
-                    {% endif %}
-                    {% if authors is not empty %}
-                        <p><a href="#author">{{ 'author.oneormany'|transchoice(authors|length) }}</a></p>
-                    {% endif %}
-                        <p><a href="#citation">{{ 'Recommended Citation and License Statement'|trans }}</a></p>
-                    </div>
-                </div>
-            </div>
-            #}
 
             {% if sources is defined and sources[0] is not empty %}
             <div class="container-fluid box">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
-                        <h4>{{ 'source.oneormany'|transchoice(sources[0]|length) }}</h4>
+                        <h4>{{ 'source.oneormany'|trans({ 'count': sources[0]|length }) }}</h4>
                     </div>
                 </div>
                 {% for source in sources[0] %}
@@ -112,7 +89,7 @@
                     <div class="col-sm-12">
                         <h4>
                             <a id="toggleAdditional" data-toggle="collapse" data-target="#additional" class="display-toggle display-toggle-show">
-                            {{ 'additionalsource.oneormany'|transchoice(sources[1]|length) }}
+                            {{ 'additionalsource.oneormany'|trans({ 'count': sources[1]|length }) }}
                             </a>
                         </h4>
                     </div>
@@ -137,7 +114,7 @@
             <div class="container-fluid box">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
-                        <h4>{{ 'interpretation.oneormany'|transchoice(interpretations|length) }}</h4>
+                        <h4>{{ 'interpretation.oneormany'|trans({ 'count': interpretations|length }) }}</h4>
                     </div>
                 </div>
                 {% for article in interpretations %}
@@ -150,6 +127,5 @@
             </div>
             {% endif %}
         </div>
-
     </div>
 {% endblock %}

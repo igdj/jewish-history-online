@@ -55,8 +55,8 @@
         {% if author.gender != 'F' %}{% set all_female = false %}{% endif %}
     {% endfor %}
     {% set how_many = authors|length %}
-    {% if all_female %}{{ 'author.oneormany-female'|transchoice(how_many) }}
-    {% else %}{{ 'author.oneormany'|transchoice(how_many) }}{% endif %}
+    {% if all_female %}{{ 'author.oneormany-female'|trans({ 'count': how_many }) }}
+    {% else %}{{ 'author.oneormany'|trans({ 'count': how_many }) }}{% endif %}
 {% endmacro %}
 
 {% macro article_authors(authors) %}
@@ -408,7 +408,7 @@
             <div class="container-fluid box top-buffer">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
-                        <h4>{{ 'interpretation.oneormany'|transchoice(interpretations|length) }}</h4>
+                        <h4>{{ 'interpretation.oneormany'|trans({ 'count': interpretations|length }) }}</h4>
                     </div>
                 </div>
                 {% for article in interpretations %}
@@ -443,7 +443,7 @@
             <div class="container-fluid box top-buffer">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
-                        <h4>{{ 'additionalsource.oneormany'|transchoice(related|length) }}</h4>
+                        <h4>{{ 'additionalsource.oneormany'|trans({ 'count': related|length }) }}</h4>
                     </div>
                 </div>
                 {% for source in related if source.id != article.id %}

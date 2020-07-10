@@ -834,13 +834,13 @@
       </trans-unit>
       <trans-unit id="8a4096f53e694a6f123cf72de73b8ec8b654a21b" resname="additionalsource.oneormany">
         <source>additionalsource.oneormany</source>
-        <target>Weitere Quelle|Weitere Quellen</target>
+        <target>{count, plural, one {Weitere Quelle} other {Weitere Quellen}}</target>
         <jms:reference-file line="446">\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig</jms:reference-file>
         <jms:reference-file line="115">\..\..\..\..\..\./src\AppBundle\Resources\views\Topic\background.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="6a5ed7a63a0fb8accd2fb3c1c8dfe583404305bf" resname="article.oneormany">
         <source>article.oneormany</source>
-        <target>Beitrag|Beiträge</target>
+        <target>{count, plural, =0 {Beiträge} one {Beitrag} other {Beiträge}}</target>
         <jms:reference-file line="74">\..\..\..\..\..\./src\AppBundle\Resources\views\Person\detail.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="73fa4b1e312d2a9d4404187713838530a6439ba3" resname="as of">
@@ -853,12 +853,12 @@
       </trans-unit>
       <trans-unit id="1792ec8e886e56f5fbbddbdbe43614eddab60536" resname="author.oneormany">
         <source>author.oneormany</source>
-        <target>Zum Autor|Zu den Autoren</target>
+        <target>{count, plural, one {Zum Autor} other {Zu den Autoren}}</target>
         <jms:reference-file line="59">\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="a185ab47d03dcddcb9f8c8cd6abb7dca04fa99d8" resname="author.oneormany-female">
         <source>author.oneormany-female</source>
-        <target>Zur Autorin|Zu den Autorinnen</target>
+        <target>{count, plural, one {Zur Autorin} other {Zu den Autorinnen}}</target>
         <jms:reference-file line="58">\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="a68ccd41961928d2776b5c23779c8798eb9922ee" resname="childrens-worlds">
@@ -910,7 +910,7 @@
       </trans-unit>
       <trans-unit id="0363581f59629db6c48f4f030f5ed7ea74e0a3a4" resname="interpretation.oneormany">
         <source>interpretation.oneormany</source>
-        <target>Interpretation|Interpretationen</target>
+        <target>{count, plural, one {Interpretation} other {Interpretationen}}</target>
         <jms:reference-file line="411">\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig</jms:reference-file>
         <jms:reference-file line="140">\..\..\..\..\..\./src\AppBundle\Resources\views\Topic\background.html.twig</jms:reference-file>
       </trans-unit>
@@ -976,12 +976,12 @@
       </trans-unit>
       <trans-unit id="fae2794c18dcf1e593b2b83e4d601701fc7e3728" resname="person.oneormany">
         <source>person.oneormany</source>
-        <target>Person|Personen</target>
+        <target>{count, plural, one {Person} other {Personen}}</target>
         <jms:reference-file line="44">\..\..\..\..\..\./src\AppBundle\Resources\views\Place\detail.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="8d14cc006e980344c6e4a4b671f25cd277647047" resname="result.oneormany">
         <source>result.oneormany</source>
-        <target>Ergebnis|Ergebnisse</target>
+        <target>{count, plural, one {Ergebnis} other {Ergebnisse}}</target>
         <jms:reference-file line="32">\..\..\..\..\..\./src\AppBundle\Resources\views\Search\index.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="ff98297047772a661d1ebd9f50d2b2de95a127ee" resname="salzberg">
@@ -1004,14 +1004,14 @@
       </trans-unit>
       <trans-unit id="3602d6612a840eecb55b282c8fb05ada6409e131" resname="source.oneormany">
         <source>source.oneormany</source>
-        <target>Quelle|Quellen</target>
+        <target>{count, plural, one {Quelle} other {Quellen}}</target>
         <jms:reference-file line="94">\..\..\..\..\..\./src\AppBundle\Resources\views\Article\article.html.twig</jms:reference-file>
         <jms:reference-file line="67">\..\..\..\..\..\./src\AppBundle\Resources\views\Organization\detail.html.twig</jms:reference-file>
         <jms:reference-file line="104">\..\..\..\..\..\./src\AppBundle\Resources\views\Topic\background.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="487a1931ebc1dc133a25fc5c641dbf31c45ef63c" resname="topic.oneormany">
         <source>topic.oneormany</source>
-        <target>Thema|Themen</target>
+        <target>{count, plural, one {Thema} other {Themen}}</target>
         <jms:reference-file line="118">\..\..\..\..\..\./src\AppBundle\Resources\views\Article\article.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="46caa1d2e05afac27dac5dcb81671fcb0ded1dfc" resname="translated by">

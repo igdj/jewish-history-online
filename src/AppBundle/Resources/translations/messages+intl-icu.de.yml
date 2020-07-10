@@ -88,12 +88,10 @@ Neighborhoods:                      Ortsteile
 Mountain system:                    Gebirge
 Bay:                                Bucht
 Peninsula:                          Halbinsel
-organization.oneormany:             "Organisation|Organisationen"
-person.oneormany:                   "Person|Personen"
-place.oneormany:                    "Ort|Orte"
-sourcearticle.oneormany:            "Quelle|Quellen"
-article.oneormany:                  "Beitrag|Beiträge"
-exhibitionarticle.oneormany:        "Ausstellung|Ausstellungen"
+organization.oneormany:             "{count, plural, one {Organisation} other {Organisationen}}"
+place.oneormany:                    "{count, plural, one {Ort} other {Orte}}"
+sourcearticle.oneormany:            "{count, plural, one {Quelle} other {Quellen}}"
+exhibitionarticle.oneormany:        "{count, plural, one {Ausstellung} other {Ausstellungen}}"
 bibitem.oneormany:                  "Bibliografie"
 epoch.century:                      "%century%. Jahrhundert"
 epoch.century-nd:                   "%century%. Jahrhundert"

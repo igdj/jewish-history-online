@@ -91,7 +91,7 @@
             <div class="container-fluid box">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
-                    <h4>{{ 'source.oneormany'|transchoice(related|length) }}</h4>
+                    <h4>{{ 'source.oneormany'|trans({ 'count': related|length }) }}</h4>
                     </div>
                 </div>
 
@@ -115,7 +115,7 @@
             <div class="container-fluid box top-buffer">
                 <div class="row box-color-title">
                     <div class="col-sm-12">
-                        <h4>{{ 'topic.oneormany'|transchoice(article.keywords|length) }}</h4>
+                        <h4>{{ 'topic.oneormany'|trans({ 'count': article.keywords|length }) }}</h4>
                     </div>
                 </div>
 

@@ -3,7 +3,7 @@
 {% import '@App/Search/search-helper.html.twig' as searchHelper %}
 
 {% block body %}
-    <h1>{{ 'Search' | trans }}</h1>
+    <h1>{{ 'Search'| trans }}</h1>
         <form action="{{ path('search-index') }}" method="post" style="margin-bottom: 0.5em">
             <div class="input-group">
                 <input id="search-box" name="q" value="{{ meta.query }}" class="form-control" style="outline:none;" />
@@ -27,9 +27,10 @@
             }
             </style>
         </form>
+
         {% if meta is not empty %}
         <div class="alert alert-info">
-            {{ pagination.getTotalItemCount }} {{ 'result.oneormany'|transchoice(pagination.getTotalItemCount) }}
+            {{ pagination.getTotalItemCount }} {{ 'result.oneormany'|trans({ 'count': pagination.getTotalItemCount }) }}
             {% if meta.query is not empty %}
                 {{ 'for'|trans }}
                 <b>{{ meta.query }}</b>
@@ -38,7 +39,7 @@
                 {{ 'limited to'|trans }}
                 {% for key,val in pagination.params.filter %}
                     {% if 'entity' == key %}{{ 'Section'|trans }}{% endif %}
-                    <b>{{ (val ~ '.oneormany')|transchoice(pagination.getTotalItemCount) }}</b>
+                    <b>{{ (val ~ '.oneormany')|trans({ 'count': pagination.getTotalItemCount }) }}</b>
                 {% endfor %}
             {% endif %}
         </div>
@@ -77,7 +78,7 @@
                     {% set transkey = val ~ '.oneormany' %}
                     <li{% if active %} class="active"{% endif %}>
                         <a href="{{ path('search-index', params) }}">
-                            {{ transkey|transchoice(count) }}
+                            {{ transkey|trans({ 'count': count }) }}
                         </a> ({{ count }})
                     </li>
                     {% endfor %}
