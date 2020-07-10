@@ -3,7 +3,7 @@
 // see https://github.com/Sylius/SyliusThemeBundle/blob/master/docs/your_first_theme.md
 namespace AppBundle\EventListener;
 
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 use Sylius\Bundle\ThemeBundle\Context\SettableThemeContext;
@@ -28,7 +28,7 @@ class ThemeRequestListener
         $this->siteTheme = $siteTheme;
     }
 
-    public function onKernelRequest(GetResponseEvent $event): void
+    public function onKernelRequest(RequestEvent $event): void
     {
         if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
             // don't do anything if it's not the master request

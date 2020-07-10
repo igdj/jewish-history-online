@@ -20,13 +20,13 @@ namespace AppBundle\EventListener;
 
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 
 class LanguageListener
 {
-    public function setLocale(GetResponseEvent $event)
+    public function setLocale(RequestEvent $event)
     {
         if (strstr($_SERVER['HTTP_HOST'], 'juedische-geschichte')
             || strstr($_SERVER['HTTP_HOST'], 'localhost'))
