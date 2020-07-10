@@ -4,104 +4,108 @@ namespace AppBundle\Utils;
 class BiographicalData
 extends DnbData
 {
-    function processTriple($triple)
+    function processProperty($resource, $uri)
     {
-        switch ($triple['p']) {
+        switch ($uri) {
             case 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type':
-                $this->isDifferentiated =
-                    !in_array($triple['o'],
-                             [
-                               'https://d-nb.info/standards/elementset/gnd#UndifferentiatedPerson',
-                               ]);
+                $this->isDifferentiated = !in_array('https://d-nb.info/standards/elementset/gnd#UndifferentiatedPerson', $resource->typesAsResources());
+                break;
+
+            case 'https://d-nb.info/standards/elementset/gnd#gender':
+                $property = $resource->get($uri);
+
+                if (!is_null($property)) {
+                    switch ($property->getUri()) {
+                        case 'https://d-nb.info/standards/vocab/gnd/gender#female':
+                            $this->gender = 'Female';
+                            break;
+
+                        case 'https://d-nb.info/standards/vocab/gnd/gender#male':
+                            $this->gender = 'Male';
+                            break;
+                    }
+                }
                 break;
 
             case 'https://d-nb.info/standards/elementset/gnd#dateOfBirth':
-            case 'dateOfBirth':
-                $this->dateOfBirth = $triple['o'];
+                $this->dateOfBirth = (string)$resource->getLiteral($uri);
                 break;
 
             case 'https://d-nb.info/standards/elementset/gnd#placeOfBirth':
-            case 'placeOfBirth':
-                $placeOfBirth = self::fetchGeographicLocation($triple['o']);
+                $placeOfBirth = self::fetchGeographicLocation($resource->get($uri)->getUri());
                 if (!empty($placeOfBirth)) {
                     $this->placeOfBirth = $placeOfBirth;
                 }
                 break;
 
             case 'https://d-nb.info/standards/elementset/gnd#placeOfActivity':
-            case 'placeOfActivity':
-                $placeOfActivity = self::fetchGeographicLocation($triple['o']);
+                $placeOfActivity = self::fetchGeographicLocation($resource->get($uri)->getUri());
                 if (!empty($placeOfActivity)) {
                     $this->placeOfActivity = $placeOfActivity;
                 }
                 break;
 
             case 'https://d-nb.info/standards/elementset/gnd#dateOfDeath':
-            case 'dateOfDeath':
-                $this->dateOfDeath = $triple['o'];
+                $this->dateOfDeath = (string)$resource->getLiteral($uri);
                 break;
 
             case 'https://d-nb.info/standards/elementset/gnd#placeOfDeath':
-            case 'placeOfDeath':
-                $placeOfDeath = self::fetchGeographicLocation($triple['o']);
-                if (!empty($placeOfDeath))
+                $placeOfDeath = self::fetchGeographicLocation($resource->get($uri)->getUri());
+                if (!empty($placeOfDeath)) {
                     $this->placeOfDeath = $placeOfDeath;
+                }
                 break;
 
             case 'https://d-nb.info/standards/elementset/gnd#forename':
-            case 'forename':
-                $this->forename = self::normalizeString($triple['o']);
+                $this->forename = self::normalizeString((string)$resource->getLiteral($uri));
                 break;
 
             case 'https://d-nb.info/standards/elementset/gnd#surname':
-            case 'surname':
-                $this->surname = self::normalizeString($triple['o']);
+                $this->surname = self::normalizeString((string)$resource->getLiteral($uri));
+                break;
+
+
+            case 'https://d-nb.info/standards/elementset/gnd#preferredNameEntityForThePerson':
+                $property = $resource->get($uri);
+                if (!is_null($property)) {
+                    foreach ($property->propertyUris() as $propertyUri) {
+                        $this->processProperty($property, $propertyUri);
+                    }
+                }
                 break;
 
             case 'https://d-nb.info/standards/elementset/gnd#preferredNameForThePerson':
-            case 'preferredNameForThePerson':
-                if (!isset($this->preferredName) && 'literal' == $triple['o_type']) {
-                    $this->preferredName = self::normalizeString($triple['o']);
-                }
-                else if ('bnode' == $triple['o_type']) {
-                    $nameRecord = $index[$triple['o']];
-                    $this->preferredName = array(self::normalizeString($nameRecord['https://d-nb.info/standards/elementset/gnd#surname'][0]['value']),
-                                                self::normalizeString($nameRecord['https://d-nb.info/standards/elementset/gnd#forename'][0]['value']));
-                    // var_dump($index[$triple['o']]);
+                $property = $resource->get($uri);
+
+                if (!isset($this->preferredName) && $property instanceof \EasyRdf\Literal) {
+                    $this->preferredName = self::normalizeString((string)$property);
                 }
                 break;
 
             case 'https://d-nb.info/standards/elementset/gnd#academicDegree':
-            case 'academicDegree':
-                $this->academicDegree = self::normalizeString($triple['o']);
+                $this->academicDegree = self::normalizeString($resource->getLiteral($uri));
                 break;
 
             case 'https://d-nb.info/standards/elementset/gnd#biographicalOrHistoricalInformation':
-            case 'biographicalOrHistoricalInformation':
-                $this->biographicalInformation = self::normalizeString($triple['o']);
+                $this->biographicalInformation = self::normalizeString($resource->getLiteral($uri));
                 break;
 
             case 'https://d-nb.info/standards/elementset/gnd#professionOrOccupation':
-            case 'professionOrOccupation':
                 // TODO: links to external resource
                 break;
 
             case 'https://d-nb.info/standards/elementset/gnd#variantNameForThePerson':
-            case 'variantNameForThePerson':
-                // var_dump($triple);
+                // var_dump($resource->getLiteral($uri));
                 break;
-
-            default:
-                if (!empty($triple['o'])) {
-                    // var_dump($triple);
-                }
-                // var_dump($triple['p']);
         }
     }
 
     var $gnd;
     var $isDifferentiated = false;
     var $preferredName;
+    var $forename;
+    var $surname;
+    var $gender;
     var $academicDegree;
     var $biographicalInformation;
     var $dateOfBirth;

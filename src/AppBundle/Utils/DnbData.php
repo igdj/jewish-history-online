@@ -3,17 +3,6 @@ namespace AppBundle\Utils;
 
 abstract class DnbData
 {
-    private static $RDFParser = NULL;
-
-    protected static function getRDFParser()
-    {
-        if (!isset(self::$RDFParser)) {
-            self::$RDFParser = \ARC2::getRDFParser();
-        }
-
-        return self::$RDFParser;
-    }
-
     protected static function normalizeString($str)
     {
         if (!class_exists("\Normalizer", false)) {
@@ -29,34 +18,42 @@ abstract class DnbData
      */
     static function fetchGeographicLocation($uri)
     {
-        $parser = self::getRDFParser();
-        if (preg_match('/d\-nb\.info\/gnd\/([^\/]*)$/', $uri, $matches)) {
-            $url = sprintf('https://d-nb.info/gnd/%s/about/lds', $matches[1]);
-        }
-        @$parser->parse($url);
-        $triples = $parser->getTriples();
-        $index = \ARC2::getSimpleIndex($triples, true) ; /* true -> flat version */
-
-        if (isset($index[$uri]['https://d-nb.info/standards/elementset/gnd#preferredNameForThePlaceOrGeographicName'])) {
-            return self::normalizeString($index[$uri]['https://d-nb.info/standards/elementset/gnd#preferredNameForThePlaceOrGeographicName'][0]);
+        if (!preg_match('/d\-nb\.info\/gnd\/([^\/]*)$/', $uri, $matches)) {
+            throw new \InvalidArgumentException($uri);
         }
 
-        if (isset($index[$uri]['preferredNameForThePlaceOrGeographicName'])) {
-            return self::normalizeString($index[$uri]['preferredNameForThePlaceOrGeographicName'][0]);
+        $rdfUrl = sprintf('https://d-nb.info/gnd/%s/about/lds', $matches[1]);
+
+        try {
+            $graph = \EasyRdf\Graph::newAndLoad($rdfUrl);
+        }
+        catch (\EasyRdf\Http\Exception $e) {
+            throw new \InvalidArgumentException($e->getMessage());
         }
 
-        foreach ($triples as $triple) {
-            if ('sameAs' == $triple['p']) {
-                if (preg_match('/d\-nb\.info/', $triple['o']) && $triple['o'] != $uri) {
-                    return self::fetchGeographicLocation($triple['o']);
+        $resource = $graph->resource($uri);
+
+        $preferredNameForThePlaceOrGeographicName = $resource->getLiteral('https://d-nb.info/standards/elementset/gnd#preferredNameForThePlaceOrGeographicName');
+
+        if (!is_null($preferredNameForThePlaceOrGeographicName)) {
+            return self::normalizeString((string)$preferredNameForThePlaceOrGeographicName);
+        }
+
+        // try sameAs
+        $resources = $resource->all('owl:sameAs');
+        if (!is_null($resources)) {
+            foreach ($resources as $sameAs) {
+                $sameAsUri = $sameAs->getUri();
+                if (preg_match('/d\-nb\.info/', $sameAsUri) && $sameAsUri != $uri) {
+                    return self::fetchGeographicLocation($sameAsUri);
                 }
             }
         }
     }
 
-    static function instantiateResult($index, $gnd = null)
+    static function instantiateResult($resource)
     {
-        $type = $index['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0]['value'];
+        $type = $resource->get('rdf:type');
 
         switch ($type) {
             case 'https://d-nb.info/standards/elementset/gnd#DifferentiatedPerson':
@@ -87,36 +84,39 @@ abstract class DnbData
 
             default:
                 var_dump($type);
-                var_dump($gnd);
+                var_dump($uri);
                 exit;
         }
     }
 
-    abstract function processTriple($triple);
+    abstract function processProperty($resource, $uri);
 
     static function fetchByGnd($gnd)
     {
-        $url = sprintf('https://d-nb.info/gnd/%s/about/lds', $gnd);
+        $uri = sprintf('https://d-nb.info/gnd/%s', $gnd);
+        $rdfUrl = $uri . '/about/lds';
 
-        $parser = self::getRDFParser();
-        $parser->parse($url);
-        $triples = $parser->getTriples();
-
-        if (empty($triples)) {
-            return;
+        try {
+            $graph = \EasyRdf\Graph::newAndLoad($rdfUrl);
+        }
+        catch (\EasyRdf\Http\Exception $e) {
+            throw new \InvalidArgumentException($e->getMessage());
         }
 
-        $index = \ARC2::getSimpleIndex($triples, false) ; /* false -> non-flat version */
+        $resource = $graph->resource($uri);
 
-        $res = self::instantiateResult($index['https://d-nb.info/gnd/' . $gnd], $gnd);
+        // dd($resource->dump('text'));
+
+        $res = self::instantiateResult($resource);
         if (is_null($res)) {
             // type not handled
             return null;
         }
 
         $res->gnd = $gnd;
-        foreach ($triples as $triple) {
-            $res->processTriple($triple);
+
+        foreach ($resource->propertyUris() as $uri) {
+            $res->processProperty($resource, $uri);
         }
 
         return $res;

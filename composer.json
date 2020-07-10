@@ -99,7 +99,6 @@
         "brunty/relax-ng-domdocument": "~0.2",
         "html2text/html2text": "4.0.*",
 
-        "semsol/arc2": "^2.4",
         "sweetyrdf/easyrdf": "^1.1",
         "ml/json-ld": "1.1.*",
 

@@ -179,6 +179,7 @@ extends Command
                     foreach ([
                             'surname',
                             'forename',
+                            'gender',
                             'dateOfBirth',
                             'dateOfDeath',
                             'biographicalInformation',
@@ -192,6 +193,16 @@ extends Command
 
                                 case 'forename':
                                     $person->setGivenName($bio->{$src});
+                                    break;
+
+                                case 'gender':
+                                    $value = $bio->{$src};
+                                    if ('Female' == $value) {
+                                        $person->setGender('F');
+                                    }
+                                    else if ('Male' == $value) {
+                                        $person->setGender('M');
+                                    }
                                     break;
 
                                 case 'dateOfBirth':
@@ -509,8 +520,7 @@ extends Command
                     // TODO: use hydrator
                     foreach ([
                             'preferredName',
-                            'dateOfEstablishment',
-                            'dateOfTermination',
+                            'associatedDate',
                             'definition',
                         ] as $src)
                     {
@@ -520,12 +530,8 @@ extends Command
                                     $entity->setName($event->{$src});
                                     break;
 
-                                case 'dateOfEstablishment':
+                                case 'associatedDate':
                                     $entity->setStartDate($event->{$src});
-                                    break;
-
-                                case 'dateOfTermination':
-                                    $entity->setEndDate($event->{$src});
                                     break;
 
                                 case 'definition':

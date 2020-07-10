@@ -4,65 +4,47 @@ namespace AppBundle\Utils;
 class HistoricEventData
 extends DnbData
 {
-    function processTriple($triple)
+    function processProperty($resource, $uri)
     {
-        switch ($triple['p']) {
+        switch ($uri) {
             case 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type':
-                $this->isDifferentiated = true; // 'https://d-nb.info/standards/elementset/gnd#DifferentiatedPerson' == $triple['o'];
                 break;
 
-            case 'https://d-nb.info/standards/elementset/gnd#dateOfEstablishment':
-                $this->dateOfEstablishment = $triple['o'];
-                break;
-
-            case 'https://d-nb.info/standards/elementset/gnd#dateOfTermination':
-                $this->dateOfTermination = $triple['o'];
+            case 'https://d-nb.info/standards/elementset/gnd#associatedDate':
+                $this->associatedDate = (string)$resource->getLiteral($uri);
                 break;
 
             case 'https://d-nb.info/standards/elementset/gnd#relatedPlaceOrGeographicName':
-                $relatedPlaceOrGeographicName = self::fetchGeographicLocation($triple['o']);
+                $relatedPlaceOrGeographicName = self::fetchGeographicLocation($resource->get($uri)->getUri());
                 if (!empty($relatedPlaceOrGeographicName)) {
                     $this->relatedPlaceOrGeographicName = $relatedPlaceOrGeographicName;
                 }
                 break;
 
             case 'https://d-nb.info/standards/elementset/gnd#preferredNameForTheSubjectHeading':
-                if (!isset($this->preferredName) && 'literal' == $triple['o_type'])
-                    $this->preferredName = self::normalizeString($triple['o']);
-                /*
-                else if ('bnode' == $triple['o_type']) {
-                    $nameRecord = $index[$triple['o']];
-                    $this->preferredName = array($nameRecord['https://d-nb.info/standards/elementset/gnd#surname'][0]['value'],
-                                                $nameRecord['https://d-nb.info/standards/elementset/gnd#forename'][0]['value']);
-                    // var_dump($index[$triple['o']]);
+                $property = $resource->get($uri);
+
+                if (!isset($this->preferredName) && $property instanceof \EasyRdf\Literal) {
+                    $this->preferredName = self::normalizeString((string)$property);
                 }
-                */
                 break;
 
             case 'https://d-nb.info/standards/elementset/gnd#definition':
-                $this->definition = self::normalizeString($triple['o']);
+                $this->definition = self::normalizeString($resource->getLiteral($uri));
                 break;
 
             case 'https://d-nb.info/standards/elementset/gnd#variantNameForTheSubjectHeading':
-                // var_dump($triple);
+                // var_dump($resource->getLiteral($uri));
                 break;
 
             case 'https://d-nb.info/standards/elementset/gnd#broaderTermInstantial':
                 break;
-
-            default:
-                if (!empty($triple['o'])) {
-                    // var_dump($triple);
-                }
-                // var_dump($triple['p']);
         }
     }
 
     var $gnd;
-    var $isDifferentiated = true;
     var $preferredName;
     var $definition;
     var $relatedPlaceOrGeographicName;
-    var $dateOfEstablishment;
-    var $dateOfTermination;
+    var $associatedDate;
 }
