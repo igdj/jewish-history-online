@@ -51,8 +51,10 @@
 
 {% macro article_author_aboutlabel(authors) %}
     {% set all_female = true %}
-    {% for author in authors if all_female %}
-        {% if author.gender != 'F' %}{% set all_female = false %}{% endif %}
+    {% for author in authors %}
+        {% if all_female %}
+            {% if author.gender != 'F' %}{% set all_female = false %}{% endif %}
+        {% endif %}
     {% endfor %}
     {% set how_many = authors|length %}
     {% if all_female %}{{ 'author.oneormany-female'|trans({ 'count': how_many }) }}
@@ -446,12 +448,14 @@
                         <h4>{{ 'additionalsource.oneormany'|trans({ 'count': related|length }) }}</h4>
                     </div>
                 </div>
-                {% for source in related if source.id != article.id %}
+                {% for source in related  %}
+                    {% if source.id != article.id %}
                 <div class="row box-color-content-inverse">
                     <div class="col-sm-12">
                         {{ helper.article_linked(source) }}
                     </div>
                 </div>
+                    {% endif %}
                 {% endfor %}
             </div>
             {% endif %}
