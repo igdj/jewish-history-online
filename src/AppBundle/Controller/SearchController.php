@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Cocur\Slugify\SlugifyInterface;
+use Sylius\Bundle\ThemeBundle\Context\SettableThemeContext;
 use FS\SolrBundle\SolrInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
@@ -23,10 +24,11 @@ extends BaseController
 
     public function __construct(KernelInterface $kernel,
                                 SlugifyInterface $slugify,
+                                SettableThemeContext $themeContext,
                                 SolrInterface $solr,
                                 PaginatorInterface $paginator)
     {
-        parent::__construct($kernel, $slugify);
+        parent::__construct($kernel, $slugify, $themeContext);
 
         $this->solr = $solr;
         $this->paginator = $paginator;
