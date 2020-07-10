@@ -62,7 +62,7 @@ extends BaseController
      *  https://de.wikipedia.org/wiki/Wikipedia:BEACON
      */
     public function gndBeaconAction(TranslatorInterface $translator,
-                                    \Twig_Environment $twig)
+                                    \Twig\Environment $twig)
     {
         $repo = $this->getDoctrine()
                 ->getRepository('\AppBundle\Entity\Person');

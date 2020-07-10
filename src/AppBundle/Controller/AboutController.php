@@ -314,7 +314,7 @@ extends RenderTeiController
     public function contactAction(Request $request,
                                   TranslatorInterface $translator,
                                   \Swift_Mailer $mailer,
-                                  \Twig_Environment $twig)
+                                  \Twig\Environment $twig)
     {
         $form = $this->createForm(\AppBundle\Form\Type\ContactType::class);
         $form->handleRequest($request);
