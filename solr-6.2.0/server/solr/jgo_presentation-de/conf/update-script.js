@@ -52,14 +52,15 @@ function processAdd(cmd) {
         var description = doc.getFieldValues("description_ss");
         if (description != null && description.length > 0) {
             doc.setField("description_s", description[0]);
-            doc.removeField("description_ss");
         }
+        doc.removeField("description_ss");
     }
     else if ('place' == entity || 'organization' == entity) {
         var alternateName = doc.getFieldValues("alternate_name_ss");
         if (alternateName != null && alternateName.length > 0 && !isEmpty(alternateName[0])) {
             doc.setField("name_s", name_order = alternateName[0]);
         }
+        doc.removeField("alternate_name_ss");
     }
     else if ('bibitem' == entity) {
         var description = doc.getFieldValues("description_ss");
