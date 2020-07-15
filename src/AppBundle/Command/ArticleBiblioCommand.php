@@ -219,6 +219,8 @@ extends BaseCommand
         else {
             $output->writeln($this->jsonPrettyPrint($items));
         }
+
+        return 0;
     }
 
     protected function setBibitemReference($article, $key)

@@ -155,6 +155,8 @@ extends BaseCommand
                 $this->flushEm($this->em);
             }
         }
+
+        return 0;
     }
 
     protected function findUserFromAdminBySlug($slug, $output)
