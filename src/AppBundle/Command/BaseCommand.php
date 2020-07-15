@@ -172,9 +172,11 @@ extends Command
             switch ($field) {
                 case 'gnd':
                     $bio = \AppBundle\Utils\BiographicalData::fetchByGnd($value);
-                    if (!$bio->isDifferentiated) {
+                    if (is_null($bio) || !$bio->isDifferentiated) {
                         return -1;
                     }
+
+                    $person->setGnd($value);
 
                     // TODO: use hydrator
                     foreach ([
@@ -197,11 +199,11 @@ extends Command
                                     break;
 
                                 case 'gender':
-                                    $value = $bio->{$src};
-                                    if ('Female' == $value) {
+                                    $gender = $bio->{$src};
+                                    if ('Female' == $gender) {
                                         $person->setGender('F');
                                     }
-                                    else if ('Male' == $value) {
+                                    else if ('Male' == $gender) {
                                         $person->setGender('M');
                                     }
                                     break;
@@ -220,7 +222,6 @@ extends Command
                             }
                         }
                     }
-                    $person->setGnd($value);
                     break;
 
                 default:
@@ -265,7 +266,7 @@ extends Command
             switch ($field) {
                 case 'gnd':
                     $corporateBody = \AppBundle\Utils\CorporateBodyData::fetchByGnd($value);
-                    if (is_null($corporateBody) || !$corporateBody->isDifferentiated) {
+                    if (is_null($corporateBody)) {
                         return -1;
                     }
 
