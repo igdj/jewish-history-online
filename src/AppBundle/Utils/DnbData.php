@@ -67,6 +67,7 @@ abstract class DnbData
             case 'https://d-nb.info/standards/elementset/gnd#CorporateBody':
             case 'https://d-nb.info/standards/elementset/gnd#OrganOfCorporateBody':
             case 'https://d-nb.info/standards/elementset/gnd#TerritorialCorporateBodyOrAdministrativeUnit':
+            case 'https://d-nb.info/standards/elementset/gnd#Company':
                 return new CorporateBodyData();
                 break;
 
@@ -83,8 +84,8 @@ abstract class DnbData
                 break; // currently ignore
 
             default:
-                var_dump($type);
-                var_dump($uri);
+                var_dump((string)$type);
+                var_dump($resource->getUri());
                 exit;
         }
     }
