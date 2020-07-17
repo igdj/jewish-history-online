@@ -77,7 +77,7 @@
         "symfony/asset": "^5.1",
         "armin/scssphp-bundle": "^1.1",
 
-        "twig/twig": "^2.13",
+        "twig/twig": "^3.0",
         "twig/string-extra": "^3.0",
         "liip/url-auto-converter-bundle": "dev-master",
 
