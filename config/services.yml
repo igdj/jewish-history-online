@@ -8,12 +8,12 @@ services:
             $siteTheme: '%app.site_theme%'
             $dbconnAdmin: '@dbconn.admin'
             
-    # makes classes in src/AppBundle available to be used as services
+    # makes classes in src/TeiEditionBundle available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     # together with the above _defaults, this is needed for Command-classes to work as in Sf 3.4
-    AppBundle\:
-        resource: '%kernel.project_dir%/src/AppBundle'
-        exclude: '%kernel.project_dir%/src/AppBundle/{Entity,Migrations,Tests}'
+    TeiEditionBundle\:
+        resource: '%kernel.project_dir%/src/TeiEditionBundle'
+        exclude: '%kernel.project_dir%/src/TeiEditionBundle/{Entity,Migrations,Tests}'
 
     dbconn.admin:
         class: Doctrine\DBAL\Connection
@@ -41,13 +41,13 @@ services:
 
     # language-specific layout in 404
     app.language.kernel_request_listener:
-        class: AppBundle\EventListener\LanguageListener
+        class: TeiEditionBundle\EventListener\LanguageListener
         tags:
           - { name: kernel.event_listener, event: kernel.exception, method: setLocale }
 
     # theme selection
     app.theme_request.kernel_request_listener:
-        class: AppBundle\EventListener\ThemeRequestListener
+        class: TeiEditionBundle\EventListener\ThemeRequestListener
         arguments: ['@sylius.repository.theme', '@sylius.theme.context.settable']
         tags:
         - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
@@ -55,27 +55,27 @@ services:
     # So we can inject @solr.client, see https://github.com/floriansemm/SolrBundle/issues/191#issuecomment-466101623
     FS\SolrBundle\SolrInterface: '@solr.client'
 
-    AppBundle\Utils\ImageMagick\ImageMagickProcessor:
+    TeiEditionBundle\Utils\ImageMagick\ImageMagickProcessor:
         arguments:    [ "%app.imagemagick.processor.arguments%" ]
         
     app.xslt_adapter:
         class:        "%app.xslt.adapter.class%"
         arguments:    [ "%app.xslt.adapter.arguments%" ]
-    AppBundle\Utils\Xsl\XsltProcessor:
+    TeiEditionBundle\Utils\Xsl\XsltProcessor:
         calls:
             - [ setAdapter, [ '@app.xslt_adapter' ]]
 
     app.xml_formatter_adapter:
         class:        "%app.xml_formatter.adapter.class%"
         arguments:    [ "%app.xml_formatter.adapter.arguments%" ]
-    AppBundle\Utils\XmlFormatter\XmlFormatter:
+    TeiEditionBundle\Utils\XmlFormatter\XmlFormatter:
         calls:
             - [ setAdapter, [ '@app.xml_formatter_adapter' ]]
 
-    AppBundle\Utils\SimplifyGeojsonProcessor:
+    TeiEditionBundle\Utils\SimplifyGeojsonProcessor:
         arguments:    [ "%app.simplify_geojson.processor.arguments%" ]
 
-    AppBundle\Menu\Builder:
+    TeiEditionBundle\Menu\Builder:
         arguments: [ "@knp_menu.factory", "@translator.default", "@request_stack", "@router"  ]
         tags:
             # The alias is what is used to retrieve the menu

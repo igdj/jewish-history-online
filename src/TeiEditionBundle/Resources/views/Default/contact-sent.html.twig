@@ -1,0 +1,14 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% block body %}
+    <h1>{{ pageTitle }}</h1>
+    <div class="row">
+        <div class="col-sm-12">
+        {% if success %}
+            {% trans %}Thank you very much for your interest in our project. We will get back to you as soon as possible.{% endtrans %}
+        {% else %}
+            {% trans %}We are very sorry: There was a technical problem delivering your message. Please contact us at <a href="mailto:info@juedische-geschichte-online.net">info@juedische-geschichte-online.net</a>.{% endtrans %}
+        {% endif %}
+        </div>
+    </div><!-- .row -->
+{% endblock %}

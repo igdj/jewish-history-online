@@ -1,0 +1,128 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% import '@TeiEdition/Shared/helper.html.twig' as helper %}
+{% import '@TeiEdition/Shared/entity-lookup.html.twig' as entityLookup %}
+{% import '@TeiEdition/Shared/map-leaflet.html.twig' as map %}
+
+{% block head %}
+    {{ map.head() }}
+
+    <!-- we use iview2-classes -->
+    <link href="{{ app.request.basepath }}/viewer/shared/iview2/css/default.css" type="text/css" rel="stylesheet">
+
+    {# TODO: move to some shared style-sheet #}
+    <style>
+    .article img.img-responsive {
+        max-height: 800;
+        width: auto;
+    }
+
+    .mycoreViewer {
+        /* overflow-y: scroll;
+        height: 480px;
+        */
+    }
+    </style>
+
+    {{ entityLookup.head(entity_lookup, bibitem_lookup, glossary_lookup) }}
+
+    <script>
+        $( document ).ready(function() {
+            initEntityGlossaryNote('.article');
+            initEntityGlossaryNote('.source-description');
+        });
+
+        function toggle(self, dataId) {
+            var parent = null;
+
+            self.find('.glyphicon').each(function () {
+                var self = jQuery( this );
+                if (self.hasClass('glyphicon-ok')) {
+                    // close dataId
+                    parent = $( 'div[data-id="' + dataId + '"]')
+                        .css("display", "none")
+                        .parent('.layer-view');
+
+                    // hide parent if all children are hidden
+                    if (null !== parent) {
+                        if (0 == parent.children('.layer:visible').length) {
+                            parent.parent('.layer-component').hide();
+                        }
+                    }
+
+                    self.removeClass('glyphicon-ok');
+                }
+                else {
+                    var el = $( 'div[data-id="' + dataId + '"]');
+
+                    // show parent
+                    parent = el.parent('.layer-view');
+                    parent.parent('.layer-component').show()
+                        // .css('height', '480px')
+                        ;
+
+                    el.css("display", "table-cell");
+
+                    self.addClass('glyphicon-ok');
+                }
+            });
+
+            return false;
+        }
+    </script>
+
+    <link href="{{ app.request.basepath }}/vendor/bootstrap3_player/bootstrap3_player.css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    <h1>{{ name }}</h1>
+    <div class="row">
+        <div id="image-viewer-container" class="col-xs-12 col-md-9">
+            <div id="media-viewer">
+                {{ html|raw }}
+                <script src="{{ app.request.basepath }}/vendor/bootstrap3_player/bootstrap3_player.js"></script>
+            </div>
+
+            {% set hasOpened = layers|length == 1 and layers[0]['opened'] %}
+            {% if not hasOpened %}
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{ 'Display Layer'|trans }} <span class="caret"> </span>
+                </button>
+                <ul class="dropdown-menu">
+                    {% for key, descr in layers %}
+                    <li><a href="#" onclick="return toggle($( this ), 'layer-{{ key }}')"><span class="glyphicon{% if descr['opened'] %}{% set hasOpened = true %} glyphicon-ok{% endif %}"> </span> {{ descr['label']|trans }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <div class="mycoreViewer">
+                <div style="display: {% if hasOpened %}block{% else %}none{% endif %};" class="tei layer-component">
+                    <div class="layer-view">
+                    {% for key, descr in layers %}
+                        <div data-id="layer-{{ key }}" class="layer" style="display: {% if descr['opened'] %}table-cell{% else %}none{% endif %}">
+                            {% if not (layers|length == 1 and layers[0]['opened']) %}
+                            <div class="layer-heading rm-exclude">{{ descr['label']|trans }}</div>
+                            {% endif %}
+                            <div class="text-layer">
+                                {{ descr['body']|raw }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <script src="{{ app.request.basepath }}/vendor/bootstrap3_player/bootstrap3_player.js"></script>
+
+            {{ helper.source_description_footer(name, article, description, license) }}
+        </div><!-- .col -->
+
+        <div class="col-xs-12 col-md-3 sidebar">
+            <h3 class="pdf-link">
+                <a href="{{ path(app.request.attributes.get('_route') ~ '-pdf', app.request.attributes.get('_route_params')) }}">{{ 'Print Version'|trans }}</a>
+            </h3>
+            {{ helper.source_sidebar(article, description, interpretations, related) }}
+        </div>
+    </div>
+{% endblock %}

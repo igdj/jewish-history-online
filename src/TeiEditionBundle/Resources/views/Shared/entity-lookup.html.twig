@@ -1,0 +1,210 @@
+{% macro head(entity_lookup, bibitem_lookup, glossary_lookup) %}
+    {% import '@TeiEdition/Shared/map-leaflet.html.twig' as map %}
+    <script>
+    var tooltipDelayHide = 150;
+
+    /* Bootstrap tooltips to stay open on hover: https://stackoverflow.com/a/36056707/2114681 */
+    var originalLeave = $.fn.tooltip.Constructor.prototype.leave;
+    $.fn.tooltip.Constructor.prototype.leave = function (obj) {
+        var self = obj instanceof this.constructor
+            ? obj
+            : $(obj.currentTarget)[this.type](this.getDelegateOptions()).data('bs.' + this.type);
+        var container, timeout;
+
+        originalLeave.call(this, obj);
+
+        if (obj.currentTarget) {
+            container = $(obj.currentTarget).siblings('.tooltip')
+            timeout = self.timeout;
+            container.one('mouseenter', function() {
+                // We entered the actual popover - call off the dogs
+                clearTimeout(timeout);
+                // Let's monitor popover content instead
+                container.one('mouseleave', function(){
+                    $.fn.tooltip.Constructor.prototype.leave.call(self, self);
+                });
+            })
+        }
+    };
+
+    var entityLookup = {{ entity_lookup|json_encode|raw }};
+    var bibitemLookup = {{ bibitem_lookup|json_encode|raw }};
+    var glossaryLookup = {{ glossary_lookup|json_encode|raw }};
+
+    function buildGlossaryInfo($el) {
+        var url = {{ path('glossary-index')|json_encode|raw }};
+        var term = $el.data('title');
+        if (term in glossaryLookup) {
+            var info = glossaryLookup[term];
+            var url_detail = url + '#' + info.slug;
+            return {
+                "url" :  url_detail,
+                "title" : info.name + ': ' + info.headline
+            };
+        }
+
+        return null;
+    }
+
+    function initGlossary(selector) {
+        var selector_full = '.glossary';
+        if ('' !== selector) {
+            selector_full = selector + ' ' + selector_full;
+        }
+
+        $( '.glossary' ).each (function ( index ) {
+            var $el = $( this );
+            var info = buildGlossaryInfo($el);
+            if (null != info) {
+                $el.addClass('hoverable');
+                $el.click(function() {
+                    window.location = info.url;
+                    return false;
+                });
+                $el.tooltip({
+                    title: info.title,
+                    html: false
+                });
+            }
+            else {
+                // remove <a href=""></a> but keep content
+                // see http://stackoverflow.com/a/4232971 also for a better performing solution
+                $el.contents().unwrap();
+                /*
+                var el = $el.get(0);
+                var parent = el.parentNode;
+                while( el.firstChild ) {
+                    parent.insertBefore(  el.firstChild, el );
+                }
+                parent.removeChild(el);
+                */
+            }
+        });
+    }
+
+    function initNote(element) {
+        var id_sel = $( element ).attr('href');
+        // console.log('Note ' + $( id_sel ).html());
+        $( element ).tooltip({
+            title: $( id_sel ).html(),
+            html: true,
+            delay: {
+                hide: tooltipDelayHide
+            }
+        });
+    }
+
+    function initNotes(selector) {
+        var selector_full = '.editorial-marker';
+        if ('' !== selector) {
+            selector_full = selector + ' ' + selector_full;
+        }
+
+        $( selector_full ).each(function( index ) {
+            var sibling = this.previousSibling;
+            if (sibling.nodeType == 3) {
+                // text-node
+                sibling.nodeValue = sibling.nodeValue.replace(/\s+$/g, '');
+            }
+            initNote(this)
+        });
+    }
+
+    function initEntityRef(selector) {
+        // link entities
+        var selector_full = '.entity-ref';
+        if ('' !== selector) {
+            selector_full = selector + ' ' + selector_full;
+        }
+
+        $( selector_full ).each(function( index ) {
+            var $el = $( this );
+            var type = $el.data('type');
+            var uri = $el.data('uri');
+            var info = entityLookup[type][uri];
+            if (info != null && info.url != null) {
+                $el.addClass('hoverable');
+                if (info.url.startsWith('geo:')) {
+                    $el.popover({
+                        html : true,
+                        'content': '<div class="map" style="width: 240px; height: 240px; background-color: gray;"></div>'
+                    })
+                    .on('shown.bs.popover', function () {
+                        var $popover = $el.next();
+                        var $map = $popover.find('.map');
+                        var id = $map.attr('id');
+                        var mapid = $popover.attr('id') + 'map';
+                        $map.attr('id', mapid);
+                        var map = L.map(mapid);
+                        L.marker(info.latLong).addTo(map);
+                        map.setView(info.latLong, 16);
+                        {{ map.addTileLayer() }}
+                    });
+                }
+                else {
+                    $el.click(function() {
+                        if (info.url.startsWith('geo:')) {
+                        }
+                        else {
+                            // open
+                            window.location = info.url;
+                        }
+
+                        return false;
+                    });
+                }
+
+                // console.log( index + ": " + $el.text() + JSON.stringify(info));
+                if (info.blurb != null) {
+                    $el.tooltip({
+                        title: info.blurb + ' <a href="' + info.url + '">{{ '...read on'|trans }}</a>',
+                        html: true,
+                        delay: {
+                            hide: tooltipDelayHide
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    function initBibitem(selector) {
+        if (bibitemLookup === null) {
+            return;
+        }
+
+        // link bibitems
+        var selector_full = '.dta-bibl';
+        if ('' !== selector) {
+            selector_full = selector + ' ' + selector_full;
+        }
+
+        var url = {{ path('bibliography-index')|json_encode|raw }};
+        $( selector_full ).each(function( index ) {
+            var $el = $( this );
+            var corresp = $el.data('corresp');
+            var info = bibitemLookup[corresp];
+            if (info != null && info.slug != null) {
+                $el.addClass('hoverable');
+                $el.click(function() {
+                  window.location = url + '/' + info.slug;
+                  return false;
+                });
+            }
+        });
+    }
+
+    function initEntityGlossaryNote(selector) {
+        initNotes(selector);
+        initGlossary(selector);
+        initEntityRef(selector);
+        initBibitem(selector);
+
+        // tooltips on links
+        $( '.setTooltip' ).each(function ( index ) {
+            var $el = $( this );
+            $el.tooltip();
+        });
+    }
+    </script>
+{% endmacro %}

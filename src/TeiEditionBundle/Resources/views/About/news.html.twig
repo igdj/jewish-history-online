@@ -1,0 +1,51 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% import '@TeiEdition/Shared/helper.html.twig' as helper %}
+
+{% block body %}
+    <h1>{{ 'Project News'|trans }}</h1>
+    <div class="row">
+        <div class="col-sm-8">
+        {% if articles is not empty %}
+            <div class="container-fluid">
+        {% for article in articles %}
+            <div class="row">
+                <div class="col-sm-3">
+                {% if article.thumbnailUrl is not empty %}
+                    <img src="{{ article.thumbnailUrl }}" alt="" class="img-responsive" />
+                {% endif %}
+                </div>
+                <div class="col-sm-9">
+                    <div>{{ article.datePublished|dateincomplete }} - {{ article.keywords }}</div>
+                    <h2 id="{{ article.slug }}">{{ article.name|raw }}</h2>
+                    <div class="wp-content">
+                        {{ article.text|raw }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+            </div>
+        {% else %}
+            Es wurden keine Artikel gefunden
+        {% endif %}
+        </div>
+        <div class="col-sm-4 sidebar">
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4><a href="{{ path('about-news') }}">{{ 'Project News'|trans }}</a></h4>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse menu">
+                    <div class="col-sm-12">
+                    <ul>
+                    {% for article in articles %}
+                        <li><b><a href="#{{ article.slug }}">{{ article.name|raw }}</b> ({{ article.datePublished|dateincomplete }})</li>
+                    {% endfor %}
+                    </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- .row -->
+{% endblock %}

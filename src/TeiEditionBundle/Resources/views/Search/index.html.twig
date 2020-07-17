@@ -1,0 +1,124 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% import '@TeiEdition/Search/search-helper.html.twig' as searchHelper %}
+
+{% block body %}
+    <h1>{{ 'Search'| trans }}</h1>
+        <form action="{{ path('search-index') }}" method="post" style="margin-bottom: 0.5em">
+            <div class="input-group">
+                <input id="search-box" name="q" value="{{ meta.query }}" class="form-control" style="outline:none;" />
+                <span class="input-group-btn">
+                  <button type="submit" class="btn btn-outline" >
+                    <i class="glyphicon glyphicon-search"></i>
+                  </button>
+                </span>
+            </div><!-- .input-group -->
+            <style type="text/css">
+            .btn-outline {
+                background-color: transparent;
+
+                border: 1px solid #c0c0c0;
+            }
+
+            #search-box:focus {
+                box-shadow: none;
+                -moz-box-shadow: none;
+                -webkit-box-shadow: none;
+            }
+            </style>
+        </form>
+
+        {% if meta is not empty %}
+        <div class="alert alert-info">
+            {{ pagination.getTotalItemCount }} {{ 'result.oneormany'|trans({ 'count': pagination.getTotalItemCount }) }}
+            {% if meta.query is not empty %}
+                {{ 'for'|trans }}
+                <b>{{ meta.query }}</b>
+            {% endif %}
+            {% if pagination.params.filter is not empty %}
+                {{ 'limited to'|trans }}
+                {% for key,val in pagination.params.filter %}
+                    {% if 'entity' == key %}{{ 'Section'|trans }}{% endif %}
+                    <b>{{ (val ~ '.oneormany')|trans({ 'count': pagination.getTotalItemCount }) }}</b>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+            {% if meta.facet is not empty %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-3 sidebar">
+            <h3>{{ 'Filter Results'|trans }}</h3>
+            {% for key,facet in meta.facet %}
+                <h4>{% if 'entity' == key %}{{ 'Section'|trans }}{% endif %}</h4>
+                <ul class="facet list-unstyled">
+                    {% for val,count in facet %}
+                    {% set active = pagination.params.filter[key] is defined and pagination.params.filter[key] == val %}
+                    {% set params = {} %}
+                    {% for pagination_key,pagination_val in pagination.params %}
+                        {% if 'page' != pagination_key %}
+                            {% if 'filter' == pagination_key %}
+                                {% set filters = {} %}
+                                {% for filterkey,filterval in pagination_val %}
+                                    {% if filterkey != key %}
+                                        {% set filters = filters|merge({ (filterkey) : filterval }) %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if filters is not empty %}
+                                    {% set params = params|merge(filters) %}
+                                {% endif %}
+                            {% else %}
+                                {% set params = params|merge({ (pagination_key) : pagination_val }) %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if not active %}
+                        {% set params = params|merge({ 'filter' : { (key) : val } }) %}
+                    {% endif %}
+                    {#{ dump(params)}#}
+                    {% set transkey = val ~ '.oneormany' %}
+                    <li{% if active %} class="active"{% endif %}>
+                        <a href="{{ path('search-index', params) }}">
+                            {{ transkey|trans({ 'count': count }) }}
+                        </a> ({{ count }})
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </div>
+        <div class="col-xs-12 col-sm-9">
+            {% endif %}
+            {% for result in results %}
+                {% if loop.first %}
+                <ul class="list-unstyled">
+                {% endif %}
+
+                <li style="margin-bottom: 2em">
+                {{ searchHelper.display_result(result) }}
+                {% if highlighting is defined %}
+                    {% set highlightedDoc = highlighting.result(result.id) %}
+                    {% if highlightedDoc is not empty %}
+                        <blockquote>
+                        {% for field, highlight in highlightedDoc %}
+                            {{ highlight|join('...')|raw }}<br/>
+                        {% endfor %}
+                        </blockquote>
+                    {% endif %}
+                {% endif %}
+                </li>
+
+                {% if loop.last %}
+                </ul>
+                {# display navigation #}
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+                {% endif %}
+            {% else %}
+                {#{ 'Your search did not match any entries in this site. '|trans }#}
+            {% endfor %}
+            {% if meta.facet is not empty %}
+        </div>
+    </div><!-- .row -->
+            {% endif %}
+        {% endif %}
+{% endblock %}

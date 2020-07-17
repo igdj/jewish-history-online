@@ -1,0 +1,31 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% block body %}
+    <h1>{{ 'Bibliography' | trans }}</h1>
+    <div class="row">
+        <div class="col-sm-12">
+        {% if items is not empty %}
+        {% set last_initial = '' %}
+        {% for item in items %}
+            {% set initial = item.slug|first|upper %}
+            {% if initial != last_initial %}
+                {% if last_initial != '' %}
+            </ul>
+                {% endif %}
+            <h2>{{ initial }} </h2>
+            {% set last_initial = initial %}
+            <ul class="list-unstyled">
+            {% endif %}
+            <li>
+                <a href="{% if item.slug is not empty %}{{ path('bibliography', { 'slug' : item.slug }) }}{% else %}{{ path('bibliography', { 'slug' : item.id }) }}{% endif %}">
+                    {{ item.renderCitationAsHtml(citeProc, app.request.locale, false)|raw }}
+                </a>
+            </li>
+        {% endfor %}
+            </ul>
+        {% else %}
+            Es wurden keine Einträge gefunden
+        {% endif %}
+        </div>
+    </div><!-- .row -->
+{% endblock %}

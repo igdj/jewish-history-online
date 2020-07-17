@@ -1,0 +1,69 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% import '@TeiEdition/Shared/helper.html.twig' as helper %}
+{% import '@TeiEdition/Shared/map-leaflet.html.twig' as map %}
+
+{% block head %}
+    <script src="{{ app.request.basepath }}/js/seealso.js"></script>
+    <script>
+        var service = new SeeAlsoCollection();
+        service.services = {
+            'isbntoc' : new SeeAlsoService('https://beacon.findbuch.de/articles/isbn-toc')
+        };
+        service.views = {
+            'seealso-ul' : new SeeAlsoUL({
+                linkTarget: '_blank',
+                maxItems: 100
+            })
+        };
+        service.replaceTagsOnLoad();
+    </script>
+    <link rel="unapi-server" type="application/xml" title="unAPI" href="{{ path('bibliography-unapi') }}">
+{% endblock %}
+
+{% block body %}
+    <!-- <h1>
+        {{ bibitem.slug }}
+    </h1> -->
+    <div class="row">
+        <div class="col-sm-8">
+            <abbr class="unapi-id" title="urn:bibnum:{{ bibitem.slug }}"></abbr>
+            {{ bibitem.renderCitationAsHtml(citeProc, app.request.locale, true)|raw }}
+
+            {{ helper.list_entity_mentioned_in(bibitem.articleReferences(app.request.locale)) }}
+        </div>
+
+        <div class="col-sm-4 sidebar">
+            {% set isbns = bibitem.isbnListNormalized %}
+            {% if isbns is not empty %}
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>{{ 'ISBN'|trans }}<br />
+                        {% for isbn in isbns %}
+                            <a href="https://kvk.bibliothek.kit.edu/?lang={{ app.request.locale }}&amp;SB={{ isbn }}" title="{{ 'Search in KVK'|trans }}" target="_blank">
+                                {{ isbn }}
+                            </a>
+                        {% endfor %}
+                        </h4>
+                    </div>
+                </div>
+
+                <div class="row box-color-content-inverse">
+                    {% set coverUrl = bibitem.coverUrl %}
+                    {% if coverUrl is not empty %}
+                    <div class="col-xs-4">
+                        <img class="img-responsive" src="{{ coverUrl }}" alt="" />
+                    </div>
+                    <div class="col-xs-8">
+                    {% else %}
+                    <div class="col-xs-12">
+                    {% endif %}
+                        <div title="{{ isbns[0] }}" class="isbntoc seealso-ul"></div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div><!-- .row -->
+{% endblock %}

@@ -1,0 +1,40 @@
+{% import '@TeiEdition/Shared/helper.html.twig' as helper %}
+{% autoescape false %}
+= Download from the Digital Source Edition {{ siteName|trans }}
+
+{{ meta.name }}
+
+{% if meta.creator is not empty %}
+{{ 'Creator'|trans }}: {{ meta.creator  }}
+{% endif %}
+{% if meta.provider is not empty %}
+{{ 'Holding Institution'|trans }}: {{ meta.provider.nameLocalized(app.request.locale) }}
+{% if meta.providerIdno is not empty %}
+{{ 'Signature'|trans }}: {{ meta.providerIdno }}
+{% endif %}
+{% endif %}
+{% if meta.url is not empty %}
+{{ 'URL'|trans }}: {{ meta.url }}
+{% endif %}
+{% if meta.rights is not empty %}
+{{ 'Rights Statements'|trans }}: {{ meta.rights  }}
+{% endif %}
+
+{% if '#public-domain' == meta.license %}
+This work has been identified as being free of known restrictions under German copyright law. However, we cannot guarantee this, as the work may not be free of copyright protection in all jurisdictions. In some jurisdictions moral rights of the author may persist beyond the term of copyright. We disclaim liability for all uses of the work, to the fullest extent permitted by applicable law. When using or citing the work, you should not imply endorsement by the author or the person who identified the work.
+{% else %}
+== Scholarly and private use only
+
+This project was made possible by cooperation with several archives and libraries that made selected works from their holdings available for digitization. Unless explicitly noted otherwise, the following applies: digitized images are displayed on the condition of scholarly and private use of the image data only. Commercial use is strictly prohibited, and any display of an image must include information on the institution owning it. Publication of digitized images by third parties is permissible only after obtaining permission from the institution owning them and in accordance with their rules and regulations.
+
+The copyright to the digitized images featured in the source edition is held by the archives and libraries mentioned. Unless explicitly noted otherwise, the following applies: for questions concerning the reproduction of images in publications, etc. please contact the institutions holding them directly.
+{% endif %}
+
+For additional information, please refer to the Terms and Conditions:
+    <http://jewish-history-online.net/terms>
+
+== Recommended Citation
+
+{{ meta.name }}{% if meta.translator is not empty %} ({{ 'translated by'|trans }} {{ meta.translator.fullname(true) }}){% endif %}, in: {{ siteName|trans }}
+    {%- if meta.datePublished is not empty %}, {{ meta.datePublished|dateincomplete }}{% if meta.dateModified is not empty and meta.dateModified != meta.datePublished %} ({{'as of'|trans }} {{ meta.dateModified|dateincomplete }}){% endif %}{% endif %}. <http://jewish-history-online.net/source/{{ meta.uid }}> [Date of last visit].
+{% endautoescape %}

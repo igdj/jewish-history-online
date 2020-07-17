@@ -1,0 +1,26 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+{% import '@TeiEdition/Shared/map-leaflet.html.twig' as map %}
+
+{% block head %}
+    {{ map.head() }}
+    {{ map.head_markercluster() }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'Map' | trans }}</h1>
+    <ul class="list-inline switch">
+        <li id="switch-place-map"><a href="{{ path('place-map') }}">{{ 'Sources by primary Place'|trans }}</a></li>
+        <li id="switch-place-map-mentioned"><a href="{{ path('place-map-mentioned') }}">{{ 'All Places mentioned'|trans }}</a></li>
+    </ul>
+    <div class="row">
+        <div class="col-sm-12">
+            <div id="map-container">
+                <div id="map" style="width: 100%; min-height: 480px"></div>
+                <script>
+                {{ map.showMap(bounds, markers) }}
+                showMap();
+                </script>
+            </div>
+        </div>
+    </div>
+{% endblock %}

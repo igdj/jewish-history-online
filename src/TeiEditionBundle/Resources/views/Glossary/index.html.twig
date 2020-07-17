@@ -1,0 +1,29 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% block body %}
+    <h1>{{ 'Glossary' | trans }}</h1>
+    <div class="row">
+        <div class="col-sm-12">
+        {% if terms is not empty %}
+        {% set last_initial = '' %}
+        {% for term in terms %}
+            {% set initial = term.term|first|upper %}
+            {% if initial != last_initial %}
+                {% if last_initial != '' %}
+            </ul>
+                {% endif %}
+            <h2>{% if initial != '"' %}{{ initial }}{% endif %}</h2>
+            {% set last_initial = initial %}
+            <ul class="list-unstyled">
+            {% endif %}
+            <li>
+                <b id="{{ term.slug }}">{{ term.name }}</b>{% if term.description is not empty %}: {{ term.description|escape('html')|glossaryAddRefLink }}{% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+        {% else %}
+            {{ 'No glossary terms were found'|trans }}
+        {% endif %}
+        </div>
+    </div><!-- .row -->
+{% endblock %}

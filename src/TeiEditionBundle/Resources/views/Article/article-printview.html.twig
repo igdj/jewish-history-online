@@ -1,0 +1,53 @@
+{% extends '@TeiEdition/Default/base-printview.html.twig' %}
+
+{% import '@TeiEdition/Shared/helper.html.twig' as helper %}
+
+{% block body %}
+    <htmlpageheader name="header" style="display:none">
+        <div id="header-wrapper">
+            <div id="author-line">
+            {% if authors is not empty %}
+                {% for author in authors %}
+                    {{ author.text }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            {% else %}&nbsp;
+            {% endif %}
+            </div>
+        </div>
+    </htmlpageheader>
+    <htmlpageheader name="headerfirst" style="display:none">
+        <div id="author-line">&nbsp;</div>
+    </htmlpageheader>
+    <htmlpagefooter name="footer" style="display:none">
+        <div style="text-align: right">{PAGENO}</div>
+    </htmlpagefooter>
+
+    <sethtmlpageheader name="headerfirst" value="on" show-this-page="1" />
+    <sethtmlpagefooter name="_blank" value="on" show-this-page="1" />
+
+    <header>
+        <h1>
+            {{ siteName|trans }}<br />
+            <span style="font-size: 14px; font-weight: normal">{{ 'A Digital Source Edition'|trans }}</span>
+        </h1>
+    </header>
+
+    {% if authors is not empty %}
+        <div class="author">
+            {% for author in authors %}
+                {{ author.text }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <h1 id="title">{{ name }}</h1>
+
+    {{ html|raw }}
+
+    <div class="appendix">
+    {{ helper.article_authors(authors) }}
+
+    {{ helper.article_citation(article, meta, authors, name) }}
+
+    {{ helper.article_license(license) }}
+    </div>
+{% endblock %}

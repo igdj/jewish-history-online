@@ -1,0 +1,6 @@
+{% import '@TeiEdition/Shared/helper.html.twig' as helper %}
+{% if articles is not empty %}
+    {% for article in articles %}
+        {{ helper.article_linked(article) }}<br />
+    {% endfor %}
+{% endif %}

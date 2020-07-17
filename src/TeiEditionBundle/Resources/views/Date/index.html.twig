@@ -1,0 +1,102 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% block head %}
+    <script src="{{ app.request.basepath }}/vendor/waypoints/jquery.waypoints.min.js"></script>
+    <script src="{{ app.request.basepath }}/vendor/waypoints/shortcuts/sticky.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var sticky = new Waypoint.Sticky({
+                element: $('#epoch-navigation')[0],
+                handler: function(direction) {
+                    resizeStuck();
+                }
+            });
+
+            function resizeStuck() {
+                $('.stuck').width($('#epoch-navigation').parent().width() - 32);
+            }
+
+            $(window).on('resize', resizeStuck);
+        });
+    </script>
+    <style>
+        .stuck {
+            position: fixed;
+            margin-left: 0px;
+            padding-left: 15px;
+            top: 0;
+        }
+
+        h2 {
+            margin-left: 4em;
+            font-size: 14px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% set embedded = false %}
+    <h1>{{ pageTitle }}</h1>
+    <div class="row stickem-container">
+        <div class="col-xs-12 {% if not embedded %}col-md-9{% endif %}">
+        {# styles: see http://stackoverflow.com/questions/19089384/twitter-bootstrap-3-two-columns-full-height #}
+            <div id="timeline" class="container-fluid">
+    {% if events is not empty %}
+        {% set last_epoch = '' %}
+        {% set epochs = [] %}
+        {% for event in events %}
+            {% set epochLabel = event.epochLabel %}
+            {% if epochLabel[0] != last_epoch %}
+                {% if last_epoch != '' %}
+                    </ul>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="row">
+                    <div class="col-sm-2 hidden-xs epoch-label epoch-label-gray">
+                        <h4 id="{{ epochLabel[0] }}">{{ epochLabel[0]|epoch(epochLabel[1]) }}</h4>
+                    </div>
+                    <div class="col-xs-12 col-sm-10 epoch-content">
+                        <ul class="list-unstyled">
+                {% set last_epoch = epochLabel[0] %}
+                {% set epochs = epochs|merge([epochLabel])%}
+            {% endif %}
+            <li>
+                {% if event.startDate is not empty or event.endDate is not empty %}
+                    {{ event.startDate|dateincomplete }}&ndash;{{ event.endDate|dateincomplete  }}
+                {% endif %}
+
+                <a href="{% if event.gnd is not empty %}{{ path('event-by-gnd', { 'gnd' : event.gnd }) }}{% else %}{{ path('event', { 'id' : event.id }) }}{% endif %}">
+                {{ event.nameLocalized(app.request.locale) }}
+                </a>
+
+            </li>
+        {% endfor %}
+            </ul>
+                    </div>
+                </div><!-- .row -->
+        {% else %}
+            Es wurden keine Ereignisse gefunden
+        {% endif %}
+        </div>
+        </div>
+        <div class="col-md-3 hidden-sm hidden-xs sidebar">
+    {% if not embedded and epochs is not empty %}
+            <div id="epoch-navigation" class="container-fluid box" style="background-color: white; z-index: 1">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>{{ 'Go to'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row box-color-content">
+                    <div class="col-sm-12">
+        {% for epochLabel in epochs %}
+                <h5><a href="#{{ epochLabel[0] }}">{{ epochLabel[0]|epoch(epochLabel[1]) }}</a></h5>
+        {% endfor %}
+                    </div>
+                </div>
+            </div>
+    {% endif %}
+        </div>
+    </div><!-- .row -->
+{% endblock %}

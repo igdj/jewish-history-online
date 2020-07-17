@@ -1,0 +1,174 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% import '@TeiEdition/Shared/helper.html.twig' as helper %}
+{% import '@TeiEdition/Shared/entity-lookup.html.twig' as entityLookup %}
+{% import '@TeiEdition/Shared/map-leaflet.html.twig' as map %}
+
+{% block head %}
+    {{ map.head() }}
+
+    <script src="{{ app.request.basepath }}/js/screenfull.min.js"></script>
+    <script src="{{ app.request.basepath }}/viewer/shared/iview2-2018.06/js/iview-client-base.min.js"></script>
+    <script src="{{ app.request.basepath }}/viewer/shared/iview2-2018.06/js/iview-client-desktop.min.js"></script>
+    <script src="{{ app.request.basepath }}/viewer/shared/iview2-2018.06/js/iview-client-mets.js"></script>
+    <script src="{{ app.request.basepath }}/viewer/shared/iview2-2018.06/js/iview-client-tei.js"></script>
+    <link href="{{ app.request.basepath }}/viewer/shared/iview2-2018.06/css/default.css" type="text/css" rel="stylesheet">
+
+    {# TODO: move to some shared style-sheet #}
+    <style>
+        /* customize viewer */
+        [data-id="RotateButton"],
+        [data-id="SidebarControllGroup"],
+        [data-id="LayoutControllGroup"],
+        [data-id="CloseViewerGroup"],
+        .informationBar
+        {
+            display: none;
+        }
+    </style>
+
+    {{ entityLookup.head(entity_lookup, bibitem_lookup, glossary_lookup) }}
+    <script>
+        function setViewerClose(id) {
+            var $button = $( '[data-id="CloseViewerButton"]' );
+            var $span = $( '[data-id="CloseViewerButton"] .glyphicon' );
+            if (screenfull.isFullscreen) {
+                $button.attr('title', '{{ 'Exit Fullscreen Mode'|trans }}');
+                $span.removeClass('glyphicon-fullscreen');
+                $span.addClass('glyphicon-off');
+            }
+            else {
+                $button.attr('title', '{{ 'View Fullscreen'|trans }}');
+                $span.removeClass('glyphicon-off');
+                $span.addClass('glyphicon-fullscreen');
+            }
+        }
+
+        function fullscreenViewer(id) {
+            if (screenfull.enabled) {
+                document.addEventListener(screenfull.raw.fullscreenchange, function() {
+                    setViewerClose(id);
+                });
+                screenfull.request(document.getElementById(id));
+            };
+        }
+
+        function resizeViewerDiv() {
+            var parentWidth = $( '#image-viewer' ).parent().width();
+            if (parentWidth < 640) {
+                parentWidth = 640;
+            }
+            // console.log('Set #image-viewer.width(): ' + parentWidth + '-' + $('#image-viewer').parent().width());
+            $( '#image-viewer' ).width(parentWidth);
+        }
+
+        function createViewer () {
+            $( window ).resize(function() { resizeViewerDiv() });
+            resizeViewerDiv();
+
+            /**
+             *  location: string;
+             *  imageXmlPath: string;
+             *  tileProviderPath: string;
+             *  startImage: string;
+             */
+            var viewer_options = {
+                mobile: false,
+                doctype: "mets",
+                metsURL: "{{ app.request.basepath }}/viewer/{{ path }}/{{ mets }}",
+                imageXmlPath: "{{ path('imginfo', {'path' : ''}) }}",
+                derivateContentTransformerServlet: "{{ path('tei2html', {'path' : ''}) }}",
+                tileProviderPath: "{{ app.request.basepath }}/viewer/",
+                filePath: "/{{ firstFacs }}.jpg", // initial facs
+                derivate: "{{ path }}",
+                i18nURL: "{{ app.request.basepath }}/viewer/shared/iview2-i18n/{lang}.json",
+                lang: "{{ app.request.locale }}",
+                "text.enabled": "true",
+                // TODO:
+                "text.showOnStart": [
+                    // "transcription" // set this dynamically based on viewer-width
+                ],
+                metadataURL: "",
+                objId: "",
+                webApplicationBaseURL: "{{ app.request.basepath }}/viewer/shared",
+                imageOverview : {
+                    enabled: true
+                },
+                chapter: {
+                    enabled: true,
+                    showOnStart: false
+                },
+                permalink: {
+                    enabled: false
+                },
+                canvas: {
+                    overview: {
+                        enabled: false // show page overview when zooming
+                    }
+                },
+                onClose: function() {
+                    // toggle fullscreen
+                    if (screenfull.isFullscreen) {
+                        screenfull.exit();
+                    }
+                    else {
+                        fullscreenViewer('image-viewer');
+                    }
+                }
+            };
+
+            // display based on viewer-width
+            // TODO: for english, prefer translation of transcription for
+            // non-enlish texts
+            if ($( '#image-viewer' ).width() > 800) {
+                viewer_options["text.showOnStart"] = [ 'transcription' ];
+            }
+
+            window['viewer'] = new mycore.viewer.MyCoReViewer($( '#image-viewer' ),
+                                                              viewer_options);
+
+            // a bit of a hack - some event or setting would be nicer
+            setTimeout(function() {
+                $( '[data-id="CloseViewerGroup"]' ).show();
+                setViewerClose('image-viewer');
+
+                $( '[data-id="ZoomWidthButton"]' ).click()
+            }, 500);
+        }
+
+        $( document ).ready(function() {
+            initEntityGlossaryNote('.source-description');
+
+            /* preload the translation to avoid
+               TypeError: _this.languageModel is null
+               iview-c...base.js (line 7942, col 29)
+            */
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "{{ app.request.basepath }}/viewer/shared/iview2-i18n/{{ app.request.locale }}.json",
+                success: function (data) {
+                    createViewer();
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h1>{{ name }}</h1>
+    <div class="row">
+        <div id="image-viewer-container" class="col-xs-12 col-md-9">
+            <div id="image-viewer" style="width: 640px; height: 600px; position: relative;"></div>
+
+            {{ helper.source_description_footer(name, article, description, license) }}
+        </div><!-- .col -->
+
+        <div class="col-xs-12 col-md-3 sidebar">
+            <h3 class="pdf-link">
+                <a href="{{ path(app.request.attributes.get('_route') ~ '-pdf', app.request.attributes.get('_route_params')) }}">{{ 'Print Version'|trans }}</a>
+            </h3>
+            {{ helper.source_sidebar(article, description, interpretations, related, mets) }}
+        </div>
+    </div>
+{% endblock %}

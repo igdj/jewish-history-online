@@ -1,0 +1,40 @@
+{% import '@TeiEdition/Shared/helper.html.twig' as helper %}
+{% autoescape false %}
+= Download aus der Online-Quellenedition {{ siteName|trans }}
+
+{{ meta.name }}
+
+{% if meta.creator is not empty %}
+{{ 'Creator'|trans }}: {{ meta.creator  }}
+{% endif %}
+{% if meta.provider is not empty %}
+{{ 'Holding Institution'|trans }}: {{ meta.provider.nameLocalized(app.request.locale) }}
+{% if meta.providerIdno is not empty %}
+{{ 'Signature'|trans }}: {{ meta.providerIdno }}
+{% endif %}
+{% endif %}
+{% if meta.url is not empty %}
+{{ 'URL'|trans }}: {{ meta.url }}
+{% endif %}
+{% if meta.rights is not empty %}
+{{ 'Rights Statements'|trans }}: {{ meta.rights  }}
+{% endif %}
+
+{% if '#public-domain' == meta.license %}
+Dieses Werk wurde als frei von bekannten urheberrechtlichen Einschränkungen in Deutschland identifiziert. Wir können aber keine Garantien dafür abgeben, da das Werk eventuell nicht in allen Rechtsordnungen frei von urheberrechtlichem Schutz ist. In einigen Rechtssprechungen bestehen zudem Urheberpersönlichkeitsrechte über die Dauer der Schutzfrist des Urheberrechts hinaus. Wir lehnen jegliche Haftung für Ansprüche aus der Weiternutzung ab. Wenn das Werk bearbeitet oder zitiert wird, darf das Einverständnis des Urhebers oder der Person, die das Werk identifizierte, nicht unterstellt oder stillschweigend angedeutet werden.
+{% else %}
+== Ausschließlich wissenschaftliche und private Nutzung
+
+Dieses Angebot konnte durch die Kooperation mit mehreren Archiven und Bibliotheken, die ausgewählte Werke aus ihren Beständen für die Digitalisierung zur Verfügung gestellt haben, aufgebaut werden. Soweit nicht explizit gekennzeichnet gilt: Voraussetzung für die Anzeige der Bilddigitalisate ist, dass die Bilddaten nur zu wissenschaftlichen und privaten, nicht aber zu kommerziellen Zwecken genutzt werden und bei der Bildanzeige auf die besitzende Institution verwiesen wird. Eine Publikation der Bilddigitalisate durch Dritte ist nur in Abstimmung mit den besitzenden Institutionen und entsprechend den dort geltenden Bestimmungen möglich.
+
+Die Rechte an den in der Quellenedition angezeigten Bilddigitalisaten liegen bei den angegebenen Archiven und Bibliotheken. Soweit nicht explizit gekennzeichnet gilt: Für Fragen zur Reproduktion der Bilder, zum Beispiel in Publikationen, wenden sich Interessenten bitte an die bewahrenden Institutionen.
+{% endif %}
+
+Für weitere Informationen lesen Sie bitte die Nutzungsbedingungen:
+    <http://juedische-geschichte-online.net/nutzungsbedingungen>
+
+== {{ 'Recommended Citation'|trans }}
+
+{{ meta.name }}{% if article.translator is not empty %} ({{ 'translated by'|trans }} {{ article.translator.fullname(true) }}){% endif%}, in: {{ siteName|trans }}
+    {%- if meta.datePublished is not empty %}, {{ meta.datePublished|dateincomplete }}{% if meta.dateModified is not empty and meta.dateModified != meta.datePublished %} ({{'as of'|trans }} {{ meta.dateModified|dateincomplete }}){% endif %}{% endif %}. <http://juedische-geschichte-online.net/quelle/{{ meta.uid }}> [Datum des letzten Aufrufs].
+{% endautoescape %}

@@ -1,0 +1,495 @@
+{% macro list_entity_mentioned_in(articleReferences) %}
+    {% import _self as helper %}
+    {% if articleReferences is not empty %}
+    <h3>{{ 'Mentioned in'|trans }}</h3>
+    <ul>
+        {% for articleReference in articleReferences %}
+        <li>{{ helper.article_linked(articleReference.article) }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endmacro %}
+
+{% macro article_linked(article) %}
+    {% if 'interpretation' == article.genre %}
+        {% if 'background' == article.articleSection %}
+            {% set path = path('topic-background', { 'slug' : article.getSlug(true) }) %}
+        {% else %}
+            {% set path = path('article', { 'slug' : article.getSlug(true) }) %}
+        {% endif %}
+        <a href="{{ path }}">
+            {{ article.name }}
+            {% if article.author|length > 0 %}
+            ({{ article.authorDisplay(true) }})
+            {% endif %}
+        </a>
+    {% elseif 'source' == article.genre %}
+        <a href="{{ path('source', { 'uid' : article.uid }) }}">{{ article.name }}</a>
+    {% elseif 'exhibition' == article.genre %}
+        <a href="{{ path('exhibition', { 'slug' : article.slug }) }}">{{ article.name }}</a>
+    {% endif %}
+{% endmacro %}
+
+{% macro article_linked_full(article) %}
+    {% if 'interpretation' == article.genre %}
+        {% if 'background' == article.articleSection %}
+            {% set path = path('topic-background', { 'slug' : article.getSlug(true) }) %}
+        {% else %}
+            {% set path = url('article', { 'slug' : article.getSlug(true) }) %}
+        {% endif %}
+        <a href="{{ path }}">
+            {% if article.author|length > 0 %}
+            {{ article.authorDisplay(true) }},
+            {% endif %}
+            {{ article.name }}
+            {%- if article.datePublished is not empty %}, {{ article.datePublished|dateincomplete }}{% if article.dateModified is not empty and article.dateModified != article.datePublished %} ({{'as of'|trans }} {{ article.dateModified|dateincomplete }}){% endif %}{% endif %}.
+        </a>
+    {% elseif 'source' == article.genre %}
+        <a href="{{ path('source', { 'uid' : article.uid }) }}">{{ article.name }}</a>
+    {% endif %}
+{% endmacro %}
+
+{% macro article_author_aboutlabel(authors) %}
+    {% set all_female = true %}
+    {% for author in authors %}
+        {% if all_female %}
+            {% if author.gender != 'F' %}{% set all_female = false %}{% endif %}
+        {% endif %}
+    {% endfor %}
+    {% set how_many = authors|length %}
+    {% if all_female %}{{ 'author.oneormany-female'|trans({ 'count': how_many }) }}
+    {% else %}{{ 'author.oneormany'|trans({ 'count': how_many }) }}{% endif %}
+{% endmacro %}
+
+{% macro article_authors(authors) %}
+    {% import _self as helper %}
+    {% if authors is not empty %}
+    <h3 id="author">{{ helper.article_author_aboutlabel(authors) }}</h3>
+        {% for author in authors %}
+        <p>{{ author.description|converturls }}</p>
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
+
+{% macro article_citation(article, meta, authors, name) %}
+    {% set params = app.request.attributes.get('_route_params') %}
+    {% if article.articleSection != 'background' and article.uid is not empty %}
+        {% set params = params|merge({ 'slug' : article.uid }) %}
+    {% endif %}
+    <h3 id="citation">{{ 'Recommended Citation and License Statement'|trans }}</h3>
+    <p>{% if authors is not empty %}
+        {% for author in authors %}{{ author.text|trim }}, {% endfor %}
+    {% endif %}
+    {{ name }}{% if article.translator is not empty %} ({{ 'translated by'|trans }} {{ article.translator.fullname(true) }}){% endif%}, in: {{ siteName|trans }}
+    {%- if meta.datePublished is not empty %}, {{ meta.datePublished|dateincomplete }}{% if meta.dateModified is not empty and meta.dateModified != meta.datePublished %} ({{'as of'|trans }} {{ meta.dateModified|dateincomplete }}){% endif %}{% endif %}.
+    &lt;{% if article.doi is not empty and not ('10.5072' in article.doi) %}<a href="https://dx.doi.org/{{ article.doi }}">https://dx.doi.org/{{ article.doi }}</a>{% else %}{{ url(app.request.attributes.get('_route')|replace({ '-pdf' : ''}), params) }}{% endif %}&gt; [{{ 'now'|date('F d, Y'|trans) }}].</p>
+{% endmacro %}
+
+{% macro article_license(license) %}
+    {% if license is not null %}
+    <div>
+        {% if license.url is defined %}
+            {% if license.url == "http://creativecommons.org/licenses/by-nc-nd/4.0/" %}
+            <a href="{{ license.url }}" target="_blank">
+                <img src="{{ app.request.basepath }}/img/license/by-nc-nd.eu.svg" height="30" style="float: left; padding-right: 6px;" />
+            </a>
+            {% elseif license.url == "http://creativecommons.org/licenses/by-sa/4.0/" %}
+            <a href="{{ license.url }}" target="_blank">
+                <img src="{{ app.request.basepath }}/img/license/by-sa.svg" height="30" style="float: left; padding-right: 6px;" />
+            </a>
+            {% endif %}
+        {% endif %}
+        {{ license.text }}
+    </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro source_box(source, delayLoad=false) %}
+    {% set path = path('source', { 'uid' : source.uid }) %}
+    <div class="panel panel-default source-box">
+        <div class="panel-heading  sourcetype-icon {% if source.sourceType is not empty %}sourcetype-{{ source.sourceType|lower }}{% endif %}">
+        {% if source.dateCreated is not empty %}
+            {% if source.dateCreatedDisplay is not empty %}{{ source.dateCreatedDisplay }}{% else %}{{ source.dateCreated|dateincomplete }}{% endif %}
+            {%- if source.contentLocation is not empty %}, {% endif %}
+        {% endif %}
+        {% if source.contentLocation is not empty %}
+            {% if source.contentLocation.id is not empty %}
+                <a href="{% if source.contentLocation.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : source.contentLocation.tgn }) }}{% else %}{{ path('place', { 'id' : source.contentLocation.id }) }}{% endif %}">
+                {{ source.contentLocation.name }}
+                </a>
+            {% else %}
+                {{ source.contentLocation.name }}
+            {% endif %}
+        {% endif %}
+        </div>
+        <div class="panel-body">
+            <h5><a href="{{ path }}">{{ source.name }}</a></h5>
+            <div class="container-fluid">
+                <div class="row">
+        {% set thumb = "/viewer/source-%05d/thumb.jpg"|format(source.uid|replace({'jgo:source-' : ''})) %}
+                    <div class="col-xs-4" style="max-height: 150px; overflow: hidden;">
+        {% if file_exists(webDir ~ thumb) %}
+            {% if delayLoad %}
+                        <a href="{{ path }}"><img class="b-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ app.request.basepath }}{{ thumb }}" alt="" style="width: 100%; height: auto;"></a>
+            {% else %}
+                        <a href="{{ path }}"><img src="{{ app.request.basepath }}{{ thumb }}" alt="" style="width: 100%; height: auto;"></a>
+            {% endif %}
+        {% else %}
+                        &nbsp;
+        {% endif %}
+                    </div>
+        {% if source.isPartOf is not null %}
+            {% set description = source.isPartOf.description %}
+            {% if description is not empty %}
+                    <div class="col-xs-8" style="font-size: 90%">
+                        {{ description|u.truncate(300, true, '') }}
+                        ... <a href="{{ path }}">{{ 'Show Source'|trans }} &gt;</a>
+                    </div>
+            {% endif %}
+        {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro source_sidebar_row(source) %}
+    {% set path = path('source', { 'uid' : source.uid }) %}
+    <div class="row box-color-content-inverse">
+        <div class="col-sm-4">
+        {% set thumb = "/viewer/source-%05d/thumb.jpg"|format(source.uid|replace({'jgo:source-' : ''})) %}
+        {% if file_exists(webDir ~ thumb) %}
+            <a href="{{ path }}"><img src="{{ app.request.basepath }}{{ thumb }}" alt="" style="width: 100%; height: auto;"></a>
+        {% endif %}
+        </div>
+        <div class="col-sm-8">
+        <a href="{{ path }}">
+            <b>{{ source.name|u.truncate(160, true, '...') }}</b>{% if source.contentLocation is not empty %}, {{ source.contentLocation.name }}{% endif %}
+        {% if source.dateCreated is not empty %},
+            {% if source.dateCreatedDisplay is not empty %}{{ source.dateCreatedDisplay }}{% else %}{{ source.dateCreated|dateincomplete }}{% endif %}
+        {% endif %}
+        </a>
+        {% if source.isPartOf is not null %}
+            <p>
+                <a href="{{ path('article', { 'slug' : source.isPartOf.getSlug(true) }) }}">
+                {% if 'en' == app.request.locale %}
+                    <b>Source Interpretation</b> by
+                {% else %}
+                    <b>Interpretation</b> von
+                {% endif %}
+                {{ source.isPartOf.authorDisplay(true) }}
+                {% if source.isPartOf.datePublished is not empty %}({{ source.isPartOf.datePublished|dateincomplete }}){% endif %}
+                </a>
+            </p>
+        {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro source_description(description) %}
+    {% if description is not null %}
+    <h2 id="description">{{ 'Source Description'|trans }}</h2>
+    {{ description.html|raw }}
+    <a href="{{ path('article', { 'slug' : description.article.getSlug(true) }) }}">{{ 'Read on'|trans }} &gt;</a>
+    {% endif %}
+{% endmacro %}
+
+{% macro source_footer(name, article, license) %}
+    <h3 id="citation">{{ 'Recommended Citation'|trans }}</h3>
+    <p>
+    {{ name }}{% if article.translator is not empty %} ({{ 'translated by'|trans }} {{ article.translator.fullname(true) }}){% endif%}, {{ 'edited in'|trans }}: {{ siteName|trans }},
+    &lt;{% if article.doi is not empty and not ('10.5072' in article.doi) %}<a href="https://dx.doi.org/{{ article.doi }}">https://dx.doi.org/{{ article.doi }}</a>{% else %}{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}{% endif %}&gt; [{{ 'now'|date('F d, Y'|trans) }}].</p>
+
+    {% if license is not null %}
+    <div>
+        {% if license.url is defined %}
+            {% if license.url == "http://creativecommons.org/licenses/by-nc-nd/4.0/" %}
+            <a href="{{ license.url }}" target="_blank"><img src="{{ app.request.basepath }}/img/license/by-nc-nd.eu.svg" height="30" style="float: left; padding-right: 6px;" /></a>
+            {% endif %}
+        {% endif %}
+        {{ license.text }}
+    </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro source_description_footer(name, article, description, license) %}
+    {% import _self as helper %}
+    {{ helper.source_description(description) }}
+    {{ helper.source_footer(name, article, license) }}
+{% endmacro %}
+
+{% macro source_meta(meta, description, mets, printview = false, interpretations = null) %}
+    {% import '@TeiEdition/Shared/map-leaflet.html.twig' as map %}
+    {% import _self as helper %}
+                        <dl{% if printview %} class="dl-horizontal"{% endif %}>
+                        {% if meta.dateCreated is not empty %}
+                            <dt>{{ 'Date'|trans }}</dt>
+                            <dd>
+                                {% if meta.dateCreatedDisplay is not empty %}
+                                    {{ meta.dateCreatedDisplay }}
+                                {% else %}
+                                    {{ meta.dateCreated|dateincomplete }}
+                                {% endif %}
+                            </dd>
+                        {% endif %}
+                        {% if meta.contentLocation is not empty %}
+                            <dt>{{ 'Place'|trans }}</dt>
+                            <dd>
+                                {% if meta.contentLocation.id is not empty %}
+                                <a href="{% if meta.contentLocation.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : meta.contentLocation.tgn }) }}{% else %}{{ path('place', { 'id' : meta.contentLocation.id }) }}{% endif %}">
+                                {{ meta.contentLocation.nameLocalized(app.request.locale) }}
+                                </a>
+                                {% else %}
+                                {{ meta.contentLocation.nameLocalized(app.request.locale) }}
+                                {% endif %}
+                            </dd>
+                            {% set geo = meta.geo %}
+                            {% if not printview and (geo is not empty or meta.contentLocation.geo is not empty) %}
+                            <dt>{{ 'Geo Coordinates'|trans }}</dt>
+                            <dd>
+                                {% if geo is empty %}
+                                    {% set geo = meta.contentLocation.geo %}
+                                {% endif %}
+                                <a href="#" style="word-wrap: break-word" id="mapToggle" title="{{ 'Show Map'|trans }}" onclick="toggleMap(); return false">{{ geo }}</a>
+                                <div id="map" style="display: none; width: 100%; height: 240px"></div>
+                                <script>
+                                    var loaded = false;
+
+                                    function adjustMapSize() {
+                                        /*
+                                        $('#map').height(function(index, height) {
+                                            return window.innerHeight - $(this).offset().top;
+                                        });
+                                        */
+                                    }
+
+                                    function toggleMap() {
+                                        $('#map').toggle();
+
+                                        if (!loaded) {
+                                            $( window ).resize(adjustMapSize);
+                                            adjustMapSize();
+
+                                            var map = L.map('map');
+
+                                            L.marker([ {{ geo }} ]).addTo(map);
+                                            map.setView([{{ geo }}], 11);
+
+                                            {{ map.addTileLayer() }}
+
+                                            loaded = true;
+                                        }
+
+                                        var isHidden = $('#map').is(":hidden");
+                                        $('#mapToggle').attr('title',
+                                                             isHidden
+                                                             ? {{ 'Show Map'|trans|json_encode|raw }}
+                                                             : {{ 'Hide Map'|trans|json_encode|raw }});
+                                    }
+                                </script>
+                            </dd>
+                            {% endif %}
+                        {% endif %}
+                        {% if meta.sourceType is not empty%}
+                            <dt>{{ 'Source Type'|trans }}</dt>
+                            <dd>{{ meta.sourceType }}</dd>
+                        {% endif %}
+                        {% if meta.creator is not empty %}
+                            <dt>{{ 'Creator'|trans }}</dt>
+                            <dd>
+                                {{ meta.creator  }}
+                            </dd>
+                        {% endif %}
+                        {% if meta.provider is not empty %}
+                            <dt>{{ 'Holding Institution'|trans }}</dt>
+                            <dd>
+                                {% if meta.provider.gnd is not empty %}
+                                <a href="{{ path('organization-by-gnd', { 'gnd' : meta.provider.gnd }) }}">{{ meta.provider.nameLocalized(app.request.locale) }}</a>
+                                {% else %}
+                                {{ meta.provider.nameLocalized(app.request.locale) }}
+                                {% endif %}
+                            </dd>
+                            {% if meta.providerIdno is not empty %}
+                            <dt>{{ 'Signature'|trans }}</dt>
+                            <dd>
+                                {{ meta.providerIdno }}
+                            </dd>
+                            {% endif %}
+                        {% endif %}
+                        {% if meta.url is not empty %}
+                            <dt>{{ 'URL'|trans }}</dt>
+                            <dd>
+                                <a href="{{ meta.url }}" class="break-word" target="_blank">{{ meta.url|prettifyurl }}</a>
+                            </dd>
+                        {% endif %}
+                        {% set labelDownload = 'Download for scholarly or private use'|trans %}
+                        {% if meta.rights is not empty %}
+                            <dt>{{ 'Rights Statements'|trans }}</dt>
+                            <dd>
+                                {{ meta.rights|converturls|nl2br  }}
+                            {% if '#public-domain' == meta.license %}
+                                {% set labelDownload = 'Download source'|trans %}
+                                {% if not printview %}
+                                <a href="{{ 'https://creativecommons.org/publicdomain/mark/1.0/' ~ 'deed.' ~ app.request.locale  }}" target="_blank">
+                                    <img src="{{ app.request.basepath }}/img/license/public-domain.svg" height="24" style="display: block" />
+                                </a>
+                                {% endif %}
+                            {% elseif 'http://creativecommons.org/licenses/by-nc-sa/4.0/' == meta.license %}
+                                {% set labelDownload = 'Download source'|trans %}
+                                {% if not printview %}
+                                <a href="{{ meta.license ~ 'deed.' ~ app.request.locale }}" target="_blank">
+                                    <img src="{{ app.request.basepath }}/img/license/by-nc-sa.svg" height="24" style="display: block" />
+                                </a>
+                                {% endif %}
+                            {% endif %}
+                            </dd>
+                        {% endif %}
+                        {% if meta.licenseAllowsDownload()  %}
+                            <dt>{{ 'Download'|trans }}</dt>
+                            <dd>
+                                <a href="{{ path('source-download', { 'uid': meta.uid }) }}">
+                                    {{ labelDownload }}
+                                </a>
+                            </dd>
+                            {% if not printview %}
+                            <dt><a href="#" onClick="$('#metadata').toggle(); return false">{{ 'Download Metadata'|trans }}</a></dt>
+                            <dd id="metadata" style="display: none;">
+                                <ul class="list-unstyled" style="margin-bottom: 0">
+                                <li><a target="_blank" href="{{ url('source-jsonld', { 'uid': meta.uid }) }}">JSON-LD</a></li>
+                                {% if mets is not empty %}
+                                <li><a target="_blank" href="{{ url('source-mets', { 'uid': meta.uid }) }}">METS-XML</a></li>
+                                {% endif %}
+                                <li><a target="_blank" href="{{ url('oai', { 'verb': 'GetRecord', 'metadataPrefix': 'oai_dc', 'identifier': 'oai:' ~ meta.uid ~ '.' ~ app.request.locale }) }}">OAI-PMH</a></li>
+                                </ul>
+                            </dd>
+                            {% endif %}
+                            {% if mets is not empty %}
+                            <dt>{{ 'DFG-Viewer'|trans }}</dt>
+                            <dd>
+                                <a href="{{ 'http://dfg-viewer.de/en/v3/'|trans }}?tx_dlf[id]={{ url('source-mets', { 'uid': meta.uid })|url_encode }}" target="_blank">
+                                    {{ 'Browse digitized images in DFG-Viewer'|trans }}
+                                </a>
+                            </dd>
+                            {% endif %}
+                        {% endif %}
+                        {% if printview %}
+                            {% if interpretations is not empty %}
+                            <dt>{{ 'Source Description and Interpretation'|trans }}</dt>
+                            <dd>
+                                {% for article in interpretations %}
+                                    {{ helper.article_linked(article) }}
+                                {% endfor %}
+                            </dd>
+                            {% endif %}
+                        {% else %}
+                            {% if description is not null %}
+                            <dt><a href="#description">{{ 'Source Description'|trans }}</a></dt>
+                            {% endif %}
+                            <dt><a href="#citation">{{ 'Recommended Citation'|trans }}</a></dt>
+                        {% endif %}
+                        </dl>
+                        {#{ dump(meta) }#}
+{% endmacro %}
+
+{% macro source_sidebar(meta, description, interpretations, related, mets) %}
+    {% import _self as helper %}
+    {% import '@TeiEdition/Shared/map-leaflet.html.twig' as map %}
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>{{ 'Source'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row box-color-content">
+                    <div class="col-sm-12">
+                        {{ helper.source_meta(meta, description, mets) }}
+                    </div>
+                </div>
+            </div>
+            {% if interpretations is not empty %}
+            <div class="container-fluid box top-buffer">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>{{ 'interpretation.oneormany'|trans({ 'count': interpretations|length }) }}</h4>
+                    </div>
+                </div>
+                {% for article in interpretations %}
+                <div class="row box-color-content-inverse">
+                    <div class="col-sm-12">
+                        <b>{{ helper.article_linked(article) }}</b>
+                    </div>
+                </div>
+                {% if article.keywords is not empty %}
+                <div class="row box-color-content-inverse">
+                {% for topic in article.keywords %}
+                    {% set img_slug = slugify.slugify(topic|lookupLocalizedTopic) %}
+                    {% set slug = slugify.slugify(topic) %}
+                    {% if loop.first %}
+                    <div class="col-sm-4">
+                        <a href="{{ path('topic-background', { 'slug' : slug }) }}"><img src="{{ asset('img/topic/' ~ img_slug ~ '.jpg') }}" style="width: 100%; height: auto" /></a>
+                    </div>
+                    <div class="col-sm-8">
+                    {% endif %}
+                            <p><a href="{{ path('topic-background', { 'slug' : slug }) }}">{{ topic }}</a></p>
+                    {% if loop.last %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if related|length >= 1 %}
+            <div class="container-fluid box top-buffer">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>{{ 'additionalsource.oneormany'|trans({ 'count': related|length }) }}</h4>
+                    </div>
+                </div>
+                {% for source in related  %}
+                    {% if source.id != article.id %}
+                <div class="row box-color-content-inverse">
+                    <div class="col-sm-12">
+                        {{ helper.article_linked(source) }}
+                    </div>
+                </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+{% endmacro %}
+
+{% macro person_list_item(person) %}
+    <a href="{% if person.gnd is not empty %}{{ path('person-by-gnd', { 'gnd' : person.gnd }) }}{% else %}{{ path('person', { 'id' : person.id }) }}{% endif %}">
+        {{ person.fullname }}
+    </a>
+
+    {% set birthPlace = person.birthPlaceInfo(app.request.locale) %}
+    {% set deathPlace = person.deathPlaceInfo(app.request.locale) %}
+    {% if birthPlace is not empty or person.birthDate is not empty
+       or deathPlace is not empty or person.deathDate is not empty %}
+        ({% if birthPlace is not empty or person.birthDate is not empty %}
+                {{- person.birthDate|dateincomplete -}}
+                {% if birthPlace is not empty %}{% if person.birthDate is not empty %}{{- ',' }}{% endif %}
+                    {% if birthPlace.id is not empty %}
+                        <a href="{% if birthPlace.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : birthPlace.tgn }) }}{% else %}{{ path('place', { 'id' : birthPlace.id }) }}{% endif %}">
+                        {{ birthPlace['name'] }}
+                        </a>
+                    {% else %}
+                        {{ birthPlace['name'] }}
+                    {% endif %}
+                {% endif %}
+        {% endif %}
+        {% if deathPlace is not empty or person.deathDate is not empty %}
+            -
+                {{ person.deathDate|dateincomplete -}}
+                {% if deathPlace is not empty %}{% if person.deathDate is not empty %}{{- ',' }}{% endif %}
+                    {% if deathPlace.id is not empty %}<a href="{% if deathPlace.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : deathPlace.tgn }) }}{% else %}{{ path('place', { 'id' : deathPlace.id }) }}{% endif %}">
+                        {{ deathPlace['name'] -}}</a>{% else %}{{ deathPlace['name'] -}}
+                    {% endif -%}
+                {% endif -%}
+        {% endif -%})
+    {% endif %}
+{% endmacro %}

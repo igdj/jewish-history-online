@@ -36,18 +36,18 @@ parameters:
     # app.wp-rest.password: "secret"
 
     # xslt settings
-    app.xslt.adapter.class: AppBundle\Utils\Xsl\XsltCommandlineAdapter
+    app.xslt.adapter.class: TeiEditionBundle\Utils\Xsl\XsltCommandlineAdapter
     # linux
     app.xslt.adapter.arguments: "/usr/bin/java -jar %kernel.project_dir%/app/Resources/bin/saxon9he.jar -s:%%source%% -xsl:%%xsl%%  %%additional%%"
     # windows, set your proper path
     # app.xslt.adapter.arguments: "c:\\Run\\Java\\jdk1.8\\bin\\java -jar %kernel.project_dir%\\app\\Resources\\bin\saxon9he.jar -s:%%source%% -xsl:%%xsl%% %%additional%%"
 
     # if you have http://www.saxonica.com/saxon-c/index.xml correctly installed, you can set
-    # app.xslt.adapter.class:  AppBundle\Utils\Xsl\XsltSaxonProcessorAdapter
+    # app.xslt.adapter.class:  TeiEditionBundle\Utils\Xsl\XsltSaxonProcessorAdapter
     # app.xslt.adapter.arguments: ~
 
     # xml format
-    app.xml_formatter.adapter.class:  AppBundle\Utils\XmlFormatter\XmlFormatterCommandlineAdapter
+    app.xml_formatter.adapter.class:  TeiEditionBundle\Utils\XmlFormatter\XmlFormatterCommandlineAdapter
     # use http://www.kitebird.com/software/xmlformat/xmlformat.html
     # if site is down, https://packages.ubuntu.com/bionic/xmlformat-perl points to
     #   http://archive.ubuntu.com/ubuntu/pool/universe/x/xmlformat/xmlformat_1.04.orig.tar.gz

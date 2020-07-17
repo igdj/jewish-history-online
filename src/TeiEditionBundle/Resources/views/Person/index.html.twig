@@ -1,0 +1,71 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% block body %}
+    <h1>{{ pageTitle }}</h1>
+    <div class="row">
+        <div class="col-sm-8">
+        {% if persons is not empty %}
+        {% set last_initial = '' %}
+        {% for person in persons %}
+            {% set initial = slugify.slugify(person.fullname|first)|upper %}
+            {% if initial != last_initial %}
+                {% if last_initial != '' %}
+            </ul>
+                {% endif %}
+            <h2>{{ initial }} </h2>
+            {% set last_initial = initial %}
+            <ul class="list-unstyled">
+            {% endif %}
+            <li>
+                <a href="{% if person.gnd is not empty %}{{ path('person-by-gnd', { 'gnd' : person.gnd }) }}{% else %}{{ path('person', { 'id' : person.id }) }}{% endif %}">
+                {{ person.fullname }}
+                </a>
+
+                {% if person.birthDate is not empty or person.deathDate is not empty %}
+                    ({{ person.birthDate|dateincomplete }} - {{  person.deathDate|dateincomplete  }})
+                {% endif %}
+            </li>
+        {% endfor %}
+            </ul>
+        {% else %}
+            Es wurden keine Personen gefunden
+        {% endif %}
+        </div>
+        {% if 'about-authors' == app.request.attributes.get('_route') %}
+        <div class="col-sm-4 sidebar">
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4><a href="{{ path('about-staff') }}">{{ 'About us'|trans }}</a></h4>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse menu">
+                    <div class="col-sm-12">
+                    {% set about = knp_menu_get('top', [ 'about-us' ]) %}
+                    {{ knp_menu_render(about) }}
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid box top-buffer">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4><a href="{{ path('about-cfp') }}">{{ 'Become an Author'|trans }}</a></h4>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse">
+                    <div class="col-sm-12">
+                        {% if 'en' == app.request.locale %}
+                        More sources and interpretative texts are planned to be successively published on the website of the digital source edition. Therefore, we welcome articles in all thematic categories, as long as they are connected to the Jewish history of Hamburg.
+                        <a href="{{ path('about-cfp') }}">Read on...</a>
+                        {% else %}
+                        Sukzessive sollen weitere Quellen und Interpretationstexte auf der
+Website der Online-Quellenedition bereit gestellt werden. Hierfür werden Beiträge in allen Themenbereichen gesucht. Wichtig ist ein Bezug zur jüdischen Geschichte Hamburgs. <a href="{{ path('about-cfp') }}">Weiterlesen...</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% endif %}
+    </div><!-- .row -->
+{% endblock %}

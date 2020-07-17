@@ -1,0 +1,79 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% import '@TeiEdition/Shared/helper.html.twig' as helper %}
+
+{% block head %}
+    <script src="{{ app.request.basepath }}/js/seealso.js"></script>
+    <script>
+        var service = new SeeAlsoCollection();
+        service.services = {
+            'gkdaks' : new SeeAlsoService('https://beacon.findbuch.de/seemore/gnd-aks/-dewp@wd/-jgo-hsd-organisationen')
+        };
+        service.views = {
+            'seealso-ul' : new SeeAlsoUL({
+                linkTarget: '_blank',
+                maxItems: 100
+            })
+        };
+        service.replaceTagsOnLoad();
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h1>
+        {{ event.nameLocalized(app.request.locale) }}
+    </h1>
+    <div class="row">
+        <div class="col-sm-8">
+            <dl>
+            {% if organization.foundingPlace is not empty or organization.foundingDate is not empty %}
+                <dt>{{ 'Founded'|trans }}:</dt>
+                <dd>
+                    {{ organization.foundingPlace }}
+                    {{ organization.foundingDate|dateincomplete }}
+                </dd>
+            {% endif %}
+            {% if organization.dissolutionPlace is not empty or organization.dissolutionDate is not empty %}
+                <dt>{{ 'Dissolved'|trans }}:</dt>
+                <dd>
+                    {{ organization.dissolutionPlace }}
+                    {{ organization.dissolutionDate|dateincomplete }}
+                </dd>
+            {% endif %}
+            </dl>
+
+            <p>{{ event.description[app.request.locale]|nl2br  }}</p>
+
+            {{ helper.list_entity_mentioned_in(event.articleReferences(app.request.locale)) }}
+        </div>
+
+        <div class="col-sm-4 sidebar">
+            {% if event.gnd is not empty %}
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>{{ 'Integrated Authority File'|trans }}
+                        <br /><a href="http://d-nb.info/gnd/{{ event.gnd }}" target="_blank">{{ event.gnd }}</a>
+                        </h4>
+                    </div>
+                </div>
+
+                <div class="row box-color-content-inverse">
+                    {% if event.additional.beacon is not empty %}
+                    <div class="col-sm-12 beacon-ul">
+                        <ul>
+                            {% for info in event.additional.beacon %}
+                            <li><a href="{{ info.url }}" target="_blank">{{ info.description }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    <div class="col-sm-12">
+                        <div title="{{ event.gnd }}" class="gkdaks seealso-ul"></div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div><!-- .row -->
+{% endblock %}

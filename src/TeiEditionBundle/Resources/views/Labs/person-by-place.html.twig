@@ -1,0 +1,76 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% import '@TeiEdition/Shared/map-leaflet.html.twig' as map %}
+{% block head %}
+    {{ map.head() }}
+    {{ map.head_markercluster() }}
+{% endblock %}
+
+{% block body %}
+    {% if pageTitle is not empty %}<h1>{{ pageTitle }}</h1>{% endif %}
+        {% if persons is not null %}
+            <form method="get">
+                <select name="person" onchange="this.form.submit()">
+                    <option value="">-- all --</option>
+                    {% for person in persons %}
+                        <option value="{{ person.id }}"{% if app.request.get('person') == person.id %} selected="selected"{% endif %}>
+                            {{ person.fullname }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+        {% endif %}
+    <div id="map-container">
+        <div id="map" style="width: 100%; min-height: 480px"></div>
+    </div>
+    <script type="text/javascript">
+        {{ map.showMap(bounds, markers) }}
+        showMap();
+
+        var markers = L.markerClusterGroup({
+            iconCreateFunction: function (cluster) {
+                // var childCount = cluster.getChildCount();
+                var markers = cluster.getAllChildMarkers();
+                var n = 0;
+                for (var i = 0; i < markers.length; i++) {
+                    n += markers[i].number;
+                }
+                var childCount = n;
+                var c = ' marker-cluster-';
+                if (childCount < 10) {
+                    c += 'small';
+                } else if (childCount < 100) {
+                    c += 'medium';
+                } else {
+                    c += 'large';
+                }
+
+                return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
+
+//              return L.divIcon({ html: n, className: 'mycluster', iconSize: L.point(40, 40) });
+            },
+            spiderfyOnMaxZoom: false, // showCoverageOnHover: false, zoomToBoundsOnClick: false,
+            disableClusteringAtZoom: 5
+        });
+
+        var addressPoints = {{ data|raw }};
+        for (var i = 0; i < addressPoints.length; i++) {
+            var a = addressPoints[i];
+            var title = a[2];
+            var marker = L.marker(L.latLng(a[0], a[1]),
+                                  { title: title });
+            marker.number = a[4];
+            marker.bindPopup('<strong>' + title + '</strong><br />' + a[3]);
+
+            markers.addLayer(marker);
+        }
+
+        /*
+        markers.on('clusterclick', function (a) {
+            a.layer.spiderfy();
+        });
+        */
+
+        map.addLayer(markers);
+    </script>
+{% endblock %}

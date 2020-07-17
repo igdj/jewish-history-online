@@ -1,0 +1,102 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% import '@TeiEdition/Shared/helper.html.twig' as helper %}
+{% import '@TeiEdition/Shared/map-leaflet.html.twig' as map %}
+
+{% block head %}
+    {{ map.head() }}
+{% endblock %}
+
+{% block body %}
+    <h1>
+        {{ landmark.nameLocalized(app.request.locale) }}
+    </h1>
+    <div class="row">
+        <div class="col-sm-8">
+            <dl>
+            {% if landmark.url is not empty %}
+                <dt>{{ 'Homepage'|trans }}:</dt>
+                <dd>
+                    <a href="{{ landmark.url }}" target="_blank">{{ landmark.url|prettifyurl }}</a>
+                </dd>
+            {% endif %}
+            </dl>
+
+            <p>{{ landmark.description[app.request.locale]|converturls|nl2br  }}</p>
+
+            {{ helper.list_entity_mentioned_in(landmark.articleReferences(app.request.locale)) }}
+        </div>
+
+        <div class="col-sm-4 sidebar">
+            {% if landmark.geo is not empty or landmark.additional.boundary is not empty %}
+            <div id="map" class="col-sm-12" style="width: 100%; min-height: 360px"></div>
+            <script>
+            function adjustMapSize() {
+                /*
+                $('#map').height(function(index, height) {
+                    return window.innerHeight - $(this).offset().top;
+                });
+                */
+            }
+
+            $( window ).resize(adjustMapSize);
+            adjustMapSize();
+
+            var map = L.map('map');
+
+            var bounds = null;
+            {% if landmark.additional.bounds is not empty %}
+                bounds = {{ landmark.additional.bounds|json_encode|raw }};
+            {% elseif landmark.geo is not null %}
+                L.marker([ {{ landmark.geo }} ]).addTo(map);
+                map.setView([{{ landmark.geo }}], {{ landmark.defaultZoomlevel }});
+            {% endif %}
+
+            {{ map.addTileLayer() }}
+
+            {% if landmark.additional.boundary is not empty %}
+                var boundary = {{ landmark.additional.boundary|json_encode|raw }};
+                var geojsonLayer = L.geoJSON(boundary).addTo(map);
+                if (bounds == null) {
+                    bounds = geojsonLayer.getBounds();
+                }
+            {% endif %}
+            if (bounds != null) {
+                map.fitBounds(bounds);
+            }
+            </script>
+            {% endif %}
+
+            {% if landmark.djh is not empty %}
+            <div>&nbsp;</div>
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>
+                            {% if landmark.gnd is not empty %}
+                            {{ 'Integrated Authority File'|trans }}
+                            <br /><a href="http://d-nb.info/gnd/{{ landmark.gnd }}" target="_blank">{{ person.gnd }}</a>
+                            {% else %}
+                            {{ 'Additional Information'|trans }}
+                            {% endif %}
+                        </h4>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse">
+                    {% if landmark.djh is not empty %}
+                    <div class="col-sm-12 beacon-ul">
+                        <ul>
+                            {% if landmark.djh is not empty %}
+                            <li>
+                                <a href="http://www.dasjuedischehamburg.de/inhalt/{{ landmark.djh|url_encode }}" target="_blank">„Das Jüdische Hamburg“</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div><!-- .row -->
+{% endblock %}

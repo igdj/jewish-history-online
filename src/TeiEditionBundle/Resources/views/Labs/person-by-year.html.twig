@@ -1,0 +1,121 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% block head %}
+    <script src="{{ app.request.basepath }}/vendor/highcharts/highcharts.js"></script>
+    <script src="{{ app.request.basepath }}/vendor/highcharts/modules/exporting.js"></script>
+    <!--
+    <script src="{{ app.request.basepath }}/vendor/highcharts/themes/sand-signika.js"></script>
+    -->
+    <script type="text/javascript">
+        var chart;
+
+        $(document).ready(function() {
+            chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'container',
+                    defaultSeriesType: 'column'
+                    /*, margin: [ 50, 50, 100, 80] */
+                },
+                title: {
+                    text: 'Year of Birth / Death'
+                },
+                subtitle: {
+                    text: {{ subtitle|raw }}
+                },
+                xAxis: {
+                    categories: {{ categories|raw }},
+                    labels: {
+                        rotation: -45,
+                        align: 'right',
+                        style: {
+                            font: 'normal 13px Verdana, sans-serif'
+                        }
+                    }
+                },
+                yAxis: [
+                    {
+                        title: {
+                            text: ''
+                        },
+                        min: 0,
+                        // max: 600
+                        opposite: true
+                    },
+                    {
+                        min: 0,
+                        // max: 25,
+                        title: {
+                            text: 'Number of Persons'
+                        }
+                    }
+                ],
+                tooltip: {
+                    formatter: function() {
+                        // console.log(this);
+                        return '<b>'
+                            + Highcharts.numberFormat(this.y, 0)
+                            + ' persons '
+                            + (this.series.name == 'Year of Death' ? 'died' : 'born')
+                            + ' '
+                            + this.point.name
+                            + '</b>';
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        borderWidth: 1,
+                        groupPadding: 0,
+                        pointPadding: 0
+                    }
+                },
+                series: [
+                    /*
+                    {
+                        yAxis: 0,
+                        name: 'Gesamtwerk',
+                        data: {{ works_extended }},
+                        stack: 'works'
+                    },
+                    {
+                        yAxis: 0,
+                        name: 'Individuelle Werke',
+                        data: {{ works_base }},
+                        stack: 'works'
+                    },
+                    */
+                    {
+                        type: 'line',
+                        //dashStyle: 'Solid', // 'shortdot',
+                        marker: {
+                            enabled: false
+                        },
+                        yAxis: 1,
+                        name: 'Year of Birth',
+                        data: {{ person_birth|raw }},
+                        stack: 'birth',
+                        color: '#e6550d'
+                    },
+                    {
+                        type: 'line',
+                        //dashStyle: 'Solid',
+                        marker: {
+                            enabled: false
+                        },
+                        yAxis: 1,
+                        name: 'Year of Death',
+                        data: {{ person_death|raw }},
+                        stack: 'death',
+                        color: '#303030'
+                    }
+                ]
+        });
+    });
+
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h1>Persons by Year of Birth / Death</h1>
+    <div id="container" style="min-width: 800px; height: 400px; margin: 0 auto"></div>
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% import '@TeiEdition/Shared/helper.html.twig' as helper %}
+{% import '@TeiEdition/Shared/entity-lookup.html.twig' as entityLookup %}
+{% import '@TeiEdition/Shared/map-leaflet.html.twig' as map %}
+
+{% block head %}
+    {{ map.head() }}
+
+    {# TODO: move to some shared style-sheet #}
+    <style>
+    #authors, #license {
+        display: none;
+    }
+    </style>
+
+    {{ entityLookup.head(entity_lookup, bibitem_lookup, glossary_lookup) }}
+    <script>
+    $(function () {
+        initEntityGlossaryNote('.article');
+    })
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h1>{{ name }}</h1>
+    {% if authors is not empty %}
+        <div class="author">
+            <a href="#author">
+            {% for author in authors %}
+                {{ author.text }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+            </a>
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-8">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+            {{ 'Content'|trans }}
+            </div>
+            <div class="panel-body">
+            {% if section_headers is not empty %}
+                {% for header in section_headers %}
+                    <p><a href="#{{ header['id'] }}">{{ header['text'] }}</a></p>
+                {% endfor %}
+                <hr />
+            {% endif %}
+            {% if authors is not empty %}
+                <p><a href="#author">{{ helper.article_author_aboutlabel(authors) }}</a></p>
+            {% endif %}
+            <p><a href="#citation">{{ 'Recommended Citation and License Statement'|trans }}</a></p>
+            </div>
+        </div>
+
+        {{ html|raw }}
+
+        {% if authors is not empty %}
+        <h2 id="author">{{ helper.article_author_aboutlabel(authors) }}</h2>
+            {% for author in authors %}
+        <p>{% if author.description is defined %}{{ author.description }}{% else %}{{ author.text }}{% endif %}</p>
+            {% endfor %}
+        {% endif %}
+
+        {{ helper.article_citation(article, meta, authors, name) }}
+
+        {{ helper.article_license(license) }}
+        </div><!-- .col -->
+
+        <div class="col-xs-12 col-sm-4 sidebar">
+            <h3 class="pdf-link">
+                <a href="{{ path(app.request.attributes.get('_route') ~ '-pdf', app.request.attributes.get('_route_params')) }}">{{ 'Print Version'|trans }}</a>
+            </h3>
+
+            {% if sources is defined and sources[0] is not empty %}
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>{{ 'source.oneormany'|trans({ 'count': sources[0]|length }) }}</h4>
+                    </div>
+                </div>
+                {% for source in sources[0] %}
+                {{ helper.source_sidebar_row(source) }}
+                {% endfor %}
+                {% if sources[1] is not empty %}
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>
+                            <a id="toggleAdditional" data-toggle="collapse" data-target="#additional" class="display-toggle display-toggle-show">
+                            {{ 'additionalsource.oneormany'|trans({ 'count': sources[1]|length }) }}
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+                <div id="additional" class="collapse">
+                {% for source in sources[1] %}
+                {{ helper.source_sidebar_row(source) }}
+                {% endfor %}
+                </div>
+                <script>
+                function toggleChevron(e) {
+                    $('#toggleAdditional')
+                        .toggleClass('display-toggle-show display-toggle-hide');
+                }
+                $('#additional').on('hidden.bs.collapse', toggleChevron);
+                $('#additional').on('shown.bs.collapse', toggleChevron);
+                </script>
+                {% endif %}
+            </div>
+            {% elseif interpretations is not empty %}
+            {# legacy presentation #}
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>{{ 'interpretation.oneormany'|trans({ 'count': interpretations|length }) }}</h4>
+                    </div>
+                </div>
+                {% for article in interpretations %}
+                <div class="row box-color-content-inverse">
+                    <div class="col-sm-12">
+                        {{ helper.article_linked(article) }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

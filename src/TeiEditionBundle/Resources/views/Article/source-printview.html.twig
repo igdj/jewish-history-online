@@ -1,0 +1,93 @@
+{% extends '@TeiEdition/Default/base-printview.html.twig' %}
+
+{% import '@TeiEdition/Shared/helper.html.twig' as helper %}
+
+{% block head %}
+    <style>
+    {# source specific settings not shared with article #}
+    /* hide source-description  */
+    .article .source-description-head,
+    .article .source-description
+    {
+        display: none;
+    }
+
+    /* hide video */
+    .article .embed-responsive-16by9
+    {
+        display: none;
+    }
+
+    /* override some styles from @mixin dta-styles */
+    .article .dta-reg, .article .dta-abbr {
+        border-bottom: none;
+        color: #6E6E6E;
+    }
+
+    /* the following spans are set through $mpdf->autoScriptToLang = true */
+    span.lang_he {
+        /*
+        font-family: 'DejaVu Sans';
+        */
+        font-family: 'heebo';
+    }
+
+    span.lang_und-Hans {
+        font-family: 'sun-exta';
+    }
+
+    .article .dta-fn-intext { vertical-align:super; font-size: 11px }
+    .article .dta-fn-sign { vertical-align:super; font-size: 11px }
+
+    dl.dl-horizontal dt {
+        font-weight: bold;
+        float: left;
+        width: 10em;
+    }
+
+    dl.dl-horizontal dd {
+        float: left;
+    }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <htmlpageheader name="header" style="display:none">
+        <div id="header-wrapper">
+            <div id="author-line">
+            {{ name|u.truncate(70, true, '...') }}
+            </div>
+        </div>
+    </htmlpageheader>
+    <htmlpageheader name="headerfirst" style="display:none">
+        <div id="author-line">&nbsp;</div>
+    </htmlpageheader>
+    <htmlpagefooter name="footer" style="display:none">
+        <div style="text-align: right">{PAGENO}</div>
+    </htmlpagefooter>
+
+    <sethtmlpageheader name="headerfirst" value="on" show-this-page="1" />
+    <sethtmlpagefooter name="_blank" value="on" show-this-page="1" />
+
+    <header>
+        <h1>
+            {{ siteName|trans }}<br />
+            <span style="font-size: 14px; font-weight: normal">{{ 'A Digital Source Edition'|trans }}</span>
+        </h1>
+    </header>
+
+    <h1 id="title">{{ name }}</h1>
+    {{ helper.source_meta(meta, null, null, true, interpretations) }}
+
+    {% for layer in layers %}
+        {# we start each variant on new page #}
+        <h2 style="page-break-before: always">
+            {{ layer.label|trans }}
+        </h2>
+        {{ layer.body|replace({'<body>': '', '</body>': ''})|raw }}
+    {% endfor %}
+
+    <div class="appendix">
+    {{ helper.source_footer(name, article, license) }}
+    </div>
+{% endblock %}

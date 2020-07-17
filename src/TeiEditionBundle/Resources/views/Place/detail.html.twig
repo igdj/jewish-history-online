@@ -1,0 +1,101 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% import '@TeiEdition/Shared/helper.html.twig' as helper %}
+{% import '@TeiEdition/Shared/map-leaflet.html.twig' as map %}
+
+{% block head %}
+    {{ map.head() }}
+{% endblock %}
+
+{% block body %}
+    {% set path = place.path %}
+    {% if path is not empty %}
+    <div class="smaller">
+        {% for child in path %}
+        <a href="{% if child.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : child.tgn }) }}{% else %}{{ path('place', { 'id' : child.id }) }}{% endif %}">
+        {{ child.nameLocalized(app.request.locale) }}
+        </a>
+        {% if not loop.last %} &gt; {% endif %}
+    {% endfor %}
+    </div>
+    {% endif %}
+    <h1>
+        {{ place.nameLocalized(app.request.locale) }}
+    </h1>
+    <div class="row">
+        <div class="col-sm-8">
+        {% if place.children|length > 0 %}
+            {% set childrenByType = place.getChildrenByType() %}
+            {% for type, children in childrenByType %}
+            <h3>{{ type|placeTypeLabel(children|length)|trans }}</h3>
+            <ul>
+                {% for child in childrenByType[type] %}
+                <li><a href="{% if child.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : child.tgn }) }}{% else %}{{ path('place', { 'id' : child.id }) }}{% endif %}">
+                    {{ child.nameLocalized(app.request.locale) }}
+                </a></li>
+                {% endfor %}
+            </ul>
+            {% endfor %}
+        {% endif %}
+
+        {{ helper.list_entity_mentioned_in(place.articleReferences(app.request.locale)) }}
+
+        {% if persons is not empty %}
+        <h3>{{ 'person.oneormany'|trans({ 'count': persons|length }) }}</h3>
+        <ul>
+        {% for person in persons %}
+            <li>
+                {{ helper.person_list_item(person) }}
+            </li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+
+        </div>
+
+        <div class="col-sm-4 sidebar">
+            {% if place.geo is not empty or place.additional.boundary is not empty %}
+            <div id="map" class="col-sm-12" style="width: 100%; min-height: 360px"></div>
+            <script>
+            function adjustMapSize() {
+                /*
+                $('#map').height(function(index, height) {
+                    return window.innerHeight - $(this).offset().top;
+                });
+                */
+            }
+
+            $( window ).resize(adjustMapSize);
+            adjustMapSize();
+
+            var map = L.map('map');
+
+            var bounds = null;
+            {% if place.additional.bounds is not empty %}
+                bounds = {{ place.additional.bounds|json_encode|raw }};
+            {% elseif place.geo is not null %}
+                {% if place.showCenterMarker %}
+                    L.marker([ {{ place.geo }} ]).addTo(map);
+                    map.setView([{{ place.geo }}], {{ place.defaultZoomlevel }});
+                {% else %}
+                    map.setView([{{ place.geo }}], 3);
+                {% endif %}
+            {% endif %}
+
+            {{ map.addTileLayer() }}
+
+            {% if place.additional.boundary is not empty %}
+                var boundary = {{ place.additional.boundary|json_encode|raw }};
+                var geojsonLayer = L.geoJSON(boundary).addTo(map);
+                if (bounds == null) {
+                    bounds = geojsonLayer.getBounds();
+                }
+            {% endif %}
+            if (bounds != null) {
+                map.fitBounds(bounds);
+            }
+            </script>
+            {% endif %}
+        </div>
+    </div><!-- .row -->
+{% endblock %}

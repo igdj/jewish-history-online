@@ -1,0 +1,44 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% import '@TeiEdition/Shared/helper.html.twig' as helper %}
+{% import '@TeiEdition/Shared/entity-lookup.html.twig' as entityLookup %}
+{% import '@TeiEdition/Shared/map-leaflet.html.twig' as map %}
+
+{% block head %}
+    {{ map.head() }}
+
+    {# TODO: move to some shared style-sheet #}
+    <style>
+    .article img.img-responsive {
+        max-height: 800;
+        width: auto;
+    }
+    </style>
+
+    {{ entityLookup.head(entity_lookup, bibitem_lookup, glossary_lookup) }}
+
+    <script>
+        $( document ).ready(function() {
+            initEntityGlossaryNote('.article');
+            initEntityGlossaryNote('.source-description');
+        });
+    </script>
+    <link href="{{ app.request.basepath }}/vendor/bootstrap3_player/bootstrap3_player.css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    <h1>{{ name }}</h1>
+    <div class="row">
+        <div id="image-viewer-container" class="col-xs-12 col-md-9">
+            <div id="media-viewer">
+                {{ html|raw }}
+                <script src="{{ app.request.basepath }}/vendor/bootstrap3_player/bootstrap3_player.js"></script>
+            </div>
+            {{ helper.source_description_footer(name, article, description, license) }}
+        </div><!-- .col -->
+
+        <div class="col-xs-12 col-md-3 sidebar">
+            {{ helper.source_sidebar(article, description, interpretations, related) }}
+        </div>
+    </div>
+{% endblock %}

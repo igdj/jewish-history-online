@@ -1,0 +1,117 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% import '@TeiEdition/Shared/helper.html.twig' as helper %}
+
+{% block head %}
+    <script src="{{ app.request.basepath }}/js/seealso.js"></script>
+    <script>
+        var service = new SeeAlsoCollection();
+        service.services = {
+            'gkdaks' : new SeeAlsoService('https://beacon.findbuch.de/seemore/gnd-aks/-dewp@wd/-jgo-hsd-organisationen')
+        };
+        service.views = {
+            'seealso-ul' : new SeeAlsoUL({
+                linkTarget: '_blank',
+                maxItems: 100
+            })
+        };
+        service.replaceTagsOnLoad();
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h1>
+        {{ organization.nameLocalized(app.request.locale) }}
+    </h1>
+    <div class="row">
+        <div class="col-sm-8">
+            <dl>
+            {% if organization.foundingPlace is not empty or organization.foundingDate is not empty %}
+                <dt>{{ 'Founded'|trans }}:</dt>
+                <dd>
+                    {{ organization.foundingPlace }}
+                    {{ organization.foundingDate|dateincomplete }}
+                </dd>
+            {% endif %}
+            {% if organization.precedingOrganization is not null %}
+                <dt>{{ 'Predecessor'|trans }}:</dt>
+                <dd>
+                    <a href="{% if organization.precedingOrganization.gnd is not empty %}{{ path('organization-by-gnd', { 'gnd' : organization.precedingOrganization.gnd }) }}{% else %}{{ path('organization', { 'id' : organization.precedingOrganization.id }) }}{% endif %}">{{ organization.precedingOrganization.nameLocalized(app.request.locale) }}</a>
+                </dd>
+            {% endif %}
+            {% if organization.dissolutionPlace is not empty or organization.dissolutionDate is not empty %}
+                <dt>{{ 'Dissolved'|trans }}:</dt>
+                <dd>
+                    {{ organization.dissolutionPlace }}
+                    {{ organization.dissolutionDate|dateincomplete }}
+                </dd>
+            {% endif %}
+            {% if organization.succeedingOrganization is not null %}
+                <dt>{{ 'Successor'|trans }}:</dt>
+                <dd>
+                    <a href="{% if organization.succeedingOrganization.gnd is not empty %}{{ path('organization-by-gnd', { 'gnd' : organization.succeedingOrganization.gnd }) }}{% else %}{{ path('organization', { 'id' : organization.succeedingOrganization.id }) }}{% endif %}">{{ organization.succeedingOrganization.nameLocalized(app.request.locale) }}</a>
+                </dd>
+            {% endif %}
+            {% if organization.url is not empty %}
+                <dt>{{ 'Homepage'|trans }}:</dt>
+                <dd>
+                    <a href="{{ organization.url }}" target="_blank">{{ organization.url|prettifyurl }}</a>
+                </dd>
+            {% endif %}
+            </dl>
+
+            <p>{{ organization.description[app.request.locale]|nl2br  }}</p>
+
+            {% set sources = organization.providerOf(app.request.locale) %}
+            {% if sources is not empty %}
+                <h3>{{ 'source.oneormany'|trans({ 'count': sources|length }) }}</h3>
+                <ul>
+                    {% for article in sources %}
+                    <li>{{ helper.article_linked(article) }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {{ helper.list_entity_mentioned_in(organization.articleReferences(app.request.locale)) }}
+        </div>
+
+        <div class="col-sm-4 sidebar">
+            {% set entityfacts = organization.__get('entityfacts') %}
+            {% if entityfacts is not empty %}
+                {% if entityfacts.organization.depiction is defined %}
+                        <a href="{{ entityfacts.organization.depiction.url }}" target="_blank">
+                            <img src="{{ entityfacts.organization.depiction.image }}" itemprop="image" style="max-width: 100%; margin-bottom: 5px;" />
+                        </a><br />
+                        Quelle:  <a href="{{ entityfacts.organization.depiction.url }}" target="_blank">Wikimedia</a><br />
+                        Informationen zum Lizenzstatus dieser Abbildung können durch Anklicken der Abbildung abgerufen werden.
+                {% endif %}
+            {% endif %}
+            {% if organization.gnd is not empty %}
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>{{ 'Integrated Authority File'|trans }}
+                        <br /><a href="http://d-nb.info/gnd/{{ organization.gnd }}" target="_blank">{{ organization.gnd }}</a>
+                        </h4>
+                    </div>
+                </div>
+
+                <div class="row box-color-content-inverse">
+                    {% if organization.additional.beacon is not empty %}
+                    <div class="col-sm-12 beacon-ul">
+                        <ul>
+                            {% for info in organization.additional.beacon %}
+                            <li><a href="{{ info.url }}" target="_blank">{{ info.description }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    <div class="col-sm-12">
+                        <div title="{{ organization.gnd }}" class="gkdaks seealso-ul"></div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div><!-- .row -->
+{% endblock %}

@@ -1,0 +1,276 @@
+<!doctype html>
+<html class="no-js" lang="{{ app.request.getLocale() }}{% if 'en' == app.request.getLocale() %}-us{% endif %}"
+      prefix="og: http://ogp.me/ns# profile: http://ogp.me/ns/profile# place: http://ogp.me/ns/place# books: http://ogp.me/ns/books#">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+        {% if pageTitle is defined %}
+            {{ pageTitle }} |
+        {% endif %}
+        {{ siteName|trans }}
+        </title>
+        {# see https://github.com/mnater/Hyphenopoly#usage-browser #}
+        <script type="text/javascript">
+            var Hyphenopoly = {
+                require: {
+                    "de": "Silbentrennungsalgorithmus",
+                    "en-us": "Supercalifragilisticexpialidocious"
+                },
+                setup: {
+                    selectors: {
+                        ".dta-p": {}
+                    }
+                }
+            };
+        </script>
+        <script src="{{ app.request.basepath }}/vendor/Hyphenopoly-4.5.0/Hyphenopoly_Loader.js" type="text/javascript"></script>
+
+        {% if pageMeta is defined %}
+            {% if pageMeta.og is defined %}
+                {% for prop, val in pageMeta.og %}
+                    {% if val is iterable %}
+                        {% for single_val in val %}
+        <meta property="{{ prop }}" content="{{ single_val }}">
+                        {% endfor %}
+                    {% else %}
+        <meta property="{{ prop }}" content="{{ val }}">
+                    {% endif %}
+                {% endfor %}
+                {% if pageMeta.og['og:url'] is defined %}
+        <link rel="canonical" href="{{ pageMeta.og['og:url'] }}">
+                {% endif %}
+            {% endif %}
+            {% if pageMeta.twitter is defined %}
+                {% for prop, val in pageMeta.twitter %}
+                    {% if val is iterable %}
+                        {% for single_val in val %}
+        <meta name="{{ prop }}" content="{{ single_val }}">
+                        {% endfor %}
+                    {% else %}
+        <meta name="{{ prop }}" content="{{ val }}">
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% if pageMeta.jsonLd is defined %}
+        <script type="application/ld+json">
+            {{ pageMeta.jsonLd|json_encode|raw }}
+        </script>
+            {% endif %}
+        {% elseif pageTitle is defined %}
+        <meta property="og:title" content="{{ pageTitle }}">
+        {% endif %}
+
+        <script>
+        if (!String.prototype.startsWith) {
+            // Polyfill for IE 11
+            String.prototype.startsWith = function(searchString, position) {
+                position = position || 0;
+                return this.indexOf(searchString, position) === position;
+            };
+        }
+        </script>
+        <script src="{{ app.request.basepath }}/js/jquery-3.3.1.min.js"></script>
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="{{ app.request.basepath }}/vendor/bootstrap-3.4.0-dist/css/bootstrap.min.css">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="{{ app.request.basepath }}/vendor/bootstrap-3.4.0-dist/js/bootstrap.min.js"></script>
+
+        <!-- Search suggest -->
+        <script src="{{ app.request.basepath }}/js/bootstrap3-typeahead.js"></script>
+
+        {#
+            triggers scssphp, this one doesn't prepend app.request.basepath
+            since it overrides \Symfony\Bridge\Twig\Extension\AssetExtension
+            and doesn't prepend $this->getBasePath().ltrim($versionedPath, '/')
+            as in Symfony\Component\Asset\PathPackage
+        #}
+        <link href="{{ app.request.basepath }}{{ asset('css/base.css') }}" rel="stylesheet">
+
+        <style>
+        @media print {
+            /* http://drupal.stackexchange.com/a/59908*/
+            a[href]:after {
+                content: none;
+            }
+        }
+        </style>
+        {% block head %}{% endblock %}
+
+        <script>
+        $(document).ready(function() {
+            // show back to top arrow upon scroll
+            $(window).scroll(function () {
+                    if ($(this).scrollTop() > 50) {
+                        $('#back-to-top').fadeIn();
+                    } else {
+                        $('#back-to-top').fadeOut();
+                    }
+            });
+            // scroll body to 0px on click
+            $('#back-to-top').click(function () {
+                // $('#back-to-top').tooltip('hide');
+                $('body,html').animate({
+                    scrollTop: 0
+                }, 800);
+
+                return false;
+            });
+
+            // typeahead for search
+            var $input = $('#header-search');
+            $input.typeahead({
+                autoSelect: true,
+                minLength: 3,
+                delay: 100,
+                source: function (query, process) {
+                    $.ajax({
+                        url: '{{ path('search-suggest') }}',
+                        data: { q: query },
+                        dataType: 'json'
+                    })
+                    .done(function(response) {
+                        return process(response);
+                    });
+                }
+            });
+            $input.change(function() {
+                var current = $input.typeahead('getActive');
+                if (current) {
+                    // Some item from your model is active!
+                    if (current.name == $input.val()) {
+                        // This means the exact match is found. Use toLowerCase() if you want case insensitive match.
+                        window.location = current.url;
+                    }
+                    else {
+                        // This means it is only a partial match, you can either add a new item
+                        // or take the active if you don't want new items
+                    }
+                }
+                else {
+                    // Nothing is active so it is a new value (or maybe empty value)
+                }
+            });
+        });
+        </script>
+    </head>
+
+    <body role="document" class="route-{{ app.request.get('_route') | replace({'_' : '-'}) }}">
+        <div id="displaybox" style="display: none;">
+            <a href="#" style="display: block; position: absolute; top: 8px; right: 8px;" onclick="$('#displaybox').toggle(); return false;"><svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="2em" width="2em" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m31.6 10.7l-9.3 9.3 9.3 9.3-2.3 2.3-9.3-9.3-9.3 9.3-2.3-2.3 9.3-9.3-9.3-9.3 2.3-2.3 9.3 9.3 9.3-9.3z"></path></g></svg></a>
+            <div id="displayBoxContent" style="background-color: white; margin-top: 2em; margin-left: auto; margin-right: auto; width: 90%; height: 90%; overflow: auto;"></div>
+        </div>
+        <header>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12" style="position: relative">
+                        <div style="position: absolute; right: 18px; z-index: 100">
+                            {{ knp_menu_render('top') }}
+                            {% if app.request.attributes.get("_route") is not null %}
+                            <ul id="menu-lang" class="list-inline">
+                            {% for locale in [ 'de', 'en' ] %}
+                                <li{% if locale == app.request.locale %} class="current"{% endif %}>
+                                    {% if route_params_locale_switch is not empty and route_params_locale_switch[locale] is defined %}
+                                        {% set route_params = route_params_locale_switch[locale] %}
+                                    {% else %}
+                                        {% set route_params = app.request.attributes.get('_route_params')|merge(app.request.query.all) %}
+                                    {% endif %}
+                                    <a href="{{ path(app.request.attributes.get('_route'), route_params|merge({"_locale": locale})) }}">{{ locale }}</a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                            {% endif %}
+                            <a class="hidden-xs" href="http://www.igdj-hh.de/" target="_blank" rel="noopener">
+                                <img src="{{ app.request.basepath }}/img/igdj.png" style="margin-left: 60px; width: 80px; height: auto" alt="{{ 'Institute for the History of the German Jews'|trans }}" />
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-sm-12" id="site-name">
+                        <h1>
+                            <a href="{{ path('home') }}">{{ siteName|trans }}</a><br />
+                            <a href="{{ path('home') }}" style="font-size: 14px; font-weight: normal">{{ 'A Digital Source Edition'|trans }}</a>
+                        </h1>
+                    </div>
+                    <div class="col-sm-9">
+                        {{ knp_menu_render('main') }}
+                    </div>
+                    <div id="header-search-wrapper" class="col-sm-3 hidden-xs">
+                        <form action="{{ path('search-index') }}" method="post">
+                            <div class="form-group has-feedback" style="margin-bottom: 0">
+                            <input autocomplete="off" id="header-search" name="q" type="text" placeholder="{{ 'Search'|trans }}" />
+                            <i style="margin-top: -2px; pointer-events: inherit" onclick=" $(this).closest('form').submit()" class="glyphicon glyphicon-search form-control-feedback"></i>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        {% block contenttop %}
+        {% embed '@TeiEdition/Default/contenttop_skeleton.html.twig' %}{% endembed %}
+        {% endblock %}
+
+        {% block contentcontainer %}
+        <div class="container wrapper">
+        {% block body %}{% endblock %}
+        </div>
+        {% endblock %}
+
+        <footer>
+            {% if twitterSite is not empty %}
+            <div id="footer-social" class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-12" style="z-index: 1; text-align: center">
+                    <a class="twitter" target="_blank" href="https://twitter.com/{{ twitterSite }}" title="@{{ twitterSite }}" rel="noopener"> </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            <div id="footer-navigation" class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-3" style="z-index: 1">
+                        {% set menu = knp_menu_get('main', [], {'position': 'footer'}) %}
+                        {{ knp_menu_render(menu) }}
+                    </div>
+                    <div class="col-xs-6 col-sm-3" style="z-index: 1">
+                        {% set menu = knp_menu_get('top', [], {'position': 'footer', 'part': 'left'}) %}
+                        {{ knp_menu_render(menu) }}
+                    </div>
+                    <div class="col-xs-6 col-sm-2" style="z-index: 1">
+                        {% set menu = knp_menu_get('top', [], {'position': 'footer', 'part': 'right'}) %}
+                        {{ knp_menu_render(menu) }}
+                    </div>
+                    <div id="footer-dfg" class="col-sm-4">
+                        <a href="https://gepris.dfg.de/gepris/projekt/396810798?language={{ app.request.locale }}" target="_blank" rel="noopener">
+                            <img src="{{ app.request.basepath }}/img/dfg.png" style="width: 165px; height: auto" alt="Deutsche Forschungsgemeinschaft" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <a id="back-to-top" href="#" class="btn btn-lg back-to-top" role="button" title="{{ 'Click to return to the top of the page'|trans }}" data-toggle="tooltip" data-placement="left"><span class="glyphicon glyphicon-chevron-up"></span></a>
+        {% block javascripts %}{% endblock %}
+
+        {% if piwikSiteId is not empty %}
+        <!-- Piwik -->
+        <script type="text/javascript">
+            var _paq = _paq || [];
+            _paq.push(['setDomains', ['*.juedische-geschichte-online.net','*.jewish-history-online.net']]);
+            _paq.push(['trackPageView']);
+            _paq.push(['enableLinkTracking']);
+
+            (function() {
+                var u='//juedische-geschichte-online.net/piwik/';
+                _paq.push(['setTrackerUrl', u+'piwik.php']);
+                _paq.push(['setSiteId', {{ piwikSiteId }}]);
+                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+            })();
+        </script>
+        <noscript><p><img src="//juedische-geschichte-online.net/piwik/piwik.php?idsite={{ piwikSiteId }}" style="border:0;" alt="" /></p></noscript>
+        <!-- End Piwik Code -->
+        {% endif %}
+    </body>
+</html>

@@ -1,0 +1,153 @@
+{% extends app.request.attributes.get('_route') == 'date-chronology-partial'
+    ? '@TeiEdition/Default/partial.html.twig'
+    : '@TeiEdition/Default/base.html.twig'
+%}
+{% import '@TeiEdition/Shared/helper.html.twig' as helper %}
+
+{% set embedded = app.request.attributes.get('_route') == 'date-chronology-partial' %}
+
+{% block head %}
+    <script src="{{ app.request.basepath }}/vendor/waypoints/jquery.waypoints.min.js"></script>
+    <script src="{{ app.request.basepath }}/vendor/waypoints/shortcuts/sticky.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var sticky = new Waypoint.Sticky({
+                element: $('#epoch-navigation')[0],
+                handler: function(direction) {
+                    resizeStuck();
+                }
+            });
+
+            function resizeStuck() {
+                $('.stuck').width($('#epoch-navigation').parent().width() - 32);
+            }
+
+            $(window).on('resize', resizeStuck);
+
+            {% if not embedded %}
+            // activate sidebar menu based on scroll
+            // see https://stackoverflow.com/a/9980042
+
+            // Cache selectors
+            var lastId,
+                menu = $('#epoch-navigation'),
+                menuHeight = 5,
+                // All list items
+                menuItems = menu.find('h5 > a[href^="#"]'),
+                // Anchors corresponding to menu items
+                scrollItems = menuItems.map(function() {
+                    var item = $($(this).attr('href'));
+                    if (item.length) { return item; }
+                });
+
+            $(window).scroll(function(){
+                // Get container scroll position
+                var fromTop = $(this).scrollTop();
+
+                // Get id of current scroll item
+                var cur = scrollItems.map(function(){
+                  if ($(this).offset().top-menuHeight+1 < fromTop)
+                    return this;
+                });
+                // Get the id of the current element
+                cur = cur[cur.length-1];
+                var id = cur && cur.length ? cur[0].id : "";
+
+                //code
+                if (lastId !== id) {
+                    lastId = id;
+                    // Set/remove active class
+                    var items = menuItems
+                        .parent()
+                        .removeClass("active");
+
+                    if (id != "") {
+                        items
+                            .end()
+                            .filter("[href='#"+id+"']")
+                            .parent()
+                            .addClass("active");
+                    }
+                }
+            });
+            {% endif %}
+
+        });
+    </script>
+    <style>
+        .stuck {
+            position: fixed;
+            margin-left: 0px;
+            padding-left: 15px;
+            top: 0;
+        }
+
+        #epoch-navigation h5.active a {
+            color: #3da2da;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% if not embedded %}
+    <h1>{{ 'Chronology'|trans }}</h1>
+    {% endif %}
+    <div class="row stickem-container">
+        <div class="col-xs-12 {% if not embedded %}col-md-9{% endif %}">
+        {# styles: see http://stackoverflow.com/questions/19089384/twitter-bootstrap-3-two-columns-full-height #}
+            <div id="timeline" class="container-fluid">
+    {% if articles is not empty %}
+        {% set last_epoch = '' %}
+        {% set epochs = [] %}
+        {% for source in articles %}
+            {% set epochLabel = source.epochLabel %}
+            {% if epochLabel[0] != last_epoch %}
+                {% if last_epoch != '' %}
+                    </div>
+                </div>
+                {% endif %}
+                <div class="row">
+                    <div class="col-sm-2 hidden-xs epoch-label">
+                        <h4 id="{{ epochLabel[0] }}">{{ epochLabel[0]|epoch(epochLabel[1]) }}</h4>
+                    </div>
+                    <div class="col-xs-12 col-sm-10 epoch-content">
+                {% set last_epoch = epochLabel[0] %}
+                {% set epochs = epochs|merge([epochLabel])%}
+            {% endif %}
+            {{ helper.source_box(source, embedded) }}
+        {% endfor %}
+                    </div>
+                </div><!-- .row -->
+    {% else %}
+            Es wurden keine Quellen gefunden
+    {% endif %}
+            </div><!-- #timeline -->
+        </div><!-- .col-xs-12 col-md-9 -->
+        <div class="col-md-3 hidden-sm hidden-xs sidebar">
+    {% if not embedded and epochs is not empty %}
+            <div id="epoch-navigation" class="container-fluid box" style="background-color: white;  z-index: 1">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>{{ 'Go to'|trans }}</h4>
+                    </div>
+                </div>
+                <div class="row box-color-content">
+                    <div class="col-sm-12">
+        {% for epochLabel in epochs %}
+                <h5><a href="#{{ epochLabel[0] }}">{{ epochLabel[0]|epoch(epochLabel[1]) }}</a></h5>
+        {% endfor %}
+                    </div>
+                </div>
+            </div>
+    {% endif %}
+        </div>
+    </div><!-- .row -->
+    {% if embedded %}
+    <script>
+        // on-demand image loading for chronology
+        var bLazy = new Blazy({
+            container: '#chronology'
+        });
+    </script>
+    {% endif %}
+{% endblock %}

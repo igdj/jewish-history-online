@@ -1,0 +1,176 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% import '@TeiEdition/Shared/helper.html.twig' as helper %}
+{% import '@TeiEdition/Shared/map-leaflet.html.twig' as map %}
+
+{% block head %}
+    {{ map.head() }}
+    <script src="{{ app.request.basepath }}/js/seealso.js"></script>
+    <script>
+        var service = new SeeAlsoCollection();
+        service.services = {
+            'pndaks' : new SeeAlsoService('https://beacon.findbuch.de/seealso/pnd-aks/-lemo@ap/-jgo-hsd-personen')
+        };
+        service.views = {
+            'seealso-ul' : new SeeAlsoUL({
+                linkTarget: '_blank',
+                maxItems: 100
+            })
+        };
+        service.replaceTagsOnLoad();
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h1>
+        {{ person.fullname(true) }}
+    </h1>
+    <div class="row">
+        <div class="col-sm-8">
+            <dl>
+            {% set birthPlace = person.birthPlaceInfo(app.request.locale) %}
+            {% if birthPlace is not empty or person.birthDate is not empty %}
+                <dt>{{ 'Born'|trans }}:</dt>
+                <dd>
+                    {{ person.birthDate|dateincomplete -}}
+                    {% if birthPlace is not empty %}{% if person.birthDate is not empty %}{{- ',' }}{% endif %}
+                        {% if birthPlace.id is not empty %}
+                            <a href="{% if birthPlace.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : birthPlace.tgn }) }}{% else %}{{ path('place', { 'id' : birthPlace.id }) }}{% endif %}">
+                            {{ birthPlace['name'] }}
+                            </a>
+                        {% else %}
+                            {{ birthPlace['name'] }}
+                        {% endif %}
+                    {% endif %}
+                </dd>
+            {% endif %}
+            {% set deathPlace = person.deathPlaceInfo(app.request.locale) %}
+            {% if deathPlace is not empty or person.deathDate is not empty %}
+                <dt>{{ 'Died'|trans }}:</dt>
+                <dd>
+                    {{ person.deathDate|dateincomplete -}}
+                    {% if deathPlace is not empty %}{% if person.deathDate is not empty %}{{- ',' }}{% endif %}
+                        {% if deathPlace.id is not empty %}
+                            <a href="{% if deathPlace.tgn is not empty %}{{ path('place-by-tgn', { 'tgn' : deathPlace.tgn }) }}{% else %}{{ path('place', { 'id' : deathPlace.id }) }}{% endif %}">
+                            {{ deathPlace['name'] }}
+                            </a>
+                        {% else %}
+                            {{ deathPlace['name'] }}
+                        {% endif %}
+                    {% endif %}
+                </dd>
+            {% endif %}
+            {% if person.url is not empty %}
+                <dt>{{ 'Homepage'|trans }}:</dt>
+                <dd>
+                    <a href="{{ person.url }}" target="_blank">{{ person.url|prettifyurl }}</a>
+                </dd>
+            {% endif %}
+            </dl>
+
+            <p>{{ person.description[app.request.locale]|converturls|nl2br  }}</p>
+            {% set articles = person.articles(app.request.locale) %}
+            {% if articles|length > 0 %}
+            <h3>{{ 'article.oneormany'|trans({ 'count': articles|length }) }}</h3>
+            <ul>
+            {% for article in articles %}
+                <li>
+                    {{ helper.article_linked(article) }}
+                </li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+
+            {{ helper.list_entity_mentioned_in(person.articleReferences(app.request.locale, articles)) }}
+        </div>
+
+        <div class="col-sm-4 sidebar">
+            {% set entityfacts = person.entityfacts %}
+            {% if entityfacts is not empty %}
+                {% if entityfacts.person.depiction is defined %}
+                        <a href="{{ entityfacts.person.depiction.url }}" target="_blank">
+                            <img src="{{ entityfacts.person.depiction.image }}" itemprop="image" style="max-width: 100%; margin-bottom: 5px;" />
+                        </a><br />
+                        Quelle:  <a href="{{ entityfacts.person.depiction.url }}" target="_blank">Wikimedia</a><br />
+                        Informationen zum Lizenzstatus dieser Abbildung können durch Anklicken der Abbildung abgerufen werden.
+                {% endif %}
+            {% endif %}
+
+            {% if false and (birthPlace.geo is not empty or deathPlace.geo is not empty) %}
+            <div id="map" class="col-sm-12" style="width: 100%; min-height: 360px; border-bottom: 20px solid white;"></div>
+
+            <script>
+            function adjustMapSize() {
+                /*
+                $('#map').height(function(index, height) {
+                    return window.innerHeight - $(this).offset().top;
+                });
+                */
+            }
+
+            $( window ).resize(adjustMapSize);
+            adjustMapSize();
+
+            var map = L.map('map');
+
+            {% if birthPlace.geo is not empty and deathPlace.geo is not empty and birthPlace.geo != deathPlace.geo %}
+            map.fitBounds([ [ {{ birthPlace.geo }} ],
+                            [ {{ deathPlace.geo }} ] ]);
+            L.marker([ {{ birthPlace.geo }} ]).addTo(map);
+            L.marker([ {{ deathPlace.geo }} ]).addTo(map);
+            {% else %}
+            map.setView([{% if birthPlace.geo is not empty %}{{ birthPlace.geo }}{% else %}{{ deathPlace.geo }}{% endif %}], 10);
+            L.marker([ {% if birthPlace.geo is not empty %}{{ birthPlace.geo }}{% else %}{{ deathPlace.geo }}{% endif %} ]).addTo(map)
+            {% endif %}
+
+            {{ map.addTileLayer() }}
+            </script>
+            {% endif %}
+
+            {% if person.gnd is not empty or person.djh is not empty or person.stolpersteine is not empty %}
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4>
+                            {% if person.gnd is not empty %}
+                            {{ 'Integrated Authority File'|trans }}
+                            <br /><a href="http://d-nb.info/gnd/{{ person.gnd }}" target="_blank">{{ person.gnd }}</a>
+                            {% else %}
+                            {{ 'Additional Information'|trans }}
+                            {% endif %}
+                        </h4>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse">
+                    {% if person.djh is not empty or person.stolpersteine is not empty or person.additional.beacon is not empty %}
+                    <div class="col-sm-12 beacon-ul">
+                        <ul>
+                            {% if person.djh is not empty %}
+                            <li>
+                                <a href="http://www.dasjuedischehamburg.de/inhalt/{{ person.djh|url_encode }}" target="_blank">„Das Jüdische Hamburg“</a>
+                            </li>
+                            {% endif %}
+                            {% if person.stolpersteine is not empty %}
+                            <li>
+                                <a href="http://www.stolpersteine-hamburg.de//?MAIN_ID=7&BIO_ID={{ person.stolpersteine }}" target="_blank">Stolpersteine Hamburg</a>
+                            </li>
+                            {% endif %}
+                            {% if person.additional.beacon is not empty %}
+                                {% for info in person.additional.beacon %}
+                            <li><a href="{{ info.url }}" target="_blank">{{ info.description }}</a></li>
+                                {% endfor %}
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    {% if person.gnd is not empty %}
+                    <div class="col-sm-12">
+                        <div title="{{ person.gnd }}" class="pndaks seealso-ul"></div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div><!-- .row -->
+{% endblock %}

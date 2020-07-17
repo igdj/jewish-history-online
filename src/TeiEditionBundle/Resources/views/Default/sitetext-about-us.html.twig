@@ -1,0 +1,26 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-8">
+            <h2>{{ title|trans }}</h2>
+            {{ content|raw }}
+        </div>
+
+        <div class="col-sm-4 sidebar">
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4><a href="{{ path('about-staff') }}">{{ 'About us'|trans }}</a></h4>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse menu">
+                    <div class="col-sm-12">
+                    {% set about = knp_menu_get('top', [ 'about-us' ]) %}
+                    {{ knp_menu_render(about) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

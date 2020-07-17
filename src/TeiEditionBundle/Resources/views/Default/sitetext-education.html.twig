@@ -1,0 +1,28 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-8">
+            <h2>{{ title|trans }}</h2>
+            {{ content|raw }}
+        </div>
+
+        <div class="col-sm-4 sidebar">
+            <div class="container-fluid box">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4><a href="{{ path('education-index') }}">{{ 'Teaching Resources'|trans }}</a></h4>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse menu">
+                    <div class="col-sm-12">
+                    <ul>
+                        <li><a href="{{ path('about-educationguidelines') }}">{{ 'Guidelines for the Use of Materials'|trans }}</a></li>
+                        <li><a href="{{ path('about-educationsourceinterpretation') }}">{{ 'Information on Source Interpretation for Students'|trans }}</a></li>
+                    </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

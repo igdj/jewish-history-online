@@ -1,0 +1,16 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% import '@TeiEdition/Shared/helper.html.twig' as helper %}
+
+{% block body %}
+    <h1>{{ pageTitle }}</h1>
+    <div class="row">
+        <div class="col-sm-12">
+            <ul>
+                <li><a href="{{ path('person-by-year') }}">Persons by Year of Birth / Death</a></li>
+                <li>Persons by <a href="{{ path('person-by-birthplace') }}">Place of Birth</a> / <a href="{{ path('person-by-deathplace') }}">Place of Death</a></a></li>
+                <li><a href="{{ path('person-birth-death') }}">Life Paths</a></li>
+            </ul>
+        </div>
+    </div><!-- .row -->
+{% endblock %}
