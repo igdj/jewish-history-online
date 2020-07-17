@@ -15,7 +15,6 @@ set_time_limit(0);
  * @var Composer\Autoload\ClassLoader $loader
  */
 $loader = require __DIR__.'/../config/autoload.php';
-require_once __DIR__.'/../src/MicroKernel.php';
 
 $input = new ArgvInput();
 $env = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: 'dev');
@@ -25,6 +24,6 @@ if ($debug) {
     Debug::enable();
 }
 
-$kernel = new MicroKernel($env, $debug);
+$kernel = new \App\MicroKernel($env, $debug);
 $application = new Application($kernel);
 $application->run($input);
