@@ -8,6 +8,14 @@ services:
             $siteTheme: '%app.site_theme%'
             $dbconnAdmin: '@dbconn.admin'
             
+
+    # makes classes in src/App available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    # together with the above _defaults, this is needed for Command-classes to work as in Sf 3.4
+    App\:
+        resource: '%kernel.project_dir%/src/App'
+        exclude: '%kernel.project_dir%/src/App/{Entity,Migrations,Tests}'
+        
     # makes classes in src/TeiEditionBundle available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     # together with the above _defaults, this is needed for Command-classes to work as in Sf 3.4
@@ -34,20 +42,17 @@ services:
                     collate: '%database.charset%_unicode_ci'
                     engine:  MyISAM     # InnoDB
 
-    twig.extra.string:
-        class: Twig\Extra\String\StringExtension
+    Twig\Extra\String\StringExtension:
         tags:
             - { name: twig.extension }
 
     # language-specific layout in 404
-    app.language.kernel_request_listener:
-        class: TeiEditionBundle\EventListener\LanguageListener
+    App\EventListener\LanguageListener:
         tags:
           - { name: kernel.event_listener, event: kernel.exception, method: setLocale }
 
     # theme selection
-    app.theme_request.kernel_request_listener:
-        class: TeiEditionBundle\EventListener\ThemeRequestListener
+    App\EventListener\ThemeRequestListener:
         arguments: ['@sylius.repository.theme', '@sylius.theme.context.settable']
         tags:
         - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
@@ -75,7 +80,7 @@ services:
     TeiEditionBundle\Utils\SimplifyGeojsonProcessor:
         arguments:    [ "%app.simplify_geojson.processor.arguments%" ]
 
-    TeiEditionBundle\Menu\Builder:
+    App\Menu\Builder:
         arguments: [ "@knp_menu.factory", "@translator.default", "@request_stack", "@router"  ]
         tags:
             # The alias is what is used to retrieve the menu

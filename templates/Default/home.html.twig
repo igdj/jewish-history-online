@@ -1,0 +1,293 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% import '@TeiEdition/Shared/map-leaflet.html.twig' as map %}
+
+{% block head %}
+    {{ map.head() }}
+    {{ map.head_markercluster() }}
+
+    <script>
+    // see https://www.jquery-az.com/boots/demo.php?ex=8.0_4
+    $( document ).ready(function() {
+        $( '.carousel[data-type="multi"] .item' ).each(function(){
+            var next = $( this ).next();
+            if (!next.length) {
+                next = $( this ).siblings(':first');
+            }
+
+            next.children(':first-child').clone().appendTo($( this ));
+
+            for (var i = 0; i < 2; i++) {
+                next = next.next();
+                if (!next.length) {
+                    next = $( this ).siblings(':first');
+                }
+                next.children(':first-child').clone().appendTo($( this ));
+            }
+        });
+    });
+    </script>
+
+    <style>
+        .exhibition-img {
+            vertical-align: top;
+        }
+
+        @media (min-width: 1200px ) {
+            .exhibition-img {
+                vertical-align: bottom;
+            }
+        }
+
+        /* topic-carousel */
+
+        @media (min-width: 992px ) {
+            .carousel-inner .active.left {
+                left: -25%;
+            }
+            .carousel-inner .next {
+                left:  25%;
+            }
+            .carousel-inner .prev {
+                left: -25%;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 991px ) {
+            .carousel-inner .active.left {
+                left: -33.3%;
+            }
+            .carousel-inner .next {
+                left:  33.3%;
+            }
+            .carousel-inner .prev {
+                left: -33.3%;
+            }
+            .active > div:first-child {
+                display:block;
+            }
+            .active > div:first-child + div {
+                display:block;
+            }
+            .active > div:last-child {
+                display:none;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .carousel-inner .active.left {
+                left: -100%;
+            }
+            .carousel-inner .next {
+                left:  100%;
+            }
+            .carousel-inner .prev {
+                left: -100%;
+            }
+            .active > div {
+                display:none;
+            }
+            .active > div:first-child {
+                display:block;
+            }
+        }
+
+        #topic .carousel-control.left, #topic .carousel-control.right {
+            background-image: none !important;
+            filter: none !important;
+            opacity: 1 !important;
+            color: #e0e0e0;
+        }
+
+        #topic .carousel-control.left:hover, #topic .carousel-control.right:hover {
+            color: #fff;
+        }
+        </style>
+{% endblock %}
+
+{% block contenttop %}
+{% embed '@TeiEdition/Default/contenttop_skeleton.html.twig' %}
+
+{% block carousel %}
+    <div class="row">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel"   data-interval="10000">
+            <!-- Indicators
+            <ol class="carousel-indicators">
+              <li data-target="#carousel-example-generic" data-slide-to="0" class="active hidden-xs"></li>
+              <li data-target="#carousel-example-generic" data-slide-to="1" class="hidden-xs"></li>
+            </ol>
+            -->
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+              <div class="item active">
+                <img src="{{ app.request.basepath }}/img/carousel/home.jpg" alt="" style="width: 100%; height: auto; min-height: 90px;">
+                    <!--
+                <div class="carousel-caption">
+
+                  <h4><a target="_blank" href="http://igdj-hh.de/event-details-kopie/feierlicher-jubilaeums-empfang-zum-50-geburtstag-das-igdj-wird-digital.html">Feierlicher Jubiläums-Empfang: „Zum 50. Geburtstag: Das IGdJ wird digital“</a></h4>
+                </div>-->
+              </div>
+              <!--
+              <div class="item">
+                <img src="{{ app.request.basepath }}/img/carousel/schaechten.jpg" alt="Neue Quelle" style="width: 100%; height: auto; min-height: 90px;">
+                <div class="carousel-caption">
+                  <h4><a href="{{ path('source', { 'uid' : 'jgo:source-15' }) }}">Neue Quelle: Schreiben an Schlachthof- und Viehmarktverwaltung</a></h4>
+                </div>
+              </div>
+              -->
+              <!--
+              <div class="item">
+                <img src="{{ app.request.basepath }}/img/carousel/filmclub.jpg" alt="Filmclub" style="width: 100%; height: auto; min-height: 90px;">
+                <div class="carousel-caption">
+                  <h4 style="background-color: black; opacity:0.9;">Filmclub: Donnerstag, 18.02.2016 19.00 Uhr
+      GOD’S NEIGHBORS - HA-MASHGIHIM</h4>
+                </div>
+              </div>
+              -->
+            </div><!-- .carousel-inner -->
+
+            <!-- Controls -->
+            <!--
+            <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+              <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+            -->
+        </div><!-- .carousel -->
+    </div>
+{% endblock %}
+
+{% endembed %}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div id="col-main" class="col-sm-8">
+            <div class="container-fluid">
+                <h4>{{ 'Welcome'|trans }}</h4>
+                <div class="two-columns justify-hyphens">
+                    {% if 'en' == app.request.locale %}
+                        <p class="dta-p"><a href="{{ path('about') }}">About this edition...</a></p>
+                    {% else %}
+                        <p><a href="{{ path('about') }}">Informationen über diese Edition...</a></p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="container-fluid box">
+                <div class="row box-header" style="background-color: #970376">
+                    <div class="col-sm-12">
+                        <h4><a href="{{ path('topic-index') }}">{{ 'Topics'|trans }}</a></h4>
+                    </div>
+                </div>
+                <div class="row box-content" id="topic">
+                    <div class="container-fluid">
+                        <div class="carousel row" data-ride="carousel" data-type="multi" data-interval="6000" id="topic-carousel">
+                            <div class="carousel-inner">
+                            {% for slug,topicDescr in topics %}
+                                <div class="item{% if loop.first %} active{% endif %}">
+                                    <div class="col-md-3 col-sm-4 col-xs-12 topic">
+                                        {% if topicDescr.article is not empty %}
+                                        <a href="{{ path('topic-background', { 'slug' : topicDescr.article }) }}">
+                                        {% endif %}
+                                            <h5 style="white-space: normal; font-size: 13px;">
+                                                <div class="topic-label">{{ topicDescr.label }}</div>
+                                            </h5>
+                                            <img src="{{ asset('img/topic/' ~ slug ~ '.jpg') }}" style="width: 100%; height: auto" />
+                                        {% if topicDescr.article is not empty %}
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            </div>
+                            <a class="left carousel-control" href="#topic-carousel" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
+                            <a class="right carousel-control" href="#topic-carousel" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid box">
+                <div class="row box-header" style="background-color: #f29000">
+                    <div class="col-sm-12">
+                        <h4><a href="{{ path('place-map') }}">{{ 'Map'|trans }}</a></h4>
+                    </div>
+                </div>
+                <div class="row box-content">
+                    <div id="map">
+                        <div id="map-container">
+                            <div id="map" style="width: 100%; min-height: 320px"></div>
+                            <script>
+                            $( document).ready(function () {
+                                showMap();
+                            });
+
+                            {{ map.showMap(bounds, markers) }}
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid box">
+                <div class="row box-header" style="background-color: #3da2da">
+                    <div class="col-sm-12">
+                        <h4><a href="{{ path('date-chronology') }}">{{ 'Chronology'|trans }}</a></h4>
+                    </div>
+                </div>
+                <div class="row box-content">
+                    <div id="chronology" data-url="{{ path('date-chronology-partial') }}" style="max-height: 320px; overflow-y: scroll; overflow-x: hidden">
+                        {{ 'Loading...' | trans }}
+                        <script>
+                            var chronologyLoaded = false;
+
+                            $( document).ready(function () {
+                                if (!chronologyLoaded) {
+                                    var pane = $( '#chronology' );
+                                    var url = pane.attr("data-url");
+
+                                    // ajax load from data-url
+                                    $( pane ).load(url,function(result){
+                                        chronologyLoaded = true;
+                                    });
+                                }
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4 sidebar">
+            {% if news is not empty %}
+            <div class="container-fluid box top-buffer">
+                <div class="row box-color-title">
+                    <div class="col-sm-12">
+                        <h4><a href="{{ path('about-news') }}">{{ 'Project News'|trans }}</a></h4>
+                    </div>
+                </div>
+                <div class="row box-color-content-inverse menu">
+                    <div class="col-sm-12">
+                    <ul>
+                    {% for article in news %}
+                        <li>
+                            {% if loop.last and loop.index >= 4 %}
+                            <a href="{{ path('about-news') }}#{{ article.slug }}">{{ 'More'|trans }} &gt;</a>
+                            {% else %}
+                            <b><a href="{{ path('about-news') }}#{{ article.slug }}">{{ article.name|raw }}</b> ({{ article.datePublished|dateincomplete }})
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                    </ul>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

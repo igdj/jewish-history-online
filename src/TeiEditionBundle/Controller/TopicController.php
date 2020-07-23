@@ -13,6 +13,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class TopicController
 extends RenderTeiController
 {
+    /* TODO: inject these topics */
     static $TOPICS = [
         'Demographics and Social Structure',
         'Education and Learning',
@@ -44,7 +45,7 @@ extends RenderTeiController
             $translator->setLocale($locale);
         }
 
-        foreach (\TeiEditionBundle\Controller\TopicController::$TOPICS as $label) {
+        foreach (self::$TOPICS as $label) {
             if (/** @Ignore */ $translator->trans($label) == $topic) {
                 $topic = $label;
                 break;

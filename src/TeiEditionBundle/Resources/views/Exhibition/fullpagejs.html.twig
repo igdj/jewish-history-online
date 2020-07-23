@@ -1,0 +1,410 @@
+{% macro head() %}
+    <!-- as an example, see
+        https://artsandculture.google.com/exhibit/CAICnOLtC0lDLg?hl=de
+
+        bootstrap integration: http://demo.w3developer.de/fullpage
+    -->
+
+	<!-- https://alvarotrigo.com/fullPage/ -->
+    <link rel="stylesheet" type="text/css" href="{{ app.request.basepath }}/vendor/jquery.fullpage/jquery.fullpage.min.css" />
+    <script type="text/javascript" src="{{ app.request.basepath }}/vendor/jquery.fullpage/jquery.fullpage-customized.js"></script>
+    <script type="text/javascript" src="{{ app.request.basepath }}/vendor/jquery.fullpage/scrolloverflow.min.js"></script>
+
+	<!-- fancybox with zoom, see https://stackoverflow.com/a/9930800 -->
+	<link rel="stylesheet" type="text/css" href="{{ app.request.basepath }}/vendor/fancybox-2.1.7/jquery.fancybox.css" />
+	<script type="text/javascript" src="{{ app.request.basepath }}/vendor/fancybox-2.1.7/jquery.fancybox.pack.js"></script>
+	<script type="text/javascript" src="{{ app.request.basepath }}/vendor/elevatezoom/jquery.elevateZoom-3.0.8.min.js"></script>
+	<style type="text/css">
+		.zoomContainer { z-index: 100000; }
+	</style>
+	<script type="text/javascript">
+    $(document).ready(function() {
+		$('.fancybox').fancybox({
+			afterShow: function() {
+				$('.fancybox-image').elevateZoom({
+					zoomType: "lens",
+					lensShape: "square", // alternative is round
+					lensSize: 300
+				});
+			},
+			beforeClose: function() {
+				$.removeData($('.fancybox-image'), 'elevateZoom');
+				$('.zoomContainer').remove();
+			}
+		});
+    });
+    </script>
+
+	<!-- http://lokeshdhakar.com/projects/lightbox2/ -->
+    <link href="{{ app.request.basepath }}/vendor/lightbox2/css/lightbox.css" rel="stylesheet">
+    <script src="{{ app.request.basepath }}/vendor/lightbox2/js/lightbox.js"></script>
+    <script>
+    lightbox.option({
+        'albumLabel': '{{ 'Image %1 of %2'|trans }}' /*,
+        'resizeDuration': 200,
+        'wrapAround': true */
+    })
+    </script>
+
+    <script>
+	/*
+	 * For the following see https://stackoverflow.com/a/25295500
+	 *
+	 * Needs a customized jquery.fullpage with landscapeScroll made public through
+	 *             FP.landscapeScroll = landscapeScroll;
+	 */
+	$.fn.fullpage.scrollDefault = function(section, slide) {
+		if (typeof slide != 'undefined') {
+			// .fp-slides corresponds to SLIDES_WRAPPER_SEL =    '.' + SLIDES_WRAPPER
+			var slides = section.find('.fp-slides');
+			var destiny = slides.find('[data-anchor="'+slide+'"]');
+
+			if (!destiny.length){
+				destiny = slides.find('.slide').eq(slide);
+			}
+			if (destiny.length){
+				$.fn.fullpage.landscapeScroll(slides, destiny);
+			}
+		}
+	};
+
+	// youtube-on demand loading
+    $(document).ready(function() {
+		var youtube = document.querySelectorAll( ".youtube" );
+
+		for (var i = 0; i < youtube.length; i++) {
+			var source = "https://img.youtube.com/vi/"
+				+ youtube[i].dataset.embed
+				+ "/0.jpg" // "/sddefault.jpg"
+				;
+
+			var image = new Image();
+			image.src = source;
+			image.addEventListener( "load", function() {
+				youtube[ i ].appendChild( image );
+			}( i ) );
+
+			youtube[i].addEventListener( "click", function() {
+				var iframe = document.createElement( "iframe" );
+
+				iframe.setAttribute( "frameborder", "0" );
+				iframe.setAttribute( "allowfullscreen", "" );
+				iframe.setAttribute( "src", "https://www.youtube.com/embed/" + this.dataset.embed +"?rel=0&showinfo=0&autoplay=1" );
+
+				this.innerHTML = "";
+				this.appendChild( iframe );
+			});
+		};
+    });
+    </script>
+
+    <style>
+    header {
+		position: fixed;
+        width: 100%;
+		z-index: 9;
+	}
+
+	/* avoid flickr on load, see https://stackoverflow.com/a/41940938 */
+	html,body, #fullpage{
+		height:100%;
+	}
+	.section, .slide{
+		height: 100%;
+	}
+
+	#fp-nav .fp-tooltip {
+		font-weight: bold;
+		color: #ccc;
+		text-shadow: 1px 1px 1px black;
+	}
+
+	#fp-nav ul li a span {
+		background-color: rgb(61, 162, 218);
+		height: 6px;
+		width: 6px;
+	    margin: -3px 0 0 -3px;
+	}
+
+	#fp-nav.right {
+	   right: 0px;
+	}
+
+	.fp-controlArrow.fp-next {
+		right: 25px;
+	}
+
+	.fp-tableCell .container {
+		position: relative;
+	}
+
+	.go-to-section-overview {
+		position: absolute;
+		left: 20px;
+		bottom: 75px;
+	}
+
+	.tooltip-inner {
+	    max-width: 350px;
+	}
+
+	ul.section-toc {
+		list-style-type: none;
+	}
+
+	ul.section-toc li a {
+		color: white;
+		font-weight: bold;
+		text-shadow: 1px 1px 4px #070E44;
+	}
+
+	ul.section-toc.hi-contrast li a {
+		color: white;
+		font-weight: bold;
+		text-shadow: 4px 4px 4px #000;
+	}
+
+	ul.two-columns {
+		columns: 2;
+		-webkit-columns: 2;
+		-moz-columns: 2;
+	}
+
+	ul.two-columns li {
+		break-inside: avoid-column; /* IE 11 */
+		-webkit-column-break-inside: avoid;
+		page-break-inside: avoid; /* Firefox */
+	}
+
+	.credits {
+		font-size: smaller;
+	}
+
+	/* info-tooltips */
+	span.article-info {
+		color: white;
+		margin-right: 0.6em;
+	}
+
+	.fp-slides h3 {
+		font-size: 20px;
+		margin-top: 0;
+	}
+
+    /* see https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_overlay_text */
+	#displaybox {
+		position: fixed;
+		display: none;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: rgba(0,0,0,0.7);
+		z-index: 120; /* #fp-nav has 100 */
+		cursor: pointer;
+	}
+
+    .footer {
+		padding-top: 1em;
+        padding-bottom: 4em;
+		text-align: center;
+    }
+
+    .intro p {
+        font-size: 14px;
+    }
+
+    .container.fullheight {
+        display: table;
+        width: 100%;
+        height: 100%;
+        margin-top: 18px; /* for fixed header */
+        margin-bottom: -20px;
+        padding: 50px 0 0 0; /* set left/right padding according to needs */
+        box-sizing: border-box;
+    }
+
+    .fullheight .row {
+        height: 100%;
+        display: table-row;
+    }
+
+    .fullheight .row .no-float {
+		display: table-cell;
+		float: none;
+    }
+
+	.box {
+		text-align: left;
+		/* color: #808080; */
+		font-size: 1.2em;
+		line-height: 1.6em;
+	}
+
+    .box-right {
+        padding-left: 20%;
+        padding-right: 10%;
+    }
+
+    #section-home h1 {
+        margin-left: 10%;
+        font-size: 6em;
+        font-weight: 900;
+        color: #fff;
+        text-shadow: 1px 1px 4px #070E44;
+    }
+
+    #menu {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        height: 40px;
+        z-index: 70;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    #menu li {
+        display:inline-block;
+        margin: 10px;
+        color: #000;
+        background: #fff;
+        background: rgba(255,255,255, 0.5);
+        -webkit-border-radius: 10px;
+                border-radius: 10px;
+    }
+
+    #menu li:hover {
+        background: rgba(255,255,255, 0.8);
+    }
+
+    #menu li.active {
+        background: #666;
+        background: rgba(0,0,0, 0.5);
+        color: #fff;
+    }
+
+    #menu li.active a:hover {
+        color: #000;
+    }
+
+    #menu li a {
+        text-decoration: none;
+        color: #000;
+    }
+
+    #menu li a,
+    #menu li.active a {
+        padding: 9px 18px;
+        display: block;
+    }
+
+    #menu li.active a {
+        color: #fff;
+    }
+
+    #section-intro .imgsContainer{
+		display: block;
+		position: absolute;
+		z-index: 0;
+		top: -50px;
+		left: -200px;
+        height: 100%;
+	}
+
+    #section-intro .box {
+        top: 6%;
+        left: 43%;
+        padding-right: 10%;
+        position: absolute;
+    }
+
+	.section .vertical-center {
+		height: 100%;
+		position: relative;
+	}
+
+	.section .vertical-center .vertical-center-content {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	/* youtube on-demand loading */
+	.wrapper {
+		/*
+		max-width: 680px;
+		margin: 60px auto;
+		padding: 0 20px;
+		*/
+	}
+
+	.youtube {
+		background-color: #000;
+		/* margin-bottom: 30px; */
+		margin-bottom: 0px;
+		position: relative;
+		/* padding-top: 56.25%; */
+		padding-top: 62.75%;
+		overflow: hidden;
+		cursor: pointer;
+	}
+	.youtube img {
+		width: 100%;
+		/* top: -16.82%; */
+		top: -10.82%;
+		left: 0;
+		opacity: 0.7;
+	}
+	.youtube .play-button {
+		width: 90px;
+		height: 60px;
+		background-color: #333;
+		box-shadow: 0 0 30px rgba( 0,0,0,0.6 );
+		z-index: 1;
+		opacity: 0.8;
+		border-radius: 6px;
+	}
+	.youtube .play-button:before {
+		content: "";
+		border-style: solid;
+		border-width: 15px 0 15px 26.0px;
+		border-color: transparent transparent transparent #fff;
+	}
+	.youtube img,
+	.youtube .play-button {
+		cursor: pointer;
+	}
+	.youtube img,
+	.youtube iframe,
+	.youtube .play-button,
+	.youtube .play-button:before {
+		position: absolute;
+	}
+	.youtube .play-button,
+	.youtube .play-button:before {
+		top: 50%;
+		left: 50%;
+		transform: translate3d( -50%, -50%, 0 );
+	}
+	.youtube iframe {
+		height: 100%;
+		width: 100%;
+		top: 0;
+		left: 0;
+	}
+	</style>
+{% endmacro %}
+
+{% macro youtube(youtubeId, width, height) %}
+	{# <iframe width="{{ width }}" height="{{ height }}" src="https://www.youtube.com/embed/{{ youtubeId }}" frameborder="0" allow="encrypted-media" allowfullscreen s></iframe> #}
+	{# see https://codepen.io/tutsplus/pen/RRVRro #}
+	<div class="wrapper" style="width: {{ width }}px; height: {{ height }}px">
+		<div class="youtube" data-embed="{{ youtubeId }}">
+			<div class="play-button"></div>
+		</div>
+	</div>
+{% endmacro %}
