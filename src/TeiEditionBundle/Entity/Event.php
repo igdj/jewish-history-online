@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Event
 implements \JsonSerializable, JsonLdSerializable
 {
-    use ArticleReferencesTrait;
+    use AlternateNameTrait, ArticleReferencesTrait;
 
     static function formatDateIncomplete($dateStr)
     {
@@ -38,46 +38,6 @@ implements \JsonSerializable, JsonLdSerializable
         }
 
         return $dateStr;
-    }
-
-    public static function ensureSortByPreferredLanguages($assoc, $default = null)
-    {
-        $language_preferred_ordered = [ 'de', 'en' ];
-
-        if (is_null($assoc)) {
-            $assoc = [];
-        }
-
-        foreach ($language_preferred_ordered as $lang) {
-            if (!array_key_exists($lang, $assoc)) {
-                $assoc[$lang] = $default;
-            }
-        }
-
-        // make sure order is as in $language_preferred_ordered
-        uksort($assoc, function($langA, $langB) use ($language_preferred_ordered) {
-            if ($langA == $langB) {
-                return 0;
-            }
-
-            $langOrderA = array_search($langA, $language_preferred_ordered);
-            if (false === $langOrderA) {
-                $langOrderA = 99;
-            }
-            $langOrderB = array_search($langB, $language_preferred_ordered);
-            if (false === $langOrderB) {
-                $langOrderB = 99;
-            }
-
-            return ($langOrderA < $langOrderB) ? -1 : 1;
-        });
-
-        return $assoc;
-    }
-
-    static function stripAt($name)
-    {
-        return preg_replace('/(\s+)@/', '\1', $name);
     }
 
     /**
@@ -97,14 +57,6 @@ implements \JsonSerializable, JsonLdSerializable
      * @ORM\Column(type="integer", nullable=false)
      */
     protected $status = 0;
-
-    /**
-     * @var string An alias for the item.
-     *
-     * @ORM\Column(type="json_array", nullable=true)
-     * @Solr\Field(type="strings")
-     */
-    protected $alternateName;
 
     /**
      * @var string A short description of the item.
@@ -231,30 +183,6 @@ implements \JsonSerializable, JsonLdSerializable
     public function getStatus()
     {
         return $this->status;
-    }
-
-    /**
-     * Sets alternateName.
-     *
-     * @param array|null $alternateName
-     *
-     * @return $this
-     */
-    public function setAlternateName($alternateName)
-    {
-        $this->alternateName = $alternateName;
-
-        return $this;
-    }
-
-    /**
-     * Gets alternateName.
-     *
-     * @return array|null
-     */
-    public function getAlternateName()
-    {
-        return self::ensureSortByPreferredLanguages($this->alternateName, self::stripAt($this->name));
     }
 
     /**

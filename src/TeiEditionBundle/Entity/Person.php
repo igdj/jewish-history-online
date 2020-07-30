@@ -23,6 +23,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Person
 implements \JsonSerializable, JsonLdSerializable, OgSerializable
 {
+    static $ENTITYFACTS_LOCALES = [ 'de', 'en' ];
+
     static function formatDateIncomplete($dateStr)
     {
         if (preg_match('/^\d{4}$/', $dateStr)) {
@@ -834,7 +836,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
      */
     public function setEntityfacts($entityfacts, $locale = 'de')
     {
-        if (in_array($locale, ['de', 'en'])) {
+        if (in_array($locale, self::$ENTITYFACTS_LOCALES)) {
             if (is_null($this->entityfacts)) {
                 $this->entityfacts = [];
             }
@@ -863,7 +865,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
 
         if (!$force_locale) {
             // try to use fallback
-            foreach ( ['de', 'en'] as $locale) {
+            foreach (self::$ENTITYFACTS_LOCALES as $locale) {
                 if (array_key_exists($locale, $this->entityfacts)) {
                     return $this->entityfacts[$locale];
                 }
