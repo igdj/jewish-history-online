@@ -66,18 +66,20 @@ extends \TeiEditionBundle\Controller\BaseController
         $exhibition = self::$EXHIBITIONS[$slug];
 
         $localeSwitch = [];
-        if ('en' == ($locale = $request->getLocale())) {
-            foreach ([ 'de' ] as $alternateLocale) {
-                $translator->setLocale($alternateLocale);
-                $localeSwitch[$alternateLocale] = [
-                    'slug' => /** @Ignore */$translator->trans($slug),
-                ];
+        if ($this->getParameter('fallback_locale') == ($locale = $request->getLocale())) {
+            foreach ($this->getParameter('locales') as $alternateLocale) {
+                if ($locale != $alternateLocale) {
+                    $translator->setLocale($alternateLocale);
+                    $localeSwitch[$alternateLocale] = [
+                        'slug' => /** @Ignore */$translator->trans($slug),
+                    ];
+                }
             }
 
             $translator->setLocale($locale);
         }
         else {
-            $localeSwitch['en'] = [ 'slug' => $slug ];
+            $localeSwitch[$this->getParameter('fallback_locale')] = [ 'slug' => $slug ];
         }
 
         return $this->render('Exhibition/'

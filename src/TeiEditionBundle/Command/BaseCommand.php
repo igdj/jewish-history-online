@@ -382,6 +382,7 @@ extends Command
             switch ($prefix) {
                 case 'tgn':
                     var_dump($prefix . ':' . $value);
+
                     $geo = \TeiEditionBundle\Utils\GeographicalData::fetchByIdentifier($prefix . ':' . $value);
                     if (empty($geo) || empty($geo->preferredName)) {
                         var_dump($geo);

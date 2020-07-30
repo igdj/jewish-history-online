@@ -393,7 +393,7 @@ extends ArticleController
 
         foreach ($result as $sourceArticle) {
             $locale = \TeiEditionBundle\Utils\Iso639::code3to1($sourceArticle->getLanguage());
-            if (in_array($locale, [ 'en', 'de' ])) {
+            if (in_array($locale, $this->getParameter('locales'))) {
                 $translator->setLocale($locale);
                 $content = $this->renderView('@TeiEdition/Article/readme-' . $locale . '.txt.twig',
                                              [ 'meta' => $sourceArticle ]);
@@ -714,10 +714,10 @@ extends ArticleController
     public function tei2htmlAction($path)
     {
         $parts = explode('/', $path, 2);
-        $lang = 'de';
+        $locale = $this->getParameter('default_locale');
 
-        if (preg_match('/^tei\/(translation|transcription)\.(de|en|yi|yl|ja|la|sv|pt)\/(page\-(\d+)(\.xml))$/', $parts[1], $matches)) {
-            $lang = $matches[2];
+        if (preg_match('/^tei\/(translation|transcription)\.([a-z][a-z])\/(page\-(\d+)(\.xml))$/', $parts[1], $matches)) {
+            $locale = $matches[2];
             $page = $matches[3];
         }
         else {
@@ -728,7 +728,7 @@ extends ArticleController
         $uid = preg_replace('/[^0-9a-zA-Z_\-\:]/', '', $parts[0]);
         if (preg_match('/(article|source)\-(\d+)/', $uid, $matches)) {
             $fname = sprintf('%s-%05d.%s',
-                             $matches[1], $matches[2], $lang);
+                             $matches[1], $matches[2], $locale);
         }
         $fname .= '.xml';
 
@@ -740,7 +740,7 @@ extends ArticleController
 
         $html = 'TODO: A problem occured';
         if (!empty($targetDir)) {
-            $pagesPath = 'pages.' . $lang;
+            $pagesPath = 'pages.' . $locale;
             if (!is_dir($targetDir . '/' . $pagesPath)) {
                 mkdir($targetDir . '/' . $pagesPath);
             }
@@ -771,7 +771,7 @@ extends ArticleController
                 $params = [
                     'locateXmlResource' => false,
                     'params' => [
-                        'lang' => \TeiEditionBundle\Utils\Iso639::code1To3($lang), // localize labels in xslt
+                        'lang' => \TeiEditionBundle\Utils\Iso639::code1To3($locale), // localize labels in xslt
                     ],
                 ];
 

@@ -185,20 +185,22 @@ extends RenderTeiController
         }
 
         $localeSwitch = [];
-        if ('en' == $locale) {
-            foreach ([ 'de' ] as $alternateLocale) {
-                $translator->setLocale($alternateLocale);
-                $localeSwitch[$alternateLocale] = [
-                    'slug' => $this->slugify(/** @Ignore */ $translator->trans($topics[$slug])),
-                ];
+        if ($this->getParameter('fallback_locale') == $locale) {
+            foreach ($this->getParameter('locales') as $alternateLocale) {
+                if ($locale != $alternateLocale) {
+                    $translator->setLocale($alternateLocale);
+                    $localeSwitch[$alternateLocale] = [
+                        'slug' => $this->slugify(/** @Ignore */ $translator->trans($topics[$slug])),
+                    ];
+                }
             }
             $translator->setLocale($locale);
         }
         else {
-            // find corresponding english slug
+            // find corresponding slug for fallback_locale
             foreach (self::$TOPICS as $topicLabel) {
                 if ($topics[$slug] == /** @Ignore */ $translator->trans($topicLabel)) {
-                    $localeSwitch['en'] = [ 'slug' => $this->slugify($topicLabel) ];
+                    $localeSwitch[$this->getParameter('fallback_locale')] = [ 'slug' => $this->slugify($topicLabel) ];
                     break;
                 }
             }

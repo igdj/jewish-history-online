@@ -3,7 +3,6 @@
 
 namespace TeiEditionBundle\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,7 +18,7 @@ use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
  * Meta command that calls article:* commands in a single run.
  */
 class ArticleRefreshCommand
-extends Command
+extends BaseCommand
 {
     protected function configure()
     {
@@ -108,7 +107,8 @@ extends Command
             return 1;
         }
 
-        if (!in_array($langIso2, [ 'de', 'en' ])) {
+        // TODO: switch to LanguageStrategy (since not every locale might have a translation)
+        if (!in_array($langIso2, $this->getParameter('locales'))) {
             // alternate source languages don't have a article-entity that needs to be updated
             return 0;
         }

@@ -170,7 +170,7 @@
                             {{ knp_menu_render('top') }}
                             {% if app.request.attributes.get("_route") is not null %}
                             <ul id="menu-lang" class="list-inline">
-                            {% for locale in [ 'de', 'en' ] %}
+                            {% for locale in locales %}
                                 <li{% if locale == app.request.locale %} class="current"{% endif %}>
                                     {% if route_params_locale_switch is not empty and route_params_locale_switch[locale] is defined %}
                                         {% set route_params = route_params_locale_switch[locale] %}

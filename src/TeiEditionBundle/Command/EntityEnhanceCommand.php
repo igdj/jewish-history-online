@@ -170,7 +170,7 @@ extends BaseCommand
         $gndBeacon = $this->loadGndBeacon();
 
         $personRepository = $this->em->getRepository('\TeiEditionBundle\Entity\Person');
-        $persons = $personRepository->findBy([ 'status' => [0, 1] ]);
+        $persons = $personRepository->findBy([ 'status' => [ 0, 1 ] ]);
         foreach ($persons as $person) {
             $persist = false;
             $gnd = $person->getGnd();
@@ -187,8 +187,9 @@ extends BaseCommand
 
             $additional = $person->getAdditional();
             if (is_null($additional) || !array_key_exists('wikidata', $additional)) {
-                foreach ([ 'de' /*, 'en' */ ] as $locale) {
+                foreach ([ $this->getParameter('default_locale') ] as $locale) {
                     $wikidata = \TeiEditionBundle\Utils\BiographicalWikidata::fetchByGnd($gnd, $locale);
+
                     if (!empty($wikidata)) {
                         if (is_null($additional)) {
                             $additional = [];
@@ -205,8 +206,9 @@ extends BaseCommand
                 }
             }
 
-            foreach ([ 'de', 'en' ] as $locale) {
+            foreach ($this->getParameter('locales') as $locale) {
                 $entityfacts = $person->getEntityfacts($locale, true);
+
                 if (is_null($entityfacts)) {
                     $url = sprintf('http://hub.culturegraph.org/entityfacts/%s', $gnd);
                     $result = $this->executeJsonQuery($url, [
@@ -348,6 +350,8 @@ extends BaseCommand
                 $this->flushEm($this->em);
             }
         }
+
+        return 0;
     }
 
     protected function enhancePlace()
@@ -494,6 +498,8 @@ extends BaseCommand
                 }
             }
         }
+
+        return 0;
     }
 
     protected function enhanceOrganization()
@@ -581,6 +587,8 @@ extends BaseCommand
             }
         }
         */
+
+        return 0;
     }
 
     protected function enhanceCountry()
@@ -648,6 +656,8 @@ extends BaseCommand
                 }
             }
         }
+
+        return 0;
     }
 
     protected function enhanceBibitem()
@@ -708,5 +718,7 @@ extends BaseCommand
                 $this->flushEm($this->em);
             }
         }
+
+        return 0;
     }
 }

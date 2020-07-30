@@ -121,7 +121,7 @@ extends BaseCommand
                     $topics = [];
                     foreach ($terms as $term) {
                         /** @Ignore */
-                        $topics[] = $translator->trans(\TeiEditionBundle\Controller\TopicController::lookupLocalizedTopic($term['name'], $translator, 'de')); // db-terms in German
+                        $topics[] = $translator->trans(\TeiEditionBundle\Controller\TopicController::lookupLocalizedTopic($term['name'], $translator, 'de')); // The admin-database stores the terms in German, so look them up from this locale
                     }
 
                     // set primary topic according to editor
@@ -215,11 +215,13 @@ extends BaseCommand
                     $data['topic'] = $topics;
                 }
 
-                if ('en' == $translator->getLocale() && !empty($result['slug'])) {
-                    $data['slug'] = $result['slug'];
+                $key_slug = 'slug';
+                if ('en' == $translator->getLocale()) {
+                    $key_slug .= '_' . $translator->getLocale();
                 }
-                else if ('de' == $translator->getLocale() && !empty($result['slug_de'])) {
-                    $data['slug'] = $result['slug_de'];
+
+                if (!empty($result[$key_slug])) {
+                    $data['slug'] = $result[$key_slug];
                 }
 
                 $dates = [];

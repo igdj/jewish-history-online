@@ -1,4 +1,5 @@
 <?php
+
 namespace TeiEditionBundle\Utils;
 
 class GeographicalData
@@ -36,7 +37,8 @@ class GeographicalData
             $num_triples = $graph->parse($content);
         }
         catch (\EasyRdf\Exception $e) {
-            throw new \Exception(sprintf('Problem executing query %s: %s', $query, $e->getMessage()));
+            throw new \Exception(sprintf('Problem executing query %s: %s',
+                                         $query, $e->getMessage()));
         }
 
         return $graph;
@@ -70,8 +72,8 @@ class GeographicalData
                         $collect[] = $value;
                     }
                 }
-                $values[$target] = $collect;
 
+                $values[$target] = $collect;
             }
             else if ($count == 1) {
                 $property = $resource->get($key);
@@ -87,9 +89,10 @@ class GeographicalData
     }
 
     //
-    static function fetchByIdentifier($identifier)
+    static function fetchByIdentifier($identifier, $preferredLocale = 'de')
     {
         $parts = preg_split('/\:/', $identifier, 2);
+
         if ('tgn' == $parts[0]) {
             \EasyRdf\RdfNamespace::set('gvp', 'http://vocab.getty.edu/ontology#');
             $url = sprintf('http://vocab.getty.edu/%s/%s', $parts[0], $parts[1]);
@@ -139,7 +142,7 @@ class GeographicalData
             else {
                 foreach ($prefLabels as $prefLabel) {
                     $lang = $prefLabel->getLang();
-                    if (empty($preferredName) || 'de' == $lang) {
+                    if (empty($preferredName) || $preferredLocale == $lang) {
                         $preferredName = $prefLabel->getValue();
                         $values['preferredName'] = $preferredName;
                     }
@@ -406,7 +409,6 @@ class GeographicalData
                         'lat' => 'latitude', 'long' => 'longitude',
                     ],
                     'geo');
-
             }
 
             // echo $schemaPlace->dump();
@@ -416,7 +418,7 @@ class GeographicalData
         }
         else if ('gnd' == $parts[0]) {
             // incomplete - currently just looking for geonames
-                        // sameAs
+            // sameAs
             $gndIdentifier = $resource->get('gnd:gndIdentifier');
             if (!is_null($gndIdentifier)) {
                 $place->gnd = $gndIdentifier->getValue();
@@ -425,8 +427,6 @@ class GeographicalData
             foreach ($resource->allResources('owl:sameAs') as $sameAs) {
                 $place->sameAs[] = $sameAs->getUri();
             }
-
-            // echo $graph->dump();
         }
 
         return $place;

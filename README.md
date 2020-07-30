@@ -3,8 +3,8 @@ Web-site http://jewish-history-online.net/
 
 This is the code base for the presentation of the site. Since certain
 assumptions concerning the bilingual presentation of all the content (de / en)
-or the set of licenses used are currently hardwired, this code is not
-yet intended for out-of-the-box re-use by other projects.
+[TODO: Develop a language strategy] or the set of licenses used are currently hardwired,
+this code is not yet intended for out-of-the-box re-use by other projects.
 
 You may use it in parts or adjust it to your own need if it fits your needs.
 If you have any questions or find this code helpful, please contact us at
@@ -43,9 +43,14 @@ The XSLT-Stylesheets are based on the files from
 
 Development Notes
 -----------------
-Translate routes
+Translate messages and routes routes
 
-    ./bin/console translation:extract de --dir=./src/ --dir=./app/Resources/AppBundle/views --output-dir=./app/Resources/translations --enable-extractor=jms_i18n_routing
+    ./bin/console translation:extract de --dir=./src/ --output-dir=./translations --enable-extractor=jms_i18n_routing
+
+Theme-specific translations
+
+    ./bin/console translation:extract de --dir=./themes/jgo-presentation/templates --output-dir=./themes/jgo-presentation/translations
+
 
 Update schema
 
