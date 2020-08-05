@@ -29,7 +29,7 @@ extends BaseController
     public function personByYearAction()
     {
         // display the person by birth-year, the catalog-entries by exhibition-year
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $dbconn = $em->getConnection();
         $querystr = "SELECT 'active' AS type, COUNT(*) AS how_many FROM person"
@@ -110,7 +110,7 @@ extends BaseController
             }
         }
 
-        return $this->render('@TeiEdition/Labs:person-by-year.html.twig', [
+        return $this->render('@TeiEdition/Labs/person-by-year.html.twig', [
             'subtitle' => json_encode($subtitle),
             'categories' => json_encode($categories),
             'person_birth' => json_encode(array_values($total['birth'])),
@@ -127,7 +127,7 @@ extends BaseController
         $field = 'person-by-deathplace' == $request->get('_route')
             ? 'deathplace' : 'birthplace';
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $dbconn = $em->getConnection();
         $querystr = "SELECT person.id AS person_id, person.familyName, person.givenName, birthdate, deathdate, COALESCE(place.name) AS place, place.tgn, geo"
                   . " FROM person"
@@ -191,7 +191,7 @@ extends BaseController
      */
     public function personBirthDeathAction(\Symfony\Component\HttpFoundation\Request $request)
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $dbconn = $em->getConnection();
 
@@ -300,7 +300,7 @@ extends BaseController
             $language = \TeiEditionBundle\Utils\Iso639::code1to3($locale);
         }
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $qb = $em->createQueryBuilder();
         $qb->select("P.id, CONCAT(COALESCE(P.givenName,''), ' ', COALESCE(P.familyName, '')) AS name, count(AR.id) AS counter")
             ->from('\TeiEditionBundle\Entity\Person', 'P')
@@ -398,7 +398,7 @@ extends BaseController
             $language = \TeiEditionBundle\Utils\Iso639::code1to3($locale);
         }
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         // select all entities that are in at least two articles
         $dbconn = $em->getConnection();
