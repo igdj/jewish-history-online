@@ -14,7 +14,7 @@ class BiographicalWikidata
     static $WIKIDATA_PROPERTY_MAP = [
         'P19' => 'placeOfBirth',
         'P20' => 'placeOfDeath',
-        'P21' => 'sex',
+        'P21' => 'gender',
         'P569' => 'dateOfBirth',
         'P570' => 'dateOfDeath',
 
@@ -158,7 +158,7 @@ class BiographicalWikidata
     var $viaf = null;
     var $lc_naf = null;
     var $preferredName;
-    var $sex;
+    var $gender;
     var $academicTitle;
     var $dateOfBirth;
     var $placeOfBirth;
