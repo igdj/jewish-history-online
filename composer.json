@@ -91,7 +91,7 @@
         "symfony/security-core": "^5.1",
         "jms/translation-bundle": "^1.5",
 
-        "sylius/theme-bundle": "v2.0.0-alpha.2",
+        "sylius/theme-bundle": "^2.0",
 
         "cocur/slugify": "^4.0",
 
