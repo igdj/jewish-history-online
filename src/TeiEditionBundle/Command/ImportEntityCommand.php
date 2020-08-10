@@ -76,5 +76,7 @@ extends BaseCommand
                 }
             }
         }
+
+        return 0;
     }
 }

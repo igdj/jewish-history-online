@@ -164,7 +164,7 @@ extends BaseCommand
         return $gndBeacon;
     }
 
-    protected function enhancePerson()
+    protected function enhancePerson($refresh = false)
     {
         // currently beacon, entityfacts and wikidata
         $gndBeacon = $this->loadGndBeacon();
@@ -186,7 +186,7 @@ extends BaseCommand
             }
 
             $additional = $person->getAdditional();
-            if (is_null($additional) || !array_key_exists('wikidata', $additional)) {
+            if ($refresh || is_null($additional) || !array_key_exists('wikidata', $additional)) {
                 foreach ([ $this->getParameter('default_locale') ] as $locale) {
                     $wikidata = \TeiEditionBundle\Utils\BiographicalWikidata::fetchByGnd($gnd, $locale);
 
@@ -202,6 +202,25 @@ extends BaseCommand
                         $additional['wikidata'][$locale] = (array)$wikidata;
                         $person->setAdditional($additional);
                         $persist = true;
+                    }
+                }
+            }
+
+            if (!is_null($additional) && array_key_exists('wikidata', $additional)) {
+                $wikidata = $additional['wikidata'][$this->getParameter('default_locale')];
+                // see if there is a birth/death date
+                foreach ([ 'birth', 'death' ] as $property) {
+                    $key = 'dateOf' . ucfirst($property);
+                    if (!empty($wikidata[$key])) {
+                        $method = 'get' . ucfirst($property) . 'Date';
+                        $date = $person->$method();
+                        if (empty($date)) {
+                            echo sprintf("Set %s %s: %s\thttps://www.wikidata.org/wiki/%s",
+                                         $property,
+                                         $wikidata[$key], $person->getId(),
+                                         $wikidata['identifier'])
+                              . "\n";
+                        }
                     }
                 }
             }
