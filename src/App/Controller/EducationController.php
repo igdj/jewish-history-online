@@ -128,7 +128,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
             }
         }
 
-        return $this->render('@TeiEdition/Education/index.html.twig', [
+        return $this->render('Education/index.html.twig', [
             'pageTitle' => $translator->trans('Teaching Resources'),
             'structure' => $structure,
             'sourcesByUid' => $sourcesByUid,
