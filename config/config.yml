@@ -76,6 +76,8 @@ doctrine:
             string_functions:
                 REPLACE:    DoctrineExtensions\Query\Mysql\Replace
                 CAST:       Oro\ORM\Query\AST\Functions\Cast
+            datetime_functions:
+                YEAR:       DoctrineExtensions\Query\Mysql\Year
 
 stof_doctrine_extensions:
     orm:

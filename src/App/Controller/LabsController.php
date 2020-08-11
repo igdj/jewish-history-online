@@ -104,8 +104,8 @@ extends \TeiEditionBundle\Controller\RenderTeiController
                 ];
 
                 for ($i = 1; $i < $smooth; $i++) {
-                    if (isset($data[$year + $smooth][$key])) {
-                        $total[$key][$year]['y'] += $data[$year + $smooth][$key];
+                    if (isset($data[$year + $i][$key])) {
+                        $total[$key][$year]['y'] += $data[$year + $i][$key];
                     }
                 }
             }
@@ -306,6 +306,86 @@ extends \TeiEditionBundle\Controller\RenderTeiController
         // display the static content
         return $this->render('Labs/person-birth-death.html.twig', [
             'dependencies' => $dependencies,
+        ]);
+    }
+
+    /**
+     * @Route("/labs/author-by-age", name="author-by-age")
+     */
+    public function authorByAgeAction(Request $request, TranslatorInterface $translator)
+    {
+        $locale = $request->getLocale();
+        if (!empty($locale)) {
+            $language = \TeiEditionBundle\Utils\Iso639::code1to3($locale);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select("YEAR(A.datePublished) - YEAR(P.birthDate) AS age, P.id, CONCAT(COALESCE(P.givenName,''), ' ', COALESCE(P.familyName, '')) AS name")
+            ->from('\TeiEditionBundle\Entity\Person', 'P')
+            ->join('P.articles', 'A')
+            ->where('P.status IN (0,1)')
+            ->andWhere('P.birthDate IS NOT NULL')
+            ->andWhere('A.datePublished IS NOT NULL')
+            ->andWhere('A.status = 1')
+            ->andWhere('A.language = :language')
+            ->orderBy('age')
+            ;
+
+        $query = $qb
+               ->getQuery();
+        $query->setParameter('language', $language);
+        $results = $query->getResult();
+
+        $minAge = $maxAge = 0;
+        $data = [];
+        foreach ($results as $result) {
+            if (0 == $minAge) {
+                $minAge = $result['age'];
+            }
+
+            if ($result['age'] < $minAge) {
+                $minAge = $result['age'];
+            }
+
+            if ($result['age'] > $maxAge) {
+                $maxAge = $result['age'];
+            }
+
+            if (!array_key_exists($result['age'], $data)) {
+                $data[$result['age']] = [ 'age' => 0 ];
+            }
+
+            ++$data[$result['age']]['age'];
+        }
+
+        $categories = [];
+        $smooth = 5;
+        if (1 != $smooth) {
+            $minAge = $minAge - $minAge % $smooth;
+        }
+
+        $key = 'age';
+        $total = [ $key => [] ];
+        for ($age = $minAge; $age <= $maxAge; $age += $smooth) {
+            $categories[] = 0 == $age % $smooth ? $age : '';
+            $total[$key][$age] = [
+                'name' => $age . ($smooth > 1 ? '-' . ($age + $smooth - 1) : ''),
+                'y' => isset($data[$age][$key])
+                    ? intval($data[$age][$key]) : 0,
+            ];
+
+            for ($i = 1; $i < $smooth; $i++) {
+                if (isset($data[$age + $i][$key])) {
+                    $total[$key][$age]['y'] += $data[$age + $i][$key];
+                }
+            }
+        }
+
+        return $this->render('Labs/author-by-age.html.twig', [
+            'subtitle' => '', // json_encode($subtitle),
+            'categories' => json_encode($categories),
+            'author_age' => json_encode(array_values($total['age'])),
         ]);
     }
 
