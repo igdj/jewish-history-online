@@ -27,7 +27,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
     /**
      * @Route("/labs/person-by-year", name="person-by-year")
      */
-    public function personByYearAction()
+    public function personByYearAction(TranslatorInterface $translator)
     {
         // display the person by birth-year
         $em = $this->getDoctrine()->getManager();
@@ -120,66 +120,105 @@ extends \TeiEditionBundle\Controller\RenderTeiController
     }
 
     /**
-     * @Route("/labs/person-by-birthplace", name="person-by-birthplace")
-     * @Route("/labs/person-by-deathplace", name="person-by-deathplace")
+     * @Route("/labs/person-by-place", name="person-by-place")
      */
-    public function birthDeathPlaces(Request $request)
+    public function birthDeathPlaces(Request $request, TranslatorInterface $translator)
     {
-        $field = 'person-by-deathplace' == $request->get('_route')
-            ? 'deathplace' : 'birthplace';
-
         $em = $this->getDoctrine()->getManager();
         $dbconn = $em->getConnection();
-        $querystr = "SELECT person.id AS person_id, person.familyName, person.givenName, birthdate, deathdate, COALESCE(place.name) AS place, place.tgn, geo"
+        $querystr = "SELECT person.id AS person_id, person.familyName, person.givenName, birthdate, deathdate"
+                  . ", COALESCE(pb.name) AS birthplace_name, pb.tgn AS birthplace_tgn, pb.geo AS birthplace_geo"
+                  . ", COALESCE(pd.name) AS deathplace_name, pd.tgn AS deathplace_tgn, pd.geo AS deathplace_geo"
                   . " FROM person"
-                  . " INNER JOIN place ON person.{$field}_id=place.id"
+                  . " LEFT JOIN place pb ON person.birthplace_id=pb.id"
+                  . " LEFT JOIN place pd ON person.deathplace_id=pd.id"
                   . " WHERE"
                   . " person.status <> -1"
-                  . " ORDER BY tgn, person.familyName, person.givenName"
+                  . " ORDER BY person.familyName, person.givenName"
                   ;
         $stmt = $dbconn->query($querystr);
         $values = [];
         while ($row = $stmt->fetch()) {
-            if (empty($row['geo'])) {
-                continue;
+            foreach ([ 'birth', 'death'] as $type) {
+                $prefix = $type . 'place' . '_';
+
+                $key = $row[$prefix . 'geo'];
+                if (empty($key)) {
+                    continue;
+                }
+
+                if (!array_key_exists($key, $values)) {
+                    $values[$key]  = [
+                        'geo' => $key,
+                        'place' => sprintf('<a href="%s">%s</a>',
+                                           htmlspecialchars($this->generateUrl('place-by-tgn', [
+                                                'tgn' => $row[$prefix . 'tgn'],
+                                           ])),
+                                           htmlspecialchars($row[$prefix . 'name'])),
+                        'persons' => [],
+                        'person_ids' => [ 'birth' => [], 'death' => [] ],
+                    ];
+                }
+
+                if (!in_array($row['person_id'], $values[$key]['person_ids']['birth'])
+                    && !in_array($row['person_id'], $values[$key]['person_ids']['death']))
+                {
+                    $values[$key]['persons'][] = [
+                        'id' => $row['person_id'],
+                        'label' => sprintf('<a href="%s">%s</a>',
+                                           htmlspecialchars($this->generateUrl('person', [
+                                               'id' => $row['person_id'],
+                                           ])),
+                                           htmlspecialchars($row['familyName'] . ', ' . $row['givenName'], ENT_COMPAT, 'utf-8')),
+                    ];
+                }
+
+                $values[$key]['person_ids'][$type][] = $row['person_id'];
             }
-
-            $key = $row['geo'];
-
-            if (!array_key_exists($key, $values)) {
-                $values[$key]  = [
-                    'geo' => $row['geo'],
-                    'place' => sprintf('<a href="%s">%s</a>',
-                                       htmlspecialchars($this->generateUrl('place-by-tgn', [
-                                            'tgn' => $row['tgn'],
-                                       ])),
-                                       htmlspecialchars($row['place'])),
-                    'persons' => [],
-                ];
-            }
-
-            $values[$key]['persons'][] = sprintf('<a href="%s">%s</a>',
-                                                 htmlspecialchars($this->generateUrl('person', [
-                                                    'id' => $row['person_id'],
-                                                ])),
-                                                $row['familyName'] . ', ' . $row['givenName']);
         }
 
         $values_final = [];
+        $maxDisplay = 15;
         foreach ($values as $key => $value) {
+            $idsByType = & $values[$key]['person_ids'];
+
+            $buildRow = function ($entry) use ($idsByType) {
+                $ret = $entry['label'];
+
+                $append = '';
+                if (in_array($entry['id'], $idsByType['birth'])) {
+                    $append .= '*';
+                }
+                if (in_array($entry['id'], $idsByType['death'])) {
+                    $append .= '†';
+                }
+
+                return $ret . ('' !== $append ? ' ' . $append : '');
+            };
+
+            $countEntries = count($value['persons']);
+
+            if ($countEntries <= $maxDisplay) {
+                $entry_list = implode('<br />', array_map($buildRow, $value['persons']));
+            }
+            else {
+                $entry_list = implode('<br />', array_map($buildRow, array_slice($value['persons'], 0, $maxDisplay - 1)))
+                            . sprintf('<br />... (%d more)', $countEntries - ($maxDisplay - 1));
+            }
+
             $latLng = explode(',', $value['geo']);
             $values_final[] = [
                 (double)$latLng[0], (double)$latLng[1],
                 $value['place'],
-                implode('<br />', $value['persons']),
-                count($value['persons']),
+                $entry_list,
+                $count_birth = count($value['person_ids']['birth']),
+                $count_death = count($value['person_ids']['death'])
             ];
         }
 
         // display
         return $this->render('Labs/person-by-place.html.twig', [
-            'pageTitle' => sprintf('Persons by %s Place',
-                                   'birthplace' == $field ? 'Birth' : 'Death'),
+            'pageTitle' => $translator->trans('Persons by Birth / Death Place'),
             'data' => json_encode($values_final),
             'bounds' => [
                 [ 60, -120 ],
