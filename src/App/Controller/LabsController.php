@@ -1,7 +1,8 @@
 <?php
 
-namespace TeiEditionBundle\Controller;
+namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -11,14 +12,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *
  */
 class LabsController
-extends BaseController
+extends \TeiEditionBundle\Controller\RenderTeiController
 {
     /**
      * @Route("/labs", name="labs-index")
      */
     public function indexAction(TranslatorInterface $translator)
     {
-        return $this->render('@TeiEdition/Labs/index.html.twig', [
+        return $this->render('Labs/index.html.twig', [
             'pageTitle' => $translator->trans('Labs'),
         ]);
     }
@@ -28,39 +29,37 @@ extends BaseController
      */
     public function personByYearAction()
     {
-        // display the person by birth-year, the catalog-entries by exhibition-year
+        // display the person by birth-year
         $em = $this->getDoctrine()->getManager();
 
         $dbconn = $em->getConnection();
         $querystr = "SELECT 'active' AS type, COUNT(*) AS how_many FROM person"
                   . " WHERE status >= 0 AND birthdate IS NOT NULL"
-                  // . "  AND sex IS NOT NULL"
                   ;
         $querystr .= " UNION SELECT 'total' AS type, COUNT(*) AS how_many"
                    . " FROM person WHERE status >= 0";
+
         $stmt = $dbconn->query($querystr);
         $subtitle_parts = [];
         while ($row = $stmt->fetch()) {
           if ('active' == $row['type']) {
             $total_active = $row['how_many'];
           }
+
           $subtitle_parts[] = $row['how_many'];
         }
+
         $subtitle = implode(' out of ', $subtitle_parts) . ' persons';
 
         $data = [];
         $max_year = $min_year = 0;
-        foreach (['birth', 'death'] as $key) {
+        foreach ([ 'birth', 'death' ] as $key) {
             $date_field = $key . 'date';
             $querystr = 'SELECT YEAR(' . $date_field . ') AS year'
-                      // . ', sex'
                       . ', COUNT(*) AS how_many'
                       . ' FROM person WHERE status >= 0 AND ' . $date_field . ' IS NOT NULL'
-                      // . ' AND sex IS NOT NULL'
                       . ' GROUP BY YEAR(' . $date_field. ')'
-                      // . ', sex'
                       . ' ORDER BY YEAR(' . $date_field . ')'
-                      //. ', sex'
                       ;
             $stmt = $dbconn->query($querystr);
 
@@ -68,15 +67,19 @@ extends BaseController
                 if (0 == $min_year || $row['year'] < $min_year) {
                     $min_year = $row['year'];
                 }
+
                 if ($row['year'] > $max_year) {
                     $max_year = $row['year'];
                 }
+
                 if (!isset($data[$row['year']])) {
                     $data[$row['year']] = [];
                 }
+
                 if (!array_key_exists($key, $data[$row['year']])) {
                     $data[$row['year']][$key] = 0;
                 }
+
                 $data[$row['year']][$key] += $row['how_many'];
             }
         }
@@ -84,6 +87,7 @@ extends BaseController
         if ($min_year < 1760) {
             $min_year = 1760;
         }
+
         if ($max_year > 2020) {
             $max_year = 2020;
         }
@@ -91,17 +95,14 @@ extends BaseController
         $categories = [];
         $smooth = 5;
         for ($year = $min_year; $year <= $max_year; $year += $smooth) {
-            $categories[] = 0 == $year % 5 ? $year : '';
-            foreach (['birth', 'death',
-                           // 'works',
-                      'works_issued_base', 'works_issued_extended']
-                     as $key)
-            {
+            $categories[] = 0 == $year % $smooth ? $year : '';
+            foreach ([ 'birth', 'death' ] as $key) {
                 $total[$key][$year] = [
                     'name' => $year . ($smooth > 1 ? '-' . ($year + $smooth - 1) : ''),
                     'y' => isset($data[$year][$key])
                         ? intval($data[$year][$key]) : 0,
                 ];
+
                 for ($i = 1; $i < $smooth; $i++) {
                     if (isset($data[$year + $smooth][$key])) {
                         $total[$key][$year]['y'] += $data[$year + $smooth][$key];
@@ -110,7 +111,7 @@ extends BaseController
             }
         }
 
-        return $this->render('@TeiEdition/Labs/person-by-year.html.twig', [
+        return $this->render('Labs/person-by-year.html.twig', [
             'subtitle' => json_encode($subtitle),
             'categories' => json_encode($categories),
             'person_birth' => json_encode(array_values($total['birth'])),
@@ -122,7 +123,7 @@ extends BaseController
      * @Route("/labs/person-by-birthplace", name="person-by-birthplace")
      * @Route("/labs/person-by-deathplace", name="person-by-deathplace")
      */
-    public function birthDeathPlaces(\Symfony\Component\HttpFoundation\Request $request)
+    public function birthDeathPlaces(Request $request)
     {
         $field = 'person-by-deathplace' == $request->get('_route')
             ? 'deathplace' : 'birthplace';
@@ -163,6 +164,7 @@ extends BaseController
                                                 ])),
                                                 $row['familyName'] . ', ' . $row['givenName']);
         }
+
         $values_final = [];
         foreach ($values as $key => $value) {
             $latLng = explode(',', $value['geo']);
@@ -175,7 +177,7 @@ extends BaseController
         }
 
         // display
-        return $this->render('@TeiEdition/Labs/person-by-place.html.twig', [
+        return $this->render('Labs/person-by-place.html.twig', [
             'pageTitle' => sprintf('Persons by %s Place',
                                    'birthplace' == $field ? 'Birth' : 'Death'),
             'data' => json_encode($values_final),
@@ -189,7 +191,7 @@ extends BaseController
     /**
      * @Route("/labs/person-birth-death", name="person-birth-death")
      */
-    public function personBirthDeathAction(\Symfony\Component\HttpFoundation\Request $request)
+    public function personBirthDeathAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -231,6 +233,7 @@ extends BaseController
                     $place_key = 'place.' . $row['country_code'] . '.' . $row['tgn'];
                     $dependencies_by_place[] = $place_key;
                 }
+
                 $place_key = 'place.' . $country_code . '.' . $tgn;
                 $entry = [
                     'name' => $place_key,
@@ -238,6 +241,7 @@ extends BaseController
                     'size' => 1,
                     'imports' => [],
                 ];
+
                 if (!empty($dependencies_by_place)) {
                     $entry['imports'] = $dependencies_by_place;
                 }
@@ -261,7 +265,7 @@ extends BaseController
         }
 
         // display the static content
-        return $this->render('@TeiEdition/Labs/person-birth-death.html.twig', [
+        return $this->render('Labs/person-birth-death.html.twig', [
             'dependencies' => $dependencies,
         ]);
     }
@@ -277,9 +281,11 @@ extends BaseController
                     ? array($src_id, $target_id)
                     : array($target_id, $src_id);
                 $edge_key = join(',', $src_target);
+
                 if (!array_key_exists($edge_key, $edges)) {
                     $edges[$edge_key] = 0;
                 }
+
                 if ($weighted) {
                     $edges[$edge_key] += 1.0 / ($count_shared_ids - 1);
                 }
@@ -293,7 +299,7 @@ extends BaseController
     /**
      * @Route("/labs/person-gdf", name="person-gdf")
      */
-    public function personGdfAction(\Symfony\Component\HttpFoundation\Request $request)
+    public function personGdfAction(Request $request)
     {
         $locale = $request->getLocale();
         if (!empty($locale)) {
@@ -365,6 +371,7 @@ extends BaseController
                 $persons[] = $person_id;
             }
         }
+
         if (count($persons) > 1) {
             $this->setEdges($edges, $persons);
         }
@@ -374,8 +381,8 @@ extends BaseController
             $ret .= join(',', [$edge_key, $edge_count]) . "\n";
         }
 
-        return new \Symfony\Component\HttpFoundation\Response($ret, \Symfony\Component\HttpFoundation\Response::HTTP_OK,
-                                                              [ 'Content-Type' => 'text/plain; charset=UTF-8' ]);
+        return new Response($ret, Response::HTTP_OK,
+                            [ 'Content-Type' => 'text/plain; charset=UTF-8' ]);
     }
 
     protected function buildNode($type, $id)
@@ -391,7 +398,7 @@ extends BaseController
     /**
      * @Route("/labs/article-gdf", name="article-gdf")
      */
-    public function articleGdfAction(\Symfony\Component\HttpFoundation\Request $request)
+    public function articleGdfAction(Request $request)
     {
         $locale = $request->getLocale();
         if (!empty($locale)) {
@@ -491,7 +498,7 @@ extends BaseController
             $ret .= join(',', [ $edge_key, count($names), implode('; ', $names) ]) . "\n";
         }
 
-        return new \Symfony\Component\HttpFoundation\Response($ret, \Symfony\Component\HttpFoundation\Response::HTTP_OK,
-                                                              [ 'Content-Type' => 'text/plain; charset=UTF-8' ]);
+        return new Response($ret, Response::HTTP_OK,
+                            [ 'Content-Type' => 'text/plain; charset=UTF-8' ]);
     }
 }
