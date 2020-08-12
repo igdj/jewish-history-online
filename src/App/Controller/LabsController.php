@@ -389,6 +389,166 @@ extends \TeiEditionBundle\Controller\RenderTeiController
         ]);
     }
 
+    /**
+     * @Route("/labs/article-by-topic", name="article-by-topic")
+     */
+    public function articleByTopic(Request $request, TranslatorInterface $translator)
+    {
+        $locale = $request->getLocale();
+        if (!empty($locale)) {
+            $language = \TeiEditionBundle\Utils\Iso639::code1to3($locale);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select("A.keywords AS keywords")
+            ->from('\TeiEditionBundle\Entity\Article', 'A')
+            ->where("A.articleSection IN ('interpretation')")
+            ->andWhere('A.status = 1')
+            ->andWhere('A.language = :language')
+            ;
+
+        $query = $qb
+               ->getQuery();
+        $query->setParameter('language', $language);
+        $results = $query->getResult();
+
+        $data = [];
+        $totalArticles = 0;
+        foreach ($results as $result) {
+            ++$totalArticles;
+
+            $first = true;
+            foreach ($result['keywords'] as $keyword) {
+                if (!array_key_exists($keyword, $data)) {
+                    $data[$keyword] = [ 'primary' => 0, 'all' => 0 ];
+                }
+                ++$data[$keyword]['all'];
+                if ($first) {
+                    ++$data[$keyword]['primary'];
+                    $first = false;
+                }
+            }
+        }
+
+        ksort($data);
+
+        $total = [ 'primary' => [], 'all' => [] ];
+        foreach ($data as $category => $counts) {
+            foreach ( ['primary', 'all' ] as $key) {
+                $y = isset($counts[$key])
+                        ? intval($counts[$key]) : 0;
+                $total[$key][] = [
+                    'name' => $category,
+                    'y' => $y,
+                    'pct' => 1.0 * $y / $totalArticles,
+                ];
+            }
+        }
+
+        return $this->render('Labs/article-by-topic.html.twig', [
+            'totalArticles' => $totalArticles,
+            'topics_primary' => json_encode($total['primary']),
+            'topics_all' => json_encode($total['all']),
+        ]);
+    }
+
+    /**
+     * @Route("/labs/source-by-year", name="source-by-year")
+     */
+    public function sourceByYear(Request $request, TranslatorInterface $translator)
+    {
+        $locale = $request->getLocale();
+        if (!empty($locale)) {
+            $language = \TeiEditionBundle\Utils\Iso639::code1to3($locale);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $locale = $request->getLocale();
+        if (!empty($locale)) {
+            $criteria['language'] = \TeiEditionBundle\Utils\Iso639::code1to3($locale);
+        }
+
+        $queryBuilder = $this->getDoctrine()
+                ->getManager()
+                ->createQueryBuilder()
+                ->select('YEAR(S.dateCreated) AS year, S.uid')
+                ->from('\TeiEditionBundle\Entity\SourceArticle', 'S')
+                ->leftJoin('S.isPartOf', 'A')
+                ->where('A.status > 0')
+                ->orderBy('S.dateCreated', 'ASC')
+                ;
+
+        foreach ($criteria as $field => $cond) {
+            $queryBuilder->andWhere('S.' . $field
+                                    . (is_array($cond)
+                                       ? ' IN (:' . $field . ')'
+                                       : '= :' . $field))
+                ->setParameter($field, $cond);
+        }
+
+        $results = $queryBuilder->getQuery()->getResult();
+
+        $data = [];
+        $totalSources = 0;
+        $minYear = $maxYear = 0;
+        foreach ($results as $result) {
+            ++$totalSources;
+
+            $year = $result['year'];
+            if (0 == $minYear) {
+                $minYear = $result['year'];
+            }
+
+            if ($result['year'] < $minYear) {
+                $minYear = $result['year'];
+            }
+
+            if ($result['year'] > $maxYear) {
+                $maxYear = $result['year'];
+            }
+
+            if (!array_key_exists($result['year'], $data)) {
+                $data[$result['year']] = [ 'year' => 0 ];
+            }
+
+            ++$data[$result['year']]['year'];
+        }
+
+
+        $categories = [];
+        $smooth = 10;
+        if (1 != $smooth) {
+            $minYear = $minYear - $minYear % $smooth;
+        }
+
+        $key = 'year';
+
+        $total = [ $key => [] ];
+        for ($year = $minYear; $year <= $maxYear; $year += $smooth) {
+            $categories[] = 0 == $year % $smooth ? $year : '';
+            $total[$key][$year] = [
+                'name' => $year . ($smooth > 1 ? '-' . ($year + $smooth - 1) : ''),
+                'y' => isset($data[$year][$key])
+                    ? intval($data[$year][$key]) : 0,
+            ];
+
+            for ($i = 1; $i < $smooth; $i++) {
+                if (isset($data[$year + $i][$key])) {
+                    $total[$key][$year]['y'] += $data[$year + $i][$key];
+                }
+            }
+        }
+
+        $subtitle = $totalSources . ' sources';
+
+        return $this->render('Labs/source-by-year.html.twig', [
+            'subtitle' => json_encode($subtitle),
+            'categories' => json_encode($categories),
+            'source_year' => json_encode(array_values($total['year'])),
+        ]);
+    }
+
     private function setEdges(&$edges, $shared_ids, $weighted = false)
     {
         $count_shared_ids = count($shared_ids);

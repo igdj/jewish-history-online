@@ -1,0 +1,85 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% block head %}
+    <script src="{{ app.request.basepath }}/vendor/highcharts/highcharts.js"></script>
+    <script src="{{ app.request.basepath }}/vendor/highcharts/modules/exporting.js"></script>
+    <!--
+    <script src="{{ app.request.basepath }}/vendor/highcharts/themes/sand-signika.js"></script>
+    -->
+    <script type="text/javascript">
+        var chart;
+
+        $(document).ready(function() {
+            chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'container',
+                    defaultSeriesType: 'column'
+                    /*, margin: [ 50, 50, 100, 80] */
+                },
+                title: {
+                    text: ''
+                },
+                subtitle: {
+                    text: '{{ totalArticles }} articles'
+                },
+                tooltip: {
+                    formatter: function() {
+                        // console.log(this);
+                        return '<b>'
+                            + this.point.name
+                            + '</b> ('
+                            + this.series.name
+                            + ')'
+                            + '<br />'
+                            + Highcharts.numberFormat(this.y, 0) + ' articles'
+                            + ' ('
+                            + Highcharts.numberFormat(100 * this.point.pct, 1) + '%'
+                            + ')'
+                            ;
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        dataLabels: {
+                            enabled: true,
+                            distance: -50,
+                            style: {
+                                fontWeight: 'bold',
+                                color: 'white'
+                            }
+                        },
+                        startAngle: 0,
+                        endAngle: 360,
+                        center: ['50%', '50%']
+                    }
+                },
+                series: [
+                {
+                    type: 'pie',
+                    name: 'All',
+                    size: '100%',
+                    innerSize: '40%',
+                    data: {{ topics_all|raw }},
+                    dataLabels: {
+                        enabled: false
+                    }
+                },
+                {
+                    type: 'pie',
+                    name: 'Primary',
+                    innerSize: '70%',
+                    data: {{ topics_primary|raw }},
+                    dataLabels: {
+                        enabled: false
+                    }
+                }]
+        });
+    });
+
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h1>Articles by Topic</h1>
+    <div id="container" style="min-width: 600px; min-height: 400px; margin: 0 auto"></div>
+{% endblock %}
