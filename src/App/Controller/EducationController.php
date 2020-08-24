@@ -18,7 +18,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
             => 'Emancipation, Legal Equality and Enlightment',
         'Jüdische Religion und Kultur, Vereinswesen'
             => 'Jewish Religion and Culture, Associations',
-        'Alltag und Familie'
+        'Familie und Alltag'
             => 'Family and Everyday Life',
         'Migration'
             => 'Migration',
