@@ -35,7 +35,7 @@
                 yAxis: [
                     {
                         title: {
-                            text: ''
+                            text: 'Avg. Age at Death'
                         },
                         min: 0,
                         // max: 600
@@ -52,6 +52,15 @@
                 tooltip: {
                     formatter: function() {
                         // console.log(this);
+                        if ('Avg. Age at Death' == this.series.name) {
+                            return '<b>Avg. Age at Death was '
+                                + Highcharts.numberFormat(this.y, 0)
+                                + ' years in '
+                                + this.point.name
+                                + '</b>';
+
+                        }
+
                         return '<b>'
                             + Highcharts.numberFormat(this.y, 0)
                             + ' persons '
@@ -70,20 +79,13 @@
                     }
                 },
                 series: [
-                    /*
                     {
                         yAxis: 0,
-                        name: 'Gesamtwerk',
-                        data: {{ works_extended }},
-                        stack: 'works'
+                        name: 'Avg. Age at Death',
+                        data: {{ person_age|raw }},
+                        stack: 'age',
+                        color: '#f0f0f0'
                     },
-                    {
-                        yAxis: 0,
-                        name: 'Individuelle Werke',
-                        data: {{ works_base }},
-                        stack: 'works'
-                    },
-                    */
                     {
                         type: 'line',
                         //dashStyle: 'Solid', // 'shortdot',

@@ -52,24 +52,25 @@ extends \TeiEditionBundle\Controller\RenderTeiController
         $subtitle = implode(' out of ', $subtitle_parts) . ' persons';
 
         $data = [];
-        $max_year = $min_year = 0;
+        $maxYear = $minYear = 0;
         foreach ([ 'birth', 'death' ] as $key) {
             $date_field = $key . 'date';
-            $querystr = 'SELECT YEAR(' . $date_field . ') AS year'
-                      . ', COUNT(*) AS how_many'
+            $querystr = 'SELECT YEAR(' . $date_field . ') AS year, YEAR(birthdate) AS birthyear'
+                      // . ', COUNT(*) AS how_many'
+                      . ', 1 AS how_many'
                       . ' FROM person WHERE status >= 0 AND ' . $date_field . ' IS NOT NULL'
-                      . ' GROUP BY YEAR(' . $date_field. ')'
+                      // . ' GROUP BY YEAR(' . $date_field. ')'
                       . ' ORDER BY YEAR(' . $date_field . ')'
                       ;
             $stmt = $dbconn->query($querystr);
 
             while ($row = $stmt->fetch()) {
-                if (0 == $min_year || $row['year'] < $min_year) {
-                    $min_year = $row['year'];
+                if (0 == $minYear || $row['year'] < $minYear) {
+                    $minYear = $row['year'];
                 }
 
-                if ($row['year'] > $max_year) {
-                    $max_year = $row['year'];
+                if ($row['year'] > $maxYear) {
+                    $maxYear = $row['year'];
                 }
 
                 if (!isset($data[$row['year']])) {
@@ -81,20 +82,28 @@ extends \TeiEditionBundle\Controller\RenderTeiController
                 }
 
                 $data[$row['year']][$key] += $row['how_many'];
+
+                if ('death' == $key && !empty($row['birthyear'])) {
+                    if (!array_key_exists('age', $data[$row['year']])) {
+                        $data[$row['year']]['age'] = [];
+                    }
+
+                    $data[$row['year']]['age'][] = $row['year'] - $row['birthyear'];
+                }
             }
         }
 
-        if ($min_year < 1760) {
-            $min_year = 1760;
+        if ($minYear < 1600) {
+            $minYear = 1600;
         }
 
-        if ($max_year > 2020) {
-            $max_year = 2020;
+        if ($maxYear > 2020) {
+            $maxYear = 2020;
         }
 
         $categories = [];
         $smooth = 5;
-        for ($year = $min_year; $year <= $max_year; $year += $smooth) {
+        for ($year = $minYear; $year <= $maxYear; $year += $smooth) {
             $categories[] = 0 == $year % $smooth ? $year : '';
             foreach ([ 'birth', 'death' ] as $key) {
                 $total[$key][$year] = [
@@ -109,6 +118,27 @@ extends \TeiEditionBundle\Controller\RenderTeiController
                     }
                 }
             }
+
+            $ages = isset($data[$year]['age'])
+                ? $data[$year]['age'] : [];
+            for ($i = 1; $i < $smooth; $i++) {
+                if (isset($data[$year + $i]['age'])) {
+                    $ages = array_merge($ages, $data[$year + $i]['age']);
+                }
+            }
+            if (!empty($ages)) {
+                $avgAge = 1.0 * array_sum($ages) / count($ages);
+                $total['age'][$year] = [
+                    'name' => $year . ($smooth > 1 ? '-' . ($year + $smooth - 1) : ''),
+                    'y' => $avgAge,
+                ];
+            }
+            else {
+                $total['age'][$year] = [
+                    'name' => $year . ($smooth > 1 ? '-' . ($year + $smooth - 1) : ''),
+                    'y' => null,
+                ];
+            }
         }
 
         return $this->render('Labs/person-by-year.html.twig', [
@@ -116,6 +146,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
             'categories' => json_encode($categories),
             'person_birth' => json_encode(array_values($total['birth'])),
             'person_death' => json_encode(array_values($total['death'])),
+            'person_age' => json_encode(array_values($total['age'])),
         ]);
     }
 
