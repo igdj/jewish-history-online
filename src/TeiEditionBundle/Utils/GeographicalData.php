@@ -215,6 +215,10 @@ class GeographicalData
                     $values['type'] = 'river';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300008680':
+                    $values['type'] = 'lake';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300008795':
                     $values['type'] = 'mountain';
                     break;
