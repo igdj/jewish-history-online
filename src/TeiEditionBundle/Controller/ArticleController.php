@@ -83,6 +83,13 @@ extends RenderTeiController
         $teiHelper = new \TeiEditionBundle\Utils\TeiHelper();
         $meta = $teiHelper->analyzeHeader($this->locateTeiResource($fname));
 
+        $path = '';
+        list($prefix, $path) = explode(':', $meta->uid, 2);
+        if (preg_match('/\-(\d+)$/', $path, $matches)) {
+            $path = preg_replace('/\-(\d+)$/', sprintf('-%05d', $matches[1]), $path);
+        }
+
+
         $html = $this->renderTei($fname,
                                  $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl',
                                  [ 'params' => $params ]);
@@ -90,7 +97,10 @@ extends RenderTeiController
         list($authors, $sectionHeaders, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html, $translator);
         $html = $this->adjustRefs($html, $refs, $translator, $language);
 
-        $html = $this->adjustMedia($html, $request->getBaseURL() . '/viewer');
+        $html = $this->adjustMedia($html,
+                                   $request->getBaseURL()
+                                   . '/viewer/' . $path,
+                                   $generatePrintView ? '' : 'img-responsive');
 
         $sourceDescription = $this->renderSourceDescription($article, $translator);
         if ($generatePrintView) {
