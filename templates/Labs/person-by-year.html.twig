@@ -17,7 +17,7 @@
                     /*, margin: [ 50, 50, 100, 80] */
                 },
                 title: {
-                    text: 'Year of Birth / Death'
+                    text: 'Birth / Death'
                 },
                 subtitle: {
                     text: {{ subtitle|raw }}
@@ -64,7 +64,7 @@
                         return '<b>'
                             + Highcharts.numberFormat(this.y, 0)
                             + ' persons '
-                            + (this.series.name == 'Year of Death' ? 'died' : 'born')
+                            + (this.series.name == 'Date of Death' ? 'died' : 'born')
                             + ' '
                             + this.point.name
                             + '</b>';
@@ -80,20 +80,14 @@
                 },
                 series: [
                     {
-                        yAxis: 0,
-                        name: 'Avg. Age at Death',
-                        data: {{ person_age|raw }},
-                        stack: 'age',
-                        color: '#f0f0f0'
-                    },
-                    {
                         type: 'line',
                         //dashStyle: 'Solid', // 'shortdot',
                         marker: {
                             enabled: false
                         },
                         yAxis: 1,
-                        name: 'Year of Birth',
+                        zIndex: 1,
+                        name: 'Date of Birth',
                         data: {{ person_birth|raw }},
                         stack: 'birth',
                         color: '#e6550d'
@@ -105,11 +99,19 @@
                             enabled: false
                         },
                         yAxis: 1,
-                        name: 'Year of Death',
+                        zIndex: 1,
+                        name: 'Date of Death',
                         data: {{ person_death|raw }},
                         stack: 'death',
                         color: '#303030'
-                    }
+                    },
+                    {
+                        yAxis: 0,
+                        name: 'Avg. Age at Death',
+                        data: {{ person_age|raw }},
+                        stack: 'age',
+                        color: '#f0f0f0'
+                    },
                 ]
         });
     });
@@ -118,6 +120,6 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Persons by Year of Birth / Death</h1>
+    <h1>Persons by Date of Birth / Death</h1>
     <div id="container" style="min-width: 800px; height: 400px; margin: 0 auto"></div>
 {% endblock %}

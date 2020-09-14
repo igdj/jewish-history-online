@@ -77,7 +77,7 @@
                             enabled: false
                         },
                         yAxis: 1,
-                        name: 'Year',
+                        name: 'Decade',
                         data: {{ source_year|raw }},
                         stack: 'year',
                         color: '#e6550d'
@@ -89,6 +89,6 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Sources by Year</h1>
+    <h1>Sources by Decade</h1>
     <div id="container" style="min-width: 800px; height: 400px; margin: 0 auto"></div>
 {% endblock %}

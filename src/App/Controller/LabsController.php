@@ -571,7 +571,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
             }
         }
 
-        $subtitle = $totalSources . ' sources';
+        $subtitle = $totalSources . ' Sources';
 
         return $this->render('Labs/source-by-year.html.twig', [
             'subtitle' => json_encode($subtitle),
