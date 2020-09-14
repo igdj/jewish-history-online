@@ -101,5 +101,7 @@ extends BaseCommand
         }
 
         $this->flushEm($this->em);
+
+        return 0;
     }
 }
