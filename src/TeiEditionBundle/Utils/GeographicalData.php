@@ -215,6 +215,10 @@ class GeographicalData
                     $values['type'] = 'river';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300008699':
+                    $values['type'] = 'stream';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300008680':
                     $values['type'] = 'lake';
                     break;
@@ -297,6 +301,10 @@ class GeographicalData
 
                 case 'http://vocab.getty.edu/aat/300000771':
                     $values['type'] = 'county';
+                    break;
+
+                case 'http://vocab.getty.edu/aat/300235088':
+                    $values['type'] = 'duchy';
                     break;
 
                 case 'http://vocab.getty.edu/aat/300235112':

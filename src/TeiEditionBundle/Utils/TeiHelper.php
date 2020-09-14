@@ -60,6 +60,7 @@ class TeiHelper
             if (!empty($facs) && preg_match('/(\d+)/', $facs, $matches)) {
                 $facsRef = $matches[1];
             }
+
             $fnameFacs = sprintf('f%04d', $facsRef);
             break; // we only care about the first one
         }
