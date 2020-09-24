@@ -86,10 +86,17 @@ extends BaseCommand
         if (empty($result)) {
             $output->writeln('<error>No pb found</error>');
 
-            return;
+            return 1;
         }
 
         $ID = pathinfo($fname, PATHINFO_FILENAME);
+
+        // id isn't escaped in
+        //  this._container.find("div[data-id=" + id + "] img")
+        // in ThumbnailOverviewView.updateTilePosition
+        //  https://github.com/MyCoRe-Org/mycore/blob/master/mycore-viewer/src/main/typescript/modules/base/widgets/thumbnail/ThumbnailOverviewView.ts#L122
+        // Until this is fixed, we therefore need to replace - and . with _
+        $ID = preg_replace('/[\-\.]/', '_', $ID);
 
         $PAGES = [];
 
@@ -99,21 +106,23 @@ extends BaseCommand
             if (!empty($facs) && preg_match('/(\d+)/', $facs, $matches)) {
                 $facs_ref = $matches[1];
             }
+
             $page = [
                 'counter' => $facs_counter++,
                 'facs' => sprintf('f%04d', $facs_ref++),
             ];
+
             $n = $element['n'];
             if (!empty($n)) {
                 $page['n'] = (string)$n;
             }
+
             $PAGES[$page['counter']] = $page;
         }
 
         // set the publisher - needs to be localized
         $this->translator->setLocale(\TeiEditionBundle\Utils\Iso639::code3To1($article->language));
 
-        // TODO: allow to set a more complex structure
         $FILE_GROUPS = [
             'MASTER',
             'TEI.TRANSCRIPTION', // changed in iview 2018.06 from TRANSCRIPTION
@@ -128,20 +137,57 @@ extends BaseCommand
             $FILE_GROUPS[] = 'TEI.TRANSLATION.' . strtoupper($code1) ; // changed in iview 2018.06 from TRANSLATION
         }
 
-        $LOGICAL_TYPE = 'Source';
         $LOGICAL_LABEL = $article->name;
-        $LOGICAL_STRUCTURE = [
-            'content' => [
-                'TYPE' => 'content',
-                'LABEL' => /** @Ignore */ $this->translator->trans($LOGICAL_TYPE),
-                'ORDER' => 1,
-                'physical_start' => 1,
-            ],
-        ];
+        $LOGICAL_TYPE = 'text';
+        $LOGICAL_PARTS = [];
+
+        // get $LOGICAL_PARTS from <div n="2">..</div> if available
+        $result = $xml->xpath('/tei:TEI/tei:text/tei:body/tei:div[@n="2"]');
+        if (!empty($result)) {
+            $order = 1;
+
+            $pbCount = 0;
+
+            foreach ($xml->xpath('/tei:TEI/tei:text/tei:body/tei:*') as $toplevel) {
+                switch ($toplevel->getName()) {
+                    case 'pb':
+                        ++$pbCount;
+                        break;
+
+                    case 'div':
+                        foreach ($toplevel->attributes() as $name => $value) {
+                            if ('n' == $name && 2 == $value) {
+                                $this->registerXpathNamespaces($toplevel);
+                                $head = $toplevel->xpath('tei:*[name()="head" and position() = 1]');
+                                if (1 == count($head)) {
+                                    // $last_physical: count all <pb> in all previous-siblings
+                                    $part = [
+                                        'TYPE' => 'section',
+                                        'LABEL' => (string)$head[0], // doesn't handle additional markup in <head>
+                                        'ORDER' => $order++,
+                                        'physical_start' => $pbCount > 0 ? $pbCount : 1,
+                                    ];
+
+                                    $LOGICAL_PARTS[] = $part;
+                                }
+
+                            }
+                        }
+                        // fallthrough
+                    default:
+                        // increase $pbCount
+                        $this->registerXpathNamespaces($toplevel);
+                        foreach ($toplevel->xpath('.//tei:pb') as $pb) {
+                            ++$pbCount;
+                        }
+                }
+            }
+        }
 
         $xw = new \XMLWriter();
         $xw->openMemory();
-        $xw->setIndent(TRUE);
+        $xw->setIndent(true);
+        $xw->setIndentString('  '); // two chars
 
         $xw->startDocument('1.0', 'UTF-8');
 
@@ -226,7 +272,7 @@ extends BaseCommand
         $xw->endElement(); // </mets:fileSec>
 
         // struct maps
-        foreach (['PHYSICAL', 'LOGICAL'] as $type) {
+        foreach ([ 'PHYSICAL', 'LOGICAL' ] as $type) {
             $xw->startElement('mets:structMap');
             $xw->writeAttribute('TYPE', $type);
 
@@ -270,7 +316,7 @@ extends BaseCommand
                 $xw->writeAttribute('ORDER', 1);
 
                 $logical_by_physical_start = [];
-                foreach ($LOGICAL_STRUCTURE as $part) {
+                foreach ($LOGICAL_PARTS as $part) {
                     $logical_by_physical_start[$part['physical_start']] = $part;
                     $xw->startElement('mets:div');
                     $xw->writeAttribute('TYPE', $part['TYPE']);
@@ -284,8 +330,7 @@ extends BaseCommand
 
                 // structLink
                 $xw->startElement('mets:structLink');
-                $part = $logical_by_physical_start[key($logical_by_physical_start)];
-                $from = 'log_' . $ID . '_' . $part['ORDER'];
+                $from = 'log_' . $ID; // start with root
                 foreach ($PAGES as $page_def) {
                     $page = $page_def['counter'];
                     if (array_key_exists($page, $logical_by_physical_start)) {
