@@ -293,6 +293,21 @@
         <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if>
       </xsl:if>
     </xsl:when>
+    <xsl:when test="tei:media/@mimeType='model/stl'">
+      <!-- custom code for object to be passed on to three.js -->
+      <div class="embed-responsive">
+      <object>
+        <!--
+        <xsl:if test="@facs">
+          <xsl:attribute name="data-poster"><xsl:value-of select='@facs' /></xsl:attribute>
+        </xsl:if>
+        -->
+        <xsl:attribute name="data"><xsl:value-of select='tei:media/@url' /></xsl:attribute>
+        <xsl:attribute name="type"><xsl:value-of select='tei:media/@mimeType' /></xsl:attribute>
+      </object>
+      </div>
+      <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if>
+    </xsl:when>
     <xsl:when test="tei:media/@mimeType='video/mp4'">
       <!-- custom code for audio/video -->
       <div class="embed-responsive embed-responsive-16by9">

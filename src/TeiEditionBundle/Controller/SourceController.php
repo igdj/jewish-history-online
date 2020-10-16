@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use TeiEditionBundle\Entity\SourceArticle;
 use TeiEditionBundle\Utils\ImageMagick\ImageMagickProcessor;
 
 /**
@@ -79,7 +80,7 @@ extends ArticleController
         $this->renderPdf($html, str_replace(':', '-', $sourceArticle->getSlug(true)) . '.pdf');
     }
 
-    protected function renderSourceViewer(Request $request, TranslatorInterface $translator, $uid, $sourceArticle)
+    protected function renderSourceViewer(Request $request, TranslatorInterface $translator, $uid, SourceArticle $sourceArticle)
     {
         if (in_array($request->get('_route'), [ 'source-jsonld' ])) {
             // return jsonld-rendition
@@ -109,6 +110,8 @@ extends ArticleController
         list($authors, $section_headers, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html, $translator);
 
         $interpretation = $sourceArticle->getIsPartOf();
+        $interpretations = !is_null($interpretation)
+            ? [ $interpretation ] : [];
         $sourceDescription = null; // $sourceDescription is part of $interpretation
         $related = []; // if there are multiple sources for $interpretation
         if (isset($interpretation)) {
@@ -145,6 +148,7 @@ extends ArticleController
          *      viewer-layers.html.twig
          *  2) Image/Object without a transcript:
          *      viewer-media.html.twig
+         *      viewer-model.html.twig
          *  3) Facsimile and Transcript/Translation through iview2:
          *      viewer.html.twig
          *
@@ -263,7 +267,7 @@ extends ArticleController
                         'layers' => $layers,
                         'description' => $sourceDescription,
                         'name' => $sourceArticle->getName(),
-                        'interpretations' => [ $interpretation ],
+                        'interpretations' => $interpretations,
                         'license' => $license,
                     ]);
 
@@ -286,7 +290,7 @@ extends ArticleController
                     'description' => $sourceDescription,
                     'name' => $sourceArticle->getName(),
                     'pageTitle' => $sourceArticle->getName(),
-                    'interpretations' => [ $interpretation ],
+                    'interpretations' => $interpretations,
                     'related' => $related,
                     'uid' => $uid,
                     'path' => $path,
@@ -301,13 +305,35 @@ extends ArticleController
                 ]);
             }
 
-            return $this->render('@TeiEdition/Article/viewer-media.html.twig', [
+            $template = 'viewer-media.html.twig';
+            if (in_array($sourceArticle->getSourceType(), [
+                        'Objekt', 'Object',
+                    ]))
+            {
+                // check for object tag
+                if (preg_match('/<object([^>]*)><\/object>/', $html, $matches)) {
+                    // build three-js structure
+                    $object = new \SimpleXMLElement($matches[0]);
+                    $url = (string)$object->attributes()['data'];
+                    $tag = <<<EOT
+            <div id="glFullwidth">
+                <canvas id="canvas" data-src="{$url}"></canvas>
+            </div>
+            <div id="dat"></div>
+EOT;
+                    $html = preg_replace('/<object([^>]*)><\/object>/', $html, $tag);
+
+                    $template = 'viewer-model.html.twig';
+                }
+            }
+
+            return $this->render('@TeiEdition/Article/' . $template , [
                 'article' => $sourceArticle,
                 'html' => $html,
                 'description' => $sourceDescription,
                 'name' => $sourceArticle->getName(),
                 'pageTitle' => $sourceArticle->getName(),
-                'interpretations' => [ $interpretation ],
+                'interpretations' => $interpretations,
                 'related' => $related,
                 'uid' => $uid,
                 'path' => $path,
@@ -327,7 +353,7 @@ extends ArticleController
             'description' => $sourceDescription,
             'name' => $sourceArticle->getName(),
             'pageTitle' => $sourceArticle->getName(),
-            'interpretations' => [ $interpretation ],
+            'interpretations' => $interpretations,
             'related' => $related,
             'uid' => $uid,
             'path' => $path,
@@ -359,15 +385,15 @@ extends ArticleController
             $criteria['language'] = \TeiEditionBundle\Utils\Iso639::code1to3($locale);
         }
 
-        $article = $this->getDoctrine()
+        $sourceArticle = $this->getDoctrine()
                 ->getRepository('\TeiEditionBundle\Entity\SourceArticle')
                 ->findOneBy($criteria);
 
-        if (!$article) {
+        if (!$sourceArticle) {
             throw $this->createNotFoundException('This source does not exist');
         }
 
-        return $this->renderSourceViewer($request, $translator, $uid, $article);
+        return $this->renderSourceViewer($request, $translator, $uid, $sourceArticle);
     }
 
     protected function buildFolderName($uid)

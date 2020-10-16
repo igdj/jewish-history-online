@@ -1,0 +1,223 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% import '@TeiEdition/Shared/helper.html.twig' as helper %}
+{% import '@TeiEdition/Shared/entity-lookup.html.twig' as entityLookup %}
+{% import '@TeiEdition/Shared/map-leaflet.html.twig' as map %}
+
+{% block head %}
+    {{ map.head() }}
+
+    <style>
+        #glFullwidth {
+            width: 100%;
+            height: 100vh;
+            min-width: 640px;
+            min-height: 360px;
+            position: relative;
+            overflow: hidden;
+            z-index: 0;
+        }
+        #canvas {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: #000000;
+        }
+        #feedback {
+            color: darkorange;
+        }
+        #dat {
+            user-select: none;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-Index: 200;
+        }
+    </style>
+
+    {{ entityLookup.head(entity_lookup, bibitem_lookup, glossary_lookup) }}
+
+    <script>
+        $( document ).ready(function() {
+            initEntityGlossaryNote('.article');
+            initEntityGlossaryNote('.source-description');
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <h1>{{ name }}</h1>
+    <div class="row">
+        <div id="image-viewer-container" class="col-xs-12 col-md-9">
+            {{ html|raw }}
+
+            <script type="module">
+                'use strict';
+
+                // Find the latest version by visiting https://unpkg.com/three. The URL will
+                // redirect to the newest stable release.
+                import * as THREE from 'https://unpkg.com/three@0.118.3/build/three.module.js';
+
+                import { TrackballControls } from "https://unpkg.com/three@0.118.3/examples/jsm/controls/TrackballControls.js";
+
+                import { STLLoader } from 'https://unpkg.com/three@0.118.3/examples/jsm/loaders/STLLoader.js';
+                import { MtlObjBridge } from "https://unpkg.com/three@0.118.3/examples/jsm/loaders/obj2/bridge/MtlObjBridge.js";
+
+
+                const STLLoaderExample = function ( elementToBindTo ) {
+                    this.modelUrl = elementToBindTo.getAttribute('data-src');
+                    this.renderer = null;
+                    this.canvas = elementToBindTo;
+                    this.aspectRatio = 1;
+                    this.recalcAspectRatio();
+
+                    this.scene = null;
+                    this.cameraDefaults = {
+                        posCamera: new THREE.Vector3( 0.0, 250.0, 800.0 ),
+                        posCameraTarget: new THREE.Vector3( 0, 0, 0 ),
+                        near: 0.1,
+                        far: 10000,
+                        fov: 45
+                    };
+                    this.camera = null;
+                    this.cameraTarget = this.cameraDefaults.posCameraTarget;
+
+                    this.controls = null;
+                };
+
+                STLLoaderExample.prototype = {
+
+                    constructor: STLLoaderExample,
+
+                    initGL: function () {
+                        this.renderer = new THREE.WebGLRenderer( {
+                            canvas: this.canvas,
+                            antialias: true,
+                            autoClear: true
+                        } );
+                        this.renderer.setClearColor( 0x050505 );
+
+                        this.scene = new THREE.Scene();
+
+                        this.camera = new THREE.PerspectiveCamera( this.cameraDefaults.fov, this.aspectRatio, this.cameraDefaults.near, this.cameraDefaults.far );
+                        this.resetCamera();
+                        this.controls = new TrackballControls( this.camera, this.renderer.domElement );
+
+                        let ambientLight = new THREE.AmbientLight( 0x404040 );
+                        let directionalLight1 = new THREE.DirectionalLight( 0xC0C090 );
+                        let directionalLight2 = new THREE.DirectionalLight( 0xC0C090 );
+
+                        directionalLight1.position.set( - 100, - 50, 100 );
+                        directionalLight2.position.set( 100, 50, - 100 );
+
+                        this.scene.add( directionalLight1 );
+                        this.scene.add( directionalLight2 );
+                        this.scene.add( ambientLight );
+
+                        /*
+                        let helper = new THREE.GridHelper( 1200, 60, 0xFF4444, 0x404040 );
+                        this.scene.add( helper );
+                        */
+                    },
+
+                    initContent: function () {
+                        let modelName = 'synagoge';
+                        this._reportProgress( { detail: { text: 'Loading: ' + modelName } } );
+
+
+                        let scope = this;
+                        let stlLoader = new STLLoader();
+                        let callbackOnLoad = function ( geometry ) {
+                            var material = new THREE.MeshLambertMaterial({
+                                // overdraw: true, // no longer valid for MeshLambertMaterial
+                                color: 0xefc68f,
+                                flatShading: true
+                            });
+
+                            var mesh = new THREE.Mesh( geometry, material );
+                            mesh.rotation.x = -0.4; // 5;
+                            mesh.rotation.z = 0; // .25;
+                            mesh.rotation.y = 0;
+                            mesh.translateOnAxis(mesh.worldToLocal(new THREE.Vector3(0,0,25)),10);
+                            scope.scene.add( mesh );
+                            console.log( 'Loading complete: ' + modelName );
+                            scope._reportProgress( { detail: { text: '' } } );
+                        };
+
+                        stlLoader.load( this.modelUrl, callbackOnLoad, null, null, null );
+                    },
+
+                    _reportProgress: function ( event ) {
+                        let output = '';
+                        if ( event.detail !== null && event.detail !== undefined && event.detail.text ) {
+
+                            output = event.detail.text;
+
+                        }
+                        console.log( 'Progress: ' + output );
+                        // document.getElementById( 'feedback' ).innerHTML = output;
+                    },
+
+                    resizeDisplayGL: function () {
+                        this.controls.handleResize();
+
+                        this.recalcAspectRatio();
+                        this.renderer.setSize( this.canvas.offsetWidth, this.canvas.offsetHeight, false );
+
+                        this.updateCamera();
+                    },
+
+                    recalcAspectRatio: function () {
+                        this.aspectRatio = (this.canvas.offsetHeight === 0) ? 1 : this.canvas.offsetWidth / this.canvas.offsetHeight;
+                    },
+
+                    resetCamera: function () {
+                        this.camera.position.copy( this.cameraDefaults.posCamera );
+                        this.cameraTarget.copy( this.cameraDefaults.posCameraTarget );
+
+                        this.updateCamera();
+                    },
+
+                    updateCamera: function () {
+                        this.camera.aspect = this.aspectRatio;
+                        this.camera.lookAt( this.cameraTarget );
+                        this.camera.updateProjectionMatrix();
+                    },
+
+                    render: function () {
+                        if ( !this.renderer.autoClear ) this.renderer.clear();
+                        this.controls.update();
+                        this.renderer.render( this.scene, this.camera );
+                    }
+                };
+
+                let app = new STLLoaderExample( document.getElementById( 'canvas' ) );
+
+                let resizeWindow = function () {
+                    app.resizeDisplayGL();
+                };
+
+                let render = function () {
+                    requestAnimationFrame( render );
+                    app.render();
+                };
+
+                window.addEventListener( 'resize', resizeWindow, false );
+
+                console.log( 'Starting initialisation phase...' );
+                app.initGL();
+                app.resizeDisplayGL();
+                app.initContent();
+
+                render();
+            </script>
+
+            {{ helper.source_description_footer(name, article, description, license) }}
+        </div><!-- .col -->
+
+        <div class="col-xs-12 col-md-3 sidebar">
+            {{ helper.source_sidebar(article, description, interpretations, related) }}
+        </div>
+    </div>
+{% endblock %}

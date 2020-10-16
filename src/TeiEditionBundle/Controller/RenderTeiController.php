@@ -401,7 +401,7 @@ extends BaseController
     protected function adjustMedia($html, $baseUrl, $imgClass = 'image-responsive')
     {
         $crawler = new \Symfony\Component\DomCrawler\Crawler();
-        $crawler->addHtmlContent($html);
+        $crawler->addHtmlContent('<body>' . $html . '</body>'); // wrap since $html can be fragment
 
         $crawler->filter('audio > source')->each(function ($node, $i) use ($baseUrl) {
             $src = $node->attr('src');
@@ -422,9 +422,16 @@ extends BaseController
         });
 
         $crawler->filter('video')->each(function ($node, $i) use ($baseUrl) {
-            $poster = $node->attr('poster');
-            if (!is_null($poster)) {
-                $node->getNode(0)->setAttribute('poster', $baseUrl . '/' . $poster);
+            $attrValue = $node->attr('poster');
+            if (!is_null($attrValue)) {
+                $node->getNode(0)->setAttribute('poster', $baseUrl . '/' . $attrValue);
+            }
+        });
+
+        $crawler->filter('object')->each(function ($node, $i) use ($baseUrl) {
+            $attrValue = $node->attr('data');
+            if (!is_null($attrValue)) {
+                $node->getNode(0)->setAttribute('data', $baseUrl . '/' . $attrValue);
             }
         });
 
@@ -436,7 +443,7 @@ extends BaseController
             }
         });
 
-        return $crawler->html();
+        return preg_replace('/<\/?body>/', '', $crawler->html());
     }
 
     protected function renderPdf($html, $filename = '', $dest = 'I')

@@ -14,7 +14,10 @@
     <script src="{{ app.request.basepath }}/viewer/shared/iview2-2018.06/js/iview-client-tei.js"></script>
     <link href="{{ app.request.basepath }}/viewer/shared/iview2-2018.06/css/default.css" type="text/css" rel="stylesheet">
 
-    {# TODO: move to some shared style-sheet #}
+    {# TODO:
+        - move to some shared style-sheet
+        - add option to show/hide SidebarControllGroup depending on sections defined by <div n="2><head>...</head><lb />...</div>
+    #}
     <style>
         /* customize viewer */
         [data-id="RotateButton"],
@@ -84,7 +87,6 @@
                 i18nURL: "{{ app.request.basepath }}/viewer/shared/iview2-i18n/{lang}.json",
                 lang: "{{ app.request.locale }}",
                 "text.enabled": "true",
-                // TODO:
                 "text.showOnStart": [
                     // "transcription" // set this dynamically based on viewer-width
                 ],
