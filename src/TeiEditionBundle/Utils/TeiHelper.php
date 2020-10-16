@@ -263,6 +263,7 @@ class TeiHelper
         }
 
         // url
+        $article->url = null;
         $result = $header->xpath('(./tei:fileDesc/tei:sourceDesc/tei:msDesc/tei:msIdentifier/tei:idno/tei:idno[@type="URLImages"])[1]');
         if (!empty($result)) {
             $article->url = (string)$result[0];
