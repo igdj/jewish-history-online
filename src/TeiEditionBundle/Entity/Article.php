@@ -235,6 +235,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
      * @var Article Indicates a CreativeWork that this CreativeWork is (in some sense) part of.
      *
      * @ORM\ManyToOne(targetEntity="TeiEditionBundle\Entity\Article")
+     * @ORM\JoinColumn(name="isPartOf_id", referencedColumnName="id", nullable=true)
      */
     protected $isPartOf;
 
