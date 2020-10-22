@@ -227,12 +227,20 @@ class GeographicalData
                     $values['type'] = 'mountain';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300386831':
+                    $values['type'] = 'mountain range';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300128207':
                     $values['type'] = 'nation';
                     break;
 
                 case 'http://vocab.getty.edu/aat/300387506':
                     $values['type'] = 'country';
+                    break;
+
+                case 'http://vocab.getty.edu/aat/300387107':
+                    $values['type'] = 'autonomous region';
                     break;
 
                 case 'http://vocab.getty.edu/aat/300387110':
@@ -365,6 +373,10 @@ class GeographicalData
 
                 case 'http://vocab.getty.edu/aat/300265612':
                     $values['type'] = 'municipality';
+                    break;
+
+                case 'http://vocab.getty.edu/aat/300387213':
+                    $values['type'] = 'special municipality';
                     break;
 
                 case 'http://vocab.getty.edu/aat/300000745':
