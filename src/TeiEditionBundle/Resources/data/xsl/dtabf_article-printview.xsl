@@ -10,7 +10,6 @@
   <!-- notes are placed 'perpage' for source and 'end' for topic/interpretation -->
   <xsl:param name="noteplacement" select="'end'" />
 
-
   <xsl:output method="html" doctype-system=""/>
 
   <!-- main match including source description -->
@@ -39,7 +38,8 @@
       </xsl:if>
 
       <xsl:apply-templates/>
-      <xsl:if test='$noteplacement="end" and //tei:note[@place="foot"]'>
+
+      <xsl:if test='$noteplacement="end" and //tei:note[@place="foot" or @place="end"]'>
         <div class="dta-footnotesep"/>
           <div class="appendix">
           <h3 id="notes">
@@ -48,8 +48,10 @@
             </xsl:call-template>
           </h3>
           <xsl:apply-templates select='//tei:note[@place="foot" and (text() or *)]' mode="footnotes"/>
+          <xsl:apply-templates select='//tei:note[@place="end" and (text() or *)]' mode="footnotes"/>
         </div>
       </xsl:if>
+
       <xsl:apply-templates select='//tei:fw[@place="bottom" and (text() or *)]' mode="signatures"/>
     </div>
 
@@ -98,27 +100,27 @@
     </xsl:choose>
   </xsl:template>
 
-<xsl:template match='tei:ref'>
-  <xsl:choose>
-    <xsl:when test="@target != ''">
-      <xsl:choose>
-        <xsl:when test="@type = 'editorialNote'">
-          <span class="glossary">
-            <xsl:attribute name="data-title"><xsl:value-of select="substring(@target, 2)" /></xsl:attribute>
-            <xsl:apply-templates/>
-          </span>
-        </xsl:when>
-        <xsl:otherwise>
-          <a class="external">
-            <xsl:attribute name="href"><xsl:value-of select="@target" /></xsl:attribute>
-            <xsl:apply-templates/>
-          </a>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:when>
-    <xsl:otherwise><xsl:value-of select="@target" /><xsl:apply-templates/></xsl:otherwise>
-  </xsl:choose>
-</xsl:template>
+  <xsl:template match='tei:ref'>
+    <xsl:choose>
+      <xsl:when test="@target != ''">
+        <xsl:choose>
+          <xsl:when test="@type = 'editorialNote'">
+            <span class="glossary">
+              <xsl:attribute name="data-title"><xsl:value-of select="substring(@target, 2)" /></xsl:attribute>
+              <xsl:apply-templates/>
+            </span>
+          </xsl:when>
+          <xsl:otherwise>
+            <a class="external">
+              <xsl:attribute name="href"><xsl:value-of select="@target" /></xsl:attribute>
+              <xsl:apply-templates/>
+            </a>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise><xsl:value-of select="@target" /><xsl:apply-templates/></xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 
   <!-- renditions -->
   <xsl:template match="tei:hi|tei:del">
@@ -141,7 +143,6 @@
   </xsl:template>
   <!-- end renditions -->
 
-
   <!-- begin marginals -->
   <!-- mpdf doesn't respect display:block for span,
   so we need to use <div> instead of <span>-->
@@ -160,7 +161,6 @@
   </xsl:template>
   <!-- end marginals -->
 
-
   <!-- begin footnotes -->
   <xsl:template match='tei:note[@place="foot"]'>
     <xsl:if test="string-length(@prev)=0">
@@ -168,24 +168,40 @@
         <xsl:attribute name="name">note-<xsl:number level="any" count='//tei:note[@place="foot" and (text() or *)]' format="1"/>-marker</xsl:attribute>
         <xsl:attribute name="href">#note-<xsl:number level="any" count='//tei:note[@place="foot" and (text() or *)]' format="1"/></xsl:attribute>
         <xsl:choose>
-            <!-- manually numbered -->
-            <xsl:when test="@n">
-                <xsl:value-of select="@n"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:choose>
-                <xsl:when test="$noteplacement = 'perpage'">
-                  <xsl:number level="any" count='//tei:note[@place="foot" and (text() or *) and not(@n)]' format="a"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:number level="any" count='//tei:note[@place="foot" and (text() or *) and not(@n)]' format="[1]"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:otherwise>
+          <!-- manually numbered -->
+          <xsl:when test="@n">
+            <xsl:value-of select="@n"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:choose>
+              <xsl:when test="$noteplacement = 'perpage'">
+                <xsl:number level="any" count='//tei:note[@place="foot" and (text() or *) and not(@n)]' format="a"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:number level="any" count='//tei:note[@place="foot" and (text() or *) and not(@n)]' format="[1]"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:otherwise>
         </xsl:choose>
       </a>
       <!--<xsl:text> </xsl:text>-->
     </xsl:if>
+  </xsl:template>
+
+  <xsl:template match='tei:note[@place="end"]'>
+    <a class="dta-fn-intext">
+      <xsl:attribute name="name">endnote-<xsl:number level="any" count='//tei:note[@place="end" and (text() or *)]' format="1"/>-marker</xsl:attribute>
+      <xsl:attribute name="href">#endnote-<xsl:number level="any" count='//tei:note[@place="end" and (text() or *)]' format="1"/></xsl:attribute>
+      <xsl:choose>
+        <!-- manually numbered -->
+        <xsl:when test="@n">
+          <xsl:value-of select="@n"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:number level="any" count='//tei:note[@place="end" and (text() or *) and not(@n)]' format="[I]"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </a>
   </xsl:template>
 
   <!-- show at end -->
@@ -200,22 +216,22 @@
               <a class="dta-fn-sign">
                 <xsl:attribute name="name">note-<xsl:number level="any" count='//tei:note[@place="foot" and (text() or *)]' format="1"/></xsl:attribute>
                 <xsl:attribute name="href">#note-<xsl:number level="any" count='//tei:note[@place="foot" and (text() or *)]' format="1"/>-marker</xsl:attribute>
+                <xsl:choose>
+                  <!-- manually numbered -->
+                  <xsl:when test="@n">
+                    <xsl:value-of select="@n"/>
+                  </xsl:when>
+                  <xsl:otherwise>
                     <xsl:choose>
-                        <!-- manually numbered -->
-                        <xsl:when test="@n">
-                            <xsl:value-of select="@n"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                          <xsl:choose>
-                            <xsl:when test="$noteplacement = 'perpage'">
-                              <xsl:number level="any" count='//tei:note[@place="foot" and (text() or *) and not(@n)]' format="a"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                              <xsl:number level="any" count='//tei:note[@place="foot" and (text() or *) and not(@n)]' format="[1]"/>
-                            </xsl:otherwise>
-                          </xsl:choose>
-                        </xsl:otherwise>
+                      <xsl:when test="$noteplacement = 'perpage'">
+                        <xsl:number level="any" count='//tei:note[@place="foot" and (text() or *) and not(@n)]' format="a"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:number level="any" count='//tei:note[@place="foot" and (text() or *) and not(@n)]' format="[1]"/>
+                      </xsl:otherwise>
                     </xsl:choose>
+                  </xsl:otherwise>
+                </xsl:choose>
               </a>
               <xsl:text> </xsl:text>
               <xsl:apply-templates/>
@@ -235,25 +251,45 @@
           <!--
           <xsl:value-of select="@n"/>
           -->
-                  <xsl:number level="any" count='//tei:note[@place="foot" and text()]' format="[1]"/>
-
+          <xsl:number level="any" count='//tei:note[@place="foot" and text()]' format="[1]"/>
         </span>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
   <!-- end end notes -->
 
-  <!-- inline notes -->
-    <xsl:template match='tei:note[@place="inline"]'>
-        <span class="inline">
-            <xsl:if test="@type='editorial'">
-                <xsl:attribute name="class">editorial inline</xsl:attribute>
-            </xsl:if>
-            <xsl:apply-templates/>
-        </span>
-    </xsl:template>
+  <xsl:template match='tei:note[@place="end"]' mode="footnotes">
+    <div class="dta-endnote dta-endnote-indent">
+      <a class="dta-fn-sign">
+        <xsl:attribute name="name">endnote-<xsl:number level="any" count='//tei:note[@place="end" and (text() or *)]' format="1"/></xsl:attribute>
+        <xsl:attribute name="href">#endnote-<xsl:number level="any" count='//tei:note[@place="end" and (text() or *)]' format="1"/>-marker</xsl:attribute>
+        <xsl:choose>
+          <!-- manually numbered -->
+          <xsl:when test="@n">
+            <xsl:value-of select="@n"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:number level="any" count='//tei:note[@place="end" and (text() or *) and not(@n)]' format="[I]"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </a>
+      <xsl:text> </xsl:text>
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
 
-<!-- copied from dtabf_base.xsl to act as in dtabf_viewer.xsl -->
+  <!-- inline notes -->
+  <xsl:template match='tei:note[@place="inline"]'>
+    <span class="inline">
+      <xsl:if test="@type='editorial'">
+        <xsl:attribute name="class">editorial inline</xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
+
+  <!-- copied from dtabf_base.xsl to act as in dtabf_viewer.xsl -->
+
   <!-- we don't separate note-handling -->
   <xsl:template match="tei:text[not(descendant::tei:text)]">
     <xsl:apply-templates/>
@@ -270,48 +306,48 @@
     <xsl:apply-templates select='//tei:fw[@place="bottom" and (text() or *)]' mode="signatures"/>
   </xsl:template>
 
-<xsl:template match='tei:pb'>
-  <xsl:variable name="thisSite" select="."/>
-  <xsl:if test="preceding::tei:note[@place='foot'][./preceding::tei:pb[. is $thisSite/preceding::tei:pb[1]]]">
-    <div class="endnotes-wrapper" style="display:block">
-      <div style="height: 24px; width: 36px" />
-      <xsl:for-each select="preceding::tei:note[@place='foot' and string-length(@prev) > 0][./preceding::tei:pb[. is $thisSite/preceding::tei:pb[1]]]">
-        <xsl:apply-templates select="." mode="footnotes"/>
-      </xsl:for-each>
-      <xsl:for-each select="preceding::tei:note[@place='foot' and string-length(@prev) = 0][./preceding::tei:pb[. is $thisSite/preceding::tei:pb[1]]]">
-        <xsl:apply-templates select="." mode="footnotes"/>
-      </xsl:for-each>
-    </div>
-  </xsl:if>
-  <div class="dta-pb" style="margin-top: 2em; padding-left:15em">|<xsl:value-of select="@facs"/><xsl:if test="@n"> : <xsl:value-of select="@n"/></xsl:if>|</div>
-  <br />
-</xsl:template>
+  <xsl:template match='tei:pb'>
+    <xsl:variable name="thisSite" select="."/>
+    <xsl:if test="preceding::tei:note[@place='foot'][./preceding::tei:pb[. is $thisSite/preceding::tei:pb[1]]]">
+      <div class="endnotes-wrapper" style="display:block">
+        <div style="height: 24px; width: 36px" />
+        <xsl:for-each select="preceding::tei:note[@place='foot' and string-length(@prev) > 0][./preceding::tei:pb[. is $thisSite/preceding::tei:pb[1]]]">
+          <xsl:apply-templates select="." mode="footnotes"/>
+        </xsl:for-each>
+        <xsl:for-each select="preceding::tei:note[@place='foot' and string-length(@prev) = 0][./preceding::tei:pb[. is $thisSite/preceding::tei:pb[1]]]">
+          <xsl:apply-templates select="." mode="footnotes"/>
+        </xsl:for-each>
+      </div>
+    </xsl:if>
+    <div class="dta-pb" style="margin-top: 2em; padding-left:15em">|<xsl:value-of select="@facs"/><xsl:if test="@n"> : <xsl:value-of select="@n"/></xsl:if>|</div>
+    <br />
+  </xsl:template>
 
-<!-- adapted from dtabf_base.xsl, expand for print -->
-<xsl:template match="tei:choice">
-  <xsl:choose>
-    <xsl:when test="./tei:reg">
-      <xsl:apply-templates select="tei:orig"/>
-      <xsl:element name="span">
-        <xsl:attribute name="class">dta-reg</xsl:attribute>
-        [<xsl:value-of select="tei:reg"/>]
-      </xsl:element>
-    </xsl:when>
-    <xsl:when test="./tei:abbr">
-    <xsl:apply-templates select="tei:abbr"/>
-      <xsl:element name="span">
-        <xsl:attribute name="class">dta-abbr</xsl:attribute>
-        [<xsl:variable name="temp"><xsl:apply-templates select="tei:expan" mode="choice"/></xsl:variable><xsl:value-of select="normalize-space($temp)" />]
-      </xsl:element>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:element name="span">
-        <xsl:attribute name="title">Schreibfehler: <xsl:value-of select="tei:sic"/></xsl:attribute>
-        <xsl:attribute name="class">dta-corr</xsl:attribute>
-        <xsl:apply-templates select="tei:corr"/>
-      </xsl:element>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:template>
+  <!-- adapted from dtabf_base.xsl, expand for print -->
+  <xsl:template match="tei:choice">
+    <xsl:choose>
+      <xsl:when test="./tei:reg">
+        <xsl:apply-templates select="tei:orig"/>
+        <xsl:element name="span">
+          <xsl:attribute name="class">dta-reg</xsl:attribute>
+          [<xsl:value-of select="tei:reg"/>]
+        </xsl:element>
+      </xsl:when>
+      <xsl:when test="./tei:abbr">
+      <xsl:apply-templates select="tei:abbr"/>
+        <xsl:element name="span">
+          <xsl:attribute name="class">dta-abbr</xsl:attribute>
+          [<xsl:variable name="temp"><xsl:apply-templates select="tei:expan" mode="choice"/></xsl:variable><xsl:value-of select="normalize-space($temp)" />]
+        </xsl:element>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:element name="span">
+          <xsl:attribute name="title">Schreibfehler: <xsl:value-of select="tei:sic"/></xsl:attribute>
+          <xsl:attribute name="class">dta-corr</xsl:attribute>
+          <xsl:apply-templates select="tei:corr"/>
+        </xsl:element>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 
 </xsl:stylesheet>

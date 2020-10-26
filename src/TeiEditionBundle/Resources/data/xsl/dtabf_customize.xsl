@@ -28,44 +28,44 @@
     </xsl:element>
   </xsl:template>
 
-<xsl:template match='tei:gap'>
-  <span class="gap">
-    <xsl:text>[</xsl:text>
-    <xsl:if test="@reason='lost'"><xsl:call-template name="translate">
-      <xsl:with-param name="label" select="'verlorenes Material'" />
-    </xsl:call-template></xsl:if>
-    <xsl:if test="@reason='insignificant'"><span><xsl:attribute name="title">
-        <xsl:call-template name="translate">
-            <xsl:with-param name="label" select="'irrelevantes Material'" />
-        </xsl:call-template>
-      </xsl:attribute>&#x2026;</span></xsl:if>
-    <xsl:if test="@reason='fm'">fremdsprachliches Material</xsl:if>
-    <xsl:if test="@reason='illegible'"><xsl:call-template name="translate">
-              <xsl:with-param name="label" select="'unleserliches Material'" />
-    </xsl:call-template></xsl:if>
-    <xsl:if test="@unit"><xsl:text> – </xsl:text></xsl:if>
-    <xsl:choose>
-      <xsl:when test="@unit">
-        <xsl:if test="@quantity">
-          <xsl:value-of select="@quantity"/><xsl:text> </xsl:text>
-        </xsl:if>
-        <xsl:choose>
-          <xsl:when test="@unit='pages' and @quantity!=1">Seiten</xsl:when>
-          <xsl:when test="@unit='pages' and @quantity=1">Seite</xsl:when>
-          <xsl:when test="@unit='lines' and @quantity!=1">Zeilen</xsl:when>
-          <xsl:when test="@unit='lines' and @quantity=1">Zeile</xsl:when>
-          <xsl:when test="@unit='words' and @quantity!=1">Wörter</xsl:when>
-          <xsl:when test="@unit='words' and @quantity=1">Wort</xsl:when>
-          <xsl:when test="@unit='chars'">Zeichen</xsl:when>
-        </xsl:choose>
-        <xsl:text> fehl</xsl:text>
-        <xsl:if test="@quantity=1 or not(@quantity)">t</xsl:if>
-        <xsl:if test="@quantity!=1">en</xsl:if>
-      </xsl:when>
-    </xsl:choose>
-    <xsl:text>]</xsl:text>
-  </span>
-</xsl:template>
+  <xsl:template match='tei:gap'>
+    <span class="gap">
+      <xsl:text>[</xsl:text>
+      <xsl:if test="@reason='lost'"><xsl:call-template name="translate">
+        <xsl:with-param name="label" select="'verlorenes Material'" />
+      </xsl:call-template></xsl:if>
+      <xsl:if test="@reason='insignificant'"><span><xsl:attribute name="title">
+          <xsl:call-template name="translate">
+              <xsl:with-param name="label" select="'irrelevantes Material'" />
+          </xsl:call-template>
+        </xsl:attribute>&#x2026;</span></xsl:if>
+      <xsl:if test="@reason='fm'">fremdsprachliches Material</xsl:if>
+      <xsl:if test="@reason='illegible'"><xsl:call-template name="translate">
+                <xsl:with-param name="label" select="'unleserliches Material'" />
+      </xsl:call-template></xsl:if>
+      <xsl:if test="@unit"><xsl:text> – </xsl:text></xsl:if>
+      <xsl:choose>
+        <xsl:when test="@unit">
+          <xsl:if test="@quantity">
+            <xsl:value-of select="@quantity"/><xsl:text> </xsl:text>
+          </xsl:if>
+          <xsl:choose>
+            <xsl:when test="@unit='pages' and @quantity!=1">Seiten</xsl:when>
+            <xsl:when test="@unit='pages' and @quantity=1">Seite</xsl:when>
+            <xsl:when test="@unit='lines' and @quantity!=1">Zeilen</xsl:when>
+            <xsl:when test="@unit='lines' and @quantity=1">Zeile</xsl:when>
+            <xsl:when test="@unit='words' and @quantity!=1">Wörter</xsl:when>
+            <xsl:when test="@unit='words' and @quantity=1">Wort</xsl:when>
+            <xsl:when test="@unit='chars'">Zeichen</xsl:when>
+          </xsl:choose>
+          <xsl:text> fehl</xsl:text>
+          <xsl:if test="@quantity=1 or not(@quantity)">t</xsl:if>
+          <xsl:if test="@quantity!=1">en</xsl:if>
+        </xsl:when>
+      </xsl:choose>
+      <xsl:text>]</xsl:text>
+    </span>
+  </xsl:template>
 
   <xsl:template match="tei:foreign">
     <span class="dta-foreign">
@@ -109,21 +109,21 @@
     </span>
   </xsl:template>
 
-<xsl:template match='tei:cb'>
-  <div class="dta-cb">
-    <xsl:choose>
-      <xsl:when test="@type='start'">[<xsl:call-template name="translate">
-              <xsl:with-param name="label" select="'Beginn Spaltensatz'" />
-    </xsl:call-template>]</xsl:when>
-      <xsl:when test="@type='end'">[<xsl:call-template name="translate">
-              <xsl:with-param name="label" select="'Ende Spaltensatz'" />
-    </xsl:call-template>]</xsl:when>
-      <xsl:otherwise>[<xsl:call-template name="translate">
-              <xsl:with-param name="label" select="'Spaltenumbruch'" />
-    </xsl:call-template>]</xsl:otherwise>
-    </xsl:choose>
-  </div>
-</xsl:template>
+  <xsl:template match='tei:cb'>
+    <div class="dta-cb">
+      <xsl:choose>
+        <xsl:when test="@type='start'">[<xsl:call-template name="translate">
+                <xsl:with-param name="label" select="'Beginn Spaltensatz'" />
+      </xsl:call-template>]</xsl:when>
+        <xsl:when test="@type='end'">[<xsl:call-template name="translate">
+                <xsl:with-param name="label" select="'Ende Spaltensatz'" />
+      </xsl:call-template>]</xsl:when>
+        <xsl:otherwise>[<xsl:call-template name="translate">
+                <xsl:with-param name="label" select="'Spaltenumbruch'" />
+      </xsl:call-template>]</xsl:otherwise>
+      </xsl:choose>
+    </div>
+  </xsl:template>
 
   <!-- we do separate note-handling -->
   <xsl:template match="tei:text[not(descendant::tei:text)]">
@@ -270,107 +270,107 @@
     </xsl:choose>
   </xsl:template>
 
-<xsl:template match='tei:figure'>
-  <xsl:choose>
-    <xsl:when test="tei:media/@mimeType='audio/mpeg'">
-      <!-- custom code for audio/video -->
-      <audio controls="controls">
-        <xsl:if test="@facs">
-            <xsl:attribute name="class">bootstrap3</xsl:attribute>
-            <xsl:attribute name="data-info-album-art"><xsl:value-of select='@facs' /></xsl:attribute>
-            <xsl:if test="tei:figDesc">
-                <xsl:attribute name="data-info-album-art-caption">
-                    <xsl:apply-templates select="tei:figDesc" mode="figdesc"/>
-                </xsl:attribute>
-            </xsl:if>
+  <xsl:template match='tei:figure'>
+    <xsl:choose>
+      <xsl:when test="tei:media/@mimeType='audio/mpeg'">
+        <!-- custom code for audio/video -->
+        <audio controls="controls">
+          <xsl:if test="@facs">
+              <xsl:attribute name="class">bootstrap3</xsl:attribute>
+              <xsl:attribute name="data-info-album-art"><xsl:value-of select='@facs' /></xsl:attribute>
+              <xsl:if test="tei:figDesc">
+                  <xsl:attribute name="data-info-album-art-caption">
+                      <xsl:apply-templates select="tei:figDesc" mode="figdesc"/>
+                  </xsl:attribute>
+              </xsl:if>
+          </xsl:if>
+          <source>
+            <xsl:attribute name="src"><xsl:value-of select='tei:media/@url' /></xsl:attribute>
+            <xsl:attribute name="type"><xsl:value-of select='tei:media/@mimeType' /></xsl:attribute>
+          </source>
+        </audio>
+        <xsl:if test="not(@facs)">
+          <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if>
         </xsl:if>
-        <source>
-          <xsl:attribute name="src"><xsl:value-of select='tei:media/@url' /></xsl:attribute>
+      </xsl:when>
+      <xsl:when test="tei:media/@mimeType='model/stl'">
+        <!-- custom code for object to be passed on to three.js -->
+        <div class="embed-responsive">
+        <object>
+          <!--
+          <xsl:if test="@facs">
+            <xsl:attribute name="data-poster"><xsl:value-of select='@facs' /></xsl:attribute>
+          </xsl:if>
+          -->
+          <xsl:attribute name="data"><xsl:value-of select='tei:media/@url' /></xsl:attribute>
           <xsl:attribute name="type"><xsl:value-of select='tei:media/@mimeType' /></xsl:attribute>
-        </source>
-      </audio>
-      <xsl:if test="not(@facs)">
+        </object>
+        </div>
         <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if>
-      </xsl:if>
-    </xsl:when>
-    <xsl:when test="tei:media/@mimeType='model/stl'">
-      <!-- custom code for object to be passed on to three.js -->
-      <div class="embed-responsive">
-      <object>
-        <!--
-        <xsl:if test="@facs">
-          <xsl:attribute name="data-poster"><xsl:value-of select='@facs' /></xsl:attribute>
-        </xsl:if>
-        -->
-        <xsl:attribute name="data"><xsl:value-of select='tei:media/@url' /></xsl:attribute>
-        <xsl:attribute name="type"><xsl:value-of select='tei:media/@mimeType' /></xsl:attribute>
-      </object>
-      </div>
-      <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if>
-    </xsl:when>
-    <xsl:when test="tei:media/@mimeType='video/mp4'">
-      <!-- custom code for audio/video -->
-      <div class="embed-responsive embed-responsive-16by9">
-      <video controls="controls" preload="none" class="embed-responsive-item">
-        <xsl:if test="@facs">
-          <xsl:attribute name="poster"><xsl:value-of select='@facs' /></xsl:attribute>
-        </xsl:if>
-        <source>
+      </xsl:when>
+      <xsl:when test="tei:media/@mimeType='video/mp4'">
+        <!-- custom code for audio/video -->
+        <div class="embed-responsive embed-responsive-16by9">
+        <video controls="controls" preload="none" class="embed-responsive-item">
+          <xsl:if test="@facs">
+            <xsl:attribute name="poster"><xsl:value-of select='@facs' /></xsl:attribute>
+          </xsl:if>
+          <source>
+            <xsl:attribute name="src"><xsl:value-of select='tei:media/@url' /></xsl:attribute>
+            <xsl:attribute name="type"><xsl:value-of select='tei:media/@mimeType' /></xsl:attribute>
+          </source>
+        </video>
+        </div>
+        <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if>
+      </xsl:when>
+      <xsl:when test="tei:media/@mimeType='text/html'">
+        <!-- custom code for iframe -->
+        <div class="embed-responsive embed-responsive-4by3"><!-- todo: get from width/height -->
+        <iframe class="embed-responsive-item" allowFullScreen="allowFullScreen">
           <xsl:attribute name="src"><xsl:value-of select='tei:media/@url' /></xsl:attribute>
-          <xsl:attribute name="type"><xsl:value-of select='tei:media/@mimeType' /></xsl:attribute>
-        </source>
-      </video>
-      </div>
-      <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if>
-    </xsl:when>
-    <xsl:when test="tei:media/@mimeType='text/html'">
-      <!-- custom code for iframe -->
-      <div class="embed-responsive embed-responsive-4by3"><!-- todo: get from width/height -->
-      <iframe class="embed-responsive-item" allowFullScreen="allowFullScreen">
-        <xsl:attribute name="src"><xsl:value-of select='tei:media/@url' /></xsl:attribute>
-      </iframe>
-      </div>
-      <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if>
-    </xsl:when>
-    <xsl:when test="(local-name(preceding-sibling::node()[1]) = 'lb' and local-name(following-sibling::node()[1]) = 'lb') or @rendition='#c'">
-      <xsl:element name="div">
-        <xsl:attribute name="class">phbl dta-figure</xsl:attribute>
-        <xsl:attribute name="type"><xsl:value-of select="count(preceding::tei:figure)+1"/></xsl:attribute>
-        <xsl:if test="@rendition='#c'">
-          <xsl:attribute name="style">text-align:center</xsl:attribute>
-        </xsl:if>
-        <xsl:if test="@facs">
-          <xsl:element name="img">
-            <xsl:attribute name="src"><xsl:value-of select="@facs"/></xsl:attribute>
-          </xsl:element><br />
-        </xsl:if>
-        [<xsl:choose>
-          <xsl:when test="@type='notatedMusic'">Musik</xsl:when>
-          <xsl:otherwise>Abbildung</xsl:otherwise>
-        </xsl:choose>
-        <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if>]
-        <xsl:apply-templates/>
-      </xsl:element>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:element name="div">
-        <xsl:attribute name="class">ph dta-figure</xsl:attribute>
-        <xsl:attribute name="type"><xsl:value-of select="count(preceding::tei:figure)+1"/></xsl:attribute>
-        <xsl:if test="@facs">
-          <xsl:element name="img">
-            <!--<xsl:attribute name="class">img-responsive</xsl:attribute>-->
-            <xsl:attribute name="src"><xsl:value-of select="@facs"/></xsl:attribute>
-          </xsl:element><!--<br />-->
-        </xsl:if>
-        <!--[<xsl:choose>
-          <xsl:when test="@type='notatedMusic'">Musik</xsl:when>
-          <xsl:otherwise>Abbildung</xsl:otherwise>
-        </xsl:choose>-->
-        <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if><!--]-->
-        <xsl:apply-templates/>
-      </xsl:element>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:template>
+        </iframe>
+        </div>
+        <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if>
+      </xsl:when>
+      <xsl:when test="(local-name(preceding-sibling::node()[1]) = 'lb' and local-name(following-sibling::node()[1]) = 'lb') or @rendition='#c'">
+        <xsl:element name="div">
+          <xsl:attribute name="class">phbl dta-figure</xsl:attribute>
+          <xsl:attribute name="type"><xsl:value-of select="count(preceding::tei:figure)+1"/></xsl:attribute>
+          <xsl:if test="@rendition='#c'">
+            <xsl:attribute name="style">text-align:center</xsl:attribute>
+          </xsl:if>
+          <xsl:if test="@facs">
+            <xsl:element name="img">
+              <xsl:attribute name="src"><xsl:value-of select="@facs"/></xsl:attribute>
+            </xsl:element><br />
+          </xsl:if>
+          [<xsl:choose>
+            <xsl:when test="@type='notatedMusic'">Musik</xsl:when>
+            <xsl:otherwise>Abbildung</xsl:otherwise>
+          </xsl:choose>
+          <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if>]
+          <xsl:apply-templates/>
+        </xsl:element>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:element name="div">
+          <xsl:attribute name="class">ph dta-figure</xsl:attribute>
+          <xsl:attribute name="type"><xsl:value-of select="count(preceding::tei:figure)+1"/></xsl:attribute>
+          <xsl:if test="@facs">
+            <xsl:element name="img">
+              <!--<xsl:attribute name="class">img-responsive</xsl:attribute>-->
+              <xsl:attribute name="src"><xsl:value-of select="@facs"/></xsl:attribute>
+            </xsl:element><!--<br />-->
+          </xsl:if>
+          <!--[<xsl:choose>
+            <xsl:when test="@type='notatedMusic'">Musik</xsl:when>
+            <xsl:otherwise>Abbildung</xsl:otherwise>
+          </xsl:choose>-->
+          <xsl:if test="tei:figDesc"><xsl:text> </xsl:text><xsl:apply-templates select="tei:figDesc" mode="figdesc"/></xsl:if><!--]-->
+          <xsl:apply-templates/>
+        </xsl:element>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 
 </xsl:stylesheet>
