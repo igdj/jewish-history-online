@@ -524,6 +524,21 @@ extends BaseController
         return preg_replace('/<\/?body>/', '', $crawler->html());
     }
 
+    /**
+     * Custom method since $node->text() returns note-content as well
+     */
+    private function extractText($node)
+    {
+        $html = $node->html();
+        if (!preg_match('/</', $html)) {
+            return $node->text();
+        }
+
+        return $this->removeByCssSelector('<body>' . $html . '</body>',
+                                          [ 'span.editorial', 'a.editorial-marker' ],
+                                          true);
+    }
+
     protected function extractPartsFromHtml(string $html, TranslatorInterface $translator)
     {
         $crawler = new \Symfony\Component\DomCrawler\Crawler();
@@ -531,7 +546,7 @@ extends BaseController
 
         // headers for TOC
         $sectionHeaders = $crawler->filterXPath('//h2')->each(function ($node, $i) {
-            return [ 'id' => $node->attr('id'), 'text' => $node->text() ];
+            return [ 'id' => $node->attr('id'), 'text' => $this->extractText($node) ];
         });
 
         // authors

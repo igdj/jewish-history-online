@@ -47,7 +47,7 @@ trait RenderTeiTrait
     /**
      * Remove nodes from HTML by CSS-Selector
      */
-    function removeByCssSelector($html, $selectorsToRemove)
+    function removeByCssSelector($html, $selectorsToRemove, $returnPlainText = false)
     {
         $crawler = new \Symfony\Component\DomCrawler\Crawler();
         $crawler->addHtmlContent($html);
@@ -58,6 +58,10 @@ trait RenderTeiTrait
                     $node->parentNode->removeChild($node);
                 }
             });
+        }
+
+        if ($returnPlainText) {
+            return $crawler->text();
         }
 
         return $crawler->html();
