@@ -570,8 +570,9 @@ a.break-word, .sidebar dd a {
     }
 
     h3.dta-head {
-        /* we want Selected Bibliography */
+        /* we want Select Bibliography
         text-transform: capitalize;
+        */
     }
 
     .editorial.foot {
@@ -1036,11 +1037,11 @@ body.route-article-index-date #switch-article-index-date
     font-weight: bold;
 }
 
-body.route-topic-background {
+body.route-topic-background, body.route-article {
     .article {
         .dta-figure {
             img {
-                max-height: 400px;
+                max-height: 80vh;
             }
         }
     }
