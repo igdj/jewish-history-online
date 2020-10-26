@@ -73,7 +73,7 @@ trait SharingBuilderTrait
             if ($entity instanceof \TeiEditionBundle\Entity\Person) {
                 $og['og:image'] = $baseUri . 'img/icon/placeholder_person.png';
             }
-            else if ($entity instanceof \TeiEditionBundle\Entity\Bibitom) {
+            else if ($entity instanceof \TeiEditionBundle\Entity\Bibitem) {
                 $og['og:image'] = $baseUri . 'img/icon/placeholder_bibitem.png';
             }
             else if ($entity instanceof \TeiEditionBundle\Entity\Article) {
