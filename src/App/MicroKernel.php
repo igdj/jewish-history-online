@@ -50,7 +50,6 @@ extends Kernel
             new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
 
-            // $slug = $this->get('cocur_slugify')->slugify('Hello World!');
             // see https://github.com/cocur/slugify#user-content-symfony2
             new \Cocur\Slugify\Bridge\Symfony\CocurSlugifyBundle(),
 
