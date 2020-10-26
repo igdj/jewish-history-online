@@ -54,7 +54,7 @@
         </div>
 
         <div class="col-sm-4 sidebar">
-            {% if place.geo is not empty or place.additional.boundary is not empty %}
+            {% if place.geo is not empty or (place.additional.boundary is defined and place.additional.boundary is not empty) %}
             <div id="map" class="col-sm-12" style="width: 100%; min-height: 360px"></div>
             <script>
             function adjustMapSize() {
@@ -71,7 +71,7 @@
             var map = L.map('map');
 
             var bounds = null;
-            {% if place.additional.bounds is not empty %}
+            {% if place.additional.bounds is defined and place.additional.bounds is not empty %}
                 bounds = {{ place.additional.bounds|json_encode|raw }};
             {% elseif place.geo is not null %}
                 {% if place.showCenterMarker %}
@@ -84,7 +84,7 @@
 
             {{ map.addTileLayer() }}
 
-            {% if place.additional.boundary is not empty %}
+            {% if place.additional.boundary is defined and place.additional.boundary is not empty %}
                 var boundary = {{ place.additional.boundary|json_encode|raw }};
                 var geojsonLayer = L.geoJSON(boundary).addTo(map);
                 if (bounds == null) {

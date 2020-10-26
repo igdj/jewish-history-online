@@ -11,24 +11,25 @@
     <div class="row">
         <div class="col-sm-8">
         {% if articles is not empty %}
-        {% for article in articles %}
-            {% if app.request.attributes.get('_route') == 'article-index-date' %}
-                {% set initial = article.datePublished|date("m.Y") %}
-            {% else %}
-                {% set initial = slugify.slugify(article.creator|first)|upper %}
-            {% endif %}
-            {% if initial != last_initial %}
-                {% if last_initial != '' %}
-            </ul>
+            {% set last_initial = null %}
+            {% for article in articles %}
+                {% if app.request.attributes.get('_route') == 'article-index-date' %}
+                    {% set initial = article.datePublished|date("m.Y") %}
+                {% else %}
+                    {% set initial = slugify.slugify(article.creator|first)|upper %}
                 {% endif %}
-            <h2>{{ initial }} </h2>
-            {% set last_initial = initial %}
+                {% if initial != last_initial %}
+                    {% if last_initial != '' %}
+            </ul>
+                    {% endif %}
+                <h2>{{ initial }} </h2>
+                {% set last_initial = initial %}
             <ul class="list-unstyled">
-            {% endif %}
-            <li>
-                {{ helper.article_linked_full(article) }}
-            </li>
-        {% endfor %}
+                {% endif %}
+                <li>
+                    {{ helper.article_linked_full(article) }}
+                </li>
+            {% endfor %}
             </ul>
         {% else %}
             Es wurden keine Artikel gefunden

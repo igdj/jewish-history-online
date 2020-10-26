@@ -25,24 +25,9 @@
     </h1>
     <div class="row">
         <div class="col-sm-8">
-            <dl>
-            {% if organization.foundingPlace is not empty or organization.foundingDate is not empty %}
-                <dt>{{ 'Founded'|trans }}:</dt>
-                <dd>
-                    {{ organization.foundingPlace }}
-                    {{ organization.foundingDate|dateincomplete }}
-                </dd>
+            {% if event.description[app.request.locale] is defined %}
+            <p>{{ event.description[app.request.locale]|nl2br }}</p>
             {% endif %}
-            {% if organization.dissolutionPlace is not empty or organization.dissolutionDate is not empty %}
-                <dt>{{ 'Dissolved'|trans }}:</dt>
-                <dd>
-                    {{ organization.dissolutionPlace }}
-                    {{ organization.dissolutionDate|dateincomplete }}
-                </dd>
-            {% endif %}
-            </dl>
-
-            <p>{{ event.description[app.request.locale]|nl2br  }}</p>
 
             {{ helper.list_entity_mentioned_in(event.articleReferences(app.request.locale)) }}
         </div>
@@ -59,7 +44,7 @@
                 </div>
 
                 <div class="row box-color-content-inverse">
-                    {% if event.additional.beacon is not empty %}
+                    {% if event.additional.beacon is defined and event.additional.beacon is not empty %}
                     <div class="col-sm-12 beacon-ul">
                         <ul>
                             {% for info in event.additional.beacon %}

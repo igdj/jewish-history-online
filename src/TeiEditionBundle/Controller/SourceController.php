@@ -296,6 +296,7 @@ extends ArticleController
                     'path' => $path,
                     'license' => $license,
                     'entity_lookup' => $entityLookup,
+                    'bibitem_lookup' => $bibitemLookup,
                     'glossary_lookup' => $glossaryLookup,
                     'pageMeta' => [
                         'jsonLd' => $sourceArticle->jsonLdSerialize($request->getLocale()),
@@ -339,6 +340,7 @@ EOT;
                 'path' => $path,
                 'license' => $license,
                 'entity_lookup' => $entityLookup,
+                'bibitem_lookup' => $bibitemLookup,
                 'glossary_lookup' => $glossaryLookup,
                 'pageMeta' => [
                     'jsonLd' => $sourceArticle->jsonLdSerialize($request->getLocale()),
@@ -361,6 +363,7 @@ EOT;
             'firstFacs' => !empty($firstFacs) ? $firstFacs : 'f0001',
             'license' => $license,
             'entity_lookup' => $entityLookup,
+            'bibitem_lookup' => $bibitemLookup,
             'glossary_lookup' => $glossaryLookup,
             'pageMeta' => [
                 'jsonLd' => $sourceArticle->jsonLdSerialize($request->getLocale()),

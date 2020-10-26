@@ -81,7 +81,7 @@
         {% for author in authors %}{{ author.text|trim }}, {% endfor %}
     {% endif %}
     {{ name }}{% if article.translator is not empty %} ({{ 'translated by'|trans }} {{ article.translator.fullname(true) }}){% endif%}, in: {{ siteName|trans }}
-    {%- if meta.datePublished is not empty %}, {{ meta.datePublished|dateincomplete }}{% if meta.dateModified is not empty and meta.dateModified != meta.datePublished %} ({{'as of'|trans }} {{ meta.dateModified|dateincomplete }}){% endif %}{% endif %}.
+    {%- if meta.datePublished is defined and meta.datePublished is not empty %}, {{ meta.datePublished|dateincomplete }}{% if meta.dateModified is not empty and meta.dateModified != meta.datePublished %} ({{'as of'|trans }} {{ meta.dateModified|dateincomplete }}){% endif %}{% endif %}.
     &lt;{% if article.doi is not empty and not ('10.5072' in article.doi) %}<a href="https://dx.doi.org/{{ article.doi }}">https://dx.doi.org/{{ article.doi }}</a>{% else %}{{ url(app.request.attributes.get('_route')|replace({ '-pdf' : ''}), params) }}{% endif %}&gt; [{{ 'now'|date('F d, Y'|trans) }}].</p>
 {% endmacro %}
 

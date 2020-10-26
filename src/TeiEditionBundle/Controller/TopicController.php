@@ -260,6 +260,7 @@ extends RenderTeiController
         }
 
         return $this->render('@TeiEdition/Topic/background.html.twig', [
+            'article' => $article,
             'slug' => $slug,
             'name' => $topics[$slug],
             'pageTitle' => $topics[$slug], // TODO: Prepend Einfuehrung, append authors in brackets

@@ -73,7 +73,7 @@
                 </a>
             </p>
         {% endif %}
-        {% if entry.children is not empty %}
+        {% if entry.children is defined and entry.children is not empty %}
             {{ education.children_display(entry.children) }}
         {% endif %}
             </div>
@@ -148,7 +148,7 @@
                     <div class="container-fluid">
                         {% set count = 0 %}
                         {% for entry in entries %}
-                            {% if sourcesByUid[entry.url] is defined or entry.provider == 'Geschichtomat' or entry.title is not empty %}
+                            {% if sourcesByUid[entry.url] is defined or (entry.provider is defined and entry.provider == 'Geschichtomat') or (entry.title is defined and entry.title is not empty) %}
                         {% if count % 2 == 0 %}
                             {% if count != 0 %}
                         </div><!-- .row -->
@@ -172,7 +172,7 @@
                                     {% else %}
                                         {{ education.icon_ghdi() }} <a href="{{ entry.url }}&amp;language=german" target="_blank">{{ entry.title['de'] }}</a>
                                     {% endif %}
-                                    {% if entry.children is not empty %}
+                                    {% if entry.children is defined and entry.children is not empty %}
                                         {{ education.children_display(entry.children) }}
                                     {% endif %}
                                 {% elseif 'en' ==  app.request.getLocale() and entry.title is not empty %}

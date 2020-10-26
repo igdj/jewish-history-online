@@ -172,7 +172,7 @@
                             <ul id="menu-lang" class="list-inline">
                             {% for locale in locales %}
                                 <li{% if locale == app.request.locale %} class="current"{% endif %}>
-                                    {% if route_params_locale_switch is not empty and route_params_locale_switch[locale] is defined %}
+                                    {% if route_params_locale_switch is defined and route_params_locale_switch is not empty and route_params_locale_switch[locale] is defined %}
                                         {% set route_params = route_params_locale_switch[locale] %}
                                     {% else %}
                                         {% set route_params = app.request.attributes.get('_route_params')|merge(app.request.query.all) %}

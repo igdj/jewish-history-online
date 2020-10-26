@@ -142,7 +142,7 @@
                     </div>
                 </div>
                 <div class="row box-color-content-inverse">
-                    {% if person.djh is not empty or person.stolpersteine is not empty or person.additional.beacon is not empty %}
+                    {% if person.djh is not empty or person.stolpersteine is not empty or (person.additional.beacon is defined and person.additional.beacon is not empty) %}
                     <div class="col-sm-12 beacon-ul">
                         <ul>
                             {% if person.djh is not empty %}

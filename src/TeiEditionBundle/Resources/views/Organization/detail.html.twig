@@ -26,10 +26,10 @@
     <div class="row">
         <div class="col-sm-8">
             <dl>
-            {% if organization.foundingPlace is not empty or organization.foundingDate is not empty %}
+            {% if organization.foundingLocation is not empty or organization.foundingDate is not empty %}
                 <dt>{{ 'Founded'|trans }}:</dt>
                 <dd>
-                    {{ organization.foundingPlace }}
+                    {{ organization.foundingLocation }}
                     {{ organization.foundingDate|dateincomplete }}
                 </dd>
             {% endif %}
@@ -39,10 +39,9 @@
                     <a href="{% if organization.precedingOrganization.gnd is not empty %}{{ path('organization-by-gnd', { 'gnd' : organization.precedingOrganization.gnd }) }}{% else %}{{ path('organization', { 'id' : organization.precedingOrganization.id }) }}{% endif %}">{{ organization.precedingOrganization.nameLocalized(app.request.locale) }}</a>
                 </dd>
             {% endif %}
-            {% if organization.dissolutionPlace is not empty or organization.dissolutionDate is not empty %}
+            {% if organization.dissolutionDate is not empty %}
                 <dt>{{ 'Dissolved'|trans }}:</dt>
                 <dd>
-                    {{ organization.dissolutionPlace }}
                     {{ organization.dissolutionDate|dateincomplete }}
                 </dd>
             {% endif %}
@@ -60,7 +59,9 @@
             {% endif %}
             </dl>
 
+            {% if organization.description[app.request.locale] is defined %}
             <p>{{ organization.description[app.request.locale]|nl2br  }}</p>
+            {% endif %}
 
             {% set sources = organization.providerOf(app.request.locale) %}
             {% if sources is not empty %}
@@ -76,7 +77,7 @@
         </div>
 
         <div class="col-sm-4 sidebar">
-            {% set entityfacts = organization.__get('entityfacts') %}
+            {#% set entityfacts = organization.__get('entityfacts') %}
             {% if entityfacts is not empty %}
                 {% if entityfacts.organization.depiction is defined %}
                         <a href="{{ entityfacts.organization.depiction.url }}" target="_blank">
@@ -85,7 +86,7 @@
                         Quelle:  <a href="{{ entityfacts.organization.depiction.url }}" target="_blank">Wikimedia</a><br />
                         Informationen zum Lizenzstatus dieser Abbildung können durch Anklicken der Abbildung abgerufen werden.
                 {% endif %}
-            {% endif %}
+            {% endif %#}
             {% if organization.gnd is not empty %}
             <div class="container-fluid box">
                 <div class="row box-color-title">
@@ -97,7 +98,7 @@
                 </div>
 
                 <div class="row box-color-content-inverse">
-                    {% if organization.additional.beacon is not empty %}
+                    {% if organization.additional.beacon is defined and organization.additional.beacon is not empty %}
                     <div class="col-sm-12 beacon-ul">
                         <ul>
                             {% for info in organization.additional.beacon %}
