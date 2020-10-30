@@ -125,6 +125,12 @@
     </div>
   </xsl:template>
 
+  <xsl:template match="tei:quote">
+    <blockquote class="dta-quote">
+      <xsl:apply-templates/>
+    </blockquote>
+  </xsl:template>
+
   <!-- we do separate note-handling -->
   <xsl:template match="tei:text[not(descendant::tei:text)]">
     <xsl:apply-templates/>
