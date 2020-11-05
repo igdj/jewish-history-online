@@ -183,6 +183,10 @@ class GeographicalData
                     $values['type'] = 'continent';
                     break;
 
+                case 'http://vocab.getty.edu/aat/300008687':
+                    $values['type'] = 'ocean';
+                    break;
+
                 case 'http://vocab.getty.edu/aat/300008694':
                     $values['type'] = 'sea';
                     break;
