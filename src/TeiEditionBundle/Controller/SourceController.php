@@ -721,7 +721,7 @@ EOT;
             };
         }
 
-        $template = $twig->loadTemplate('@TeiEdition/Article/mods-fragments.xml.twig');
+        $template = $twig->load('@TeiEdition/Article/mods-fragments.xml.twig');
         $context = $twig->getGlobals();
 
         // add mets:rightsMD / mets:digiprovMD to mets:dmdSec
