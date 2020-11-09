@@ -66,8 +66,8 @@ parameters:
         # windows, set your proper path
         # path: "c:/Users/USER/AppData/Roaming/npm/"
 
-    # activate a sylius-theme located in themes/
-    app.site_theme: ~ # 'igdj/jgo-theme'
+    # activate a sylius-theme located in sites/
+    app.site_theme: ~ # 'igdj/jgo-presentation'
 
     twitter.site: keydocuments
     piwik.site_id:  # 2
