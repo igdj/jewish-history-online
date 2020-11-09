@@ -87,7 +87,7 @@ stof_doctrine_extensions:
             timestampable: true
 
 scssphp:
-    enabled: true
+    enabled: '%kernel.debug%'
     autoUpdate: '%kernel.debug%'
     assets:
         "css/base.css":
