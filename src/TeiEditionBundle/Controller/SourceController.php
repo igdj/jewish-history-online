@@ -107,7 +107,7 @@ extends ArticleController
                                  $generatePrintView ? 'dtabf_article-printview.xsl' : 'dtabf_article.xsl',
                                  $params);
 
-        list($authors, $section_headers, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html, $translator);
+        list($authors, $sectionHeaders, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html, $translator);
 
         $interpretation = $sourceArticle->getIsPartOf();
         $interpretations = !is_null($interpretation)
@@ -119,10 +119,6 @@ extends ArticleController
                 'article' => $interpretation,
                 'html' => $this->renderSourceDescription($interpretation, $translator),
             ];
-            list($dummy, $dummy, $license, $entitiesSourceDescription, $bibitemLookup, $glossaryTermsSourceDescription, $refs) = $this->extractPartsFromHtml($sourceDescription['html'], $translator);
-
-            $entities = array_merge($entities, $entitiesSourceDescription);
-            $glossaryTerms += $glossaryTermsSourceDescription;
 
             $relatedCriteria = new \Doctrine\Common\Collections\Criteria();
             $relatedCriteria
@@ -133,6 +129,23 @@ extends ArticleController
             $related = $this->getDoctrine()
                 ->getRepository('\TeiEditionBundle\Entity\Article')
                 ->matching($relatedCriteria);
+        }
+        else {
+            $sourceDescriptionHtml = $this->renderSourceDescription($sourceArticle, $translator);
+
+            if (!is_null($sourceDescriptionHtml)) {
+                $sourceDescription = [
+                    'article' => null,
+                    'html' => $sourceDescriptionHtml,
+                ];
+            }
+        }
+
+        if (!is_null($sourceDescription)) {
+            list($dummy, $dummy, $license, $entitiesSourceDescription, $bibitemLookup, $glossaryTermsSourceDescription, $refs) = $this->extractPartsFromHtml($sourceDescription['html'], $translator);
+
+            $entities = array_merge($entities, $entitiesSourceDescription);
+            $glossaryTerms += $glossaryTermsSourceDescription;
         }
 
         $entityLookup = $this->buildEntityLookup($entities);

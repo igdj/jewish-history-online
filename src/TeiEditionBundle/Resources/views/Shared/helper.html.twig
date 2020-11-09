@@ -53,7 +53,7 @@
     {% set all_female = true %}
     {% for author in authors %}
         {% if all_female %}
-            {% if author.gender != 'F' %}{% set all_female = false %}{% endif %}
+            {% if author.gender is not defined or author.gender != 'F' %}{% set all_female = false %}{% endif %}
         {% endif %}
     {% endfor %}
     {% set how_many = authors|length %}
@@ -66,7 +66,9 @@
     {% if authors is not empty %}
     <h3 id="author">{{ helper.article_author_aboutlabel(authors) }}</h3>
         {% for author in authors %}
-        <p>{{ author.description|converturls }}</p>
+            {% if author.description is defined %}
+            <p>{{ author.description|converturls }}</p>
+            {% endif %}
         {% endfor %}
     {% endif %}
 {% endmacro %}
@@ -78,7 +80,7 @@
     {% endif %}
     <h3 id="citation">{{ 'Recommended Citation and License Statement'|trans }}</h3>
     <p>{% if authors is not empty %}
-        {% for author in authors %}{{ author.text|trim }}, {% endfor %}
+        {#% for author in authors %}{{ author.text|trim }}, {% endfor %#}
     {% endif %}
     {{ name }}{% if article.translator is not empty %} ({{ 'translated by'|trans }} {{ article.translator.fullname(true) }}){% endif%}, in: {{ siteName|trans }}
     {%- if meta.datePublished is defined and meta.datePublished is not empty %}, {{ meta.datePublished|dateincomplete }}{% if meta.dateModified is defined and meta.dateModified is not empty and meta.dateModified != meta.datePublished %} ({{'as of'|trans }} {{ meta.dateModified|dateincomplete }}){% endif %}{% endif %}.
@@ -190,7 +192,9 @@
     {% if description is not null %}
     <h2 id="description">{{ 'Source Description'|trans }}</h2>
     {{ description.html|raw }}
+    {% if description.article is not null %}
     <a href="{{ path('article', { 'slug' : description.article.getSlug(true) }) }}">{{ 'Read on'|trans }} &gt;</a>
+    {% endif %}
     {% endif %}
 {% endmacro %}
 

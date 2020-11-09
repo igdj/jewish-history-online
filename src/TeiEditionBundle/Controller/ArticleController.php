@@ -56,10 +56,13 @@ extends RenderTeiController
             'params' => $params,
         ]);
 
-        list($authors, $sectionHeaders, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html, $translator);
-        $html = $this->adjustRefs($html, $refs, $translator, $language);
+        if (empty($html)) {
+            return $html;
+        }
 
-        return $html;
+        list($authors, $sectionHeaders, $license, $entities, $bibitemLookup, $glossaryTerms, $refs) = $this->extractPartsFromHtml($html, $translator);
+
+        return $this->adjustRefs($html, $refs, $translator, $language);
     }
 
     protected function renderArticle(Request $request,
