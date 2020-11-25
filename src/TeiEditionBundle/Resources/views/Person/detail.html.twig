@@ -68,7 +68,9 @@
             {% endif %}
             </dl>
 
+            {% if person.description is defined and person.description[app.request.locale] is defined %}
             <p>{{ person.description[app.request.locale]|converturls|nl2br  }}</p>
+            {% endif %}
             {% set articles = person.articles(app.request.locale) %}
             {% if articles|length > 0 %}
             <h3>{{ 'article.oneormany'|trans({ 'count': articles|length }) }}</h3>
