@@ -54,7 +54,7 @@ services:
 
     # theme selection
     App\EventListener\ThemeRequestListener:
-        arguments: ['@sylius.repository.theme', '@sylius.theme.context.settable']
+        # arguments: ['@sylius.repository.theme', '@sylius.theme.context.settable']
         tags:
         - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
 

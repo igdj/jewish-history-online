@@ -16,6 +16,8 @@ framework:
         fallbacks: ['%fallback_locale%']
         logging: false
     form: ~
+    router:
+        utf8: true
 
 twig:
     globals:
