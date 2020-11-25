@@ -2,8 +2,6 @@
 
 namespace TeiEditionBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  *
  *
@@ -42,6 +40,11 @@ trait ArticleReferencesTrait
 
         return $this->sortArticleReferences($this->articleReferences->filter(
             function ($entity) use ($langCode3, $ignoreArticleIds) {
+                if (is_null($entity->getArticle())) {
+                    // orphaned references, should only happen on manual delete
+                    return false;
+                }
+
                 if (in_array($entity->getArticle()->getId(), $ignoreArticleIds)) {
                     return false;
                 }
