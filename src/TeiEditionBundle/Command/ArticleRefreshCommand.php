@@ -119,7 +119,8 @@ extends BaseCommand
                 ? [ '--update', '--publish' ] : [ '--update' ],
             'article:content' => [ '--update' ],
             'article:entity' => [ '--insert-missing', '--set-references' ],
-            'article:biblio' => [ '--insert-missing', '--set-references' ],
+            'article:bibliodb' => [ '--insert-missing' ],
+            'article:biblio' => [ '--set-references' ],
         ];
 
         $intermediateOutput = $quiet ? new NullOutput() : $output;

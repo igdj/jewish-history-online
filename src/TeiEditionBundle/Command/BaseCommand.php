@@ -36,7 +36,6 @@ extends Command
     protected $translator;
     protected $slugify;
     protected $params;
-    protected $dbconnAdmin;
     protected $themeRepository;
     protected $themeContext;
     protected $imagickProcessor;
@@ -49,7 +48,6 @@ extends Command
                                 TranslatorInterface $translator,
                                 SlugifyInterface $slugify,
                                 ParameterBagInterface $params,
-                                \Doctrine\DBAL\Connection $dbconnAdmin,
                                 ThemeRepositoryInterface $themeRepository,
                                 SettableThemeContext $themeContext,
                                 ?string $siteTheme,
@@ -66,7 +64,6 @@ extends Command
         $this->translator = $translator;
         $this->slugify = $slugify;
         $this->params = $params;
-        $this->dbconnAdmin = $dbconnAdmin;
         $this->themeRepository = $themeRepository;
         $this->themeContext = $themeContext;
         $this->imagickProcessor = $imagickProcessor;

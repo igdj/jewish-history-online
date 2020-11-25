@@ -39,7 +39,6 @@ extends BaseCommand
                                 TranslatorInterface $translator,
                                 SlugifyInterface $slugify,
                                 ParameterBagInterface $params,
-                                \Doctrine\DBAL\Connection $dbconnAdmin,
                                 ThemeRepositoryInterface $themeRepository,
                                 SettableThemeContext $themeContext,
                                 ?string $siteTheme,
@@ -50,7 +49,6 @@ extends BaseCommand
                                 )
     {
         parent::__construct($em, $kernel, $router, $translator, $slugify, $params,
-                            $dbconnAdmin,
                             $themeRepository, $themeContext, $siteTheme,
                             $imagickProcessor,
                             $xsltProcessor, $formatter);

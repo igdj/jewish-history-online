@@ -1,7 +1,7 @@
 <?php
-// src/TeiEditionBundle/Command/ArticleAdjustCommand.php
+// src/App/Command/ArticleAdjustCommand.php
 
-namespace TeiEditionBundle\Command;
+namespace App\Command;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
