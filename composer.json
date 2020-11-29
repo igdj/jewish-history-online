@@ -10,6 +10,10 @@
             "type": "vcs"
         },
         {
+            "url": "https://github.com/burki/converter.git",
+            "type": "vcs"
+        },
+        {
             "url": "https://github.com/burki/LiipUrlAutoConverterBundle.git",
             "type": "vcs"
         },
