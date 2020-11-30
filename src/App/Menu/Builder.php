@@ -5,6 +5,7 @@
 namespace App\Menu;
 
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
@@ -37,7 +38,7 @@ class Builder
         $this->router = $router;
     }
 
-    public function createTopMenu(array $options)
+    public function createTopMenu(array $options): ItemInterface
     {
         $menu = $this->factory->createItem('root');
         if (array_key_exists('position', $options) && 'footer' == $options['position']) {
@@ -143,7 +144,7 @@ class Builder
         return $menu;
     }
 
-    public function createMainMenu(array $options)
+    public function createMainMenu(array $options): ItemInterface
     {
         $breadcrumbMode = isset($options['position']) && 'breadcrumb' == $options['position'];
 
@@ -223,7 +224,7 @@ class Builder
         return $menu;
     }
 
-    public function createBreadcrumbMenu(array $options)
+    public function createBreadcrumbMenu(array $options): ItemInterface
     {
         $menu = $this->createMainMenu($options + [ 'position' => 'breadcrumb' ]);
 
