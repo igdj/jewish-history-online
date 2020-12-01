@@ -35,7 +35,7 @@
                 {{ 'for'|trans }}
                 <b>{{ meta.query }}</b>
             {% endif %}
-            {% if pagination.params.filter is not empty %}
+            {% if pagination.params.filter is defined and pagination.params.filter is not empty %}
                 {{ 'limited to'|trans }}
                 {% for key,val in pagination.params.filter %}
                     {% if 'entity' == key %}{{ 'Section'|trans }}{% endif %}

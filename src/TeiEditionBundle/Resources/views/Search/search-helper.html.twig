@@ -52,5 +52,5 @@
 {% macro display_bibitem_result(result) %}
     {% import _self as searchHelper %}
     <h4><a href="{{ searchHelper.build_result_path(result) }}">{{ result.additional_s|renderCitation }}</a></h4>
-    {{ result.author_ss|join(', ') }}
+    {% if result.author_ss is defined %}{{ result.author_ss|join(', ') }}{% endif %}
 {% endmacro %}

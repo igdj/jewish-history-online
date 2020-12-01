@@ -165,7 +165,8 @@ extends BaseController
             }
 
             // show documents using the resultset iterator
-            foreach ($pagination as $document) {
+            // ->getItems() call added due to https://github.com/KnpLabs/knp-components/issues/254
+            foreach ($pagination->getItems() as $document) {
                 $result = [];
 
                 // the documents are also iterable, to get all fields
