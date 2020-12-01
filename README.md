@@ -47,9 +47,9 @@ Translate messages and routes routes
 
     ./bin/console translation:extract de --dir=./src/ --output-dir=./translations --enable-extractor=jms_i18n_routing
 
-Theme-specific translations
+Theme-specific translations (TODO: add --intl-icu as soon as https://github.com/schmittjoh/JMSTranslationBundle/pull/551 is merged)
 
-    ./bin/console translation:extract de --dir=./themes/jgo-presentation/templates --output-dir=./themes/jgo-presentation/translations
+    ./bin/console translation:extract de --dir=./sites/jgo-presentation/templates --output-dir=./sites/jgo-presentation/translations
 
 
 Update schema
