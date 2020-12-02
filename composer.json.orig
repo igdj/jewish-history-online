@@ -4,14 +4,19 @@
             "php": "7.3.0"
         }
     },
-    "prefer-stable": true,
-    "minimum-stability": "dev",
     "repositories": [
         {
+<<<<<<< HEAD
+=======
             "url": "https://github.com/burki/tei-edition-bundle",
             "type": "vcs"
         },
         {
+            "url": "https://github.com/burki/citeproc-php.git",
+            "type": "vcs"
+        },
+        {
+>>>>>>> Initial switch to "igdj/tei-edition-bundle"
             "url": "https://github.com/burki/converter.git",
             "type": "vcs"
         },
@@ -101,11 +106,38 @@
 
         "cocur/slugify": "^4.0",
 
+        "sabre/xml": "^2.2",
+        "servo/fluidxml": "^1.21",
+        "brunty/relax-ng-domdocument": "~0.2",
+        "html2text/html2text": "^4.3",
+
+        "sweetyrdf/easyrdf": "^1.1",
+        "ml/json-ld": "1.1.*",
+
+        "citation-style-language/locales": "@dev",
+        "seboettg/citeproc-php": "^2.2",
+        "fale/isbn": "^3.1",
+        "technosophos/libris": "dev-master",
+        "geissler/converter": "dev-master",
+
+        "nategood/httpful": "*",
+
         "ddeboer/data-import": "0.20.*",
         "phpoffice/phpexcel": "1.8.*",
 
+        "gmo/iso-639": "^1.0",
+
+        "mpdf/mpdf": "^8.0",
+
+        "maxgr0/solr-bundle": "dev-master",
+        "knplabs/knp-paginator-bundle": "^5.2",
+
         "presta/sitemap-bundle": "^2.1",
         "eko/feedbundle": "^2.0",
+
+        "picturae/oai-pmh": "0.5.20",
+        "symfony/psr-http-message-bridge": "^1.1",
+        "laminas/laminas-diactoros": "^2.2",
 
         "igdj/tei-edition-bundle": "@dev",
 
