@@ -20,6 +20,8 @@ use Doctrine\ORM\EntityManagerInterface;
 class EntityEnhanceCommand
 extends BaseCommand
 {
+    protected $client;
+
     protected function configure()
     {
         $this
@@ -55,13 +57,12 @@ extends BaseCommand
             case 'bibitem':
                 return $this->enhanceBibitem();
                 break;
-
-            default:
-                $output->writeln(sprintf('<error>invalid type: %s</error>',
-                                         $input->getArgument('type')));
-
-                return 1;
         }
+
+        $output->writeln(sprintf('<error>invalid type: %s</error>',
+                                 $input->getArgument('type')));
+
+        return 1;
     }
 
     protected function normalizeUnicode($value)
@@ -87,9 +88,7 @@ extends BaseCommand
      * @param array|null $headers
      * @param bool|null $assoc
      *
-     * @throws NoResultException
-     *
-     * @return json object representing the query result
+     * @return array|bool representing the query result
      */
     protected function executeJsonQuery($url, $headers = [], $assoc = false)
     {

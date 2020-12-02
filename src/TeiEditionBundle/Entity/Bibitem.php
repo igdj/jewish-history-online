@@ -306,7 +306,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
     protected $uid;
 
     /**
-     * @var string A short description of the item. Generated for solr
+     * @var array A short description of the item. Generated for solr
      *
      * @ORM\Column(type="json_array", nullable=true)
      *
@@ -430,7 +430,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
     /**
      * Gets creators.
      *
-     * @return string
+     * @return array
      */
     public function getCreators()
     {
@@ -760,30 +760,6 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
     }
 
     /**
-     * Sets dateModified.
-     *
-     * @param \DateTime $dateModified
-     *
-     * @return $this
-     */
-    public function setDateModified(\DateTime $dateModified = null)
-    {
-        $this->dateModified = $dateModified;
-
-        return $this;
-    }
-
-    /**
-     * Gets dateModified.
-     *
-     * @return \DateTime
-     */
-    public function getDateModified()
-    {
-        return $this->dateModified;
-    }
-
-    /**
      *
      * Populate description for other properties.
      *
@@ -861,54 +837,6 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
     public function getIsPartOf()
     {
         return $this->isPartOf;
-    }
-
-    /**
-     * Sets license.
-     *
-     * @param string $license
-     *
-     * @return $this
-     */
-    public function setLicense($license)
-    {
-        $this->license = $license;
-
-        return $this;
-    }
-
-    /**
-     * Gets license.
-     *
-     * @return string
-     */
-    public function getLicense()
-    {
-        return $this->license;
-    }
-
-    /**
-     * Sets rights.
-     *
-     * @param string $rights
-     *
-     * @return $this
-     */
-    public function setRights($rights)
-    {
-        $this->rights = $rights;
-
-        return $this;
-    }
-
-    /**
-     * Gets rights.
-     *
-     * @return string
-     */
-    public function getRights()
-    {
-        return $this->rights;
     }
 
     /**
@@ -1058,7 +986,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable, TwitterSeriali
     /**
      * Gets coverUrl.
      *
-     * @return string
+     * @return string|null
      */
     public function getCoverUrl()
     {

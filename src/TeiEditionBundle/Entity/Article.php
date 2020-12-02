@@ -84,7 +84,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
     protected $articleSection;
 
     /**
-     * @var ArrayCollection<Person> The author of this content.
+     * @var ArrayCollection<int, Person> The author of this content.
      *
      * Please note that author is special in that HTML 5 provides
      * a special mechanism for indicating authorship via the rel tag.
@@ -467,7 +467,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
     /**
      * Gets author.
      *
-     * @return ArrayCollection<Person>
+     * @return ArrayCollection<int, Person>
      */
     public function getAuthor()
     {
@@ -513,7 +513,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable,
     /**
      * Sets translator.
      *
-     * @param Translator $translator
+     * @param Person|null $translator
      *
      * @return $this
      */

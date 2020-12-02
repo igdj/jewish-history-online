@@ -25,7 +25,7 @@ class SitemapSubscriber
 implements EventSubscriberInterface
 {
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
@@ -116,7 +116,9 @@ implements EventSubscriberInterface
 
         foreach ($this->router->getRouteCollection() as $name => $route) {
             $defaults = $route->getDefaults();
-            if (!$this->startsWith($defaults['_controller'], 'TeiEditionBundle')) {
+            if (!($this->startsWith($defaults['_controller'], 'TeiEditionBundle')
+                  || $this->startsWith($defaults['_controller'], 'App')))
+            {
                 // skip routes from other bundles
                 continue;
             }
@@ -151,7 +153,7 @@ implements EventSubscriberInterface
                         break;
 
                     case 'exhibition':
-                        foreach (\TeiEditionBundle\Controller\ExhibitionController::$EXHIBITIONS as $exhibition => $descr) {
+                        foreach (\App\Controller\ExhibitionController::$EXHIBITIONS as $exhibition => $descr) {
                             if (array_key_exists('published', $descr) && !$descr['published']) {
                                 continue;
                             }

@@ -9,9 +9,7 @@ class GeographicalData
      *
      * @param string $query
      *
-     * @throws NoResultException
-     *
-     * @return \EasyRdf\Graph graph object representing the query result
+     * @return \EasyRdf\Graph|null graph object representing the query result
      */
     protected function executeRdfQuery($query, $headers = [])
     {
@@ -131,7 +129,7 @@ class GeographicalData
                 }
 
                 foreach ($prefLabels as $prefLabel) {
-                    if ($prefLabel instanceof \EasyRdf_Resource) {
+                    if ($prefLabel instanceof \EasyRdf\Resource) {
                         $subgraph = $place->executeRdfQuery($prefLabel->getUri());
                         $subresource = $subgraph->resource($prefLabel->getUri());
                         $preferredName = $subresource->get('gvp:term')->getValue();

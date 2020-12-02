@@ -87,7 +87,7 @@ implements \JsonSerializable, JsonLdSerializable, OgSerializable
     protected $deathDate;
 
     /**
-     * @var string A short description of the item.
+     * @var array|null A short description of the item.
      *
      * @ORM\Column(type="json_array", nullable=true)
      *

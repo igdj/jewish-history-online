@@ -31,6 +31,10 @@ use JMS\I18nRoutingBundle\Router\LocaleResolverInterface;
 
 class LanguageListener
 {
+    protected $defaultLocale;
+    protected $locales;
+    protected $localeResolver;
+
     public function __construct($defaultLocale, array $locales, LocaleResolverInterface $localeResolver)
     {
         $this->defaultLocale = $defaultLocale;

@@ -198,5 +198,7 @@ extends BaseCommand
             unset($geojson);
             gc_collect_cycles();
         }
+
+        return 0;
     }
 }

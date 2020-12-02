@@ -88,8 +88,9 @@ extends BaseController
 
             if (!is_null($route)) {
                 $entry = [
-                    'href' => $this->generateUrl($route, $params, true),
+                    'href' => $this->generateUrl($route, $params, \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL),
                 ];
+
                 if (!empty($prefix)) {
                     $entry['headline'] = $prefix . ': ' . $article->getName();
                     if (count($article->getAuthor()) > 0) {
@@ -100,6 +101,7 @@ extends BaseController
                         $entry['headline'] .= ' (' . implode(', ', $authors) . ')';
                     }
                 }
+
                 $refMap[$article->getUid()] = $entry;
             }
         }

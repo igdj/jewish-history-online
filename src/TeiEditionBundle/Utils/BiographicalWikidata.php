@@ -97,7 +97,7 @@ class BiographicalWikidata
      * @param string $query
      * @param \EasyRdf\Sparql\Client $client
      *
-     * @return Result $result
+     * @return \EasyRdf\Sparql\Result $result
      */
     protected static function executeSparqlQuery($query, $sparqlClient = null)
     {

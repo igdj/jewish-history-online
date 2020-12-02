@@ -87,17 +87,11 @@ extends \Picturae\OaiPmh\Provider
 
     /**
      * @param Repository $repository
-     * @param ServerRequestInterface $request
+     * @param \Psr\Http\Message\ServerRequestInterface|null $request
      */
     public function __construct(\Picturae\OaiPmh\Interfaces\Repository $repository,
                                 \Psr\Http\Message\ServerRequestInterface $request = null)
     {
-        if ($request->getMethod() === 'POST') {
-            $this->params = $request->getParsedBody();
-        } else {
-            $this->params = $request->getQueryParams();
-        }
-
         parent::__construct($repository, $request);
 
         $this->xslUrl = $repository->getStylesheetUrl();
@@ -105,7 +99,8 @@ extends \Picturae\OaiPmh\Provider
 
     /**
      * inject xml-stylesheet processing instruction if $this->xslUrl is not empty
-     * @return ResponseInterface
+     *
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function getResponse()
     {
@@ -117,7 +112,7 @@ extends \Picturae\OaiPmh\Provider
 
         // add xml-stylesheet processing instruction
         $document = new \DOMDocument('1.0', 'UTF-8');
-        $document->loadXML($response->getBody());
+        $document->loadXML((string)$response->getBody());
 
         $xslt = $document->createProcessingInstruction('xml-stylesheet',
                                                        'type="text/xsl" href="' . htmlspecialchars($this->xslUrl) . '"');
@@ -152,7 +147,9 @@ use Picturae\OaiPmh\Interfaces\SetList as InterfaceSetList;
 class Repository
 implements InterfaceRepository
 {
-    protected $controller = null;
+    protected $request;
+    protected $router;
+    protected $doctrine;
     protected $options = [];
     protected $limit = 20;
 
@@ -529,7 +526,7 @@ implements InterfaceRepository
         }
 
         $doi = $article->getDoi();
-        if (!empty($doi) && false === strpos('10.5072', $doi)) {
+        if (!empty($doi) && false === strpos($doi, '10.5072')) {
             $url = 'https://dx.doi.org/' . $doi;
         }
         else {

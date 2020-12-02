@@ -15,7 +15,7 @@ class JsonLd
     /**
      * Convert
      *
-     * @param  String|DateTime $date  date string
+     * @param  String|\DateTime $date  date string
      * @return String        formatted date string (either YYYY or YYYY-MM-DD)
      */
     public static function formatDate8601($date)

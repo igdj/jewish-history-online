@@ -303,7 +303,7 @@ extends BaseCommand
                     break;
             }
 
-            if (is_null($criteria) && isset($key) && !empty($value)) {
+            if (isset($key) && !empty($value)) {
                 $criteria = [ $key => $value ];
             }
 
@@ -354,6 +354,8 @@ extends BaseCommand
         $this->em->persist($entity);
         $this->flushEm($this->em);
         // $output->writeln($text);
+
+        return 0;
     }
 
     protected function findPersonBySlug($slug)
@@ -372,7 +374,7 @@ extends BaseCommand
 
         if (count($users) > 1) {
             $output->writeln(sprintf('<error>More than one user found for %s (IDs %s)</error>',
-                                     trim($slug),
+                                     trim($gnd),
                                      join(', ', array_map(function ($user) { return $user['id']; }, $users))));
         }
 

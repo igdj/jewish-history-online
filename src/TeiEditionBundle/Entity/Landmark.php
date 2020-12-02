@@ -64,11 +64,6 @@ extends PlaceBase
         return 12;
     }
 
-    public function getArticles()
-    {
-        return $this->articles;
-    }
-
     /*
      * Overridden to get more concrete type
      */

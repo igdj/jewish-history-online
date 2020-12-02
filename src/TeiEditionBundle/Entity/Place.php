@@ -178,7 +178,7 @@ extends PlaceBase
 
     public function getTypeLabel()
     {
-        return buildTypeLabel($this->type);
+        return self::buildTypeLabel($this->type);
     }
 
     public function getPath()

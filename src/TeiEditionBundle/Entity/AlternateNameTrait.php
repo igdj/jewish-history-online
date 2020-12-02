@@ -55,7 +55,7 @@ trait AlternateNameTrait
     }
 
     /**
-     * @var string An alias for the item.
+     * @var array|null An alias for the item.
      *
      * @ORM\Column(type="json_array", nullable=true)
      * @Solr\Field(type="strings")

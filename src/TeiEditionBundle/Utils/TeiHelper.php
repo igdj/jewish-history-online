@@ -906,6 +906,8 @@ class TeiHelper
 class CollectingReader
 extends \Sabre\Xml\Reader
 {
+    protected $collected;
+
     function xml($source, $encoding = null, $options = 0)
     {
         // hack for <?xml-model href="http://www.deutschestextarchiv.de/basisformat_ohne_header.rng"
@@ -929,7 +931,7 @@ extends \Sabre\Xml\Reader
         return $this->collected;
     }
 
-    static function collectElement(\Sabre\Xml\Reader $reader)
+    static function collectElement(CollectingReader $reader)
     {
         $name = $reader->getClark();
         // var_dump($name);

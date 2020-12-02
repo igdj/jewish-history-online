@@ -73,6 +73,7 @@ extends DnbData
 
     var $gnd;
     var $preferredName;
+    var $biographicalInformation;
     var $dateOfEstablishment;
     // var $placeOfBirth;
     var $placeOfBusiness;
