@@ -1,7 +1,7 @@
 <?php
-// src/TeiEditionBundle/Command/ImportEducationCommand.php
+// src/App/Command/ImportEducationCommand.php
 
-namespace TeiEditionBundle\Command;
+namespace App\Command;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
