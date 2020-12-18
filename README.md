@@ -43,7 +43,7 @@ The XSLT-Stylesheets are based on the files from
 
 Development Notes
 -----------------
-Translate messages and routes routes
+Translate messages and routes
 
     ./bin/console translation:extract de --dir=./src/ --output-dir=./translations --enable-extractor=jms_i18n_routing
 
@@ -51,6 +51,9 @@ Theme-specific translations (TODO: add --intl-icu as soon as https://github.com/
 
     ./bin/console translation:extract de --dir=./sites/jgo-presentation/templates --output-dir=./sites/jgo-presentation/translations
 
+Update translations in TeiEditionBundle
+
+    ./bin/console translation:extract de --dir=pathToBundle --output-dir=pathToBundle/Resources/translations --enable-extractor=jms_i18n_routing
 
 Update schema
 
