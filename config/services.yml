@@ -16,12 +16,12 @@ services:
         resource: '%kernel.project_dir%/src/App'
         exclude: '%kernel.project_dir%/src/App/{Entity,Migrations,Tests}'
         
-    # makes classes in src/TeiEditionBundle available to be used as services
+    # makes classes in TeiEditionBundle available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
-    # together with the above _defaults, this is needed for Command-classes to work as in Sf 3.4
+    # TODO: expose this in bundle configuration: https://symfony.com/doc/current/bundles/extension.html
     TeiEditionBundle\:
-        resource: '%kernel.project_dir%/src/TeiEditionBundle'
-        exclude: '%kernel.project_dir%/src/TeiEditionBundle/{Entity,Migrations,Tests}'
+        resource: '%kernel.project_dir%/vendor/igdj/tei-edition-bundle'
+        exclude: '%kernel.project_dir%/vendor/igdj/tei-edition-bundle/{Entity,Migrations,Tests}'
 
     dbconn.admin:
         class: Doctrine\DBAL\Connection

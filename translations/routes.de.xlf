@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2020-07-29T10:06:31Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2020-12-01T06:39:51Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -90,6 +90,10 @@
         <source>/article/{slug}</source>
         <target>/beitrag/{slug}</target>
       </trans-unit>
+      <trans-unit id="6eda445b4d74f6ac43938bdd15f4746d559cae9d" resname="article-by-topic">
+        <source>/labs/article-by-topic</source>
+        <target state="new">/labs/article-by-topic</target>
+      </trans-unit>
       <trans-unit id="9e6b2ab8038f9836553617605f7fd84c1ab570e5" resname="article-gdf">
         <source>/labs/article-gdf</source>
         <target>/labs/article-gdf</target>
@@ -113,6 +117,10 @@
       <trans-unit id="49d68eebf12335dc304162bc32bd219f7bb060d2" resname="article-pdf">
         <source>/article/{slug}.pdf</source>
         <target>/beitrag/{slug}.pdf</target>
+      </trans-unit>
+      <trans-unit id="73ac0da768d5ad89943ef8516e074019c306376e" resname="author-by-age">
+        <source>/labs/author-by-age</source>
+        <target state="new">/labs/author-by-age</target>
       </trans-unit>
       <trans-unit id="3df5419618973a72091d9f561f3722db056ef9a4" resname="bibliography">
         <source>/bibliography/{slug}</source>
@@ -153,6 +161,10 @@
       <trans-unit id="9205357e49cfcea8457c76267d67073baacf9769" resname="date-chronology-partial">
         <source>/chronology/partial</source>
         <target>/chronology/partial</target>
+      </trans-unit>
+      <trans-unit id="70eea2f94e045c8152d9d8e91c245a1dc97acbb4" resname="dossier">
+        <source>/dossier/{slug}</source>
+        <target state="new">/dossier/{slug}</target>
       </trans-unit>
       <trans-unit id="cca543da51925f710013a921ff419f0d2af3243f" resname="education-index">
         <source>/education</source>
@@ -250,14 +262,6 @@
         <source>/labs/person-birth-death</source>
         <target>/labs/person-birth-death</target>
       </trans-unit>
-      <trans-unit id="6005ed3eae940e13230a5013eb64d1f276423ff4" resname="person-by-birthplace">
-        <source>/labs/person-by-birthplace</source>
-        <target>/labs/person-by-birthplace</target>
-      </trans-unit>
-      <trans-unit id="378a933c8bc112c495f213f0b2c704a81570a459" resname="person-by-deathplace">
-        <source>/labs/person-by-deathplace</source>
-        <target>/labs/person-by-deathplace</target>
-      </trans-unit>
       <trans-unit id="84d06288bde5af1c4dba24a1e5150f6b0ec557d9" resname="person-by-gnd">
         <source>/person/gnd/{gnd}</source>
         <target>/person/gnd/{gnd}</target>
@@ -265,6 +269,10 @@
       <trans-unit id="37ae3a2b975d5f1e9aea11650a1dac45326a65af" resname="person-by-gnd-jsonld">
         <source>/person/gnd/{gnd}.jsonld</source>
         <target>/person/gnd/{gnd}.jsonld</target>
+      </trans-unit>
+      <trans-unit id="73f7fae73023cd688737d554f5147dea511d8aac" resname="person-by-place">
+        <source>/labs/person-by-place</source>
+        <target state="new">/labs/person-by-place</target>
       </trans-unit>
       <trans-unit id="ebf0989b9c7409844d13bb4b04d1aa51230d88b3" resname="person-by-year">
         <source>/labs/person-by-year</source>
@@ -334,6 +342,10 @@
         <source>/source/{uid}</source>
         <target>/quelle/{uid}</target>
       </trans-unit>
+      <trans-unit id="966941bbdf3d31c150e525075f7d93438a30092b" resname="source-by-year">
+        <source>/labs/source-by-year</source>
+        <target state="new">/labs/source-by-year</target>
+      </trans-unit>
       <trans-unit id="bdc91185659b38c2059877c59f81d9a04d8f7d09" resname="source-download">
         <source>/source/{uid}.zip</source>
         <target>/quelle/{uid}.zip</target>
@@ -356,7 +368,7 @@
       </trans-unit>
       <trans-unit id="dbe6c4b16bb1c203a8a036332387ef69744731b3" resname="teiedition_bibliography_detail">
         <source>/bibliography/{id}</source>
-        <target state="new">/bibliografie/{id}</target>
+        <target>/bibliografie/{id}</target>
       </trans-unit>
       <trans-unit id="ce620d6749880d79c700eb0ae2a56646f3a59bc5" resname="terms">
         <source>/terms</source>
