@@ -1,29 +1,13 @@
 /*
- * instead of the remote version
- *  @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700,700i&subset=latin-ext');
- * we use the hinted version from
- *  https://github.com/google/roboto/tree/master/src/hinted
+ * Setup $font-stack-sans and $font-stack-serif
+ * including font-face definitions
  */
+@import 'font-definition.scss';
 
-@import 'font/RobotoCondensed';
-$font-stack-sans: 'Roboto Condensed', Arial, sans-serif;
-$font-stack-serif: 'Droid Serif', serif;
-
-$color-color-dark: #070E44;
-$color-color-medium: #99A0B4;
-
-$color-color-topic: #970376;
-$color-color-map: #f29000;
-$color-color-chronology: #3da2da;
-$color-color-lookup: #9B9B9B;
-
-/* $color-gray-dark: #9B9B9B; */
-$color-gray-dark: #8E8E8E;
-$color-gray-medium: #C0C0C0;
-$color-gray-light: #E0DFE0;
-$color-gray-ultralight: #E9E9E9;
-
-$color-text: #333;
+/*
+ * Setup $color-* variables
+ */
+@import 'color-definition.scss';
 
 /* see https://github.com/twbs/bootstrap-sass/blob/master/assets/stylesheets/bootstrap/_variables.scss */
 $screen-sm-size: 768px;
@@ -57,14 +41,21 @@ header {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
+    color: white;
+    background-color: $color-color-dark;
+
     h1 {
         margin-top: 29px;
         margin-bottom: 11px;
         font-size: 18px;
         font-weight: bold;
+
+        #site-tagline {
+           font-size: 14px;
+           font-weight: normal;
+        }
     }
-    color: white;
-    background-color: $color-color-dark;
+
     a, a:visited {
         color: white;
         &:hover, &:active {
@@ -476,16 +467,6 @@ header {
         }
 }
 
-.wp-content {
-    margin-bottom: 4em;
-    h2 {
-        font-size: 18px;
-    }
-    h3 {
-        font-size: 16px;
-    }
-}
-
 .source-description, .source-link {
     @include article-text;
     @include dta-styles;
@@ -876,95 +857,17 @@ footer {
     }
 }
 
+.wp-content {
+    margin-bottom: 4em;
+    h2 {
+        font-size: 18px;
+    }
+    h3 {
+        font-size: 16px;
+    }
+}
+
 /* route-specific styles */
-.route-topic-index {
-    .topic {
-        margin-bottom: 20px;
-    }
-
-    h4 {
-        /* border-top: 1px solid $color-gray-dark; */
-        padding-top: 5px;
-        color: $color-gray-dark;
-        min-height: 46px;
-        /* text-transform: uppercase; */
-        position: relative;
-
-        .topic-label {
-            position: absolute;
-            bottom: 0;
-        }
-    }
-}
-
-.route-home, .route-home-preview {
-    #col-main {
-        .box-header {
-            margin-top: 2em;
-        }
-
-        .box-content {
-            border-left: 1px solid $color-gray-medium;
-            border-right: 1px solid $color-gray-medium;
-            border-bottom: 1px solid $color-gray-medium;
-        }
-
-        h4 a {
-            color: #fff;
-        }
-    }
-
-    .topic {
-        margin-bottom: 10px;
-
-        h4, h5 {
-            /* border-top: 1px solid $color-gray-dark; */
-            padding-top: 5px;
-            color: $color-gray-dark;
-            /* text-transform: uppercase; */
-            position: relative;
-
-            .topic-label {
-                position: absolute;
-                bottom: 0;
-            }
-        }
-
-        h4 {
-            font-size: 16px;
-            min-height: 36px;
-        }
-        h5 {
-            font-size: 14px;
-            min-height: 32px;
-        }
-    }
-}
-
-.route-education-index {
-    .panel-group .panel {
-        /* override bootstrap default */
-        border-radius: 0px;
-    }
-
-    .panel-default > .panel-heading {
-        background-color: $color-color-dark;
-    }
-
-    .panel-title > a {
-        color: white !important;
-    }
-
-    .panel-default {
-        border: none;
-    }
-
-    .panel-collapse {
-        border-left: 1px solid $color-gray-medium;
-        border-right: 1px solid $color-gray-medium;
-        border-bottom: 1px solid $color-gray-medium;
-    }
-}
 
 .route-date-chronology, .route-date-chronology-partial,
 .route-event-index
@@ -1185,3 +1088,6 @@ ul.typeahead.dropdown-menu {
     font-family: $font-stack-sans !important;
     font-size: 13px !important;
 }
+
+/* additional site specific styles */
+@import 'additional.scss';
