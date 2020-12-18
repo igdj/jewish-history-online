@@ -22,7 +22,8 @@ framework:
 twig:
     globals:
         locales: "%locales%"
-        siteName: "Key Documents of German-Jewish History"
+        siteName: 'Key Documents of German-Jewish History'
+        siteTagline: 'A Digital Source Edition'
         slugify: "@cocur_slugify"
         webDir: "%kernel.project_dir%/web"
         piwikSiteId: "%piwik.site_id%"
@@ -96,10 +97,10 @@ scssphp:
             src: "web/assets/scss/base.scss"
             sourceMap: true
             outputFolder: web
-#            importPaths:
-#                - "vendor/twbs/bootstrap/scss"
-#            variables:
-#                primary: '#ff0066'
+            # Array of import paths, relative to Symfony's project directory.
+            importPaths:
+                - "sites/jgo-presentation/assets/scss" # theme-specific settings come first
+                - "assets/scss"                        # generic fall-back
 
 jms_i18n_routing:
     default_locale: '%default_locale%'
