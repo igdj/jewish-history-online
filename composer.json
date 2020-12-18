@@ -6,10 +6,6 @@
     },
     "repositories": [
         {
-            "url": "https://github.com/burki/citeproc-php.git",
-            "type": "vcs"
-        },
-        {
             "url": "https://github.com/burki/converter.git",
             "type": "vcs"
         },
@@ -108,7 +104,7 @@
         "ml/json-ld": "1.1.*",
 
         "citation-style-language/locales": "@dev",
-        "seboettg/citeproc-php": "dev-master#8a0d677",
+        "seboettg/citeproc-php": "^2.2",
         "fale/isbn": "^3.1",
         "technosophos/libris": "dev-master",
         "geissler/converter": "dev-master",
