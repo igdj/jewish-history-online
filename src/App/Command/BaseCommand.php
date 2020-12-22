@@ -52,4 +52,10 @@ extends \TeiEditionBundle\Command\BaseCommand
 
         $this->dbconnAdmin = $dbconnAdmin;
     }
+
+    protected function getLocaleCode1()
+    {
+        // $this->translator->setLocale() appends @translation-domain which we need to get rid of
+        return preg_replace('/@.*/', '', $this->translator->getLocale());
+    }
 }

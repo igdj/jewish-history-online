@@ -40,7 +40,7 @@ extends BaseCommand
         ;
     }
 
-    protected function getDataFromAdminDb($data, $translator)
+    protected function getDataFromAdminDb($data)
     {
         if (!preg_match('/(article|source)\-(\d+)$/', $data['uid'], $matches)) {
             return $data;
@@ -109,7 +109,7 @@ extends BaseCommand
                     $genre = 'Introduction';
                 }
 
-                $data['genre'] = /** @Ignore */ $translator->trans($genre);
+                $data['genre'] = /** @Ignore */ $this->translator->trans($genre);
 
                 if (!empty($result['section'])) {
                     $sql = "SELECT name FROM Term WHERE id IN (?) AND status <> -1";
@@ -121,69 +121,69 @@ extends BaseCommand
                     $topics = [];
                     foreach ($terms as $term) {
                         /** @Ignore */
-                        $topics[] = $translator->trans(\TeiEditionBundle\Controller\TopicController::lookupLocalizedTopic($term['name'], $translator, 'de')); // The admin-database stores the terms in German, so look them up from this locale
+                        $topics[] = $this->translator->trans(\TeiEditionBundle\Controller\TopicController::lookupLocalizedTopic($term['name'], $this->translator, 'de')); // The admin-database stores the terms in German, so look them up from this locale
                     }
 
                     // set primary topic according to editor
                     $responsible = [];
                     switch ($result['referee_slug']) {
                         case 'bergmann-werner':
-                            $responsible = [ $translator->trans('Antisemitism and Persecution') ];
+                            $responsible = [ $this->translator->trans('Antisemitism and Persecution') ];
                             break;
 
                         case 'braemer-andreas':
-                            $responsible = [ $translator->trans('Religion and Identity') ];
+                            $responsible = [ $this->translator->trans('Religion and Identity') ];
                             break;
 
                         case 'brinkmann-tobias':
-                            $responsible = [ $translator->trans('Migration') ];
+                            $responsible = [ $this->translator->trans('Migration') ];
                             break;
 
                         case 'fischer-stefanie':
-                            $responsible = [ $translator->trans('Family and Everyday Life') ];
+                            $responsible = [ $this->translator->trans('Family and Everyday Life') ];
                             break;
 
                         case 'heinsohn-kirsten':
-                            $responsible = [ $translator->trans('Leisure and Sports') ];
+                            $responsible = [ $this->translator->trans('Leisure and Sports') ];
                             break;
 
                         case 'jensen-uffa':
                             $responsible = [
-                                $translator->trans('Law and Politics'),
-                                $translator->trans('Economy and Occupational Composition'),
+                                $this->translator->trans('Law and Politics'),
+                                $this->translator->trans('Economy and Occupational Composition'),
                             ];
                             break;
 
                         case 'kauders-anthony':
-                            $responsible = [ $translator->trans('Arts and Culture') ];
+                            $responsible = [ $this->translator->trans('Arts and Culture') ];
                             break;
 
                         case 'liedtke-rainer':
-                            $responsible = [ $translator->trans('Organizations and Institutions') ];
+                            $responsible = [ $this->translator->trans('Organizations and Institutions') ];
                             break;
 
                         case 'lohmann-ingrid':
-                            $responsible = [ $translator->trans('Education and Learning') ];
+                            $responsible = [ $this->translator->trans('Education and Learning') ];
                             break;
 
                         case 'meyer-beate':
-                            $responsible = [ $translator->trans('Memory and Remembrance') ];
+                            $responsible = [ $this->translator->trans('Memory and Remembrance') ];
                             break;
 
                         case 'ruerup-miriam':
-                            $responsible = [ $translator->trans('Demographics and Social Structure') ];
+                            $responsible = [ $this->translator->trans('Demographics and Social Structure') ];
                             break;
 
                         case 'schueler-springorum-stefanie':
-                            $responsible = [ $translator->trans('Social Issues and Welfare') ];
+                            $responsible = [ $this->translator->trans('Social Issues and Welfare') ];
                             break;
 
                         case 'studemund-halevy-michael':
-                            $responsible = [ $translator->trans('Sephardic Jews') ];
+                            $responsible = [ $this->translator->trans('Sephardic Jews') ];
                             break;
 
                         case 'tuerk-lilian':
-                            $responsible = [ $translator->trans('Scholarship') ];
+                            $responsible = [ $this->translator->trans('Scholarship') ];
                             break;
 
                         default:
@@ -216,8 +216,8 @@ extends BaseCommand
                 }
 
                 $key_slug = 'slug';
-                if ('en' == $translator->getLocale()) {
-                    $key_slug .= '_' . $translator->getLocale();
+                if ('en' == $this->getLocaleCode1()) {
+                    $key_slug .= '_' . $this->getLocaleCode1();
                 }
 
                 if (!empty($result[$key_slug])) {
@@ -237,6 +237,7 @@ extends BaseCommand
                         }
                     }
                 }
+
                 if (!empty($dates)) {
                     $data['dates'] = $dates;
                 }
@@ -246,19 +247,19 @@ extends BaseCommand
                         case 'CC BY-NC-ND':
                             $data['license'] = [
                                 'http://creativecommons.org/licenses/by-nc-nd/4.0/'
-                                => $translator->trans('license.by-nc-nd'),
+                                => $this->translator->trans('license.by-nc-nd'),
                             ];
                             break;
 
                         case 'CC BY-SA':
                             $data['license'] = [
                                 'http://creativecommons.org/licenses/by-sa/4.0/'
-                                => $translator->trans('license.by-sa'),
+                                => $this->translator->trans('license.by-sa'),
                             ];
                             break;
 
                         case 'restricted':
-                            $data['license'] = [ '' => $translator->trans('license.restricted') ];
+                            $data['license'] = [ '' => $this->translator->trans('license.restricted') ];
                             break;
 
                         default:
@@ -268,7 +269,7 @@ extends BaseCommand
                 break;
 
             case 'source':
-                $locale = $translator->getLocale();
+                $locale = $this->getLocaleCode1();
                 $type = 'Text';
                 switch ($result['type_name']) {
                     case 'Audio':
@@ -290,9 +291,9 @@ extends BaseCommand
                         break;
                 }
 
-                $data['genre'] = $translator->trans('Source')
+                $data['genre'] = $this->translator->trans('Source')
                                . ':'
-                               . /** @Ignore */ $translator->trans($type);
+                               . /** @Ignore */ $this->translator->trans($type);
 
                 if (!empty($result['url'])) {
                     $data['URLImages'] = $result['url'];
@@ -377,17 +378,17 @@ extends BaseCommand
                     switch ($result['license']) {
                         case 'CC BY-SA':
                             $licenseKey = 'http://creativecommons.org/licenses/by-sa/4.0/';
-                            $licenseAttribution = $translator->trans('license.by-sa');
+                            $licenseAttribution = $this->translator->trans('license.by-sa');
                             break;
 
                         case 'CC BY-NC-SA':
                             $licenseKey = 'http://creativecommons.org/licenses/by-nc-sa/4.0/';
-                            $licenseAttribution = $translator->trans('license.by-nc-sa');
+                            $licenseAttribution = $this->translator->trans('license.by-nc-sa');
                             break;
 
                         case 'CC BY-NC-ND':
                             $licenseKey = 'http://creativecommons.org/licenses/by-nc-nd/4.0/';
-                            $licenseAttribution = $translator->trans('license.by-nc-nd');
+                            $licenseAttribution = $this->translator->trans('license.by-nc-nd');
                             break;
 
                         case 'restricted':
@@ -396,12 +397,12 @@ extends BaseCommand
 
                         case 'PD':
                             $licenseKey = '#public-domain';
-                            $licenseAttribution = $translator->trans('license.public-domain');
+                            $licenseAttribution = $this->translator->trans('license.public-domain');
                             break;
 
                         case 'regular':
                             $licenseKey = '#personal-use';
-                            $licenseAttribution = $translator->trans('license.personal-use');
+                            $licenseAttribution = $this->translator->trans('license.personal-use');
                             break;
 
                         default:
@@ -476,7 +477,7 @@ extends BaseCommand
         ];
 
         // all the data from the admin-database
-        $dataFromDb = $this->getDataFromAdminDb($data, $this->translator);
+        $dataFromDb = $this->getDataFromAdminDb($data);
 
         $xml = $teiHelper->adjustHeader($fname, $dataFromDb);
         if (false === $xml) {
