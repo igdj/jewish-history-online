@@ -216,7 +216,7 @@ extends BaseCommand
                 }
 
                 $key_slug = 'slug';
-                if ('en' == $this->getLocaleCode1()) {
+                if ('en' != $this->getLocaleCode1()) {
                     $key_slug .= '_' . $this->getLocaleCode1();
                 }
 
