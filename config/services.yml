@@ -46,6 +46,10 @@ services:
         tags:
             - { name: twig.extension }
 
+    Twig\Extra\Intl\IntlExtension:
+        tags:
+            - { name: twig.extension }
+
     # language-specific layout in 404
     App\EventListener\LanguageListener:
         arguments: [ '%jms_i18n_routing.default_locale%', '%jms_i18n_routing.locales%', '@jms_i18n_routing.locale_resolver' ]
