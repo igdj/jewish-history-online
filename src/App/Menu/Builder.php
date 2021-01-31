@@ -359,7 +359,17 @@ class Builder
 
             case 'exhibition-index':
             case 'exhibition':
+                $item = $menu->addChild($currentRoute, [ 'label' => 'Online Exhibitions' ]);
                 break;
+                break;
+
+            case 'dossier-index':
+            case 'dossier':
+            case 'dossier-section':
+                $item = $menu->addChild($currentRoute, [ 'label' => 'Dossier' ]);
+                break;
+                break;
+
 
             // experimental stuff
             case 'landmark':
