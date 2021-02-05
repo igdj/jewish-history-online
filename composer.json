@@ -85,6 +85,7 @@
 
         "twig/twig": "^3.0",
         "twig/string-extra": "^3.0",
+        "twig/intl-extra": "^3.0",
         "liip/url-auto-converter-bundle": "dev-master",
 
         "doctrine/doctrine-bundle": "^2.1",
