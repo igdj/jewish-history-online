@@ -828,6 +828,21 @@ footer {
         }
     }
 
+    div.three-columns {
+        column-fill: balance;
+        -webkit-column-count: 3; /* Chrome, Safari, Opera */
+        -moz-column-count:    3; /* Firefox */
+        column-count:         3;
+        -webkit-column-gap:   20px; /* Chrome, Safari, Opera */
+        -moz-column-gap:      20px; /* Firefox */
+        column-gap:           20px;
+
+        /* for filling evenly on Chrome */
+        p {
+            display: inline-block;
+        }
+    }
+
     /* .epoch-label is hidden on xs-screens */
     .epoch-label {
         display: table-cell;

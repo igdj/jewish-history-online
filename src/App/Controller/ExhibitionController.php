@@ -30,6 +30,15 @@ extends \TeiEditionBundle\Controller\BaseController
         'sea-voyages' => [
             'name' => 'On Board the Ship: “as on another Earth”',
         ],
+        'womens-lives' => [
+            'name' => 'Women’s Lives – Work and Impact of Jewish Women in Hamburg',
+        ],
+        /*
+        'preview' => [
+            'name' => 'New Exhibition',
+            'published' => false,
+        ],
+        */
     ];
 
     public static function lookupLocalizedExhibition($slug, $translator, $locale)
