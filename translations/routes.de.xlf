@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2020-12-01T06:39:51Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2021-02-24T09:27:49Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -92,7 +92,7 @@
       </trans-unit>
       <trans-unit id="6eda445b4d74f6ac43938bdd15f4746d559cae9d" resname="article-by-topic">
         <source>/labs/article-by-topic</source>
-        <target state="new">/labs/article-by-topic</target>
+        <target>/labs/article-by-topic</target>
       </trans-unit>
       <trans-unit id="9e6b2ab8038f9836553617605f7fd84c1ab570e5" resname="article-gdf">
         <source>/labs/article-gdf</source>
@@ -120,7 +120,7 @@
       </trans-unit>
       <trans-unit id="73ac0da768d5ad89943ef8516e074019c306376e" resname="author-by-age">
         <source>/labs/author-by-age</source>
-        <target state="new">/labs/author-by-age</target>
+        <target>/labs/author-by-age</target>
       </trans-unit>
       <trans-unit id="3df5419618973a72091d9f561f3722db056ef9a4" resname="bibliography">
         <source>/bibliography/{slug}</source>
@@ -164,7 +164,11 @@
       </trans-unit>
       <trans-unit id="70eea2f94e045c8152d9d8e91c245a1dc97acbb4" resname="dossier">
         <source>/dossier/{slug}</source>
-        <target state="new">/dossier/{slug}</target>
+        <target>/dossier/{slug}</target>
+      </trans-unit>
+      <trans-unit id="2d09ff4ecb09d1831b6df6c0f60008de70dcdf99" resname="dossier-section">
+        <source>/dossier/{slug}/{section}</source>
+        <target>/dossier/{slug}/{section}</target>
       </trans-unit>
       <trans-unit id="cca543da51925f710013a921ff419f0d2af3243f" resname="education-index">
         <source>/education</source>
@@ -272,7 +276,7 @@
       </trans-unit>
       <trans-unit id="73f7fae73023cd688737d554f5147dea511d8aac" resname="person-by-place">
         <source>/labs/person-by-place</source>
-        <target state="new">/labs/person-by-place</target>
+        <target>/labs/person-by-place</target>
       </trans-unit>
       <trans-unit id="ebf0989b9c7409844d13bb4b04d1aa51230d88b3" resname="person-by-year">
         <source>/labs/person-by-year</source>
@@ -344,7 +348,7 @@
       </trans-unit>
       <trans-unit id="966941bbdf3d31c150e525075f7d93438a30092b" resname="source-by-year">
         <source>/labs/source-by-year</source>
-        <target state="new">/labs/source-by-year</target>
+        <target>/labs/source-by-year</target>
       </trans-unit>
       <trans-unit id="bdc91185659b38c2059877c59f81d9a04d8f7d09" resname="source-download">
         <source>/source/{uid}.zip</source>
@@ -361,6 +365,10 @@
       <trans-unit id="d6c1e487ba5b3d4a41d169b12b40f90e9338f8ef" resname="source-pdf">
         <source>/source/{uid}.pdf</source>
         <target>/quelle/{uid}.pdf</target>
+      </trans-unit>
+      <trans-unit id="3120194e376ccff4923c97786898a450e4b078cd" resname="source-tei">
+        <source>/source/{uid}.tei.xml</source>
+        <target state="new">/quelle/{uid}.tei.xml</target>
       </trans-unit>
       <trans-unit id="e05e7bf953c24ee7391d7bc744869c9f769e23d4" resname="tei2html">
         <source>/source/tei2html/{path}</source>

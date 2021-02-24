@@ -211,10 +211,10 @@
         <target>Herunterladen</target>
         <jms:reference-file line="346">\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="21a7e6fb903e86177a44c2afed4e0e41390a9a8b" resname="Download Metadata">
-        <source>Download Metadata</source>
-        <target>Metadaten herunterladen</target>
-        <jms:reference-file line="353">\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig</jms:reference-file>
+      <trans-unit id="bc99ea3d5cb3c4da4e2c2ebc3142c2c2a5f7fc00" resname="Download Research Data">
+        <source>Download Research Data</source>
+        <target state="new">Forschungsdaten herunterladen</target>
+        <jms:reference-file line="359">\..\..\..\..\..\vendor/igdj/tei-edition-bundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
       </trans-unit>
       <trans-unit id="f9bdba98e9d3a472873a2d6e98f62c79d35cc42b" resname="Download for scholarly or private use">
         <source>Download for scholarly or private use</source>
