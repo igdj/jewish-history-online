@@ -134,7 +134,9 @@ extends \TeiEditionBundle\Controller\BaseController
             case 'martha-glass':
                 switch ($section) {
                     case 'brandis-wohlwill':
-                        return $this->render('Dossier/martha-glass.brandis-wohlwill.html.twig', [
+                    case 'woodhouse-renate':
+                    case 'hess-anna':
+                        return $this->render('Dossier/martha-glass.' . $section . '.html.twig', [
                             'pageTitle' => /** @Ignore */ $translator->trans($dossier['name']),
                             'section' => $section,
                             'route_params_locale_switch' => $this->buildLocaleSwitch($request, $translator, $slug),
