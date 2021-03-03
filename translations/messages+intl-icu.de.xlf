@@ -462,6 +462,11 @@
         <target>Migration</target>
         <jms:reference-file line="139">\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
+      <trans-unit id="4353a3cf926b51fd229060881fcb766fa3605243" resname="No articles could be found">
+        <source>No articles could be found</source>
+        <target>Es wurden keine Artikel gefunden</target>
+        <jms:reference-file line="25">\..\..\..\..\..\vendor/igdj/tei-edition-bundle\Resources\views\Article\index-listing.html.twig\</jms:reference-file>
+      </trans-unit>
       <trans-unit id="4bab2d8fe13fa6ab57f80098b414f0f734c5dd25" resname="More">
         <source>More</source>
         <target>Weitere</target>

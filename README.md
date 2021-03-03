@@ -16,7 +16,7 @@ License
     Code for the presentation of the Digital Source Edition
         Key Documents of German-Jewish History
 
-    (C) 2017-2020 Institut für die Geschichte der deutschen Juden,
+    (C) 2017-2021 Institut für die Geschichte der deutschen Juden,
         Daniel Burckhardt
 
 
@@ -45,15 +45,11 @@ Development Notes
 -----------------
 Translate messages and routes
 
-    ./bin/console translation:extract de --dir=./src/ --output-dir=./translations --enable-extractor=jms_i18n_routing
+    ./bin/console translation:extract de --dir=./src/ --dir=vendor/igdj/tei-edition-bundle --output-dir=./translations --enable-extractor=jms_i18n_routing
 
 Theme-specific translations (TODO: add --intl-icu as soon as https://github.com/schmittjoh/JMSTranslationBundle/pull/551 is merged)
 
     ./bin/console translation:extract de --dir=./sites/jgo-presentation/templates --output-dir=./sites/jgo-presentation/translations
-
-Update translations in TeiEditionBundle
-
-    ./bin/console translation:extract de --dir=pathToBundle --output-dir=pathToBundle/Resources/translations --enable-extractor=jms_i18n_routing
 
 Update schema
 
