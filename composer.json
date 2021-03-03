@@ -8,7 +8,7 @@
     "minimum-stability": "dev",
     "repositories": [
         {
-            "url": "https://github.com/burki/tei-edition-bundle",
+            "url": "https://github.com/igdj/tei-edition-bundle",
             "type": "vcs"
         },
         {

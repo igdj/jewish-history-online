@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5aae5bac138de1e07a5ac4e53fceea99",
+    "content-hash": "0dd63d92e19581bff0dfbc2b1b51ba4e",
     "packages": [
         {
             "name": "armin/scssphp-bundle",
@@ -2178,12 +2178,12 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/burki/tei-edition-bundle.git",
+                "url": "https://github.com/igdj/tei-edition-bundle.git",
                 "reference": "3b4cfd2227a2fbce42ff4f6fe1e62c5958e45c11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/burki/tei-edition-bundle/zipball/3b4cfd2227a2fbce42ff4f6fe1e62c5958e45c11",
+                "url": "https://api.github.com/repos/igdj/tei-edition-bundle/zipball/3b4cfd2227a2fbce42ff4f6fe1e62c5958e45c11",
                 "reference": "3b4cfd2227a2fbce42ff4f6fe1e62c5958e45c11",
                 "shasum": ""
             },
@@ -2251,8 +2251,8 @@
                 ]
             },
             "support": {
-                "source": "https://github.com/burki/tei-edition-bundle/tree/master",
-                "issues": "https://github.com/burki/tei-edition-bundle/issues"
+                "source": "https://github.com/igdj/tei-edition-bundle/tree/master",
+                "issues": "https://github.com/igdj/tei-edition-bundle/issues"
             },
             "time": "2021-03-03T07:31:48+00:00"
         },
@@ -5163,7 +5163,7 @@
                 "issues": "http://github.com/sweetyrdf/easyrdf/issues",
                 "source": "https://github.com/sweetyrdf/easyrdf/tree/master"
             },
-            "abandoned": true,
+            "abandoned": "sweetrdf/easyrdf",
             "time": "2020-06-25T15:56:32+00:00"
         },
         {
