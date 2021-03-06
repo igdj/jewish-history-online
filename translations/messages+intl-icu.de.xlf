@@ -227,6 +227,11 @@
         <jms:reference-file line="329">\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig</jms:reference-file>
         <jms:reference-file line="336">\..\..\..\..\..\./src\AppBundle\Resources\views\Shared\helper.html.twig</jms:reference-file>
       </trans-unit>
+      <trans-unit id="e6698f8fc656150bdcff28937066a0cb24dfdb69" resname="Download source for non-commercial use">
+        <source>Download source for non-commercial use</source>
+        <target state="new">Quelle für nicht-kommerzielle Nutzung herunterladen</target>
+        <jms:reference-file line="349">\..\..\..\..\..\vendor/igdj/tei-edition-bundle\Resources\views\Shared\helper.html.twig\</jms:reference-file>
+      </trans-unit>
       <trans-unit id="3b361d851268fb12ca7570b2a4655ef249efbe52" resname="Economy and Occupational Composition">
         <source>Economy and Occupational Composition</source>
         <target>Wirtschaft und Berufsstruktur</target>
@@ -933,25 +938,30 @@
       </trans-unit>
       <trans-unit id="98c3779109f14746d0072d67f89da51920f50b4d" resname="license.by-nc-nd">
         <source>license.by-nc-nd</source>
-        <target>Dieser Text unterliegt den Bedingungen der Creative Commons Namensnennung - Nicht kommerziell - Keine Bearbeitungen 4.0 International Lizenz. Unter Namensnennung gemäß der Zitationsempfehlung darf er in unveränderter Form für nicht-kommerzielle Zwecke nachgenutzt werden.</target>
+        <target>Dieses Werk unterliegt den Bedingungen der Creative Commons Namensnennung - Nicht kommerziell - Keine Bearbeitungen 4.0 International Lizenz. Unter Namensnennung gemäß der Zitationsempfehlung darf es in unveränderter Form für nicht-kommerzielle Zwecke nachgenutzt werden.</target>
         <jms:reference-file line="247">\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
         <jms:reference-file line="388">\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
         <jms:reference-file line="354">\..\..\..\..\..\./src\AppBundle\Command\ArticleDoiCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="96057d4edae7eba4b35f07efb642bd322672f229" resname="license.by-nc-sa">
         <source>license.by-nc-sa</source>
-        <target>Dieser Text unterliegt den Bedingungen der Creative Commons Namensnennung - Nicht kommerziell 4.0 International Lizenz. Sie dürfen den Inhalt verändern und darauf aufbauen. Unter Namensnennung gemäß der Zitationsempfehlung sowie der Angabe, ob Änderungen vorgenommen wurden, darf er für nicht-kommerzielle Zwecke vervielfältigt und weiterverbreitet werden.</target>
+        <target>Dieses Werk unterliegt den Bedingungen der Creative Commons Namensnennung - Nicht kommerziell 4.0 International Lizenz. Sie dürfen den Inhalt verändern und darauf aufbauen. Unter Namensnennung gemäß der Zitationsempfehlung sowie der Angabe, ob Änderungen vorgenommen wurden, darf es für nicht-kommerzielle Zwecke vervielfältigt und weiterverbreitet werden.</target>
         <jms:reference-file line="383">\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="b47d90519495ca4112cd38479b0dc29cdddffd8c" resname="license.by-sa">
         <source>license.by-sa</source>
-        <target>Dieser Text unterliegt den Bedingungen der Creative Commons Namensnennung - Weitergabe unter gleichen Bedingungen 4.0 International Lizenz. Sie dürfen den Inhalt verändern und darauf aufbauen. Unter Namensnennung gemäß der Zitationsempfehlung sowie der Angabe, ob Änderungen vorgenommen wurden, darf er für für beliebige Zwecke, sogar kommerziell, vervielfältigt und weiterverbreitet werden. Wenn Sie das Material remixen, verändern oder anderweitig direkt darauf aufbauen, dürfen Sie Ihre Beiträge nur unter derselben Lizenz wie das Original verbreiten.</target>
+        <target>Dieses Werk unterliegt den Bedingungen der Creative Commons Namensnennung - Weitergabe unter gleichen Bedingungen 4.0 International Lizenz. Sie dürfen den Inhalt verändern und darauf aufbauen. Unter Namensnennung gemäß der Zitationsempfehlung sowie der Angabe, ob Änderungen vorgenommen wurden, darf es für für beliebige Zwecke, sogar kommerziell, vervielfältigt und weiterverbreitet werden. Wenn Sie das Material remixen, verändern oder anderweitig direkt darauf aufbauen, dürfen Sie Ihre Beiträge nur unter derselben Lizenz wie das Original verbreiten.</target>
         <jms:reference-file line="254">\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
         <jms:reference-file line="378">\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
+      <trans-unit id="608a01bd63e35a9cfbf35b6e3294d9d3fbd7e940" resname="license.noc-nc">
+        <source>license.noc-nc</source>
+        <target state="new">Dieses Werk wurde in einer öffentlich-privaten Partnerschaft (PPP) digitalisiert. Innerhalb der Partnerschaft haben die Vertragspartner Einschränkungen einer kommerziellen Nutzung des Digitalisats durch Dritte vereinbart. Sie sind berechtigt, auch ohne weitere Erlaubnis das Objekt für nicht kommerzielle Nutzungen zu kopieren, zu verändern, zu verbreiten, auszustellen oder aufzuführen. Für alle anderen zulässigen Nutzungen überprüfen Sie bitte die Nutzungsbedingungen der Institution, die das Objekt zugänglich gemacht hat.</target>
+        <jms:reference-file line="396">\..\..\..\..\..\./src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
       <trans-unit id="4c6cc61ad14d77dbcc0f3c9c41cc9531e88392df" resname="license.personal-use">
         <source>license.personal-use</source>
-        <target>Dieser Text ist urheberrechtlich geschützt und darf nur mit Einwilligung der Rechteinhaber vervielfältigt und veröffentlicht. Er darf zu wissenschaftlichen oder privaten Zwecken heruntergeladen werden.</target>
+        <target>Dieses Werk ist urheberrechtlich geschützt und darf nur mit Einwilligung der Rechteinhaber vervielfältigt und veröffentlicht. Es darf zu wissenschaftlichen oder privaten Zwecken heruntergeladen werden.</target>
         <jms:reference-file line="402">\..\..\..\..\..\./src\AppBundle\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="76ef082a395e8e204883a504ca3e054bedf59149" resname="license.public-domain">

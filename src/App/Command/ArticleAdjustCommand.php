@@ -391,6 +391,11 @@ extends BaseCommand
                             $licenseAttribution = $this->translator->trans('license.by-nc-nd');
                             break;
 
+                        case 'NoC-NC':
+                            $licenseKey = 'http://rightsstatements.org/vocab/NoC-NC/1.0/';
+                            $licenseAttribution = $this->translator->trans('license.noc-nc');
+                            break;
+
                         case 'restricted':
                             ;
                             break;
