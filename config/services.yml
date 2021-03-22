@@ -1,4 +1,21 @@
 # app/config/services.yml
+parameters:
+    app.pdf-generator.arguments:
+        fontDir: [ "%kernel.project_dir%/sites/jgo-presentation/data/font", "%kernel.project_dir%/data/font" ]
+        fontdata:
+            book_typeface:
+                R: 'Roboto-Regular.ttf'
+                B: 'Roboto-Bold.ttf'
+                I: 'Roboto-Italic.ttf'
+                BI: 'Roboto-BoldItalic.ttf'
+            # see https://github.com/OdedEzer/heebo/tree/master/compiled_fonts/ttf
+            heebo:
+                R: 'Heebo-Regular.ttf'
+                B: 'Heebo-Bold.ttf'
+                I: 'Heebo-Regular.ttf'
+                BI: 'Heebo-Bold.ttf'
+        default_font: book_typeface
+
 services:
     _defaults:
         autowire: true
@@ -74,6 +91,9 @@ services:
     TeiEditionBundle\Utils\Xsl\XsltProcessor:
         calls:
             - [ setAdapter, [ '@app.xslt_adapter' ]]
+
+    TeiEditionBundle\Utils\PdfGenerator:
+        arguments:    [ "%app.pdf-generator.arguments%" ]
 
     app.xml_formatter_adapter:
         class:        "%app.xml_formatter.adapter.class%"
