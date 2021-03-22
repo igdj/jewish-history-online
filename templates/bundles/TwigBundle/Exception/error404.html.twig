@@ -8,6 +8,6 @@
     <h1>{{ 'Page not found'|trans }}</h1>
 
     <p>
-        {{ 'error.404.description'|trans({'url': path('home') })|raw }}
+        {{ 'error.404.description'|trans({ 'url': path('home') }, 'additional')|raw }}
     </p>
 {% endblock %}

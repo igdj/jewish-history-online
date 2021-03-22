@@ -38,7 +38,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
                                           $title, $template)
     {
         return $this->render($template, [
-            'pageTitle' => /** @Ignore */ $translator->trans($title),
+            'pageTitle' => $title,
             'title' => $title,
             'content' => $this->renderContent($request),
         ]);
@@ -73,7 +73,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
     public function goalsAction(Request $request,
                                 TranslatorInterface $translator)
     {
-        return $this->renderAbout($request, $translator, 'Goals');
+        return $this->renderAbout($request, $translator, $translator->trans('Goals'));
     }
 
     /**
@@ -82,7 +82,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
     public function keydocumentsAction(Request $request,
                                        TranslatorInterface $translator)
     {
-        return $this->renderAbout($request, $translator, 'Key Documents');
+        return $this->renderAbout($request, $translator, $translator->trans('Key Documents'));
     }
 
     /**
@@ -91,7 +91,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
     public function audienceAction(Request $request,
                                    TranslatorInterface $translator)
     {
-        return $this->renderAbout($request, $translator, 'Target Audience');
+        return $this->renderAbout($request, $translator, $translator->trans('Target Audience'));
     }
 
     /**
@@ -100,7 +100,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
     public function usageAction(Request $request,
                                 TranslatorInterface $translator)
     {
-        return $this->renderAbout($request, $translator, 'Structure / How to Use this Edition');
+        return $this->renderAbout($request, $translator, $translator->trans('Structure / How to Use this Edition'));
     }
 
     /**
@@ -109,7 +109,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
     public function editorialmodelAction(Request $request,
                                          TranslatorInterface $translator)
     {
-        return $this->renderAbout($request, $translator, 'Editorial Model');
+        return $this->renderAbout($request, $translator, $translator->trans('Editorial Model'));
     }
 
     /**
@@ -118,7 +118,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
     public function editionguidelinesAction(Request $request,
                                             TranslatorInterface $translator)
     {
-        return $this->renderAbout($request, $translator, 'Edition and Edition Guidelines');
+        return $this->renderAbout($request, $translator, $translator->trans('Edition and Edition Guidelines'));
     }
 
     /**
@@ -127,7 +127,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
     public function implementationAction(Request $request,
                                          TranslatorInterface $translator)
     {
-        return $this->renderAbout($request, $translator, 'Technical Implementation');
+        return $this->renderAbout($request, $translator, $translator->trans('Technical Implementation'));
     }
 
     /**
@@ -136,7 +136,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
     public function publicationsAction(Request $request,
                                        TranslatorInterface $translator)
     {
-        return $this->renderAbout($request, $translator, 'Presentations and Publications');
+        return $this->renderAbout($request, $translator, $translator->trans('Presentations and Publications'));
     }
 
     protected function buildNewsArticles(&$posts, $client)
@@ -224,7 +224,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
         }
 
         // static fallback
-        return $this->renderAbout($request, $translator, 'News');
+        return $this->renderAbout($request, $translator, $translator->trans('News'));
     }
 
     /**
@@ -232,7 +232,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
      */
     public function staffAction(Request $request, TranslatorInterface $translator)
     {
-        return $this->renderAboutUs($request, $translator, 'Staff');
+        return $this->renderAboutUs($request, $translator, $translator->trans('Staff'));
     }
 
     /**
@@ -240,7 +240,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
      */
     public function editorsAction(Request $request, TranslatorInterface $translator)
     {
-        return $this->renderAboutUs($request, $translator, 'Editors');
+        return $this->renderAboutUs($request, $translator, $translator->trans('Editors'));
     }
 
     /**
@@ -248,7 +248,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
      */
     public function boardAction(Request $request, TranslatorInterface $translator)
     {
-        return $this->renderAboutUs($request, $translator, 'Advisory Board');
+        return $this->renderAboutUs($request, $translator, $translator->trans('Advisory Board'));
     }
 
     /**
@@ -257,7 +257,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
     public function sponsorsAction(Request $request,
                                    TranslatorInterface $translator)
     {
-        return $this->renderAboutUs($request, $translator, 'Sponsors and Partners');
+        return $this->renderAboutUs($request, $translator, $translator->trans('Sponsors and Partners'));
     }
 
     /**
@@ -266,7 +266,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
     public function cfpAction(Request $request,
                               TranslatorInterface $translator)
     {
-        return $this->renderAboutUs($request, $translator, 'Become an Author');
+        return $this->renderAboutUs($request, $translator, $translator->trans('Become an Author'));
     }
 
     /**
@@ -275,7 +275,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
     public function termsAction(Request $request,
                                 TranslatorInterface $translator)
     {
-        return $this->renderTitleContent($request, $translator, 'Terms and Conditions', 'About/sitetext.html.twig');
+        return $this->renderTitleContent($request, $translator, $translator->trans('Terms and Conditions'), 'About/sitetext.html.twig');
     }
 
     protected function sendMessage($mailer, $twig, $data)

@@ -1,6 +1,7 @@
 parameters:
     kernel.secret: YOUR_SECRET
 
+    # front-end mysql database
     database.host:     127.0.0.1
     database.port:     ~
     database.name:     jgo_presentation
@@ -47,11 +48,13 @@ parameters:
     # app.xslt.adapter.arguments: ~
 
     # xml format
-    app.xml_formatter.adapter.class:  TeiEditionBundle\Utils\XmlFormatter\XmlFormatterCommandlineAdapter
+    app.xml_formatter.adapter.class: TeiEditionBundle\Utils\XmlFormatter\XmlFormatterCommandlineAdapter
+    # use XML::LibXML::PrettyPrint based script
+    app.xml_formatter.adapter.arguments: "perl %kernel.project_dir%/app/Resources/bin/dtabfpp.pl %%source%% %%additional%%"
     # use http://www.kitebird.com/software/xmlformat/xmlformat.html
     # if site is down, https://packages.ubuntu.com/bionic/xmlformat-perl points to
     #   http://archive.ubuntu.com/ubuntu/pool/universe/x/xmlformat/xmlformat_1.04.orig.tar.gz
-    app.xml_formatter.adapter.arguments: "perl %kernel.project_dir%/app/Resources/bin/xmlformat.pl --config=%kernel.project_dir%/app/Resources/bin/xf-tei.conf %%source%% %%additional%%"
+    # app.xml_formatter.adapter.arguments: "perl %kernel.project_dir%/app/Resources/bin/xmlformat.pl --config=%kernel.project_dir%/app/Resources/bin/xf-tei.conf %%source%% %%additional%%"
 
     # imagemagick settings
     app.imagemagick.processor.arguments:

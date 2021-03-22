@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
+  <file date="2021-03-12T17:35:47Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+    <header>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
+    </header>
+    <body>
+      <trans-unit id="e2ffb146c0b814d2088e10037ea019fde7432a9f" resname="error.404.description">
+        <source>error.404.description</source>
+        <target>Diese Seite wurde nicht gefunden. Bitte prüfen Sie die Adresse oder gehen Sie .</target>
+        <jms:reference-file line="11">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/templates\bundles\TwigBundle\Exception\error404.html.twig\</jms:reference-file>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

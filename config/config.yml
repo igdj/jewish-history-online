@@ -22,6 +22,7 @@ framework:
 twig:
     globals:
         locales: "%locales%"
+        # Translate the following two in additional.de.yaml
         siteName: 'Key Documents of German-Jewish History'
         siteTagline: 'A Digital Source Edition'
         slugify: "@cocur_slugify"
@@ -102,6 +103,20 @@ scssphp:
                 - "sites/jgo-presentation/assets/scss" # theme-specific settings come first
                 - "assets/scss"                        # generic fall-back
 
+jms_translation:
+    configs:
+        # so you can run ./bin/console translation:extract de --config=app
+        # see http://jmsyst.com/bundles/JMSTranslationBundle/master/cookbook/extraction_configs
+        app:
+            dirs: ["%kernel.project_dir%/templates", "%kernel.project_dir%/src"]
+            output_dir: "%kernel.project_dir%/translations"
+            extractors: [jms_i18n_routing]
+
+        bundle:
+            dirs: ["%kernel.project_dir%/vendor/igdj/tei-edition-bundle"]
+            output_dir: "%kernel.project_dir%/vendor/igdj/tei-edition-bundle/Resources/translations"
+            extractors: []
+
 jms_i18n_routing:
     default_locale: '%default_locale%'
     locales: '%locales%'
@@ -151,8 +166,10 @@ knp_paginator:
         sortable: '@KnpPaginator/Pagination:sortable_link.html.twig' # sort link template
        
 eko_feed:
+    translation_domain: additional
     feeds:
         article:
+            # Translate the following two in additional.de.yaml
             title:       'Key Documents of German-Jewish History - Articles'
             description: 'Latest Articles from the Digital Source Edition'
             link:

@@ -10,6 +10,43 @@ You may use it in parts or adjust it to your own need if it fits your needs.
 If you have any questions or find this code helpful, please contact us at
     http://jewish-history-online.net/contact
 
+Installation Notes
+------------------
+Install dependencies
+
+    composer install
+
+Create database
+
+    mysqladmin -u root -p create jgo_presentation
+
+and create a database user with proper rights
+
+Adjust local settings
+
+    cp config/parameters.yaml-dist config/parameters.yaml
+
+In `config/parameters.yaml`, adjust the database settings
+(database.name / database.user / database.password)
+
+Create the tables
+
+    ./bin/console doctrine:schema:create
+
+Development Notes
+-----------------
+Translate messages and routes according to settings in
+`jms_translation.configs.app`
+
+    ./bin/console translation:extract de --config=app
+
+Theme-specific translations (TODO: add --intl-icu as soon as https://github.com/schmittjoh/JMSTranslationBundle/pull/551 is merged)
+
+    ./bin/console translation:extract de --dir=./sites/jgo-presentation/templates --output-dir=./sites/jgo-presentation/translations
+
+Update schema
+
+    ./bin/console doctrine:schema:update --force
 
 License
 -------
@@ -40,17 +77,3 @@ Open Source Licenses. Please check `composer.json` for these dependencies.
 
 The XSLT-Stylesheets are based on the files from
     https://github.com/haoess/dta-tools/tree/master/stylesheets
-
-Development Notes
------------------
-Translate messages and routes
-
-    ./bin/console translation:extract de --dir=./src/ --dir=vendor/igdj/tei-edition-bundle --output-dir=./translations --enable-extractor=jms_i18n_routing
-
-Theme-specific translations (TODO: add --intl-icu as soon as https://github.com/schmittjoh/JMSTranslationBundle/pull/551 is merged)
-
-    ./bin/console translation:extract de --dir=./sites/jgo-presentation/templates --output-dir=./sites/jgo-presentation/translations
-
-Update schema
-
-    ./bin/console doctrine:schema:update --force

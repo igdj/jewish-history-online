@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
+  <file date="2021-03-12T17:35:47Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+    <header>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
+    </header>
+    <body>
+      <trans-unit id="b7327b21bc776ba5d03796403347a7f5738978be" resname="About this edition">
+        <source>About this edition</source>
+        <target>Über diese Edition</target>
+        <jms:reference-file line="54">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+        <jms:reference-file line="14">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/templates\About\sitetext-about.html.twig\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3ffb811f9be63cf3e71f2e2b71599ba2b7721405" resname="About us">
+        <source>About us</source>
+        <target>Über uns</target>
+        <jms:reference-file line="93">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+        <jms:reference-file line="14">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/templates\About\sitetext-about-us.html.twig\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e5fb6291a5a7894579a57878bbbe0064eadc1953" resname="Advisory Board">
+        <source>Advisory Board</source>
+        <target>Wissenschaftlicher Beirat</target>
+        <jms:reference-file line="251">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
+        <jms:reference-file line="109">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5d30deaf879ec747b22aec1863e51b3a9e4ee6b2" resname="Antisemitism and Persecution">
+        <source>Antisemitism and Persecution</source>
+        <target>Judenfeindschaft und Verfolgung</target>
+        <jms:reference-file line="131">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4360c2dcd4af965377499b10a52640af435c9258" resname="Article">
+        <source>Article</source>
+        <target>Beitrag</target>
+        <jms:reference-file line="294">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="7c422841b7e3951946583038790545c4ed38481b" resname="Articles">
+        <source>Articles</source>
+        <target>Beiträge</target>
+        <jms:reference-file line="187">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c98b595a02a901249b7e960bd050144412e764bc" resname="Arts and Culture">
+        <source>Arts and Culture</source>
+        <target>Kunst und Kultur</target>
+        <jms:reference-file line="158">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ba9493b694886a3a73c7e13a3911d6056a440140" resname="Become an Author">
+        <source>Become an Author</source>
+        <target state="new">Autor_in werden</target>
+        <jms:reference-file line="269">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="619d65e1ae1a2704aa306451ac2a75a0cde345a8" resname="Bibliography">
+        <source>Bibliography</source>
+        <target>Bibliografie</target>
+        <jms:reference-file line="183">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="070374ff80947b819eb8815e8d492bf0a862577e" resname="Chronology">
+        <source>Chronology</source>
+        <target>Zeitstrahl</target>
+        <jms:reference-file line="162">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+        <jms:reference-file line="240">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/templates\Default\home.html.twig\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="b37456c4530be810dc040f50da72eda09addfb0a" resname="Contact">
+        <source>Contact</source>
+        <target>Kontakt</target>
+        <jms:reference-file line="323">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
+        <jms:reference-file line="125">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="06e87cd3cbe3b826b0ab52bb510603dd41864b70" resname="Data Protection">
+        <source>Data Protection</source>
+        <target>Datenschutz</target>
+        <jms:reference-file line="333">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
+        <jms:reference-file line="138">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="88796547e574b1346b3f3c63fce6354c38eb56a0" resname="Demographics and Social Structure">
+        <source>Demographics and Social Structure</source>
+        <target>Demographie und soziale Strukturen</target>
+        <jms:reference-file line="174">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="7c9a7c0610c1bc20abb9c9d07094daa33576a8f8" resname="Detail">
+        <source>Detail</source>
+        <target>Detail</target>
+        <jms:reference-file line="313">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+        <jms:reference-file line="324">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+        <jms:reference-file line="330">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+        <jms:reference-file line="342">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+        <jms:reference-file line="347">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="8ed6578829ed850c28d5f5af90f54b55053fec15" resname="Dossier">
+        <source>Dossier</source>
+        <target>Dossier</target>
+        <jms:reference-file line="369">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3b361d851268fb12ca7570b2a4655ef249efbe52" resname="Economy and Occupational Composition">
+        <source>Economy and Occupational Composition</source>
+        <target>Wirtschaft und Berufsstruktur</target>
+        <jms:reference-file line="153">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="dbe6645d8f550eda56aabcbd97969f178efcbf63" resname="Edition and Edition Guidelines">
+        <source>Edition and Edition Guidelines</source>
+        <target state="new">Edition und Editionsrichtlinien</target>
+        <jms:reference-file line="121">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="de63d0b582029060cd2e911da4b64f71aa85815e" resname="Editorial Model">
+        <source>Editorial Model</source>
+        <target state="new">Redaktionsmodell</target>
+        <jms:reference-file line="112">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ed63036d8730b34c2af3aa53fe984d9883388a1c" resname="Editors">
+        <source>Editors</source>
+        <target state="new">Herausgeberinnen und Herausgeber</target>
+        <jms:reference-file line="243">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="114f8ce87ef7495c357afa6082d3ae278b116fd4" resname="Education and Learning">
+        <source>Education and Learning</source>
+        <target>Erziehung und Bildung</target>
+        <jms:reference-file line="166">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c3e98f7507fced38ed5c711c203cece4e0b10851" resname="Epochs and Events">
+        <source>Epochs and Events</source>
+        <target>Epochen und Ereignisse</target>
+        <jms:reference-file line="179">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d64bba17540f4bd4996db15429dd368c33d792d8" resname="Family and Everyday Life">
+        <source>Family and Everyday Life</source>
+        <target>Familie und Alltag</target>
+        <jms:reference-file line="143">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="7427cf697be16a4ec1d916910128a59d920125e7" resname="Glossary">
+        <source>Glossary</source>
+        <target>Glossar</target>
+        <jms:reference-file line="191">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="48d8c627be3c12fac8a0a9ddb9ceaa5e126cf358" resname="Goals">
+        <source>Goals</source>
+        <target state="new">Ziele</target>
+        <jms:reference-file line="76">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="fefe8601348cecda43b21df3887d19ebcb55fd99" resname="Guidelines for the Use of Materials">
+        <source>Guidelines for the Use of Materials</source>
+        <target>Leitfaden für die Nutzung der Materialien</target>
+        <jms:reference-file line="20">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/templates\About\sitetext-education.html.twig\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="70f8bb9a8a5393ef080507a89e4b98d139000d65" resname="Home">
+        <source>Home</source>
+        <target>Startseite</target>
+        <jms:reference-file line="151">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="db71e0bfdd6b22014556039ac1d59c60c65b4e4e" resname="Imprint">
+        <source>Imprint</source>
+        <target>Impressum</target>
+        <jms:reference-file line="332">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
+        <jms:reference-file line="134">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="b6fc41ec459d2de23a319b1ae24c7879b62c740c" resname="Information on Source Interpretation for Students">
+        <source>Information on Source Interpretation for Students</source>
+        <target>Infos zur Quelleninterpretation für Studierende</target>
+        <jms:reference-file line="21">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/templates\About\sitetext-education.html.twig\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="97c20e9ee98b40e4c76b73b7186c7fe341baf247" resname="Institute for the History of the German Jews">
+        <source>Institute for the History of the German Jews</source>
+        <target>Institut für die Geschichte der deutschen Juden</target>
+        <jms:reference-file line="477">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2473e96bc614a911821242119918a241a41836d6" resname="Introduction">
+        <source>Introduction</source>
+        <target>Einführung</target>
+        <jms:reference-file line="287">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ec54b63025821c95c14e4ad99471c974fee7d7fc" resname="Key Documents">
+        <source>Key Documents</source>
+        <target state="new">Schlüsseldokumente</target>
+        <jms:reference-file line="85">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="82a8febe201bb813db407fc32fb017f78b168560" resname="Labs">
+        <source>Labs</source>
+        <target>Labs</target>
+        <jms:reference-file line="23">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\LabsController.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="a234f62d3e6b46fe44ffeb992f1072faea7dae2d" resname="Law and Politics">
+        <source>Law and Politics</source>
+        <target>Recht und Politik</target>
+        <jms:reference-file line="152">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="71717de1cb4a9ed79b08b504b4070ef753b4a306" resname="Leisure and Sports">
+        <source>Leisure and Sports</source>
+        <target>Freizeit und Sport</target>
+        <jms:reference-file line="147">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="b04ba49f848624bb97ab094a2631d2ad74913498" resname="Loading...">
+        <source>Loading...</source>
+        <target>Wird geladen...</target>
+        <jms:reference-file line="245">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/templates\Default\home.html.twig\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="0e395bfa3879c6532f36f789e96f80c57030f8f0" resname="Look-up">
+        <source>Look-up</source>
+        <target>Nachschlagen</target>
+        <jms:reference-file line="163">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ab478f3efc840eebab919dff1b9512286f70c10c" resname="Map">
+        <source>Map</source>
+        <target>Karte</target>
+        <jms:reference-file line="161">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+        <jms:reference-file line="318">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+        <jms:reference-file line="219">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/templates\Default\home.html.twig\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="a2829defe01f5563cea7b877f065784e3ac6a619" resname="Memory and Remembrance">
+        <source>Memory and Remembrance</source>
+        <target>Erinnern und Gedenken</target>
+        <jms:reference-file line="170">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6e458173eef4a800366eeb68965cf8f147c4756b" resname="Migration">
+        <source>Migration</source>
+        <target>Migration</target>
+        <jms:reference-file line="139">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4bab2d8fe13fa6ab57f80098b414f0f734c5dd25" resname="More">
+        <source>More</source>
+        <target>Weitere</target>
+        <jms:reference-file line="280">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/templates\Default\home.html.twig\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="34c808d0a63f277e04fb23a5f76cc83d0a3e024b" resname="News">
+        <source>News</source>
+        <target state="new">Projektneuigkeiten</target>
+        <jms:reference-file line="227">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="055f0efcc4e9d8060752aca63db01d1dc550afc5" resname="Online Exhibitions">
+        <source>Online Exhibitions</source>
+        <target>Online-Ausstellungen</target>
+        <jms:reference-file line="111">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\ExhibitionController.php\</jms:reference-file>
+        <jms:reference-file line="362">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="07605242f7a070b43bdc103189dccf6a5cc43506" resname="Organizations">
+        <source>Organizations</source>
+        <target>Organisationen</target>
+        <jms:reference-file line="175">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d031e7922ae6b4cbdc221ebda4bed363b187b54d" resname="Organizations and Institutions">
+        <source>Organizations and Institutions</source>
+        <target>Organisationen und Institutionen</target>
+        <jms:reference-file line="162">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="bc3023b36063a7681db24681472b54fa11f0d4ec" resname="Page not found">
+        <source>Page not found</source>
+        <target>Seite nicht gefunden</target>
+        <jms:reference-file line="8">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/templates\bundles\TwigBundle\Exception\error404.html.twig\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f3cf96e919766ef2354bbbddd56e9cbb5f2792e8" resname="Persons">
+        <source>Persons</source>
+        <target>Personen</target>
+        <jms:reference-file line="167">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="7e42e3d98b6e36312500ce2810ed2fef22d0e04f" resname="Persons by Birth / Death Place">
+        <source>Persons by Birth / Death Place</source>
+        <target>Persons by Birth / Death Place</target>
+        <jms:reference-file line="252">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\LabsController.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="0cd3597453ab504a3dbeec3289e21abe922d223a" resname="Places">
+        <source>Places</source>
+        <target>Orte</target>
+        <jms:reference-file line="171">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9a030744cea8960ed3047fe5a78975911615b911" resname="Presentations and Publications">
+        <source>Presentations and Publications</source>
+        <target state="new">Präsentationen und Publikationen</target>
+        <jms:reference-file line="139">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9c0ada22130357a26990ce755db75086346e3149" resname="Project News">
+        <source>Project News</source>
+        <target>Projektneuigkeiten</target>
+        <jms:reference-file line="117">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+        <jms:reference-file line="271">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/templates\Default\home.html.twig\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="b6713b5cbc4889212035a2f69a285f62d2da6d59" resname="Religion and Identity">
+        <source>Religion and Identity</source>
+        <target>Religion und Identität</target>
+        <jms:reference-file line="135">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="da0f3e5b26896228d59d696d23b312da5ea1a054" resname="Scholarship">
+        <source>Scholarship</source>
+        <target>Wissenschaft</target>
+        <jms:reference-file line="186">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="bce06414177f72ab70e6387b6af9f8ceef0d6049" resname="Search">
+        <source>Search</source>
+        <target>Suche</target>
+        <jms:reference-file line="351">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4ea2981b1d461a672ac45c32897d1735d4075d54" resname="Sephardic Jews">
+        <source>Sephardic Jews</source>
+        <target>Sefarden</target>
+        <jms:reference-file line="182">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f1f4a2d21b837d5497595ff66188fc7f16081a98" resname="Social Issues and Welfare">
+        <source>Social Issues and Welfare</source>
+        <target>Soziale Fragen und Wohlfahrtswesen</target>
+        <jms:reference-file line="178">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6da13addb000b67d42a6d66391713819e634149f" resname="Source">
+        <source>Source</source>
+        <target>Quelle</target>
+        <jms:reference-file line="294">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="298">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d71af9c76a7b8c80409506e5b29a12d967c36636" resname="Sponsors and Partners">
+        <source>Sponsors and Partners</source>
+        <target>Förderer und Partner</target>
+        <jms:reference-file line="260">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
+        <jms:reference-file line="113">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="a4730a22cf494f758716c5c83bbf4c258c37a8b8" resname="Staff">
+        <source>Staff</source>
+        <target state="new">Mitarbeiterinnen und Mitarbeiter</target>
+        <jms:reference-file line="235">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3137cf87f43c99d65918ce2710921460f53c10df" resname="Structure / How to Use this Edition">
+        <source>Structure / How to Use this Edition</source>
+        <target state="new">Nutzungshinweise</target>
+        <jms:reference-file line="103">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5cc6318e21af4a9864dfb66b71e19b22e67f5171" resname="Target Audience">
+        <source>Target Audience</source>
+        <target state="new">Zielgruppe</target>
+        <jms:reference-file line="94">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d1bdc10aa3b8a6329812d3977aa3ee0475467d23" resname="Teaching Resources">
+        <source>Teaching Resources</source>
+        <target>Unterrichtsmaterialien</target>
+        <jms:reference-file line="132">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\EducationController.php\</jms:reference-file>
+        <jms:reference-file line="196">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+        <jms:reference-file line="357">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+        <jms:reference-file line="14">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/templates\About\sitetext-education.html.twig\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="943be732970c7c17a7195e7168ec298af10a10a8" resname="Technical Implementation">
+        <source>Technical Implementation</source>
+        <target state="new">Technische Umsetzung</target>
+        <jms:reference-file line="130">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="894031ed8d341b5ecab5e23002585055f0b7ee4d" resname="Terms and Conditions">
+        <source>Terms and Conditions</source>
+        <target>Nutzungsbedingungen</target>
+        <jms:reference-file line="278">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
+        <jms:reference-file line="121">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="25a4f31eea22a1d1e9f6426d12d1da1357d418a8" resname="Thank you very much for your interest in our project. We will get back to you as soon as possible.">
+        <source>Thank you very much for your interest in our project. We will get back to you as soon as possible.</source>
+        <target>Besten Dank für Ihr Interesse an unserem Projekt. Wir beantworten Ihre Anfrage so bald als möglich.</target>
+        <jms:reference-file line="8">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/templates\About\contact-sent.html.twig\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="07e4f9c27860c8f452d481954e498a807cd27a98" resname="Topics">
+        <source>Topics</source>
+        <target>Themen</target>
+        <jms:reference-file line="160">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+        <jms:reference-file line="185">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/templates\Default\home.html.twig\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="60fec3e8a77dfaa4c3660e74846536f6e74f5812" resname="We are very sorry: There was a technical problem delivering your message. Please contact us at &lt;a href=&quot;mailto:info@juedische-geschichte-online.net&quot;&gt;info@juedische-geschichte-online.net&lt;/a&gt;.">
+        <source><![CDATA[We are very sorry: There was a technical problem delivering your message. Please contact us at <a href="mailto:info@juedische-geschichte-online.net">info@juedische-geschichte-online.net</a>.]]></source>
+        <target><![CDATA[Beim Versand Ihrer Nachricht ist ein Fehler aufgetreten. Bitte kontaktieren Sie uns unter <a href="mailto:info@juedische-geschichte-online.net">info@juedische-geschichte-online.net</a>.]]></target>
+        <jms:reference-file line="10">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/templates\About\contact-sent.html.twig\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ca4f9dcf204e2037bfe5884867bead98bd9cbaf8" resname="Welcome">
+        <source>Welcome</source>
+        <target>Willkommen</target>
+        <jms:reference-file line="67">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\DefaultController.php\</jms:reference-file>
+        <jms:reference-file line="172">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/templates\Default\home.html.twig\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="98c3779109f14746d0072d67f89da51920f50b4d" resname="license.by-nc-nd">
+        <source>license.by-nc-nd</source>
+        <target>Dieses Werk unterliegt den Bedingungen der Creative Commons Namensnennung - Nicht kommerziell - Keine Bearbeitungen 4.0 International Lizenz. Unter Namensnennung gemäß der Zitationsempfehlung darf es in unveränderter Form für nicht-kommerzielle Zwecke nachgenutzt werden.</target>
+        <jms:reference-file line="250">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="391">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="96057d4edae7eba4b35f07efb642bd322672f229" resname="license.by-nc-sa">
+        <source>license.by-nc-sa</source>
+        <target>Dieses Werk unterliegt den Bedingungen der Creative Commons Namensnennung - Nicht kommerziell 4.0 International Lizenz. Sie dürfen den Inhalt verändern und darauf aufbauen. Unter Namensnennung gemäß der Zitationsempfehlung sowie der Angabe, ob Änderungen vorgenommen wurden, darf es für nicht-kommerzielle Zwecke vervielfältigt und weiterverbreitet werden.</target>
+        <jms:reference-file line="386">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="b47d90519495ca4112cd38479b0dc29cdddffd8c" resname="license.by-sa">
+        <source>license.by-sa</source>
+        <target>Dieses Werk unterliegt den Bedingungen der Creative Commons Namensnennung - Weitergabe unter gleichen Bedingungen 4.0 International Lizenz. Sie dürfen den Inhalt verändern und darauf aufbauen. Unter Namensnennung gemäß der Zitationsempfehlung sowie der Angabe, ob Änderungen vorgenommen wurden, darf es für für beliebige Zwecke, sogar kommerziell, vervielfältigt und weiterverbreitet werden. Wenn Sie das Material remixen, verändern oder anderweitig direkt darauf aufbauen, dürfen Sie Ihre Beiträge nur unter derselben Lizenz wie das Original verbreiten.</target>
+        <jms:reference-file line="257">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+        <jms:reference-file line="381">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="608a01bd63e35a9cfbf35b6e3294d9d3fbd7e940" resname="license.noc-nc">
+        <source>license.noc-nc</source>
+        <target>Dieses Werk wurde in einer öffentlich-privaten Partnerschaft (PPP) digitalisiert. Innerhalb der Partnerschaft haben die Vertragspartner Einschränkungen einer kommerziellen Nutzung des Digitalisats durch Dritte vereinbart. Sie sind berechtigt, auch ohne weitere Erlaubnis das Objekt für nicht kommerzielle Nutzungen zu kopieren, zu verändern, zu verbreiten, auszustellen oder aufzuführen. Für alle anderen zulässigen Nutzungen überprüfen Sie bitte die Nutzungsbedingungen der Institution, die das Objekt zugänglich gemacht hat.</target>
+        <jms:reference-file line="396">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4c6cc61ad14d77dbcc0f3c9c41cc9531e88392df" resname="license.personal-use">
+        <source>license.personal-use</source>
+        <target>Dieses Werk ist urheberrechtlich geschützt und darf nur mit Einwilligung der Rechteinhaber vervielfältigt und veröffentlicht. Es darf zu wissenschaftlichen oder privaten Zwecken heruntergeladen werden.</target>
+        <jms:reference-file line="410">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="76ef082a395e8e204883a504ca3e054bedf59149" resname="license.public-domain">
+        <source>license.public-domain</source>
+        <target>Dieses Werk wurde als frei von bekannten urheberrechtlichen Einschränkungen identifiziert, einschließlich aller verwandten Schutzrechte.</target>
+        <jms:reference-file line="405">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="da2999cac117278739bcc5e3843a108636701ebd" resname="license.restricted">
+        <source>license.restricted</source>
+        <target><![CDATA[© Institut für die Geschichte der deutschen Juden (IGdJ) und Autor, alle Rechte vorbehalten. Dieses Werk entstand im Rahmen der Online-Quellenedition „Hamburger Schlüsseldokumente zur deutsch-jüdischen Geschichte“ und darf nur mit Einwilligung der Rechteinhaber vervielfältigt und veröffentlicht werden. Bitte kontaktieren Sie: <info@juedische-geschichte-online.net>]]></target>
+        <jms:reference-file line="262">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
