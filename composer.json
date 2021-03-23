@@ -8,11 +8,11 @@
     "minimum-stability": "dev",
     "repositories": [
         {
-            "url": "https://github.com/igdj/tei-edition-bundle",
-            "type": "vcs"
+            "url": "../tei-edition-bundle",
+            "type": "path"
         },
         {
-            "url": "https://github.com/burki/lod-service",
+            "url": "https://github.com/igdj/lod-service",
             "type": "vcs"
         },
         {

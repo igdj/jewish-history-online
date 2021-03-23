@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f7e3c0f68535f0c6371ad17657e57a33",
+    "content-hash": "c88ee2b64791d54d07aac07d4380269c",
     "packages": [
         {
             "name": "armin/scssphp-bundle",
@@ -2253,12 +2253,12 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/burki/lod-service.git",
+                "url": "https://github.com/igdj/lod-service.git",
                 "reference": "ff97d46cfc7e56766988011e3bd1bc523a3da181"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/burki/lod-service/zipball/ff97d46cfc7e56766988011e3bd1bc523a3da181",
+                "url": "https://api.github.com/repos/igdj/lod-service/zipball/ff97d46cfc7e56766988011e3bd1bc523a3da181",
                 "reference": "ff97d46cfc7e56766988011e3bd1bc523a3da181",
                 "shasum": ""
             },
@@ -2284,24 +2284,18 @@
                 "Linked Data"
             ],
             "support": {
-                "source": "https://github.com/burki/lod-service/tree/master",
-                "issues": "https://github.com/burki/lod-service/issues"
+                "source": "https://github.com/igdj/lod-service/tree/master",
+                "issues": "https://github.com/igdj/lod-service/issues"
             },
             "time": "2021-03-10T16:30:30+00:00"
         },
         {
             "name": "igdj/tei-edition-bundle",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/igdj/tei-edition-bundle.git",
-                "reference": "482adf459edf789716885a1157b58a329d8181bd"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/igdj/tei-edition-bundle/zipball/482adf459edf789716885a1157b58a329d8181bd",
-                "reference": "482adf459edf789716885a1157b58a329d8181bd",
-                "shasum": ""
+                "type": "path",
+                "url": "../tei-edition-bundle",
+                "reference": "a5dfd7f9802e55d11380afc9ba87093aaa3980e2"
             },
             "require": {
                 "beberlei/doctrineextensions": "^1.2",
@@ -2355,7 +2349,6 @@
                 "twig/string-extra": "^3.0",
                 "twig/twig": "^3.0"
             },
-            "default-branch": true,
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
@@ -2365,11 +2358,9 @@
                     "/Tests/"
                 ]
             },
-            "support": {
-                "source": "https://github.com/igdj/tei-edition-bundle/tree/master",
-                "issues": "https://github.com/igdj/tei-edition-bundle/issues"
-            },
-            "time": "2021-03-22T07:12:32+00:00"
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "jms/i18n-routing-bundle",
