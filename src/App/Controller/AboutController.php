@@ -237,7 +237,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
                                   \Swift_Mailer $mailer,
                                   \Twig\Environment $twig)
     {
-        $form = $this->createForm(\TeiEditionBundle\Form\Type\ContactType::class);
+        $form = $this->createForm(\App\Form\Type\ContactType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->render('About/contact-sent.html.twig', [

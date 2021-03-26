@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2021-03-26T08:37:34Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2021-03-26T10:42:47Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -42,6 +42,11 @@
         <jms:reference-file line="244">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
         <jms:reference-file line="249">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
       </trans-unit>
+      <trans-unit id="84f4b34f4610e466ebebcb130432b363ccb9832c" resname="Contact inquiry">
+        <source>Contact inquiry</source>
+        <target state="new">Kontaktanfrage</target>
+        <jms:reference-file line="28">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Form\Type\ContactType.php\</jms:reference-file>
+      </trans-unit>
       <trans-unit id="06e87cd3cbe3b826b0ab52bb510603dd41864b70" resname="Data Protection">
         <source>Data Protection</source>
         <target>Datenschutz</target>
@@ -76,6 +81,11 @@
         <target>Erziehung und Bildung</target>
         <jms:reference-file line="166">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
+      <trans-unit id="86f408b7a2000db4a009c15b491b2be5fd76498f" resname="Error Report">
+        <source>Error Report</source>
+        <target state="new">Fehlermeldung</target>
+        <jms:reference-file line="26">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Form\Type\ContactType.php\</jms:reference-file>
+      </trans-unit>
       <trans-unit id="d64bba17540f4bd4996db15429dd368c33d792d8" resname="Family and Everyday Life">
         <source>Family and Everyday Life</source>
         <target>Familie und Alltag</target>
@@ -90,6 +100,11 @@
         <source>Imprint</source>
         <target>Impressum</target>
         <jms:reference-file line="253">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\AboutController.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="06a5958742289ee7a183aaa487052288095e08e7" resname="Improvement">
+        <source>Improvement</source>
+        <target state="new">Verbesserungsvorschlag</target>
+        <jms:reference-file line="27">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Form\Type\ContactType.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="b6fc41ec459d2de23a319b1ae24c7879b62c740c" resname="Information on Source Interpretation for Students">
         <source>Information on Source Interpretation for Students</source>
@@ -163,6 +178,11 @@
         <target>Organisationen und Institutionen</target>
         <jms:reference-file line="162">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
       </trans-unit>
+      <trans-unit id="a148f31c43866b7ddc2dfc3ac44b688b407189c2" resname="Other Reason">
+        <source>Other Reason</source>
+        <target state="new">Anderer Grund</target>
+        <jms:reference-file line="29">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Form\Type\ContactType.php\</jms:reference-file>
+      </trans-unit>
       <trans-unit id="bc3023b36063a7681db24681472b54fa11f0d4ec" resname="Page not found">
         <source>Page not found</source>
         <target>Seite nicht gefunden</target>
@@ -193,6 +213,11 @@
         <target>Suche</target>
         <jms:reference-file line="355">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
       </trans-unit>
+      <trans-unit id="9bc2575c3930437e80555f78757b783c842e8e66" resname="Send">
+        <source>Send</source>
+        <target state="new">Abschicken</target>
+        <jms:reference-file line="38">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Form\Type\ContactType.php\</jms:reference-file>
+      </trans-unit>
       <trans-unit id="4ea2981b1d461a672ac45c32897d1735d4075d54" resname="Sephardic Jews">
         <source>Sephardic Jews</source>
         <target>Sefarden</target>
@@ -208,6 +233,11 @@
         <target>Quelle</target>
         <jms:reference-file line="294">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Command\ArticleAdjustCommand.php\</jms:reference-file>
         <jms:reference-file line="302">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Menu\Builder.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="8d183dbdcea3b29906090bd83fa6fa37923cc8ec" resname="Subject">
+        <source>Subject</source>
+        <target state="new">Thema der Anfrage</target>
+        <jms:reference-file line="24">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Form\Type\ContactType.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="d1bdc10aa3b8a6329812d3977aa3ee0475467d23" resname="Teaching Resources">
         <source>Teaching Resources</source>
@@ -236,6 +266,16 @@
         <target>Willkommen</target>
         <jms:reference-file line="67">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Controller\DefaultController.php\</jms:reference-file>
         <jms:reference-file line="172">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/templates\Default\home.html.twig\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="eb651d18d1992f7df7bfec5cc8f74e023d4925e6" resname="Your E-Mail">
+        <source>Your E-Mail</source>
+        <target state="new">Ihre E-Mail</target>
+        <jms:reference-file line="21">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Form\Type\ContactType.php\</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="8ae188c575e6008af81661c4ed89a26b742c0efa" resname="Your Message">
+        <source>Your Message</source>
+        <target state="new">Ihre Nachricht</target>
+        <jms:reference-file line="35">\..\..\..\..\..\D:/Daten/projects/juedische-geschichte/presentation/src\App\Form\Type\ContactType.php\</jms:reference-file>
       </trans-unit>
       <trans-unit id="98c3779109f14746d0072d67f89da51920f50b4d" resname="license.by-nc-nd">
         <source>license.by-nc-nd</source>
