@@ -9,20 +9,23 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- *
+ * Render the data/tei/about-*.locale.xml
  */
 class AboutController
 extends \TeiEditionBundle\Controller\RenderTeiController
 {
-    protected function renderContent(Request $request)
+    /**
+     * Render about-text from TEI to HTML
+     */
+    protected function renderContent(Request $request, $fnameTei)
     {
-        $route = $request->get('_route');
-        $locale = $request->getLocale();
-        $fnameTei = $route . '.' . $locale . '.xml';
+        $params = [
+            'lang' => \TeiEditionBundle\Utils\Iso639::code1To3($request->getLocale()),
+        ];
 
-        $params = [ 'lang' => \TeiEditionBundle\Utils\Iso639::code1To3($locale) ];
-
-        $html = $this->renderTei($fnameTei, 'dtabf_article-printview.xsl', [ 'params' => $params ]);
+        $html = $this->renderTei($fnameTei, 'dtabf_article-printview.xsl', [
+            'params' => $params,
+        ]);
 
         if (false === $html) {
             return '<div class="alert alert-warning">'
@@ -33,112 +36,53 @@ extends \TeiEditionBundle\Controller\RenderTeiController
         return $html;
     }
 
+    /**
+     * Render about-text from TEI to HTML
+     * If $title is null, extract from TEI
+     */
     protected function renderTitleContent(Request $request,
-                                          TranslatorInterface $translator,
-                                          $title, $template)
+                                          $template,
+                                          $title = null)
     {
+        $route = $request->get('_route');
+        $locale = $request->getLocale();
+        $fnameTei = $route . '.' . $locale . '.xml';
+
+        if (is_null($title)) {
+            $teiHelper = new \TeiEditionBundle\Utils\TeiHelper();
+            $meta = $teiHelper->analyzeHeader($this->locateTeiResource($fnameTei));
+            if (!is_null($meta)) {
+                $title = $meta->name;
+            }
+        }
+
         return $this->render($template, [
             'pageTitle' => $title,
             'title' => $title,
-            'content' => $this->renderContent($request),
+            'content' => $this->renderContent($request, $fnameTei),
         ]);
-    }
-
-    protected function renderAbout(Request $request,
-                                   TranslatorInterface $translator,
-                                   $title)
-    {
-        return $this->renderTitleContent($request, $translator, $title, 'About/sitetext-about.html.twig');
-    }
-
-    protected function renderAboutUs(Request $request,
-                                     TranslatorInterface $translator,
-                                     $title)
-    {
-        return $this->renderTitleContent($request, $translator, $title, 'About/sitetext-about-us.html.twig');
     }
 
     /**
      * @Route("/about/edition", name="about")
-     */
-    public function aboutAction(Request $request,
-                                TranslatorInterface $translator)
-    {
-        return $this->renderAbout($request, $translator, 'About this edition');
-    }
-
-    /**
      * @Route("/about/goals", name="about-goals")
-     */
-    public function goalsAction(Request $request,
-                                TranslatorInterface $translator)
-    {
-        return $this->renderAbout($request, $translator, $translator->trans('Goals'));
-    }
-
-    /**
      * @Route("/about/keydocuments", name="about-keydocuments")
-     */
-    public function keydocumentsAction(Request $request,
-                                       TranslatorInterface $translator)
-    {
-        return $this->renderAbout($request, $translator, $translator->trans('Key Documents'));
-    }
-
-    /**
      * @Route("/about/audience", name="about-audience")
-     */
-    public function audienceAction(Request $request,
-                                   TranslatorInterface $translator)
-    {
-        return $this->renderAbout($request, $translator, $translator->trans('Target Audience'));
-    }
-
-    /**
      * @Route("/about/usage", name="about-usage")
-     */
-    public function usageAction(Request $request,
-                                TranslatorInterface $translator)
-    {
-        return $this->renderAbout($request, $translator, $translator->trans('Structure / How to Use this Edition'));
-    }
-
-    /**
      * @Route("/about/editorial-model", name="about-editorialmodel")
-     */
-    public function editorialmodelAction(Request $request,
-                                         TranslatorInterface $translator)
-    {
-        return $this->renderAbout($request, $translator, $translator->trans('Editorial Model'));
-    }
-
-    /**
      * @Route("/about/edition-guidelines", name="about-editionguidelines")
-     */
-    public function editionguidelinesAction(Request $request,
-                                            TranslatorInterface $translator)
-    {
-        return $this->renderAbout($request, $translator, $translator->trans('Edition and Edition Guidelines'));
-    }
-
-    /**
      * @Route("/about/technical-implementation", name="about-implementation")
+     * @Route("/about/publications", name="about-publications")
+     * @Route("/terms", name="terms")
      */
-    public function implementationAction(Request $request,
-                                         TranslatorInterface $translator)
+    public function renderAbout(Request $request, $title = null)
     {
-        return $this->renderAbout($request, $translator, $translator->trans('Technical Implementation'));
+        return $this->renderTitleContent($request, 'About/sitetext-about.html.twig', $title);
     }
 
     /**
-     * @Route("/about/publications", name="about-publications")
+     * build Article-entities from Wordpress-API entries
      */
-    public function publicationsAction(Request $request,
-                                       TranslatorInterface $translator)
-    {
-        return $this->renderAbout($request, $translator, $translator->trans('Presentations and Publications'));
-    }
-
     protected function buildNewsArticles(&$posts, $client)
     {
         $articles = [];
@@ -188,6 +132,9 @@ extends \TeiEditionBundle\Controller\RenderTeiController
 
     /**
      * @Route("/about/news", name="about-news")
+     *
+     * If app.wp-rest.url is set, get news-entries
+     * through Wordpress-API
      */
     public function newsAction(Request $request,
                                TranslatorInterface $translator)
@@ -224,60 +171,34 @@ extends \TeiEditionBundle\Controller\RenderTeiController
         }
 
         // static fallback
-        return $this->renderAbout($request, $translator, $translator->trans('News'));
+        return $this->renderAbout($request, $translator->trans('News'));
     }
 
     /**
      * @Route("/about/staff", name="about-staff")
+     *
+     * Legacy route, replaced by about-us
      */
     public function staffAction(Request $request, TranslatorInterface $translator)
     {
-        return $this->renderAboutUs($request, $translator, $translator->trans('Staff'));
+        return $this->redirect($this->generateUrl('about-us'));
     }
 
     /**
+     * @Route("/about/team", name="about-us")
      * @Route("/about/editors", name="about-editors")
-     */
-    public function editorsAction(Request $request, TranslatorInterface $translator)
-    {
-        return $this->renderAboutUs($request, $translator, $translator->trans('Editors'));
-    }
-
-    /**
      * @Route("/about/board", name="about-board")
-     */
-    public function boardAction(Request $request, TranslatorInterface $translator)
-    {
-        return $this->renderAboutUs($request, $translator, $translator->trans('Advisory Board'));
-    }
-
-    /**
      * @Route("/about/sponsors", name="about-sponsors")
-     */
-    public function sponsorsAction(Request $request,
-                                   TranslatorInterface $translator)
-    {
-        return $this->renderAboutUs($request, $translator, $translator->trans('Sponsors and Partners'));
-    }
-
-    /**
      * @Route("/about/cfp", name="about-cfp")
      */
-    public function cfpAction(Request $request,
-                              TranslatorInterface $translator)
+    public function renderAboutUs(Request $request, $title = null)
     {
-        return $this->renderAboutUs($request, $translator, $translator->trans('Become an Author'));
+        return $this->renderTitleContent($request, 'About/sitetext-about-us.html.twig', $title);
     }
 
     /**
-     * @Route("/terms", name="terms")
+     * Send the contents of the contact form
      */
-    public function termsAction(Request $request,
-                                TranslatorInterface $translator)
-    {
-        return $this->renderTitleContent($request, $translator, $translator->trans('Terms and Conditions'), 'About/sitetext.html.twig');
-    }
-
     protected function sendMessage($mailer, $twig, $data)
     {
         $template = $twig->load('About/contact.email.twig');
@@ -325,7 +246,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
             ]);
         }
 
-        $response = $this->renderTitleContent($request, $translator, 'Contact', 'About/sitetext.html.twig');
+        $response = $this->renderTitleContent($request, 'About/sitetext.html.twig', $translator->trans('Contact'));
 
         // add anchors to sub-headings
         $anchors = [

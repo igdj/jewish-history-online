@@ -51,7 +51,7 @@ class Builder
         // add menu items
         if (!array_key_exists('part', $options) || 'left' == $options['part']) {
             $menu->addChild('about', [
-                'label' => $this->translator->trans('About this edition'),
+                'label' => $this->translator->trans('About this edition', [], 'menu'),
                 'route' => 'about',
             ]);
             $menu['about']
@@ -90,11 +90,11 @@ class Builder
 
         if (!array_key_exists('part', $options) || 'right' == $options['part']) {
             $menu->addChild('about-us', [
-                'label' => $this->translator->trans('About us'), 'route' => 'about-staff',
+                'label' => $this->translator->trans('About us', [], 'menu'), 'route' => 'about-us',
             ]);
             $menu['about-us']
-                ->addChild('about-staff', [
-                    'label' => $this->translator->trans('Staff', [], 'menu'), 'route' => 'about-staff',
+                ->addChild('about-team', [
+                    'label' => $this->translator->trans('Team', [], 'menu'), 'route' => 'about-us',
                 ]);
             $menu['about-us']
                 ->addChild('about-editors', [
@@ -106,23 +106,23 @@ class Builder
                 ]);
             $menu['about-us']
                 ->addChild('about-board', [
-                    'label' => $this->translator->trans('Advisory Board'), 'route' => 'about-board',
+                    'label' => $this->translator->trans('Advisory Board', [], 'menu'), 'route' => 'about-board',
                 ]);
             $menu['about-us']
                 ->addChild('about-sponsors', [
-                    'label' => $this->translator->trans('Sponsors and Partners'), 'route' => 'about-sponsors',
+                    'label' => $this->translator->trans('Sponsors and Partners', [], 'menu'), 'route' => 'about-sponsors',
                 ]);
             $menu['about-us']
                 ->addChild('about-news', [
-                    'label' => $this->translator->trans('Project News'), 'route' => 'about-news',
+                    'label' => $this->translator->trans('Project News', [], 'menu'), 'route' => 'about-news',
                 ]);
 
             $menu->addChild('terms', [
-                'label' => $this->translator->trans('Terms and Conditions'), 'route' => 'terms',
+                'label' => $this->translator->trans('Terms and Conditions', [], 'menu'), 'route' => 'terms',
             ]);
 
             $menu->addChild('contact', [
-                'label' => $this->translator->trans('Contact'), 'route' => 'contact',
+                'label' => $this->translator->trans('Contact', [], 'menu'), 'route' => 'contact',
             ]);
 
             if (array_key_exists('position', $options) && 'footer' == $options['position']) {
@@ -131,11 +131,11 @@ class Builder
                 $this->router->setContext($context);
 
                 $menu['contact']->addChild('imprint', [
-                    'label' => $this->translator->trans('Imprint'),
+                    'label' => $this->translator->trans('Imprint', [], 'menu'),
                     'uri' => $this->router->generate('contact') . '#imprint',
                 ]);
                 $menu['contact']->addChild('dataprotection', [
-                    'label' => $this->translator->trans('Data Protection'),
+                    'label' => $this->translator->trans('Data Protection', [], 'menu'),
                     'uri' => $this->router->generate('contact') . '#dataprotection',
                 ]);
             }
@@ -148,7 +148,7 @@ class Builder
     {
         $breadcrumbMode = isset($options['position']) && 'breadcrumb' == $options['position'];
 
-        $menu = $this->factory->createItem('home', [ 'label' => $this->translator->trans('Home'), 'route' => 'home' ]);
+        $menu = $this->factory->createItem('home', [ 'label' => $this->translator->trans('Home', [], 'menu'), 'route' => 'home' ]);
         if (array_key_exists('position', $options) && 'footer' == $options['position']) {
             $menu->setChildrenAttributes([ 'id' => 'menu-main-footer', 'class' => 'small' ]);
         }
@@ -157,43 +157,46 @@ class Builder
         }
 
         // add menu item
-        $menu->addChild('topic-index', [ 'label' => $this->translator->trans('Topics'), 'route' => 'topic-index' ]);
-        $menu->addChild('place-map', [ 'label' => $this->translator->trans('Map'), 'route' => 'place-map' ]);
-        $menu->addChild('date-chronology', [ 'label' => $this->translator->trans('Chronology'), 'route' => 'date-chronology' ]);
-        $menu->addChild('_lookup', [ 'label' => $this->translator->trans('Look-up'), 'uri' => '#' ])
+        $menu->addChild('topic-index', [ 'label' => $this->translator->trans('Topics', [], 'menu'), 'route' => 'topic-index' ]);
+        $menu->addChild('place-map', [ 'label' => $this->translator->trans('Map', [], 'menu'), 'route' => 'place-map' ]);
+        $menu->addChild('date-chronology', [ 'label' => $this->translator->trans('Chronology', [], 'menu'), 'route' => 'date-chronology' ]);
+        $menu->addChild('_lookup', [ 'label' => $this->translator->trans('Look-up', [], 'menu'), 'uri' => '#' ])
             ->setAttribute('dropdown', true);
         $menu['_lookup']
             ->addChild('person-index', [
-                'label' => $this->translator->trans('Persons'), 'route' => 'person-index',
+                'label' => $this->translator->trans('Persons', [], 'menu'), 'route' => 'person-index',
             ]);
         $menu['_lookup']
             ->addChild('place-index', [
-                'label' => $this->translator->trans('Places'), 'route' => 'place-index',
+                'label' => $this->translator->trans('Places', [], 'menu'), 'route' => 'place-index',
             ]);
         $menu['_lookup']
             ->addChild('organization-index', [
-                'label' => $this->translator->trans('Organizations'), 'route' => 'organization-index',
+                'label' => $this->translator->trans('Organizations', [], 'menu'), 'route' => 'organization-index',
             ]);
         $menu['_lookup']
             ->addChild('event-index', [
-                'label' => $this->translator->trans('Epochs and Events'), 'route' => 'event-index',
+                'label' => $this->translator->trans('Epochs and Events', [], 'menu'), 'route' => 'event-index',
             ]);
         $menu['_lookup']
             ->addChild('bibliography-index', [
-                'label' => $this->translator->trans('Bibliography'), 'route' => 'bibliography-index',
+                'label' => $this->translator->trans('Bibliography', [], 'menu'), 'route' => 'bibliography-index',
             ]);
         $menu['_lookup']
             ->addChild('article-index', [
-                'label' => $this->translator->trans('Articles'), 'route' => 'article-index',
+                'label' => $this->translator->trans('Articles', [], 'menu'), 'route' => 'article-index',
             ]);
         $menu['_lookup']
             ->addChild('glossary-index', [
-                'label' => $this->translator->trans('Glossary'), 'route' => 'glossary-index',
+                'label' => $this->translator->trans('Glossary', [], 'menu'), 'route' => 'glossary-index',
             ]);
 
         if (array_key_exists('position', $options) && 'footer' == $options['position']) {
+            $menu->addChild('exhibition', [
+                'label' => $this->translator->trans('Online Exhibitions', [], 'menu'), 'route' => 'exhibition-index',
+            ]);
             $menu->addChild('education', [
-                'label' => $this->translator->trans('Teaching Resources'), 'route' => 'education-index',
+                'label' => $this->translator->trans('Teaching Resources', [], 'menu'), 'route' => 'education-index',
             ]);
         }
         else {
@@ -269,6 +272,7 @@ class Builder
                 $item = $item[$currentRoute];
                 break;
 
+            case 'about-us':
             case 'about-staff':
             case 'about-editors':
             case 'about-authors':
