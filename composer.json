@@ -8,8 +8,8 @@
     "minimum-stability": "dev",
     "repositories": [
         {
-            "url": "../tei-edition-bundle",
-            "type": "path"
+            "url": "https://github.com/igdj/tei-edition-bundle",
+            "type": "vcs"
         },
         {
             "url": "https://github.com/igdj/lod-service",

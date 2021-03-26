@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c88ee2b64791d54d07aac07d4380269c",
+    "content-hash": "4731b2a9a0aee92a9cce03d14d0d89c3",
     "packages": [
         {
             "name": "armin/scssphp-bundle",
@@ -2292,10 +2292,16 @@
         {
             "name": "igdj/tei-edition-bundle",
             "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/igdj/tei-edition-bundle.git",
+                "reference": "f4529c484850cd9729043432ea946b51ec7f684a"
+            },
             "dist": {
-                "type": "path",
-                "url": "../tei-edition-bundle",
-                "reference": "a5dfd7f9802e55d11380afc9ba87093aaa3980e2"
+                "type": "zip",
+                "url": "https://api.github.com/repos/igdj/tei-edition-bundle/zipball/f4529c484850cd9729043432ea946b51ec7f684a",
+                "reference": "f4529c484850cd9729043432ea946b51ec7f684a",
+                "shasum": ""
             },
             "require": {
                 "beberlei/doctrineextensions": "^1.2",
@@ -2305,6 +2311,7 @@
                 "ddeboer/data-import": "0.20.*",
                 "doctrine/doctrine-bundle": "^2.1",
                 "doctrine/orm": "^2.7",
+                "ext-curl": "*",
                 "fale/isbn": "^3.1",
                 "geissler/converter": "dev-master",
                 "gmo/iso-639": "^1.0",
@@ -2327,28 +2334,29 @@
                 "seboettg/citeproc-php": "^2.2",
                 "servo/fluidxml": "^1.21",
                 "stof/doctrine-extensions-bundle": "^1.4",
-                "symfony/config": "^5.1",
-                "symfony/console": "^5.1",
-                "symfony/css-selector": "^5.1",
-                "symfony/dom-crawler": "^5.1",
-                "symfony/expression-language": "^5.1",
-                "symfony/framework-bundle": "^5.1",
-                "symfony/http-foundation": "^5.1",
-                "symfony/intl": "^5.1",
-                "symfony/mime": "^5.1",
+                "symfony/config": "^5.2",
+                "symfony/console": "^5.2",
+                "symfony/css-selector": "^5.2",
+                "symfony/dom-crawler": "^5.2",
+                "symfony/expression-language": "^5.2",
+                "symfony/framework-bundle": "^5.2",
+                "symfony/http-foundation": "^5.2",
+                "symfony/intl": "^5.2",
+                "symfony/mime": "^5.2",
                 "symfony/psr-http-message-bridge": "^1.1",
-                "symfony/routing": "^5.1",
-                "symfony/security-core": "^5.1",
-                "symfony/translation": "^5.1",
-                "symfony/twig-bridge": "^5.1",
-                "symfony/twig-bundle": "^5.1",
-                "symfony/var-dumper": "^5.1",
-                "symfony/var-exporter": "^5.1",
-                "symfony/yaml": "^5.1",
+                "symfony/routing": "^5.2",
+                "symfony/security-core": "^5.2",
+                "symfony/translation": "^5.2",
+                "symfony/twig-bridge": "^5.2",
+                "symfony/twig-bundle": "^5.2",
+                "symfony/var-dumper": "^5.2",
+                "symfony/var-exporter": "^5.2",
+                "symfony/yaml": "^5.2",
                 "technosophos/libris": "dev-master",
                 "twig/string-extra": "^3.0",
                 "twig/twig": "^3.0"
             },
+            "default-branch": true,
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
@@ -2358,9 +2366,11 @@
                     "/Tests/"
                 ]
             },
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "source": "https://github.com/igdj/tei-edition-bundle/tree/master",
+                "issues": "https://github.com/igdj/tei-edition-bundle/issues"
+            },
+            "time": "2021-03-25T12:50:37+00:00"
         },
         {
             "name": "jms/i18n-routing-bundle",
