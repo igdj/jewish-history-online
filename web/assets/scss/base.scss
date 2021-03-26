@@ -659,6 +659,14 @@ h3#citation {
     */
 }
 
+.box-header.chronology {
+    background-color: $color-color-chronology;
+}
+
+.box-header.map {
+    background-color: $color-color-map;
+}
+
 .panel.source-box {
     max-width: 640px;
 
