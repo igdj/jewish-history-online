@@ -141,13 +141,13 @@ liip_url_auto_converter:
 
 fs_solr:
     endpoints:
-        jgo_presentation-de:
+        core_de:
             host: localhost
             port: 8983
             path: /
             core: jgo_presentation-de
             timeout: 15
-        jgo_presentation-en:
+        core_en:
             host: localhost
             port: 8983
             path: /
