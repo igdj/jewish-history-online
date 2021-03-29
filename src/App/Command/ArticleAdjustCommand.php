@@ -247,19 +247,21 @@ extends BaseCommand
                         case 'CC BY-NC-ND':
                             $data['license'] = [
                                 'http://creativecommons.org/licenses/by-nc-nd/4.0/'
-                                => $this->translator->trans('license.by-nc-nd'),
+                                => $this->translator->trans('license.by-nc-nd', [], 'additional'),
                             ];
                             break;
 
                         case 'CC BY-SA':
                             $data['license'] = [
                                 'http://creativecommons.org/licenses/by-sa/4.0/'
-                                => $this->translator->trans('license.by-sa'),
+                                => $this->translator->trans('license.by-sa', [], 'additional'),
                             ];
                             break;
 
                         case 'restricted':
-                            $data['license'] = [ '' => $this->translator->trans('license.restricted') ];
+                            $data['license'] = [
+                                '' => $this->translator->trans('license.restricted', [], 'additional'),
+                            ];
                             break;
 
                         default:
@@ -378,22 +380,22 @@ extends BaseCommand
                     switch ($result['license']) {
                         case 'CC BY-SA':
                             $licenseKey = 'http://creativecommons.org/licenses/by-sa/4.0/';
-                            $licenseAttribution = $this->translator->trans('license.by-sa');
+                            $licenseAttribution = $this->translator->trans('license.by-sa', [], 'additional');
                             break;
 
                         case 'CC BY-NC-SA':
                             $licenseKey = 'http://creativecommons.org/licenses/by-nc-sa/4.0/';
-                            $licenseAttribution = $this->translator->trans('license.by-nc-sa');
+                            $licenseAttribution = $this->translator->trans('license.by-nc-sa', [], 'additional');
                             break;
 
                         case 'CC BY-NC-ND':
                             $licenseKey = 'http://creativecommons.org/licenses/by-nc-nd/4.0/';
-                            $licenseAttribution = $this->translator->trans('license.by-nc-nd');
+                            $licenseAttribution = $this->translator->trans('license.by-nc-nd', [], 'additional');
                             break;
 
                         case 'NoC-NC':
                             $licenseKey = 'http://rightsstatements.org/vocab/NoC-NC/1.0/';
-                            $licenseAttribution = $this->translator->trans('license.noc-nc');
+                            $licenseAttribution = $this->translator->trans('license.noc-nc', [], 'additional');
                             break;
 
                         case 'restricted':
@@ -402,12 +404,12 @@ extends BaseCommand
 
                         case 'PD':
                             $licenseKey = '#public-domain';
-                            $licenseAttribution = $this->translator->trans('license.public-domain');
+                            $licenseAttribution = $this->translator->trans('license.public-domain', [], 'additional');
                             break;
 
                         case 'regular':
                             $licenseKey = '#personal-use';
-                            $licenseAttribution = $this->translator->trans('license.personal-use');
+                            $licenseAttribution = $this->translator->trans('license.personal-use', [], 'additional');
                             break;
 
                         default:
