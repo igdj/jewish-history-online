@@ -2296,12 +2296,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/igdj/tei-edition-bundle.git",
-                "reference": "11001b6bac75fee62b11be05534966e559e0865c"
+                "reference": "006d78d0f8fb3f1bae8ed9f55361069f5fed8bb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/igdj/tei-edition-bundle/zipball/11001b6bac75fee62b11be05534966e559e0865c",
-                "reference": "11001b6bac75fee62b11be05534966e559e0865c",
+                "url": "https://api.github.com/repos/igdj/tei-edition-bundle/zipball/006d78d0f8fb3f1bae8ed9f55361069f5fed8bb8",
+                "reference": "006d78d0f8fb3f1bae8ed9f55361069f5fed8bb8",
                 "shasum": ""
             },
             "require": {
@@ -2371,7 +2371,7 @@
                 "source": "https://github.com/igdj/tei-edition-bundle/tree/master",
                 "issues": "https://github.com/igdj/tei-edition-bundle/issues"
             },
-            "time": "2021-03-26T10:50:35+00:00"
+            "time": "2021-03-29T10:17:05+00:00"
         },
         {
             "name": "jms/i18n-routing-bundle",
