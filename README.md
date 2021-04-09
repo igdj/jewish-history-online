@@ -1,12 +1,15 @@
 Web-site http://jewish-history-online.net/
 ==========================================
 
-This is the code base for the presentation of the site. Since certain
-assumptions concerning the bilingual presentation of all the content (de / en)
-[TODO: Develop a language strategy] or the set of licenses used are currently hardwired,
-this code is not yet intended for out-of-the-box re-use by other projects.
+This is the code base for the presentation of the site. The generic parts
+are factored out into a Symfony bundle:
+    https://github.com/igdj/tei-edition-bundle
 
-You may use it in parts or adjust it to your own need if it fits your needs.
+You can find a demo edition which demonstrates the use of that bundle
+including step-by-step setup instructions at
+    https://github.com/igdj/demo-edition
+
+You may use or adjust code from this project if it fits your needs.
 If you have any questions or find this code helpful, please contact us at
     http://jewish-history-online.net/contact
 
