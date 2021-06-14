@@ -314,6 +314,7 @@ extends BaseCommand
                     $corresp = sprintf('jgo:article-%d', $article['id']);
                     $seriesStmt[$corresp] = $article['subject']; // TODO: get actual title from TEI, not the one from db
                 }
+
                 if (!empty($seriesStmt)) {
                     $data['seriesStmt'] = $seriesStmt;
                 }
@@ -493,7 +494,7 @@ extends BaseCommand
             return 1;
         }
 
-        $xmlAsString = $xml->asXML();
+        $xmlAsString = (string)$xml;
 
         if ($input->getOption('tidy')) {
             // first check if it is valid
