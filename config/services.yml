@@ -25,7 +25,6 @@ services:
             $siteTheme: '%app.site_theme%'
             $dbconnAdmin: '@dbconn.admin'
             
-
     # makes classes in src/App available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     # together with the above _defaults, this is needed for Command-classes to work as in Sf 3.4
