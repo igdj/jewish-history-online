@@ -580,6 +580,166 @@ extends \TeiEditionBundle\Controller\RenderTeiController
         ]);
     }
 
+    /*
+     * TODO: maybe move into entity
+     */
+    protected function buildArticleFnameFromUid($uid, $locale)
+    {
+        if (preg_match('/(article|source)\-(\d+)/', $uid, $matches)) {
+            return sprintf('%s-%05d.%s',
+                           $matches[1], $matches[2], $locale);
+        }
+    }
+
+    protected function lookupRef($ref, $locale)
+    {
+        static $placesByRef = [];
+
+        if (array_key_exists($ref, $placesByRef)) {
+            return $placesByRef[$ref];
+        }
+
+        if (preg_match('#http://vocab.getty.edu/tgn/(\d+)#', $ref, $matches)) {
+            $place = $this->getDoctrine()->getRepository('TeiEditionBundle\Entity\Place')->findOneBy([
+                'tgn' => $matches[1],
+            ]);
+
+            if (is_null($place)) {
+                $placesByRef[$ref] = false;
+            }
+            else {
+                $latLong = explode(',', $place->getGeo(), 2);
+                if (count($latLong) > 1) {
+                    $placesByRef[$ref] = [
+                        'name' => $place->getNameLocalized($locale),
+                        'latitude' => $latLong[1],
+                        'longitude' => $latLong[0],
+                    ];
+                }
+            }
+        }
+
+        if (array_key_exists($ref, $placesByRef)) {
+            return $placesByRef[$ref];
+        }
+
+        return false;
+    }
+
+    private function fetchPlacesByMonth($uid, $locale)
+    {
+        $fname = $this->buildArticleFnameFromUid($uid, $locale);
+
+        $fnameFull = $this->locateTeiResource($fname . '.xml');
+        $teiHelper = new \TeiEditionBundle\Utils\TeiHelper();
+        $xml = $teiHelper->loadXml($fnameFull);
+
+        // loop through months: <div n="2">..</div>
+        $result = $xml('/tei:TEI/tei:text/tei:body/tei:div[@n="2"]');
+        $tgnByMonth = [];
+        foreach ($result as $chapter) {
+            $head = $chapter('tei:*[name()="head" and position() = 1]');
+            if ($head->length > 0) {
+                $month = trim((string)$head[0]);
+                if (empty($month)) {
+                    continue;
+                }
+
+                $tgnByMonth[$month] = [];
+            }
+
+            foreach ($chapter('.//tei:placeName[@ref != "" and not(ancestor::tei:note)]') as $placeName) {
+                $ref = trim($placeName->getAttribute('ref'));
+                if (empty($ref) || 'nognd' == $ref || preg_match('/^geo\:/', $ref)) {
+                    continue;
+                }
+
+                if (!array_key_exists($ref, $tgnByMonth[$month])) {
+                    $tgnByMonth[$month][$ref] = 0;
+                }
+
+                ++$tgnByMonth[$month][$ref];
+            }
+        }
+
+        return $tgnByMonth;
+    }
+
+    /**
+     * @Route("/labs/martha-glass", name="martha-glass")
+     */
+    public function marthaGlassAction(Request $request, TranslatorInterface $translator)
+    {
+        $tgnByMonth = $this->fetchPlacesByMonth('source-217', $locale = $request->getLocale());
+
+        $total = [];
+        foreach ($tgnByMonth as $month => $counts) {
+            foreach ($counts as $ref => $count) {
+                if (!array_key_exists($ref, $total)) {
+                    $info = $this->lookupRef($ref, $locale);
+                    if (false === $info) {
+                        continue;
+                    }
+
+                    $total[$ref] = [
+                        'name' => $info['name'],
+                        'weight' => 0,
+                    ];
+                }
+
+                $total[$ref]['weight'] += $count;
+            }
+        }
+
+        // slider-map
+        $months = array_keys($tgnByMonth);
+
+        $features = [];
+        $minLat = $minLong = 90;
+        $maxLat = $maxLong = -90;
+        foreach ($tgnByMonth as $month => $counts) {
+            $idxMonth = array_search($month, $months);
+
+            foreach ($counts as $ref => $count) {
+                if (!array_key_exists($ref, $features)) {
+                    $info = $this->lookupRef($ref, $locale);
+                    if (false === $info) {
+                        continue;
+                    }
+
+                    if ($info['latitude'] < $minLat) {
+                        $minLat = $info['latitude'];
+                    }
+                    if ($info['latitude'] > $maxLat) {
+                        $maxLat = $info['latitude'];
+                    }
+                    if ($info['longitude'] < $minLong) {
+                        $minLong = $info['longitude'];
+                    }
+                    if ($info['longitude'] > $maxLong) {
+                        $maxLong = $info['longitude'];
+                    }
+
+                    $info['counts'] = array_fill(0, count($months), 0);
+                    $features[$ref] = $info;
+                }
+
+                $features[$ref]['counts'][$idxMonth] = $count;
+            }
+        }
+
+        return $this->render('Labs/martha-glass.html.twig', [
+            'total' => array_values($total),
+
+            'bounds' => [
+                [ (double)$minLong, (double)$minLat ],
+                [ (double)$maxLong, (double)$maxLat ],
+            ],
+            'features' => $features,
+            'labels' => $months,
+        ]);
+    }
+
     private function setEdges(&$edges, $shared_ids, $weighted = false)
     {
         $count_shared_ids = count($shared_ids);
@@ -691,11 +851,12 @@ extends \TeiEditionBundle\Controller\RenderTeiController
             $ret .= join(',', [$edge_key, $edge_count]) . "\n";
         }
 
-        return new Response($ret, Response::HTTP_OK,
-                            [ 'Content-Type' => 'text/plain; charset=UTF-8' ]);
+        return new Response($ret, Response::HTTP_OK, [
+            'Content-Type' => 'text/plain; charset=UTF-8',
+        ]);
     }
 
-    protected function buildNode($type, $id)
+    private function buildNode($type, $id)
     {
         $repo = $this->getDoctrine()
                 ->getRepository('\TeiEditionBundle\Entity\\' . ucfirst($type));
@@ -808,7 +969,8 @@ extends \TeiEditionBundle\Controller\RenderTeiController
             $ret .= join(',', [ $edge_key, count($names), implode('; ', $names) ]) . "\n";
         }
 
-        return new Response($ret, Response::HTTP_OK,
-                            [ 'Content-Type' => 'text/plain; charset=UTF-8' ]);
+        return new Response($ret, Response::HTTP_OK, [
+            'Content-Type' => 'text/plain; charset=UTF-8',
+        ]);
     }
 }

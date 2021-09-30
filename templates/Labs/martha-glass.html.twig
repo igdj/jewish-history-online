@@ -1,0 +1,249 @@
+{% extends '@TeiEdition/Default/base.html.twig' %}
+
+{% import '@TeiEdition/Shared/helper.html.twig' as helper %}
+{% import '@TeiEdition/Shared/map-leaflet.html.twig' as map %}
+
+{% block head %}
+    <script src="{{ app.request.basepath }}/vendor/highcharts/highcharts.js"></script>
+    <script src="{{ app.request.basepath }}/vendor/highcharts/modules/exporting.js"></script>
+    <script src="{{ app.request.basepath }}/vendor/highcharts/modules/export-data.js"></script>
+    <script src="{{ app.request.basepath }}/vendor/highcharts/modules/wordcloud.js"></script>
+    <!--
+    <script src="{{ app.request.basepath }}/vendor/highcharts/themes/sand-signika.js"></script>
+    -->
+    <style>
+    .highcharts-data-table table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        background: white;
+        min-width: 100%;
+        margin-top: 10px;
+        font-family: sans-serif;
+        font-size: 0.9em;
+    }
+    .highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+        border: 1px solid silver;
+        padding: 0.5em;
+    }
+    .highcharts-data-table tr:nth-child(even), .highcharts-data-table thead tr {
+        background: #f8f8f8;
+    }
+    .highcharts-data-table tr:hover {
+        background: #eff;
+    }
+    .highcharts-data-table caption {
+        border-bottom: none;
+        font-size: 1.1em;
+        font-weight: bold;
+    }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            Highcharts.chart('container', {
+                accessibility: {
+                    screenReaderSection: {
+                        beforeChartFormat: '<h5>{chartTitle}</h5>' +
+                            '<div>{chartSubtitle}</div>' +
+                            '<div>{chartLongdesc}</div>' +
+                            '<div>{viewTableButton}</div>'
+                    }
+                },
+                chart: {
+                    renderTo: 'container'
+                },
+                series: [{
+                    type: 'wordcloud',
+                        dataSorting: {
+                        enabled: true,
+                        sortKey: 'weight'
+                    },
+                    data: {{ total|json_encode|raw }},
+                    name: 'Occurrences'
+                }],
+                title: {
+                    text: 'Places Mentioned'
+                },
+                exporting: {
+                    showTable: true,
+
+                    csv: {
+                        columnHeaderFormatter: function(item, key) {
+                            if (!item || item instanceof Highcharts.Axis) {
+                                return 'Place'
+                            } else {
+                                return item.name;
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+    {{ map.head() }}
+    {{ map.head_markercluster() }}
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/8.5.1/nouislider.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/8.5.1/nouislider.min.js"></script>
+{% endblock %}
+
+{% block body %}
+    <h1>Martha Glass</h1>
+
+    {# word cloud #}
+    <div class="chart-outer">
+        <div id="container"></div>
+    </div>
+
+    {# see https://digital-geography.com/filter-leaflet-maps-slider/ #}
+    <div id="map-container">
+        <div id="map" style="width: 100%; min-height: 80vh"></div>
+    </div>
+
+    <div id="slider" style="top: 0px; right: 1px; margin: 10px 25px;"></div>
+    <div style="display:none">
+        <input type="number" min='0' max='{{ labels|length - 1}}' id="input-number-min">
+        <input type="number" min='1' max='{{ labels|length}}' id="input-number-max">
+    </div>
+
+    <script type="text/javascript">
+        var cluster = false;
+
+        var labels = {{ labels|json_encode| raw }};
+        var currentRange = [ 0, labels.length - 1 ];
+
+        var mentioned = null;
+
+        var slidervar = document.getElementById('slider');
+        noUiSlider.create(slidervar, {
+            connect: true,
+            start: currentRange,
+            step: 1,
+            range: {
+                min: currentRange[0],
+                max: currentRange[1]
+            },
+            pips: {
+                mode: 'steps',
+                density: 100,
+                filter: function (value, type) {
+                    if (type === 0) {
+                        return -1;
+                    }
+
+                    // always show first or last
+                    if (0 == value || (value == labels.length - 1)) {
+                        return 2;
+                    }
+                    // then only January
+                    var month = labels[Math.round(value)];
+                    if (month.match(/Jan/)) {
+                        return 2;
+                    }
+
+                    return 0;
+                },
+                format: {
+                    to: function(value) {
+                        return labels[Math.round(value)];
+                    },
+                    from: Number
+                }
+            }
+        });
+
+        {{ map.showMap(bounds, []) }}
+        showMap();
+
+        var exp_mentioned = {
+            "type": "FeatureCollection",
+            {#"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }, #}
+
+            "features": [
+                {% for key,info in features %}
+                { "type": "Feature", "properties": { "name": {{ info.name|json_encode|raw }}, "latitude": {{ info.latitude }}, "longitude": {{ info.longitude }}, "counts": {{ info.counts|json_encode|raw }} }, "geometry": { "type": "Point", "coordinates": [ {{ info.latitude }}, {{ info.longitude }} ] } }{% if not loop.last %}, {% endif%}
+                {% endfor %}
+            ]
+        };
+
+        function mentioned_popup(feature, layer) {
+            var popupContent = '<b>' + String(feature.properties['name']) + '</b>';
+            var countLabels = [];
+            for (var i = 0; i < labels.length; i++) {
+                if (feature.properties['counts'][i] > 0) {
+                    countLabels.push(labels[i] + ': ' + feature.properties['counts'][i]);
+                }
+            }
+            popupContent += '<br />' + countLabels.join('<br />');
+            layer.bindPopup(popupContent);
+        }
+
+        function calcTotalInRange(feature) {
+            var total = 0;
+            for (var i = currentRange[0]; i <= currentRange[1]; i++) {
+                total += feature.properties['counts'][i];
+            }
+            return total;
+        }
+
+        function mentioned_marker(feature, latlng) {
+            // var total = feature.properties['counts'].reduce((a, b) => a + b, 0);
+            var total = calcTotalInRange(feature);
+            var radius = 3 + Math.sqrt(total);
+
+            return L.circleMarker(latlng, {
+                radius: radius,
+                fillColor: '#11fe00',
+                color: '#000000',
+                weight: total,
+                opacity: 1.0,
+                fillOpacity: 0.8
+            })
+        }
+
+        slidervar.noUiSlider.on('update', function( values, handle ) {
+            var initialized = null != mentioned;
+            console.log(initialized);
+
+            //handle = 0 if min-slider is moved and handle = 1 if max slider is moved
+            if (handle==0) {
+                var val = Math.round(values[0]);
+                if (initialized && val == currentRange[0]) {
+                    return;
+                }
+                document.getElementById('input-number-min').value = currentRange[0] = val;
+            } else {
+                var val = Math.round(values[1]);
+                if (initialized && val == currentRange[1]) {
+                    return;
+                }
+                document.getElementById('input-number-max').value = currentRange[1] = val;
+            }
+            //we will definitely do more here...wait
+            console.log(currentRange);
+
+            if (initialized) {
+                map.removeLayer(mentioned);
+            }
+
+            mentioned = new L.geoJson(exp_mentioned, {
+                onEachFeature: mentioned_popup,
+                filter: function(feature, layer) {
+                    return calcTotalInRange(feature) > 0;
+                },
+                pointToLayer: mentioned_marker
+            });
+
+
+            if (cluster) {
+                var cluster_popplaces= new L.MarkerClusterGroup({showCoverageOnHover: false});
+                cluster_popplaces.addLayer(mentioned);
+                cluster_popplaces.addTo(map);
+            }
+            else {
+                mentioned.addTo(map);
+            }
+        })
+
+    </script>
+{% endblock %}
