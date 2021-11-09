@@ -11,6 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer ;
+
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -253,17 +255,19 @@ extends BaseCommand
 
         // TODO: pack the following into custom hydrator
         $normalizer = new ObjectNormalizer();
+
         // exclude object-properties since arrays would be passed in
         $ignoredAttributes = [
             'datePublished', 'dateModified',
             'author', 'translator',
             'provider', 'contentLocation', 'isPartOf',
         ];
-        $normalizer->setIgnoredAttributes($ignoredAttributes);
-        $serializer = new Serializer([ $normalizer ], [ new JsonEncoder() ]);
+        $serializer = new Serializer([ $normalizer ],
+                                     [ new JsonEncoder() ]);
 
         $serializer->deserialize(json_encode($article), get_class($entity), 'json', [
             'object_to_populate' => $entity,
+            AbstractNormalizer::IGNORED_ATTRIBUTES => $ignoredAttributes,
         ]);
 
         foreach ($ignoredAttributes as $attribute) {
