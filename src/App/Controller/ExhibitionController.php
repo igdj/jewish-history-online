@@ -33,6 +33,9 @@ extends \TeiEditionBundle\Controller\BaseController
         'womens-lives' => [
             'name' => 'Women’s Lives – Work and Impact of Jewish Women in Hamburg',
         ],
+        'jewish-life-since-1945-relaunch' => [
+            'name' => 'Jewish Life since 1945 – Relaunch',
+        ],
         /*
         'preview' => [
             'name' => 'New Exhibition',
