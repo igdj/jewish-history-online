@@ -20,16 +20,16 @@
             "type": "vcs"
         },
         {
+            "url": "https://github.com/burki/LibRIS.git",
+            "type": "vcs"
+        },
+        {
             "url": "https://github.com/burki/LiipUrlAutoConverterBundle.git",
             "type": "vcs"
         },
         {
-            "type": "vcs",
-            "url": "https://github.com/burki/SolrBundle.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/burki/LibRIS.git"
+            "url": "https://github.com/boppy/SolrBundle.git",
+            "type": "vcs"
         },
         {
             "type": "package",
