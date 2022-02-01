@@ -135,6 +135,7 @@
                     if (0 == value || (value == labels.length - 1)) {
                         return 2;
                     }
+
                     // then only January
                     var month = labels[Math.round(value)];
                     if (month.match(/Jan/)) {
@@ -157,7 +158,6 @@
 
         var exp_mentioned = {
             "type": "FeatureCollection",
-            {#"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } }, #}
 
             "features": [
                 {% for key,info in features %}
@@ -174,6 +174,7 @@
                     countLabels.push(labels[i] + ': ' + feature.properties['counts'][i]);
                 }
             }
+
             popupContent += '<br />' + countLabels.join('<br />');
             layer.bindPopup(popupContent);
         }
@@ -183,6 +184,7 @@
             for (var i = currentRange[0]; i <= currentRange[1]; i++) {
                 total += feature.properties['counts'][i];
             }
+
             return total;
         }
 
@@ -201,26 +203,26 @@
             })
         }
 
-        slidervar.noUiSlider.on('update', function( values, handle ) {
+        slidervar.noUiSlider.on('update', function(values, handle) {
             var initialized = null != mentioned;
-            console.log(initialized);
 
             //handle = 0 if min-slider is moved and handle = 1 if max slider is moved
-            if (handle==0) {
+            if (handle == 0) {
                 var val = Math.round(values[0]);
                 if (initialized && val == currentRange[0]) {
                     return;
                 }
+
                 document.getElementById('input-number-min').value = currentRange[0] = val;
-            } else {
+            }
+            else {
                 var val = Math.round(values[1]);
                 if (initialized && val == currentRange[1]) {
                     return;
                 }
+
                 document.getElementById('input-number-max').value = currentRange[1] = val;
             }
-            //we will definitely do more here...wait
-            console.log(currentRange);
 
             if (initialized) {
                 map.removeLayer(mentioned);
@@ -234,9 +236,10 @@
                 pointToLayer: mentioned_marker
             });
 
-
             if (cluster) {
-                var cluster_popplaces= new L.MarkerClusterGroup({showCoverageOnHover: false});
+                var cluster_popplaces = new L.MarkerClusterGroup({
+                    showCoverageOnHover: false
+                });
                 cluster_popplaces.addLayer(mentioned);
                 cluster_popplaces.addTo(map);
             }
@@ -244,6 +247,5 @@
                 mentioned.addTo(map);
             }
         })
-
     </script>
 {% endblock %}
