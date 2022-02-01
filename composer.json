@@ -28,6 +28,10 @@
             "url": "https://github.com/burki/SolrBundle.git"
         },
         {
+            "type": "vcs",
+            "url": "https://github.com/burki/LibRIS.git"
+        },
+        {
             "type": "package",
             "package": {
                 "name": "citation-style-language/locales",
