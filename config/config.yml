@@ -22,9 +22,11 @@ framework:
 twig:
     globals:
         locales: "%locales%"
-        # Translate the following two in additional.de.yaml
+        # Translate the following three in additional.de.yaml
         siteName: 'Key Documents of German-Jewish History'
         siteTagline: 'A Digital Source Edition'
+        sitePublisher: 'Institute for the History of the German Jews'
+        siteContact: 'info@juedische-geschichte-online.net'
         slugify: "@cocur_slugify"
         webDir: "%kernel.project_dir%/web"
         piwikSiteId: "%piwik.site_id%"
