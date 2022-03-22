@@ -55,7 +55,7 @@
             </div>
             <div class="col-sm-8 xs-12">
         <a href="{{ path }}">
-            <b>{{ source.name|u.truncate(160, true, '...') }}</b>{% if source.contentLocation is not empty %}, {{ source.contentLocation.name }}{% endif %}
+            <b>{{ source.name|u.truncate(160, '...', false) }}</b>{% if source.contentLocation is not empty %}, {{ source.contentLocation.name }}{% endif %}
         {% if source.dateCreated is not empty %},
             {% if source.dateCreatedDisplay is not empty %}{{ source.dateCreatedDisplay }}{% else %}{{ source.dateCreated|dateincomplete }}{% endif %}
         {% endif %}
