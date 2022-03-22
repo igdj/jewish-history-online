@@ -31,7 +31,7 @@
                     {% endif %}
                 {% endfor %}
                 </div>
-        {% elseif child.title is not empty %}
+        {% elseif child.title is defined and child.title is not empty %}
             {% if 'de' ==  app.request.getLocale() %}
                 <div style="clear: left">{{ education.icon_ghdi() }} <a href="{{ child.url }}&amp;language=german" target="_blank">{{ child.title['de'] }}</a></div>
             {% elseif 'en' ==  app.request.getLocale() %}
@@ -175,10 +175,10 @@
                                     {% if entry.children is defined and entry.children is not empty %}
                                         {{ education.children_display(entry.children) }}
                                     {% endif %}
-                                {% elseif 'en' ==  app.request.getLocale() and entry.title is not empty %}
+                                {% elseif 'en' ==  app.request.getLocale() and entry.title is defined and entry.title is not empty %}
                                     <h4>Additional Material</h4>
                                     {{ education.icon_ghdi() }} <a href="{{ entry.url }}&amp;language=english" target="_blank">{{ entry.title['en'] }}</a>
-                                    {% if entry.children is not empty %}
+                                    {% if entry.children is defined and entry.children is not empty %}
                                         {{ education.children_display(entry.children) }}
                                     {% endif %}
                                 {% endif %}
