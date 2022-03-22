@@ -293,7 +293,7 @@ implements EventSubscriberInterface
                 $url = new UrlConcrete(
                         $localeUrlDescription['url']
                         //,
-                        // TODO: custom settings for lastMode, changeFreq, weight
+                        // TODO: custom settings for lastMod, changeFreq, weight
                         // new \DateTime(),
                         // UrlConcrete::CHANGEFREQ_WEEKLY,
                         // 0.5
