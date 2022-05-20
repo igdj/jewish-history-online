@@ -192,14 +192,14 @@
                             {% for slug,topicDescr in topics %}
                                 <div class="item{% if loop.first %} active{% endif %}">
                                     <div class="col-md-3 col-sm-4 col-xs-12 topic">
-                                        {% if topicDescr.article is not empty %}
+                                        {% if topicDescr.article is defined and topicDescr.article is not empty %}
                                         <a href="{{ path('topic-background', { 'slug' : topicDescr.article }) }}">
                                         {% endif %}
                                             <h5 style="white-space: normal; font-size: 13px;">
                                                 <div class="topic-label">{{ topicDescr.label }}</div>
                                             </h5>
                                             <img src="{{ asset('img/topic/' ~ slug ~ '.jpg') }}" style="width: 100%; height: auto" />
-                                        {% if topicDescr.article is not empty %}
+                                        {% if topicDescr.article is defined and topicDescr.article is not empty %}
                                         </a>
                                         {% endif %}
                                     </div>
