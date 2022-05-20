@@ -53,9 +53,9 @@ Create a user and grant the needed privileges
 
 Create your local settings
 
-    cp config/parameters.yaml-dist config/parameters.yaml
+    cp config/parameters.yml-dist config/parameters.yml
 
-In `config/parameters.yaml`, adjust the database settings as by the
+In `config/parameters.yml`, adjust the database settings as by the
 database, user and password set above:
     `database.name` / `database.user` / `database.password`)
 
@@ -81,7 +81,7 @@ For this, download `saxon9he.jar` as part of `SaxonHE9-9-1-8J.zip`
     https://sourceforge.net/projects/saxon/files/Saxon-HE/9.9/
 and place it in the `bin/` folder (next to `console`) and make sure
 the path to the `java` binary is properly set in the following
-line in `parameters.yaml`:
+line in `parameters.yml`:
 
     app.xslt.adapter.arguments: "/usr/bin/java -jar %kernel.project_dir%/bin/saxon9he.jar -s:%%source%% -xsl:%%xsl%%  %%additional%%"
 
@@ -134,20 +134,20 @@ For testing purposes, you can use the built-in server from PHP
 
     php -S localhost:8000 -t web
 
-And then navigate to http://localhost:8000/index.php/
+And then navigate to http://localhost:8000/app.php/
 
 If you are running on a different host than `localhost`, make sure to adjust
 
     jms_i18n_routing.hosts.de:  localhost
 
-in `config/parameters.yaml` accordingly.
+in `config/parameters.yml` accordingly.
 
 In order to point a proper Web-Server (apache or nginx) to `web`, see
     https://symfony.com/doc/current/setup/web_server_configuration.html for
 further detailed instruction.
 
 Make sure to copy `.htaccess.dist` to `.htaccess` if you want to run the site
-without prepnding `/index.php/` to every url.
+without prepnding `/app.php/` to every url.
 
 If you get errors due to var not being writable, adjust directory permissions as
 described in https://symfony.com/doc/3.4/setup/file_permissions.html
