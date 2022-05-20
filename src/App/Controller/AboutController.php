@@ -47,12 +47,16 @@ extends \TeiEditionBundle\Controller\RenderTeiController
         $route = $request->get('_route');
         $locale = $request->getLocale();
         $fnameTei = $route . '.' . $locale . '.xml';
+        $title = '';
 
         if (is_null($title)) {
-            $teiHelper = new \TeiEditionBundle\Utils\TeiHelper();
-            $meta = $teiHelper->analyzeHeader($this->locateTeiResource($fnameTei));
-            if (!is_null($meta)) {
-                $title = $meta->name;
+            $fnameFull = $this->locateTeiResource($fnameTei);
+            if (false !== $fnameFull) {
+                $teiHelper = new \TeiEditionBundle\Utils\TeiHelper();
+                $meta = $teiHelper->analyzeHeader($this->locateTeiResource($fnameFull));
+                if (!is_null($meta)) {
+                    $title = $meta->name;
+                }
             }
         }
 
