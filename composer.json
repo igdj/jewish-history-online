@@ -35,7 +35,7 @@
             "type": "package",
             "package": {
                 "name": "citation-style-language/locales",
-                "version":"1.0.0",
+                "version": "1.0.0",
                 "source": {
                     "type": "git",
                     "url": "https://github.com/citation-style-language/locales.git",
@@ -47,7 +47,7 @@
             "type": "package",
             "package": {
                 "name": "citation-style-language/styles-distribution",
-                "version":"1.0.0",
+                "version": "1.0.0",
                 "source": {
                     "type": "git",
                     "url": "https://github.com/citation-style-language/styles-distribution.git",
