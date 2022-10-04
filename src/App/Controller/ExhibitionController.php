@@ -36,6 +36,9 @@ extends \TeiEditionBundle\Controller\BaseController
         'jewish-life-since-1945-relaunch' => [
             'name' => 'Jewish Life since 1945 – Relaunch',
         ],
+        'emigration-south-america' => [
+            'name' => 'Jewish emigration to South America - A new home Brazil, Argentina and Uruguay',
+        ],
         /*
         'preview' => [
             'name' => 'New Exhibition',
