@@ -8,28 +8,28 @@
     "minimum-stability": "dev",
     "repositories": [
         {
-            "url": "https://github.com/igdj/tei-edition-bundle",
-            "type": "vcs"
+            "type": "vcs",
+            "url": "https://github.com/igdj/tei-edition-bundle"
         },
         {
-            "url": "https://github.com/igdj/lod-service",
-            "type": "vcs"
+            "type": "vcs",
+            "url": "https://github.com/igdj/lod-service"
         },
         {
-            "url": "https://github.com/burki/converter.git",
-            "type": "vcs"
+            "type": "vcs",
+            "url": "https://github.com/burki/converter.git"
         },
         {
-            "url": "https://github.com/burki/LibRIS.git",
-            "type": "vcs"
+            "type": "vcs",
+            "url": "https://github.com/burki/LibRIS.git"
         },
         {
-            "url": "https://github.com/burki/LiipUrlAutoConverterBundle.git",
-            "type": "vcs"
+            "type": "vcs",
+            "url": "https://github.com/burki/LiipUrlAutoConverterBundle.git"
         },
         {
-            "url": "https://github.com/boppy/SolrBundle.git",
-            "type": "vcs"
+            "type": "vcs",
+            "url": "https://github.com/boppy/SolrBundle.git"
         },
         {
             "type": "package",
