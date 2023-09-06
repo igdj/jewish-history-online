@@ -157,6 +157,7 @@ class Builder
         }
 
         // add menu item
+        $menu->addChild('exhibition-index', [ 'label' => $this->translator->trans('Online Exhibitions', [], 'menu'), 'route' => 'exhibition-index' ]);
         $menu->addChild('topic-index', [ 'label' => $this->translator->trans('Topics', [], 'menu'), 'route' => 'topic-index' ]);
         $menu->addChild('place-map', [ 'label' => $this->translator->trans('Map', [], 'menu'), 'route' => 'place-map' ]);
         $menu->addChild('date-chronology', [ 'label' => $this->translator->trans('Chronology', [], 'menu'), 'route' => 'date-chronology' ]);
@@ -200,6 +201,7 @@ class Builder
             ]);
         }
         else {
+            $menu['exhibition-index']->setAttribute('id', 'menu-item-exhibition');
             $menu['topic-index']->setAttribute('id', 'menu-item-topic');
             $menu['place-map']->setAttribute('id', 'menu-item-map');
             $menu['date-chronology']->setAttribute('id', 'menu-item-chronology');

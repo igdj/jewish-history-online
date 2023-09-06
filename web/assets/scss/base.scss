@@ -148,6 +148,22 @@ header {
             background-color: $color-color-lookup;
         }
 
+        #menu-item-exhibition {
+            a {
+                background: url("../img/icon/menu-exhibition.png") no-repeat;
+                background-position: right 6px center;
+            }
+
+            a {
+                display: inline-block;
+                background-color: $color-color-exhibition;
+            }
+
+            &:hover {
+                border-bottom: 6px solid $color-color-exhibition;
+            }
+        }
+
         #menu-item-topic {
             a {
                 background: url("../img/icon/menu-topic.svg") no-repeat;
@@ -209,7 +225,7 @@ header {
     #header-search-wrapper {
         input[type='text'] {
             width: 10em;
-            background-color: $color-color-medium;
+            background-color: $color-gray-medium;
             border: none;
             padding: 5px;
             padding-right: 26px;
@@ -721,14 +737,6 @@ h3#citation {
                     a {
                         color: $color-gray-light;
                     }
-                }
-            }
-
-            &.box-color-content-inverse {
-                border-color: $color-color-medium;
-                background-color: $color-color-medium;
-                a, a:visited {
-                    color: white;
                 }
             }
 
