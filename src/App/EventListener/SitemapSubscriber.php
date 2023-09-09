@@ -142,6 +142,8 @@ implements EventSubscriberInterface
 
                 switch ($routeName) {
                     case 'topic-background':
+                        $urlset = 'article'; // for portal indexing
+
                         foreach (\TeiEditionBundle\Controller\TopicController::$TOPICS as $topic) {
                             $this->translator->setLocale($defaults['_locale']);
                             $url = $this->router->generate($routeName, [
@@ -259,12 +261,14 @@ implements EventSubscriberInterface
 
                         foreach ($qb->getQuery()->getResult() as $article) {
                             if ('article' == $routeName) {
-                                $url = $this->router->generate($routeName, [ 'slug' => $article->getSlug(true), '_locale' => $defaults['_locale'] ],
-                                                         UrlGeneratorInterface::ABSOLUTE_URL);
+                                $url = $this->router->generate($routeName, [
+                                        'slug' => $article->getSlug(true), '_locale' => $defaults['_locale'],
+                                    ], UrlGeneratorInterface::ABSOLUTE_URL);
                             }
                             else {
-                                $url = $this->router->generate($routeName, [ 'uid' => $article->getUid(), '_locale' => $defaults['_locale'] ],
-                                                         UrlGeneratorInterface::ABSOLUTE_URL);
+                                $url = $this->router->generate($routeName, [
+                                        'uid' => $article->getUid(), '_locale' => $defaults['_locale'],
+                                 ], UrlGeneratorInterface::ABSOLUTE_URL);
                             }
 
                             $this->addUrlDescription($urlDescriptions, $article->getUid(), $defaults['_locale'], [ 'url' => $url, 'urlset' => $urlset ]);
