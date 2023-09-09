@@ -24,6 +24,9 @@ parameters:
     mailer.username: ~
     mailer.password: ~
 
+    # path to web-root
+    app.public_dir: "%kernel.project_dir%/web"
+
     # for testing (https://doi.test.datacite.org/), use
     # app.datacite.url: "https://mds.test.datacite.org/"
     app.datacite.url: "https://mds.datacite.org/"
@@ -58,9 +61,10 @@ parameters:
 
     # imagemagick settings
     app.imagemagick.processor.arguments:
-        # linux
+        # on linux, check with
+        #   which convert -> /usr/bin/convert
         path: "/usr/bin/"
-        # windows, set your proper path
+        # windows, set your proper path, e.g.
         # path: "C:/Progra~1/ImageMagick-6.9.1-Q16/"
 
     app.simplify_geojson.processor.arguments:

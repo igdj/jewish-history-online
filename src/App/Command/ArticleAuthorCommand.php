@@ -9,7 +9,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 /**
  * Lookup author(s) and translator and insert/update corresponding Person.
@@ -163,7 +162,7 @@ extends BaseCommand
     {
         $sql = "SELECT * FROM User WHERE slug = :slug AND status <> -100";
 
-        $users = $this->dbconnAdmin->fetchAll($sql, [ 'slug' => $slug ]);
+        $users = $this->dbconnAdmin->fetchAllAssociative($sql, [ 'slug' => $slug ]);
         if (empty($users)) {
             return;
         }

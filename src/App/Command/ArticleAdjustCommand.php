@@ -9,11 +9,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
  * Insert information from Admin-Database into manually created TEI.
@@ -81,7 +76,7 @@ extends BaseCommand
                 break;
         }
 
-        $result = $this->dbconnAdmin->fetchAssoc($sql, $params);
+        $result = $this->dbconnAdmin->fetchAssociative($sql, $params);
 
         if (false === $result || empty($result)) {
             return $data;

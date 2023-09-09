@@ -9,7 +9,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 /**
  * Extract bibliographic items from TEI and insert/update into Bibitem.
@@ -174,6 +173,6 @@ extends BaseCommand
     {
         $sql = "SELECT * FROM Zotero WHERE corresp = :slug AND status >= 0";
 
-        return $this->dbconnAdmin->fetchAll($sql, [ 'slug' => $slug ]);
+        return $this->dbconnAdmin->fetchAllAssociative($sql, [ 'slug' => $slug ]);
     }
 }

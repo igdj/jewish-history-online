@@ -28,7 +28,8 @@ twig:
         sitePublisher: 'Institute for the History of the German Jews'
         siteContact: 'info@juedische-geschichte-online.net'
         slugify: "@cocur_slugify"
-        webDir: "%kernel.project_dir%/web"
+        public_dir: "%app.public_dir%"
+        webDir: "%app.public_dir%"
         piwikSiteId: "%piwik.site_id%"
         twitterSite: "%twitter.site%"
     form_themes:

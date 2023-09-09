@@ -3,8 +3,6 @@
 
 namespace App\Command;
 
-use Symfony\Component\Console\Command\Command;
-
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -42,13 +40,15 @@ extends \TeiEditionBundle\Command\BaseCommand
                                 ImageMagickProcessor $imagickProcessor,
                                 XsltProcessor $xsltProcessor,
                                 XmlFormatter $formatter,
+                                ?string $publicDir,
                                 \Doctrine\DBAL\Connection $dbconnAdmin
                             )
     {
         parent::__construct($em, $kernel, $router, $translator, $slugify, $params,
                             $themeRepository, $themeContext, $siteTheme,
                             $imagickProcessor,
-                            $xsltProcessor, $formatter);
+                            $xsltProcessor, $formatter,
+                            $publicDir);
 
         $this->dbconnAdmin = $dbconnAdmin;
     }

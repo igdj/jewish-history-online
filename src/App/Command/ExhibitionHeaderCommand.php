@@ -9,7 +9,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer ;
 
@@ -371,7 +370,7 @@ extends BaseCommand
     {
         $sql = "SELECT * FROM User WHERE gnd = :gnd AND status <> -100";
 
-        $users = $this->dbconnAdmin->fetchAll($sql, [ 'gnd' => $gnd ]);
+        $users = $this->dbconnAdmin->fetchAllAssociative($sql, [ 'gnd' => $gnd ]);
         if (empty($users)) {
             return;
         }

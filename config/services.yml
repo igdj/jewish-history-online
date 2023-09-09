@@ -24,7 +24,8 @@ services:
         bind:
             $siteTheme: '%app.site_theme%'
             $dbconnAdmin: '@dbconn.admin'
-            
+            $publicDir: '%app.public_dir%'
+
     # makes classes in src/App available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     # together with the above _defaults, this is needed for Command-classes to work as in Sf 3.4
@@ -91,15 +92,15 @@ services:
         calls:
             - [ setAdapter, [ '@app.xslt_adapter' ]]
 
-    TeiEditionBundle\Utils\PdfGenerator:
-        arguments:    [ "%app.pdf-generator.arguments%" ]
-
     app.xml_formatter_adapter:
         class:        "%app.xml_formatter.adapter.class%"
         arguments:    [ "%app.xml_formatter.adapter.arguments%" ]
     TeiEditionBundle\Utils\XmlFormatter\XmlFormatter:
         calls:
             - [ setAdapter, [ '@app.xml_formatter_adapter' ]]
+
+    TeiEditionBundle\Utils\PdfGenerator:
+        arguments:    [ "%app.pdf-generator.arguments%" ]
 
     TeiEditionBundle\Utils\SimplifyGeojsonProcessor:
         arguments:    [ "%app.simplify_geojson.processor.arguments%" ]
