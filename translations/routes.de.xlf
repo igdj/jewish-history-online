@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2021-03-26T10:42:47Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
+  <file date="2023-09-09T11:06:40Z" source-language="en" target-language="de" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -389,6 +389,10 @@
       <trans-unit id="11382b2dc45c0a18f2c1b76687a989ba9c1d1002" resname="topic-background">
         <source>/topic/{slug}</source>
         <target>/thema/{slug}</target>
+      </trans-unit>
+      <trans-unit id="61dfc5130a889cf64db7ca84a893c723117840ca" resname="topic-background-jsonld">
+        <source>/topic/{slug}.jsonld</source>
+        <target>/thema/{slug}.jsonld</target>
       </trans-unit>
       <trans-unit id="176db8bb3eb07c6d739969f6195e15d3633644f2" resname="topic-background-pdf">
         <source>/topic/{slug}.pdf</source>
