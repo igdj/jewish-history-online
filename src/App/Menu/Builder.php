@@ -193,9 +193,6 @@ class Builder
             ]);
 
         if (array_key_exists('position', $options) && 'footer' == $options['position']) {
-            $menu->addChild('exhibition', [
-                'label' => $this->translator->trans('Online Exhibitions', [], 'menu'), 'route' => 'exhibition-index',
-            ]);
             $menu->addChild('education', [
                 'label' => $this->translator->trans('Teaching Resources', [], 'menu'), 'route' => 'education-index',
             ]);
