@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -203,7 +205,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
     /**
      * Send the contents of the contact form
      */
-    protected function sendMessage($mailer, $twig, $data)
+    protected function sendMessage(MailerInterface $mailer, \Twig\Environment $twig, $data)
     {
         $template = $twig->load('About/contact.email.twig');
 
@@ -211,26 +213,29 @@ extends \TeiEditionBundle\Controller\RenderTeiController
         $textBody = $template->renderBlock('body_text', [ 'data' => $data ]);
         $htmlBody = $template->renderBlock('body_html', [ 'data' => $data ]);
 
-        $message = (new \Swift_Message($subject))
-            ->setFrom('burckhardtd@geschichte.hu-berlin.de')
-            ->setTo('burckhardtd@geschichte.hu-berlin.de')
-            ->setReplyTo($data['email']);
+        $message = (new Email())
+            ->from('burckhardtd@geschichte.hu-berlin.de')
+            ->to('burckhardtd@geschichte.hu-berlin.de')
+            ->subject($subject)
+            ->replyTo($data['email']);
             ;
 
         if (!empty($htmlBody)) {
-            $message->setBody($htmlBody, 'text/html')
-                ->addPart($textBody, 'text/plain');
+            $message->html($htmlBody)
+                ->text($textBody);
         }
         else {
-            $message->setBody($textBody);
+            $message->text($textBody);
         }
 
         try {
-            return $mailer->send($message);
+            $mailer->send($message);
         }
         catch (\Exception $e) {
             return false;
         }
+
+        return true;
     }
 
     /**
@@ -238,7 +243,7 @@ extends \TeiEditionBundle\Controller\RenderTeiController
      */
     public function contactAction(Request $request,
                                   TranslatorInterface $translator,
-                                  \Swift_Mailer $mailer,
+                                  MailerInterface $mailer,
                                   \Twig\Environment $twig)
     {
         $form = $this->createForm(\App\Form\Type\ContactType::class);

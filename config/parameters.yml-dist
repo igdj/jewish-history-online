@@ -16,13 +16,18 @@ parameters:
     jms_i18n_routing.hosts.de:  localhost
     jms_i18n_routing.hosts.en:  127.0.0.1
 
-    mailer.transport: 'sendmail'
-    # if you don't have sendmail configured, you can use a smtp-host instead
-    # mailer.transport: 'smtp'
-    mailer.host: ~
-    mailer.port: ~
-    mailer.username: ~
-    mailer.password: ~
+    # mailer configuration, enable and configure one of the following
+    # Mailer uses the sendmail binary and options configured in the sendmail_path
+    #   setting of php.ini.
+    # It's highly recommended to NOT use native://default as you cannot control
+    #   how sendmail is configured (prefer using sendmail://default if possible)
+    # mailer.dsn:   native://default
+    # Mailer uses the local sendmail binary to send emails
+    mailer.dsn:     sendmail://default
+    # Mailer uses an SMTP server to send emails
+    # mailer.dsn:   smtp://user:pass@smtp.example.com:25
+    # Disable delivery
+    # mailer.dsn:   null://null
 
     # path to web-root
     app.public_dir: "%kernel.project_dir%/web"

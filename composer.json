@@ -100,7 +100,7 @@
 
         "sylius/theme-bundle": "^2.1",
 
-        "symfony/swiftmailer-bundle": "^3.5",
+        "symfony/mailer": "^5.4",
 
         "cocur/slugify": "^4.0",
 

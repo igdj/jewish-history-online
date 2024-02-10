@@ -18,6 +18,8 @@ framework:
     form: ~
     router:
         utf8: true
+    mailer:
+        dsn: '%mailer.dsn%'
 
 twig:
     globals:
@@ -179,20 +181,3 @@ eko_feed:
                 route_name: article-index-date
             encoding:    'utf-8'
             #author:      'Institute for the History of the German Jews'
-            
-swiftmailer:
-    # disable_delivery:  true
-    # delivery_address: daniel.burckhardt@sur-gmbh.ch
-    # or use: delivery_whitelist
-    transport: '%mailer.transport%'
-    host: '%mailer.host%'
-    port: '%mailer.port%'
-    username: '%mailer.username%'
-    password: '%mailer.password%'
-    encryption: ssl
-    # self-signed, see https://github.com/swiftmailer/swiftmailer/issues/544
-    stream_options:
-        ssl:
-            allow_self_signed: true
-            verify_peer: false
-            verify_peer_name: false
