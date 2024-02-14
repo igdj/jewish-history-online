@@ -105,10 +105,10 @@ Start solr by
 
     ./solr/bin/solr start
 
-and then create the `core_de` and `core_de` cores
+and then create the `jgo_presentation-de` and `jgo-presentation_de` cores
 
-    ./solr/bin/solr create -c core_de
-    ./solr/bin/solr create -c core_en
+    ./solr/bin/solr create -c jgo_presentation-de
+    ./solr/bin/solr create -c jgo_presentation-en
 
 You can clear the core and re-index existing entities
 
