@@ -7,7 +7,7 @@ parameters:
     locales: [de, en]
     default_locale: de  # for routing
     fallback_locale: en # for translation
-    
+
 framework:
     secret: '%kernel.secret%'
     # JMS\TranslationBundle\JMSTranslationBundle needs validation
@@ -80,13 +80,17 @@ doctrine:
                     engine:  MyISAM     # InnoDB
     orm:
         # TODO: set a cache, see http://www.craftitonline.com/2015/04/doctrine-file-system-caching-with-doctrine-cache-bundle/
-        connection: default        
+        connection: default
         auto_generate_proxy_classes: '%kernel.debug%'
         auto_mapping: true
         dql:
             string_functions:
                 REPLACE: DoctrineExtensions\Query\Mysql\Replace
                 CAST:       Oro\ORM\Query\AST\Functions\Cast
+                # https://packagist.org/packages/scienta/doctrine-json-functions
+                JSON_EXTRACT: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonExtract
+                JSON_CONTAINS: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonContains
+                JSON_UNQUOTE: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonUnquote
             datetime_functions:
                 YEAR:       DoctrineExtensions\Query\Mysql\Year
 
@@ -130,7 +134,7 @@ jms_i18n_routing:
         de: '%jms_i18n_routing.hosts.de%'
         en: '%jms_i18n_routing.hosts.en%'
     redirect_to_host: true
-    
+
 knp_menu:
     twig:
         template: knp_menu.html.twig
@@ -158,7 +162,7 @@ fs_solr:
             path: /
             core: jgo_presentation-en
             timeout: 15
-            
+
 knp_paginator:
     page_range: 5                      # default page range used in pagination control
     default_options:
@@ -169,7 +173,7 @@ knp_paginator:
     template:
         pagination: '@KnpPaginator/Pagination/twitter_bootstrap_v3_pagination.html.twig'
         sortable: '@KnpPaginator/Pagination:sortable_link.html.twig' # sort link template
-       
+
 eko_feed:
     translation_domain: additional
     feeds:
