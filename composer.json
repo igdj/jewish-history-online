@@ -9,7 +9,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/burki/tei-edition-bundle"
+            "url": "https://github.com/igdj/tei-edition-bundle"
         },
         {
             "type": "vcs",
@@ -110,7 +110,7 @@
         "presta/sitemap-bundle": "^3.3",
         "eko/feedbundle": "^2.1",
 
-        "igdj/tei-edition-bundle": "dev-solarium-6",
+        "igdj/tei-edition-bundle": "dev-master",
 
         "vnn/wordpress-rest-api-client": "^1.3",
         "guzzlehttp/guzzle": "^6.5"
